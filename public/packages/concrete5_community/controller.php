@@ -3,13 +3,14 @@
 namespace Concrete\Package\Concrete5Community;
 
 use Concrete\Core\Package\Package;
+use Concrete\Core\Page\Theme\ThemeRouteCollection;
 
 class Controller extends Package
 {
 
     protected $pkgHandle = 'concrete5_community';
     protected $appVersionRequired = '8.3';
-    protected $pkgVersion = '0.80';
+    protected $pkgVersion = '0.81';
     protected $pkgAutoloaderMapCoreExtensions = true;
     protected $pkgAutoloaderRegistries = array(
         'src' => '\PortlandLabs\Concrete5\Community'
@@ -40,6 +41,12 @@ class Controller extends Package
     
     public function on_start()
     {
-        
+        $collection = $this->app->make(ThemeRouteCollection::class);
+        /**
+         * @var $collection ThemeRouteCollection
+         */
+        $collection->setThemeByRoute('/account/*', 'concrete5', 'account.php');
+        $collection->setThemeByRoute('/login', 'concrete5');
+        $collection->setThemeByRoute('/register', 'concrete5');
     }
 }

@@ -1,3 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <concrete5-cif version="1.0">
+    <singlepages>
+        <page name="GitHub" path="/account/github" filename="/account/github.php" package="concrete5_community"/>
+        <page name="LinkedIn" path="/account/linkedin" filename="/account/linkedin.php" package="concrete5_community"/>
+        <page name="StackOverflow" path="/account/stackoverflow" filename="/account/stackoverflow.php" package="concrete5_community"/>
+    </singlepages>
+    <attributekeys>
+        <attributekey handle="stackoverflow_user_id" name="StackOverflow User ID" package="concrete5_community" 
+                      searchable="1" indexed="0" type="number" category="user" 
+                      profile-displayed="0" profile-editable="0" profile-required="0" 
+                      register-editable="0" register-required="0" member-list-displayed="0">
+        </attributekey>
+        <attributekey handle="stackoverflow_badges" name="StackOverflow Total Badges" package="concrete5_community"
+                      searchable="1" indexed="0" type="number" category="user"
+                      profile-displayed="0" profile-editable="0" profile-required="0"
+                      register-editable="0" register-required="0" member-list-displayed="0">
+        </attributekey>
+        <attributekey handle="stackoverflow_reputation" name="StackOverflow Reputation" package="concrete5_community"
+                      searchable="1" indexed="0" type="number" category="user"
+                      profile-displayed="0" profile-editable="0" profile-required="0"
+                      register-editable="0" register-required="0" member-list-displayed="0">
+        </attributekey>
+    </attributekeys>
 </concrete5-cif>
