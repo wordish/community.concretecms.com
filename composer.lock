@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9d57eeaf84a1c9c7afd5e3bc72c895d1",
+    "content-hash": "3b1b16deff5e497b8ef852a558608fed",
     "packages": [
         {
             "name": "anahkiasen/html-object",
@@ -176,7 +176,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/concrete5/addon_concrete5_theme.git",
-                "reference": "master"
+                "reference": "account-updates"
             },
             "type": "library"
         },
@@ -8214,7 +8214,7 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": {
         "concrete5/core": 20
     },
