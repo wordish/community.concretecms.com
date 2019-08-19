@@ -5,7 +5,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 <div class="account-menu">
     <div class="list-group">
         <div class="list-group-item">
-            <a href="<?=URL::to('/account/welcome')?>"><?=t('Home')?></a>
+            <ul class="list-unstyled">
+                <li><a href="<?=URL::to('/account/welcome')?>"><?=t('Home')?></a></li>
+                <li><a href="<?=URL::to('/members/profile')?>"><?=t('Public Profile')?></a></li>
+            </ul>
         </div>
         <div class="list-group-item">
             <div class="account-menu-header">Private Messages</div>
