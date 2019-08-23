@@ -1,6 +1,14 @@
 <?php defined('C5_EXECUTE') or die("Access Denied.");
 
 $dh = Core::make('helper/date'); /* @var $dh \Concrete\Core\Localization\Service\Date */
+
+$soId = (int) $profile->getAttribute('stackoverflow_user_id');
+if ($soId) {
+    $soReputation = $profile->getAttribute('stackoverflow_reputation') ?? 0;
+    $soBronze = $profile->getAttribute('stackoverflow_badges_bronze') ?? 0;
+    $soSilver = $profile->getAttribute('stackoverflow_badges_silver') ?? 0;
+    $soGold = $profile->getAttribute('stackoverflow_badges_gold') ?? 0;
+}
 ?>
 
     <div class="row">
@@ -9,8 +17,8 @@ $dh = Core::make('helper/date'); /* @var $dh \Concrete\Core\Localization\Service
         </div>
         <div class="col-sm-11">
 
-            <h1><?=$profile->getUserName()?></h1>
-        
+            <h1><?= h($profile->getUserName()) ?></h1>
+
             <div id="ccm-profile-controls">
                 <?php if ($canEdit) {
                     ?>
@@ -48,6 +56,31 @@ $dh = Core::make('helper/date'); /* @var $dh \Concrete\Core\Localization\Service
             <i class="fa fa-bookmark"></i> <a href="#badges"><?=number_format(count($badges))?> <?=t2('Badge', 'Badges', count($badges))?></a>
         </div>
     </div>
+
+    <?php
+    if ($soId) {
+        ?>
+        <div class="row">
+            <div class="col-sm-4">
+                <i class="fa fa-stack-overflow"></i>
+                <a href="https://stackoverflow.com/users/<?= $soId ?>"><?= t('Stackoverflow Profile') ?></a>
+            </div>
+            <div class="col-sm-4">
+                <i class="fa fa-stack-overflow"></i>
+                <?= t('%s Reputation', number_format($soReputation)) ?>
+            </div>
+            <div class="col-sm-4">
+                <i class="fa fa-stack-overflow"></i>
+                <?= t('Badges') ?>
+                <span style="color:#cda400">● <?= number_format((int) $soGold) ?></span>
+                <span style="color:#8c9298">● <?= number_format((int) $soSilver) ?></span>
+                <span style="color:#c38b5f">● <?= number_format((int) $soBronze) ?></span>
+            </div>
+        </div>
+        <?php
+    }
+    ?>
+
     <div class="row">
         <div class="col-sm-12">
             <hr/>

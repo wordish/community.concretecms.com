@@ -2,15 +2,19 @@
 
 namespace Concrete\Package\Concrete5Community;
 
+use Concrete\Core\Filesystem\ElementManager;
 use Concrete\Core\Package\Package;
 use Concrete\Core\Page\Theme\ThemeRouteCollection;
+use Concrete\Core\Routing\Router;
+use Concrete5\Community\RouteList;
+use Concrete5\Community\ServiceProvider;
 
 class Controller extends Package
 {
 
     protected $pkgHandle = 'concrete5_community';
     protected $appVersionRequired = '8.3';
-    protected $pkgVersion = '0.81';
+    protected $pkgVersion = '0.82';
     protected $pkgAutoloaderMapCoreExtensions = true;
     protected $pkgAutoloaderRegistries = array(
         'src' => '\PortlandLabs\Concrete5\Community'
@@ -25,7 +29,7 @@ class Controller extends Package
     {
         return t("concrete5.org Community");
     }
-    
+
     public function install()
     {
         parent::install();
@@ -38,7 +42,7 @@ class Controller extends Package
         parent::upgrade();
         $this->installContentFile('data.xml');
     }
-    
+
     public function on_start()
     {
         $collection = $this->app->make(ThemeRouteCollection::class);
@@ -48,5 +52,8 @@ class Controller extends Package
         $collection->setThemeByRoute('/account/*', 'concrete5', 'account.php');
         $collection->setThemeByRoute('/login', 'concrete5');
         $collection->setThemeByRoute('/register', 'concrete5');
+
+        // Set up service provider
+        $this->app->make(ServiceProvider::class)->register();
     }
 }
