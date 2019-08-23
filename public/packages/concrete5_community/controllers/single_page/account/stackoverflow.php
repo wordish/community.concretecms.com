@@ -118,7 +118,7 @@ class Stackoverflow extends AccountPageController
      * @throws \Doctrine\DBAL\DBALException
      * @throws \Doctrine\DBAL\Exception\InvalidArgumentException
      */
-    public function storeToken(TokenInterface $token): bool
+    protected function storeToken(TokenInterface $token): bool
     {
         $user = $this->app->make(User::class)->getUserInfoObject();
         if ($user && $this->populator->populate($user, $token)) {

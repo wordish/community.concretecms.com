@@ -11,7 +11,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "ConcreteComposer\\" : "./tests"
+      "Concrete5\\Community\\" : "./tests/public/packages/concrete5_community/src"
     }
   },
   "require": {
