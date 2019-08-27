@@ -36,5 +36,15 @@
                       profile-displayed="0" profile-editable="0" profile-required="0"
                       register-editable="0" register-required="0" member-list-displayed="0">
         </attributekey>
+        <attributekey handle="linkedin_profile" name="LinkedIn Profile URL" package="concrete5_community"
+                      searchable="1" indexed="0" type="text" category="user"
+                      profile-displayed="0" profile-editable="0" profile-required="0"
+                      register-editable="0" register-required="0" member-list-displayed="0">
+        </attributekey>
+        <attributekey handle="linkedin_education" name="LinkedIn Education" package="concrete5_community"
+                      searchable="1" indexed="0" type="text" category="user"
+                      profile-displayed="0" profile-editable="0" profile-required="0"
+                      register-editable="0" register-required="0" member-list-displayed="0">
+        </attributekey>
     </attributekeys>
 </concrete5-cif>

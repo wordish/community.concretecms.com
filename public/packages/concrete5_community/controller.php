@@ -14,7 +14,7 @@ class Controller extends Package
 
     protected $pkgHandle = 'concrete5_community';
     protected $appVersionRequired = '8.3';
-    protected $pkgVersion = '0.82';
+    protected $pkgVersion = '0.83';
     protected $pkgAutoloaderMapCoreExtensions = true;
     protected $pkgAutoloaderRegistries = array(
         'src' => '\PortlandLabs\Concrete5\Community'
