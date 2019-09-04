@@ -5,5 +5,11 @@ return [
         'key' => '',
         'secret' => '',
         'id' => '',
+    ],
+    'github' => [
+        'id' => '',
+        'secret' => '',
+        'access_token' => '',
+        'webhook_secret' => '',
     ]
 ];

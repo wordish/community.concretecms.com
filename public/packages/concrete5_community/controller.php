@@ -2,6 +2,9 @@
 
 namespace Concrete\Package\Concrete5Community;
 
+use Concrete\Core\Database\EntityManager\Provider\ProviderAggregateInterface;
+use Concrete\Core\Database\EntityManager\Provider\ProviderInterface;
+use Concrete\Core\Database\EntityManager\Provider\StandardPackageProvider;
 use Concrete\Core\Filesystem\ElementManager;
 use Concrete\Core\Package\Package;
 use Concrete\Core\Page\Theme\ThemeRouteCollection;
@@ -9,7 +12,7 @@ use Concrete\Core\Routing\Router;
 use Concrete5\Community\RouteList;
 use Concrete5\Community\ServiceProvider;
 
-class Controller extends Package
+class Controller extends Package implements ProviderAggregateInterface
 {
 
     protected $pkgHandle = 'concrete5_community';
@@ -55,5 +58,15 @@ class Controller extends Package
 
         // Set up service provider
         $this->app->make(ServiceProvider::class)->register();
+    }
+
+    /**
+     * @return ProviderInterface
+     */
+    public function getEntityManagerProvider()
+    {
+        return new StandardPackageProvider($this->app, $this, [
+            '/src/Entity' => 'Concrete5\\Community\\Entity\\'
+        ]);
     }
 }

@@ -9,6 +9,8 @@
 /public/application/css/main.css
 /public/application/js/main.js
 /public/packages/concrete5_theme
+/.serverless
+
 
 # Ignore developer stuff
 /.idea
