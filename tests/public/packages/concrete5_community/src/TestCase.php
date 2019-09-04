@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace ConcreteComposer;
+namespace Concrete5\Community;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
