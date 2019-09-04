@@ -1,5 +1,11 @@
 <?php
 
+# Load collision for nicer console errors in dev
+if (class_exists(\NunoMaduro\Collision\Provider::class)) {
+    (new \NunoMaduro\Collision\Provider)->register();
+}
+
+
 /*
  * ----------------------------------------------------------------------------
  * # Custom Application Handler
