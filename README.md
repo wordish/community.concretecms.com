@@ -1,6 +1,6 @@
-# concrete5.org Documentation Website
+# community.concretecms.org
 
-This repo contains the source code for [the concrete5.org community site](https://documentation.concrete5.org). It installs the shared concrete5.org theme, the new karma machine, updated forums, the centralized user portal, and more.
+This repo contains the code for all account management aspects of concretecms.org.
 
 ## Installation Instructions.
 
