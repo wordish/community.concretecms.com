@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ccf1f96f14874f6e5aaf69725ad01837",
+    "content-hash": "683f407d7dba5666f446f300a60e8ad2",
     "packages": [
         {
             "name": "anahkiasen/html-object",
@@ -281,16 +281,16 @@
         },
         {
             "name": "composer/installers",
-            "version": "v1.9.0",
+            "version": "v1.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/installers.git",
-                "reference": "b93bcf0fa1fccb0b7d176b0967d969691cd74cca"
+                "reference": "1a0357fccad9d1cc1ea0c9a05b8847fbccccb78d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/b93bcf0fa1fccb0b7d176b0967d969691cd74cca",
-                "reference": "b93bcf0fa1fccb0b7d176b0967d969691cd74cca",
+                "url": "https://api.github.com/repos/composer/installers/zipball/1a0357fccad9d1cc1ea0c9a05b8847fbccccb78d",
+                "reference": "1a0357fccad9d1cc1ea0c9a05b8847fbccccb78d",
                 "shasum": ""
             },
             "require": {
@@ -301,17 +301,18 @@
                 "shama/baton": "*"
             },
             "require-dev": {
-                "composer/composer": "1.6.* || 2.0.*@dev",
-                "composer/semver": "1.0.* || 2.0.*@dev",
-                "phpunit/phpunit": "^4.8.36",
-                "sebastian/comparator": "^1.2.4",
+                "composer/composer": "1.6.* || ^2.0",
+                "composer/semver": "^1 || ^3",
+                "phpstan/phpstan": "^0.12.55",
+                "phpstan/phpstan-phpunit": "^0.12.16",
+                "symfony/phpunit-bridge": "^4.2 || ^5",
                 "symfony/process": "^2.3"
             },
             "type": "composer-plugin",
             "extra": {
                 "class": "Composer\\Installers\\Plugin",
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-main": "1.x-dev"
                 }
             },
             "autoload": {
@@ -349,6 +350,7 @@
                 "Porto",
                 "RadPHP",
                 "SMF",
+                "Starbug",
                 "Thelia",
                 "Whmcs",
                 "WolfCMS",
@@ -389,6 +391,7 @@
                 "phpbb",
                 "piwik",
                 "ppi",
+                "processwire",
                 "puppet",
                 "pxcms",
                 "reindex",
@@ -410,11 +413,15 @@
                     "type": "custom"
                 },
                 {
+                    "url": "https://github.com/composer",
+                    "type": "github"
+                },
+                {
                     "url": "https://tidelift.com/funding/github/packagist/composer/composer",
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-04-07T06:57:05+00:00"
+            "time": "2021-01-14T11:07:16+00:00"
         },
         {
             "name": "composer/package-versions-deprecated",
@@ -486,15 +493,26 @@
             "time": "2020-11-11T10:22:58+00:00"
         },
         {
-            "name": "concrete5/addon_concrete5_theme",
-            "version": "dev-2021",
+            "name": "concrete5/concrete_cms_theme",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/concrete5/addon_concrete5_theme.git",
-                "reference": "2021"
+                "url": "https://github.com/concrete5/concrete_cms_theme.git",
+                "reference": "f4e271e0401ca88de16401f2a41e51bd087ea657"
             },
-            "type": "library",
-            "time": "2021-01-12T14:41:57+00:00"
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/concrete5/concrete_cms_theme/zipball/f4e271e0401ca88de16401f2a41e51bd087ea657",
+                "reference": "f4e271e0401ca88de16401f2a41e51bd087ea657",
+                "shasum": ""
+            },
+            "type": "concrete5-package",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Package that contains the official ConcreteCMS Theme.",
+            "time": "2021-01-14T16:18:57+00:00"
         },
         {
             "name": "concrete5/core",
@@ -10429,7 +10447,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "concrete5/core": 20,
-        "concrete5/addon_concrete5_theme": 20
+        "concrete5/concrete_cms_theme": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

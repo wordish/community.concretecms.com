@@ -5,6 +5,9 @@
 /public/concrete
 /public/application/files
 
+# Ignore composer packages
+/public/packages/concrete_cms_theme
+
 # Ignore build files
 /public/application/css/main.css
 /public/application/js/main.js
