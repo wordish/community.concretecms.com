@@ -2,6 +2,7 @@
   "name": "portlandlabs/community.concrete5.org",
   "description": "The concrete5.org community and user profile website.",
   "type": "project",
+  "minimum-stability": "dev",
   "prefer-stable": true,
   "autoload": {
     "psr-4": {
@@ -16,7 +17,8 @@
   "require": {
     "composer/installers": "^1.3",
     "concrete5/core": "dev-develop",
-    "concrete5/addon_concrete5_theme": "^1.0",
+    "concrete5/addon_concrete5_theme": "dev-2021",
+    "concrete5/dependency-patches": "^1.4.0",
     "vlucas/phpdotenv": "^2.4"
   },
   "require-dev": {
@@ -27,6 +29,9 @@
     "preferred-install": "dist"
   },
   "extra": {
+    "allow-subpatches": [
+      "concrete5/dependency-patches"
+    ],
     "branch-alias": {
       "dev-8.x": "8.x-dev"
     },
@@ -42,11 +47,11 @@
       "type": "package",
       "package": {
         "name": "concrete5/addon_concrete5_theme",
-        "version": "1.0.0",
+        "version": "dev-2021",
         "source": {
           "url": "https://github.com/concrete5/addon_concrete5_theme.git",
           "type": "git",
-          "reference": "master"
+          "reference": "2021"
         }
       }
     }
@@ -54,10 +59,10 @@
   "scripts": {
     "test": "phpunit",
     "post-update-cmd": [
-      "ln -sf ../../vendor/concrete5/addon_concrete5_theme/packages/concrete5_theme ./public/packages/concrete5_theme"
+      "ln -sf ../../vendor/concrete5/addon_concrete5_theme public/packages/concrete_cms_theme"
     ],
     "post-install-cmd": [
-      "ln -sf ../../vendor/concrete5/addon_concrete5_theme/packages/concrete5_theme ./public/packages/concrete5_theme"
+      "ln -sf ../../vendor/concrete5/addon_concrete5_theme public/packages/concrete_cms_theme"
     ]
   }
 }

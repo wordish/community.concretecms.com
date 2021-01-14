@@ -2,8 +2,8 @@
 <concrete5-cif version="1.0">
 
     <packages>
-        <package handle="concrete5_theme"/>
-        <package handle="concrete5_community"/>
+        <package handle="concrete_cms_theme"/>
+        <package handle="concrete_cms_community"/>
     </packages>
 
 </concrete5-cif>

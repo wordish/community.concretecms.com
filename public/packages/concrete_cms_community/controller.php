@@ -1,28 +1,28 @@
 <?php
 
-namespace Concrete\Package\Concrete5Community;
+namespace Concrete\Package\ConcreteCmsCommunity;
 
 use Concrete\Core\Package\Package;
 
 class Controller extends Package
 {
 
-    protected $pkgHandle = 'concrete5_community';
-    protected $appVersionRequired = '8.3';
+    protected $pkgHandle = 'concrete_cms_community';
+    protected $appVersionRequired = '9.0.0a1';
     protected $pkgVersion = '0.80';
     protected $pkgAutoloaderMapCoreExtensions = true;
     protected $pkgAutoloaderRegistries = array(
-        'src' => '\PortlandLabs\Concrete5\Community'
+        'src' => '\PortlandLabs\ConcreteCmsCommunity'
     );
 
     public function getPackageDescription()
     {
-        return t("The concrete5.org community, user portal, karma machine and more.");
+        return t("The community.concretecms.com extensions.");
     }
 
     public function getPackageName()
     {
-        return t("concrete5.org Community");
+        return t("community.concretecms.com");
     }
     
     public function install()
