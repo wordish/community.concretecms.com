@@ -498,12 +498,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/concrete5/community_badges.git",
-                "reference": "b13dd90f4f3ca96c321d1887449cc5e52ac60147"
+                "reference": "3c0dbd65ef0431c3f5f1ea351fd6ea5a75432288"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/concrete5/community_badges/zipball/b13dd90f4f3ca96c321d1887449cc5e52ac60147",
-                "reference": "b13dd90f4f3ca96c321d1887449cc5e52ac60147",
+                "url": "https://api.github.com/repos/concrete5/community_badges/zipball/3c0dbd65ef0431c3f5f1ea351fd6ea5a75432288",
+                "reference": "3c0dbd65ef0431c3f5f1ea351fd6ea5a75432288",
                 "shasum": ""
             },
             "type": "concrete5-package",
@@ -517,7 +517,7 @@
                 "MIT"
             ],
             "description": "Integrate the community awards feature awards into your site.",
-            "time": "2021-02-01T17:23:50+00:00"
+            "time": "2021-02-03T15:56:57+00:00"
         },
         {
             "name": "concrete5/concrete_cms_theme",
@@ -525,12 +525,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/concrete5/concrete_cms_theme.git",
-                "reference": "da5249f94d0dea52057322e947a844040102f736"
+                "reference": "00fc26dca31fc93749587b24cdc425456f25b5ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/concrete5/concrete_cms_theme/zipball/da5249f94d0dea52057322e947a844040102f736",
-                "reference": "da5249f94d0dea52057322e947a844040102f736",
+                "url": "https://api.github.com/repos/concrete5/concrete_cms_theme/zipball/00fc26dca31fc93749587b24cdc425456f25b5ff",
+                "reference": "00fc26dca31fc93749587b24cdc425456f25b5ff",
                 "shasum": ""
             },
             "type": "concrete5-package",
@@ -539,7 +539,7 @@
                 "MIT"
             ],
             "description": "Package that contains the official ConcreteCMS Theme.",
-            "time": "2021-02-02T23:21:19+00:00"
+            "time": "2021-02-03T15:57:04+00:00"
         },
         {
             "name": "concrete5/core",
@@ -6235,7 +6235,7 @@
         },
         {
             "name": "symfony/options-resolver",
-            "version": "v5.2.2",
+            "version": "v5.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/options-resolver.git",
