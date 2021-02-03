@@ -7,6 +7,7 @@
 
 # Ignore composer packages
 /public/packages/concrete_cms_theme
+/public/packages/community_badges
 
 # Ignore build files
 /public/application/css/main.css

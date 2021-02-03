@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "683f407d7dba5666f446f300a60e8ad2",
+    "content-hash": "e971c9ce78b3184fa62f707d08421d0c",
     "packages": [
         {
             "name": "anahkiasen/html-object",
@@ -491,6 +491,33 @@
                 }
             ],
             "time": "2020-11-11T10:22:58+00:00"
+        },
+        {
+            "name": "concrete5/community_badges",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/concrete5/community_badges.git",
+                "reference": "b13dd90f4f3ca96c321d1887449cc5e52ac60147"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/concrete5/community_badges/zipball/b13dd90f4f3ca96c321d1887449cc5e52ac60147",
+                "reference": "b13dd90f4f3ca96c321d1887449cc5e52ac60147",
+                "shasum": ""
+            },
+            "type": "concrete5-package",
+            "autoload": {
+                "psr-4": {
+                    "PortlandLabs\\CommunityBadges\\": "src/PortlandLabs/CommunityBadges"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Integrate the community awards feature awards into your site.",
+            "time": "2021-02-01T17:23:50+00:00"
         },
         {
             "name": "concrete5/concrete_cms_theme",
@@ -10454,7 +10481,8 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "concrete5/core": 20,
-        "concrete5/concrete_cms_theme": 20
+        "concrete5/concrete_cms_theme": 20,
+        "concrete5/community_badges": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
