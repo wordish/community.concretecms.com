@@ -3,6 +3,7 @@
 namespace Concrete\Package\ConcreteCmsCommunity;
 
 use Concrete\Core\Package\Package;
+use PortlandLabs\Community\ServiceProvider;
 
 class Controller extends Package
 {
@@ -12,7 +13,7 @@ class Controller extends Package
     protected $pkgVersion = '0.80';
     protected $pkgAutoloaderMapCoreExtensions = true;
     protected $pkgAutoloaderRegistries = array(
-        'src' => '\PortlandLabs\ConcreteCmsCommunity'
+        'src' => '\PortlandLabs\Community'
     );
 
     public function getPackageDescription()
@@ -40,6 +41,7 @@ class Controller extends Package
     
     public function on_start()
     {
-        
+        // Register our service providers
+        $this->app->make(ServiceProvider::class)->register();
     }
 }

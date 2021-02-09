@@ -16,3 +16,8 @@ $list->registerMultiple($aliases);
 // Register an autoloader for those aliases
 $autoloader = new \Concrete\Core\Foundation\AliasClassLoader($list);
 $autoloader->register();
+
+// Register a new autoloader for connect package
+$loader = new \Concrete\Core\Foundation\Psr4ClassLoader();
+$loader->addPrefix('PortlandLabs\Community', __DIR__ . '/../public/packages/concrete_cms_community/src');
+$loader->register();
