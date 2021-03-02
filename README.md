@@ -1,4 +1,4 @@
-# community.concretecms.org
+# community.concretecms.com
 
 This repo contains the code for all account management aspects of community.concretecms.com.
 
