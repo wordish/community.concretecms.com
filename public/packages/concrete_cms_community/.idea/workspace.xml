@@ -2,28 +2,26 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="df6289e2-a4d4-4636-bed6-622dc9f2d5e2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/blocks/showcase_items/add.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/blocks/showcase_items/controller.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/blocks/showcase_items/db.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/blocks/showcase_items/edit.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/blocks/showcase_items/view.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/assets/showcase_items/html/add.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/assets/showcase_items/js/add.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/assets/showcase_items/js/edit.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/assets/showcase_items/js/remove.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/assets/showcase_items/js/view.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/package-lock.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/webpack.mix.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/default_showcase_item.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/API/ServiceProvider.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/API/V1/Middleware/FractalNegotiatorMiddleware.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/API/V1/Serializer/SimpleSerializer.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/API/V1/ShowcaseItems.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/assets/karma/js/main.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/assets/teams/js/main.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/controllers/single_page/account/karma.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/controllers/single_page/account/teams.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/controllers/single_page/dashboard/concrete_cms_community.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/controllers/single_page/dashboard/concrete_cms_community/settings.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/single_pages/account/karma.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/single_pages/account/teams.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/single_pages/dashboard/concrete_cms_community.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/single_pages/dashboard/concrete_cms_community/settings.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/API/V1/Teams.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Page/Controller/AccountPageController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/TeamsService.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blocks/showcase_items/mix-manifest.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blocks/showcase_items/view.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/webpack.mix.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/webpack.mix.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/controller.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data.xml" beforeDir="false" afterPath="$PROJECT_DIR$/data.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/API/ServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/API/ServiceProvider.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/ServiceProvider.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -49,17 +47,24 @@
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/API" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/controllers/single_page" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="reference.webide.settings.project.settings.php" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/build/assets" />
+      <recent name="$PROJECT_DIR$/controllers/single_page/account" />
+      <recent name="$PROJECT_DIR$/src/API/V1" />
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$/single_pages/account" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/controllers/single_page" />
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$/single_pages" />
       <recent name="$PROJECT_DIR$/src/API" />
       <recent name="$PROJECT_DIR$/build/assets" />
-      <recent name="$PROJECT_DIR$/build/assets/concrete_cms_community" />
-      <recent name="$PROJECT_DIR$/build" />
-      <recent name="$PROJECT_DIR$" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -85,7 +90,9 @@
       <option name="presentableId" value="Default" />
       <updated>1614853927255</updated>
       <workItem from="1614853928348" duration="203000" />
-      <workItem from="1614860006271" duration="1896000" />
+      <workItem from="1614860006271" duration="2003000" />
+      <workItem from="1614862291668" duration="4000" />
+      <workItem from="1614959074315" duration="2030000" />
     </task>
     <servers />
   </component>

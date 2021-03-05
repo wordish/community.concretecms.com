@@ -6,6 +6,7 @@ use Concrete\Core\Foundation\Service\Provider;
 use Concrete\Core\Routing\Router;
 use PortlandLabs\Community\API\V1\Middleware\FractalNegotiatorMiddleware;
 use PortlandLabs\Community\API\V1\ShowcaseItems;
+use PortlandLabs\Community\API\V1\Teams;
 
 class ServiceProvider extends Provider
 {
@@ -24,6 +25,7 @@ class ServiceProvider extends Provider
                 $groupRouter->get('/showcase_items/read', [ShowcaseItems::class, 'read']);
                 $groupRouter->post('/showcase_items/update', [ShowcaseItems::class, 'update']);
                 $groupRouter->get('/showcase_items/delete', [ShowcaseItems::class, 'delete']);
+                $groupRouter->post('/teams/search', [Teams::class, 'search']);
             });
     }
 }

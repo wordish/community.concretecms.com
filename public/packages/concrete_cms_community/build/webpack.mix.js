@@ -29,7 +29,9 @@ mix.webpackConfig({
 });
 
 mix.setResourceRoot('../');
-mix.setPublicPath('../blocks/showcase_items/');
+mix.setPublicPath('../');
 
 mix
     .js('assets/showcase_items/js/view.js', '../blocks/showcase_items/view.js')
+    .js('assets/karma/js/main.js', '../js/karma.js')
+    .js('assets/teams/js/main.js', '../js/teams.js')
