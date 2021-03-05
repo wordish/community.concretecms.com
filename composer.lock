@@ -525,12 +525,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/concrete5/concrete_cms_theme.git",
-                "reference": "6970c3f66209852333284a8ad254dd06dbefba44"
+                "reference": "3b58aebb4e13945922bcda9ecfdf5d1d7735e775"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/concrete5/concrete_cms_theme/zipball/6970c3f66209852333284a8ad254dd06dbefba44",
-                "reference": "6970c3f66209852333284a8ad254dd06dbefba44",
+                "url": "https://api.github.com/repos/concrete5/concrete_cms_theme/zipball/3b58aebb4e13945922bcda9ecfdf5d1d7735e775",
+                "reference": "3b58aebb4e13945922bcda9ecfdf5d1d7735e775",
                 "shasum": ""
             },
             "type": "concrete5-package",
@@ -539,7 +539,7 @@
                 "MIT"
             ],
             "description": "Package that contains the official ConcreteCMS Theme.",
-            "time": "2021-03-04T16:56:56+00:00"
+            "time": "2021-03-05T16:58:46+00:00"
         },
         {
             "name": "concrete5/core",
@@ -547,12 +547,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/concrete5/concrete5-core.git",
-                "reference": "fca6c1476a62fa3c78be9d9c1371b35f40520846"
+                "reference": "19d0b79746af2d310936ec050b863fa29082c3a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/concrete5/concrete5-core/zipball/fca6c1476a62fa3c78be9d9c1371b35f40520846",
-                "reference": "fca6c1476a62fa3c78be9d9c1371b35f40520846",
+                "url": "https://api.github.com/repos/concrete5/concrete5-core/zipball/19d0b79746af2d310936ec050b863fa29082c3a2",
+                "reference": "19d0b79746af2d310936ec050b863fa29082c3a2",
                 "shasum": ""
             },
             "require": {
@@ -661,7 +661,7 @@
                 "concrete5",
                 "concreteCMS"
             ],
-            "time": "2021-03-02T21:45:04+00:00"
+            "time": "2021-03-04T16:56:27+00:00"
         },
         {
             "name": "concrete5/dependency-patches",
@@ -4835,27 +4835,22 @@
         },
         {
             "name": "psr/container",
-            "version": "1.0.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/container.git",
-                "reference": "b7ce3b176482dbbc1245ebf52b181af44c2cf55f"
+                "reference": "8622567409010282b7aeebe4bb841fe98b58dcaf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/container/zipball/b7ce3b176482dbbc1245ebf52b181af44c2cf55f",
-                "reference": "b7ce3b176482dbbc1245ebf52b181af44c2cf55f",
+                "url": "https://api.github.com/repos/php-fig/container/zipball/8622567409010282b7aeebe4bb841fe98b58dcaf",
+                "reference": "8622567409010282b7aeebe4bb841fe98b58dcaf",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": ">=7.2.0"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Psr\\Container\\": "src/"
@@ -4868,7 +4863,7 @@
             "authors": [
                 {
                     "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
+                    "homepage": "https://www.php-fig.org/"
                 }
             ],
             "description": "Common Container Interface (PHP FIG PSR-11)",
@@ -4880,7 +4875,7 @@
                 "container-interop",
                 "psr"
             ],
-            "time": "2017-02-14T16:28:37+00:00"
+            "time": "2021-03-05T17:36:06+00:00"
         },
         {
             "name": "psr/http-message",
@@ -5706,16 +5701,16 @@
         },
         {
             "name": "symfony/debug",
-            "version": "v4.4.19",
+            "version": "v4.4.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug.git",
-                "reference": "af4987aa4a5630e9615be9d9c3ed1b0f24ca449c"
+                "reference": "157bbec4fd773bae53c5483c50951a5530a2cc16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/debug/zipball/af4987aa4a5630e9615be9d9c3ed1b0f24ca449c",
-                "reference": "af4987aa4a5630e9615be9d9c3ed1b0f24ca449c",
+                "url": "https://api.github.com/repos/symfony/debug/zipball/157bbec4fd773bae53c5483c50951a5530a2cc16",
+                "reference": "157bbec4fd773bae53c5483c50951a5530a2cc16",
                 "shasum": ""
             },
             "require": {
@@ -5768,7 +5763,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-27T09:09:26+00:00"
+            "time": "2021-01-28T16:54:48+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -6179,7 +6174,7 @@
         },
         {
             "name": "symfony/inflector",
-            "version": "v4.4.19",
+            "version": "v4.4.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/inflector.git",
@@ -6246,7 +6241,7 @@
         },
         {
             "name": "symfony/options-resolver",
-            "version": "v5.2.3",
+            "version": "v5.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/options-resolver.git",
