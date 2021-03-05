@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="df6289e2-a4d4-4636-bed6-622dc9f2d5e2" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/build/assets/karma/js/main.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/assets/teams/js/main.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/controllers/single_page/account/karma.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/controllers/single_page/account/teams.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/controllers/single_page/dashboard/concrete_cms_community.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/controllers/single_page/dashboard/concrete_cms_community/settings.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/single_pages/account/karma.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/single_pages/account/teams.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/single_pages/dashboard/concrete_cms_community.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/single_pages/dashboard/concrete_cms_community/settings.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/API/V1/Teams.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Page/Controller/AccountPageController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/TeamsService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blocks/showcase_items/mix-manifest.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blocks/showcase_items/view.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/webpack.mix.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/webpack.mix.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/controller.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data.xml" beforeDir="false" afterPath="$PROJECT_DIR$/data.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/API/ServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/API/ServiceProvider.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/ServiceProvider.php" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution>
+      <executable />
+    </execution>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration">
+    <include_path>
+      <path value="$PROJECT_DIR$/../../../../concrete5/core/9.0.0/concrete" />
+    </include_path>
+  </component>
+  <component name="ProjectId" id="1pHxgVSYG7Mx8i9eB3mPyMSKVFg" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/controllers/single_page" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="reference.webide.settings.project.settings.php" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/build/assets" />
+      <recent name="$PROJECT_DIR$/controllers/single_page/account" />
+      <recent name="$PROJECT_DIR$/src/API/V1" />
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$/single_pages/account" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/controllers/single_page" />
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$/single_pages" />
+      <recent name="$PROJECT_DIR$/src/API" />
+      <recent name="$PROJECT_DIR$/build/assets" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="df6289e2-a4d4-4636-bed6-622dc9f2d5e2" name="Default Changelist" comment="" />
+      <created>1614853927255</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1614853927255</updated>
+      <workItem from="1614853928348" duration="203000" />
+      <workItem from="1614860006271" duration="2003000" />
+      <workItem from="1614862291668" duration="4000" />
+      <workItem from="1614959074315" duration="2030000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

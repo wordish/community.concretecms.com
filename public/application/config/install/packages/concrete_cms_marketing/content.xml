@@ -2,7 +2,7 @@
 <concrete5-cif version="1.0">
 
     <packages>
-        <package handle="concrete_cms_theme" full-content-swap="1" content-swap-file="content_swap_templates/community.xml"/>
+        <package handle="concrete_cms_theme" full-content-swap="1" content-swap-file="content_swap_templates/marketing.xml"/>
         <package handle="concrete_cms_community"/>
     </packages>
 
