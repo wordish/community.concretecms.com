@@ -20,6 +20,16 @@ class Project
     protected $name;
 
     /**
+     * @var int
+     */
+    protected $dateCreated;
+
+    /**
+     * @var int
+     */
+    protected $userId;
+
+    /**
      * @return int
      */
     public function getId(): int
@@ -49,6 +59,38 @@ class Project
     public function setName(string $name): void
     {
         $this->name = $name;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDateCreated(): ?int
+    {
+        return $this->dateCreated;
+    }
+
+    /**
+     * @param int $dateCreated
+     */
+    public function setDateCreated(int $dateCreated): void
+    {
+        $this->dateCreated = $dateCreated;
+    }
+
+    /**
+     * @return int
+     */
+    public function getUserId(): ?int
+    {
+        return $this->userId;
+    }
+
+    /**
+     * @param int $userId
+     */
+    public function setUserId(int $userId): void
+    {
+        $this->userId = $userId;
     }
 
 

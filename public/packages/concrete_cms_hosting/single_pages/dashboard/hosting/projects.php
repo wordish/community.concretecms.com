@@ -35,7 +35,12 @@ defined('C5_EXECUTE') or die('Access denied');
                 ?>
                 <tr data-details-url="<?=URL::to('/dashboard/hosting/projects', 'view_details', $project->getId())?>">
 
-                    <?php foreach ($item->getColumns() as $column) { ?>
+                    <?php foreach ($item->getColumns() as $column) {
+                        $class = '';
+                        if ($column->getColumn() instanceof \PortlandLabs\Hosting\Project\Search\ColumnSet\Column\NameColumn) {
+                            $class = 'ccm-search-results-name';
+                        }
+                        ?>
                         <?php /** @var ItemColumn $column */ ?>
                         <td class="<?php echo $class; ?>">
                             <?php echo $column->getColumnValue(); ?>
