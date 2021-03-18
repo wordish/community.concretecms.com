@@ -2,5 +2,16 @@
 <concrete5-cif version="1.0">
     <blocktypes>
         <blocktype handle="new_hosting_project_wizard" package="concrete_cms_hosting"/>
+        <blocktype handle="hosting_project_list" package="concrete_cms_hosting"/>
     </blocktypes>
+    <singlepages>
+        <page name="ConcreteCMS Hosting" path="/dashboard/hosting" filename="/dashboard/hosting/view.php"
+              pagetype="" description=""
+              package="concrete_cms_hosting">
+        </page>
+        <page name="Projects" path="/dashboard/hosting/projects"
+              filename="/dashboard/hosting/projects.php" pagetype="" description=""
+              package="concrete_cms_hosting">
+        </page>
+    </singlepages>
 </concrete5-cif>

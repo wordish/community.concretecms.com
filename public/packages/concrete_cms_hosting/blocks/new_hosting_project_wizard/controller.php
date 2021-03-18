@@ -3,12 +3,6 @@
 namespace Concrete\Package\ConcreteCmsHosting\Block\NewHostingProjectWizard;
 
 use Concrete\Core\Block\BlockController;
-use Concrete\Core\Entity\Express\Entry;
-use Concrete\Core\Express\EntryList;
-use Concrete\Core\Express\ObjectManager;
-use Concrete\Core\Page\Page;
-use Concrete\Core\User\User;
-use Concrete\Core\User\UserInfo;
 
 class Controller extends BlockController
 {
