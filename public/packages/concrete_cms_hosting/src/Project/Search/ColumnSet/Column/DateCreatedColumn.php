@@ -18,15 +18,8 @@ class DateCreatedColumn extends Column
         return t('Date Created');
     }
 
-    /**
-     * @param Project $project
-     * @return string
-     */
-    public function getColumnValue($project)
+    public function getColumnCallback()
     {
-        $created = new \DateTime();
-        $created->setTimestamp($project->getDateCreated());
-        return $created->format('M d, Y g:i a');
+        return 'getDateCreatedString';
     }
-
 }

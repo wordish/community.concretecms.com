@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PortlandLabs\Hosting\Project;
 
-use GuzzleHttp\Client;
+use Concrete\Core\User\UserInfoRepository;
 
 class Project
 {
@@ -93,5 +93,29 @@ class Project
         $this->userId = $userId;
     }
 
+    public function getDateCreatedString()
+    {
+        $created = new \DateTime();
+        $created->setTimestamp($this->getDateCreated());
+        return $created->format('M d, Y g:i a');
+    }
+
+    public function getUserDisplayName()
+    {
+        /**
+         * @var $repository UserInfoRepository
+         */
+        $repository = app(UserInfoRepository::class);
+        $user = null;
+        if ($this->getUserId()) {
+            $user = $repository->getByID($this->getUserId());
+        }
+        if ($user) {
+            return $user->getUserDisplayName();
+        } else {
+            return t('(Not Available.');
+        }
+
+    }
 
 }

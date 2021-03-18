@@ -7,8 +7,11 @@ namespace PortlandLabs\Hosting;
 use Concrete\Core\Application\Application;
 use Concrete\Core\Asset\Asset;
 use Concrete\Core\Asset\AssetList;
+use Concrete\Core\Foundation\Command\Dispatcher;
+use Concrete\Core\Foundation\Command\DispatcherFactory;
 use Concrete\Core\Foundation\Service\Provider;
 use PortlandLabs\Hosting\Api\Client\Denormalizer;
+use PortlandLabs\Hosting\Project\LagoonProject;
 use PortlandLabs\Hosting\Project\Project;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\CustomNormalizer;
@@ -61,8 +64,22 @@ class ServiceProvider extends Provider
             );
             $denormalizer = new Denormalizer($serializer);
             $denormalizer->registerMapping('Project', Project::class);
+            $denormalizer->registerMapping('LagoonProject', LagoonProject::class);
             return $denormalizer;
         });
+
+        $dispatcher = $this->app->make(DispatcherFactory::class)->getDispatcher();
+        foreach ([
+            ['PortlandLabs\Hosting\Project\Command\DeleteProjectCommand', 'PortlandLabs\Hosting\Project\Command\DeleteProjectCommandHandler'],
+            ['PortlandLabs\Hosting\Project\Command\CreateProjectCommand', 'PortlandLabs\Hosting\Project\Command\CreateProjectCommandHandler'],
+            ['PortlandLabs\Hosting\Project\Command\CreateLagoonProjectCommand', 'PortlandLabs\Hosting\Project\Command\CreateLagoonProjectCommandHandler'],
+            ['PortlandLabs\Hosting\Project\Command\UpdateProjectCommand', 'PortlandLabs\Hosting\Project\Command\UpdateProjectCommandHandler'],
+            ['PortlandLabs\Hosting\Project\Command\UpdateLagoonProjectCommand', 'PortlandLabs\Hosting\Project\Command\UpdateLagoonProjectCommandHandler'],
+        ] as $entry) {
+            $command = $entry[0];
+            $handler = $entry[1];
+            $dispatcher->registerCommand($this->app->make($handler), $command);
+        }
 
     }
 }

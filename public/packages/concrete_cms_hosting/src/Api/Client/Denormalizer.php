@@ -42,7 +42,11 @@ class Denormalizer
      */
     public function denormalize($data)
     {
-        $object = $this->serializer->denormalize($data, $this->mappings[$data['@type']]);
+        $class = $this->mappings[$data['@type']];
+        if (!$class) {
+            throw new \RuntimeException(t('Could not turn API mapping %s into a denormalize class name', $data['@type']));
+        }
+        $object = $this->serializer->denormalize($data, $class);
         return $object;
     }
 

@@ -10,7 +10,7 @@ use Concrete\Core\Search\Pagination\Pagination;
 use Concrete\Core\Search\Pagination\PaginationFactory;
 use PortlandLabs\Hosting\Api\Client\Client;
 use PortlandLabs\Hosting\Api\Client\Pagination\Adapter\QueryAdapter;
-use PortlandLabs\Hosting\Api\Client\Query\Resource\ProjectQuery;
+use PortlandLabs\Hosting\Api\Client\Query\Resource\SearchProjectsQuery;
 
 class ProjectList extends ItemList
 {
@@ -22,11 +22,11 @@ class ProjectList extends ItemList
     ];
 
     /**
-     * @var ProjectQuery
+     * @var SearchProjectsQuery
      */
     protected $projectQuery;
 
-    public function __construct(ProjectQuery $projectQuery)
+    public function __construct(SearchProjectsQuery $projectQuery)
     {
         $this->projectQuery = $projectQuery;
     }

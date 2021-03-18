@@ -29,7 +29,7 @@ class QueryAdapter implements AdapterInterface
 
     public function getNbResults()
     {
-        $result = $this->client->executeQuery($this->query);
+        $result = $this->client->search($this->query);
         return $result->getTotalItems();
     }
 
@@ -41,7 +41,7 @@ class QueryAdapter implements AdapterInterface
         $currentPage = $offset / $query->getItemsPerPage();
         $currentPage = $currentPage + 1; // Since the API is 1-based not 0-based our first page begins at 1 not 0
         $query->setCurrentPage($currentPage);
-        $result = $this->client->executeQuery($query);
+        $result = $this->client->search($query);
         return $result->getMembers();
     }
 

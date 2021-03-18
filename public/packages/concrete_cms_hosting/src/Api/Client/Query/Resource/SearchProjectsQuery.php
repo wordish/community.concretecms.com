@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PortlandLabs\Hosting\Api\Client\Query\Resource;
 
-use PortlandLabs\Hosting\Api\Client\Query\AbstractQuery;
+use PortlandLabs\Hosting\Api\Client\Query\AbstractSearchQuery;
 
-class ProjectQuery extends AbstractQuery
+class SearchProjectsQuery extends AbstractSearchQuery
 {
 
     protected $searchKeywords = null;

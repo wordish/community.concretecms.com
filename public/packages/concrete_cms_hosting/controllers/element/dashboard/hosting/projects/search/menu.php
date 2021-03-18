@@ -38,6 +38,7 @@ class Menu extends ElementController
         $this->set('form', $this->app->make(Form::class));
         $this->set('token', $this->app->make(Token::class));
         $this->set('urlHelper', $this->app->make(Url::class));
+        $this->set('projectTypes', ['lagoon' => t('Concrete Hosting'), 'project' => t('Third Party')]);
     }
 
 }

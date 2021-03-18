@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace PortlandLabs\Hosting\Api\Client\Query;
 
-use GuzzleHttp\Client;
-
-abstract class AbstractQuery implements QueryInterface
+abstract class AbstractSearchQuery implements SearchQueryInterface
 {
 
     /**

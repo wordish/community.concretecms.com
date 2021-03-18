@@ -24,25 +24,8 @@ class OwnerColumn extends Column
         return t('Owner');
     }
 
-    /**
-     * @param Project $project
-     * @return string
-     */
-    public function getColumnValue($project)
+    public function getColumnCallback()
     {
-        /**
-         * @var $repository UserInfoRepository
-         */
-        $repository = app(UserInfoRepository::class);
-        $user = null;
-        if ($project->getUserId()) {
-            $user = $repository->getByID($project->getUserId());
-        }
-        if ($user) {
-            return $user->getUserDisplayName();
-        } else {
-            return t('(Not Available.');
-        }
+        return 'getUserDisplayName';
     }
-
 }

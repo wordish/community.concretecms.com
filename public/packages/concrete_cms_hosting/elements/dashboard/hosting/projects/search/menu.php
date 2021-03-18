@@ -48,10 +48,14 @@ defined('C5_EXECUTE') or die("Access Denied.");
 
     <ul class="ccm-dashboard-header-icons">
         <li>
-            <a class="btn btn-sm" title="<?php echo h(t('Add Project')) ?>"
-               href="<?php echo (string)UrlFacade::to("/dashboard/hosting/projects", "add"); ?>">
-                <?=t("Add Project")?> <i class="fa fa-plus" aria-hidden="true"></i>
-            </a>
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-button="attribute-type" data-toggle="dropdown">
+                <?=t('Add Project')?> <i class="fa fa-plus" aria-hidden="true"></i>
+            </button>
+            <div class="dropdown-menu">
+                <?php foreach($projectTypes as $type => $name) { ?>
+                    <a class="dropdown-item" href="<?=$view->action('add_project', $type)?>"><?=$name?></a>
+                <?php } ?>
+            </div>
         </li>
     </ul>
 </div>
