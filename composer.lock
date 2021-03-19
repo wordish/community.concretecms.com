@@ -547,12 +547,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/concrete5/concrete5-core.git",
-                "reference": "4beab395a6db701ef05d70a5c4629ca157167355"
+                "reference": "d9421c28ffb80b4bd26e658e51ca5b8439430b6e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/concrete5/concrete5-core/zipball/4beab395a6db701ef05d70a5c4629ca157167355",
-                "reference": "4beab395a6db701ef05d70a5c4629ca157167355",
+                "url": "https://api.github.com/repos/concrete5/concrete5-core/zipball/d9421c28ffb80b4bd26e658e51ca5b8439430b6e",
+                "reference": "d9421c28ffb80b4bd26e658e51ca5b8439430b6e",
                 "shasum": ""
             },
             "require": {
@@ -661,7 +661,7 @@
                 "concrete5",
                 "concreteCMS"
             ],
-            "time": "2021-03-19T15:17:09+00:00"
+            "time": "2021-03-19T21:26:36+00:00"
         },
         {
             "name": "concrete5/dependency-patches",
