@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7e98eba10924e39b0cde5a2a04a1bfee",
+    "content-hash": "0b858e2603c1e28339d9170e6c244f07",
     "packages": [
         {
             "name": "anahkiasen/html-object",
@@ -521,16 +521,16 @@
         },
         {
             "name": "concrete5/concrete_cms_theme",
-            "version": "dev-master",
+            "version": "dev-feature/hosting",
             "source": {
                 "type": "git",
                 "url": "https://github.com/concrete5/concrete_cms_theme.git",
-                "reference": "f2694c5d562171236d0f58878690bf978709344c"
+                "reference": "f0445458f722c5e028dadc34bf6b77aa82b90e35"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/concrete5/concrete_cms_theme/zipball/f2694c5d562171236d0f58878690bf978709344c",
-                "reference": "f2694c5d562171236d0f58878690bf978709344c",
+                "url": "https://api.github.com/repos/concrete5/concrete_cms_theme/zipball/f0445458f722c5e028dadc34bf6b77aa82b90e35",
+                "reference": "f0445458f722c5e028dadc34bf6b77aa82b90e35",
                 "shasum": ""
             },
             "type": "concrete5-package",
@@ -539,7 +539,7 @@
                 "MIT"
             ],
             "description": "Package that contains the official ConcreteCMS Theme.",
-            "time": "2021-03-05T18:45:11+00:00"
+            "time": "2021-03-19T04:08:05+00:00"
         },
         {
             "name": "concrete5/core",
