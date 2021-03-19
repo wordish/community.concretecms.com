@@ -37,14 +37,7 @@ defined('C5_EXECUTE') or die('Access denied');
 
 <div class="form-group">
     <?= $form->label('', t('Type')) ?>
-    <div><?php
-        if ($project instanceof \PortlandLabs\Hosting\Project\LagoonProject) {
-            print t('Concrete Hosting');
-        } else {
-            print t('Third Party');
-        }
-        ?>
-    </div>
+    <div><?=$project->getSiteTypeString()?></div>
 </div>
 
 <?php if ($project instanceof \PortlandLabs\Hosting\Project\LagoonProject) { ?>

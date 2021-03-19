@@ -10,6 +10,7 @@ use Concrete\Core\Asset\AssetList;
 use Concrete\Core\Foundation\Command\Dispatcher;
 use Concrete\Core\Foundation\Command\DispatcherFactory;
 use Concrete\Core\Foundation\Service\Provider;
+use Concrete5\BrandCentral\Search\Pagination\View\Manager;
 use PortlandLabs\Hosting\Api\Client\Denormalizer;
 use PortlandLabs\Hosting\Project\LagoonProject;
 use PortlandLabs\Hosting\Project\Project;

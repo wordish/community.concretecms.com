@@ -28,6 +28,10 @@ class LagoonProject extends Project
         $this->lagoonId = $lagoonId;
     }
 
+    public function getSiteTypeString()
+    {
+        return t('Concrete Hosting');
+    }
 
 
 

@@ -115,7 +115,11 @@ class Project
         } else {
             return t('(Not Available.');
         }
+    }
 
+    public function getSiteTypeString()
+    {
+        return t('Third Party');
     }
 
 }

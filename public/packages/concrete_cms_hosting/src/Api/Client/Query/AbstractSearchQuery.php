@@ -42,6 +42,7 @@ abstract class AbstractSearchQuery implements SearchQueryInterface
      */
     public function setCurrentPage(?int $currentPage): void
     {
+        $this->queryParameters['page'] = $currentPage;
         $this->currentPage = $currentPage;
     }
 
