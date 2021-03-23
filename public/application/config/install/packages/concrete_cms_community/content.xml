@@ -4,6 +4,7 @@
     <packages>
         <package handle="concrete_cms_theme" full-content-swap="1" content-swap-file="content_swap_templates/community.xml"/>
         <package handle="concrete_cms_community"/>
+        <package handle="concrete_cms_hosting"/>
     </packages>
 
 </concrete5-cif>
