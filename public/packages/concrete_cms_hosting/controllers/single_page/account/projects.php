@@ -8,6 +8,7 @@ use PortlandLabs\Hosting\Api\Client\Client;
 use PortlandLabs\Hosting\Api\Client\Pagination\Adapter\QueryAdapter;
 use PortlandLabs\Hosting\Api\Client\Query\Resource\SearchUsersProjectsQuery;
 use PortlandLabs\Hosting\Project\ProjectRepository;
+use PortlandLabs\Hosting\Serializer\Serializer;
 
 class Projects extends AccountPageController
 {
@@ -42,6 +43,15 @@ class Projects extends AccountPageController
             $this->flash('error', t('Invalid project ID'));
             return $this->buildRedirect(['/account/projects']);
         }
+
+        // get all users projects.
+        $query = new SearchUsersProjectsQuery($this->get('profile')->getUserID());
+        $client = $this->app->make(Client::class);
+        $result =  $client->search($query);
+
+        $serializer = $this->app->make(Serializer::class);
+        $this->set('projectJson', $serializer->serialize($project, 'json'));
+        $this->set('projects', $serializer->serialize($result->getMembers(), 'json'));
         $this->render('/account/projects/panel');
     }
 }

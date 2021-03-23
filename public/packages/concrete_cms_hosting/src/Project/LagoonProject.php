@@ -33,6 +33,11 @@ class LagoonProject extends Project
         return t('Concrete Hosting');
     }
 
+    public function getSiteType()
+    {
+        return 'lagoon';
+    }
+
 
 
 }

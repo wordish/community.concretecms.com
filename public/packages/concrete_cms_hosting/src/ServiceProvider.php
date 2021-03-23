@@ -4,22 +4,19 @@ declare(strict_types=1);
 
 namespace PortlandLabs\Hosting;
 
-use Concrete\Core\Application\Application;
 use Concrete\Core\Asset\Asset;
 use Concrete\Core\Asset\AssetList;
-use Concrete\Core\Foundation\Command\Dispatcher;
 use Concrete\Core\Foundation\Command\DispatcherFactory;
 use Concrete\Core\Foundation\Service\Provider;
-use Concrete5\BrandCentral\Search\Pagination\View\Manager;
 use PortlandLabs\Hosting\Api\Client\Denormalizer;
 use PortlandLabs\Hosting\Project\LagoonProject;
 use PortlandLabs\Hosting\Project\Project;
+use PortlandLabs\Hosting\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\CustomNormalizer;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 use Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
 
 class ServiceProvider extends Provider
 {
@@ -52,17 +49,23 @@ class ServiceProvider extends Provider
                 }
             }
         );
-        
-        $this->app->singleton(Denormalizer::class, function($app) {
+
+        $this->app->singleton(Serializer::class, function($app) {
             $serializer = new Serializer(
                 [
                     new JsonSerializableNormalizer(),
                     new CustomNormalizer(),
-                    new GetSetMethodNormalizer()
+                    new GetSetMethodNormalizer(),
+                    new PropertyNormalizer()
                 ], [
                     new JsonEncoder()
                 ]
             );
+            return $serializer;
+        });
+
+        $this->app->singleton(Denormalizer::class, function($app) {
+            $serializer = $this->app->make(Serializer::class);
             $denormalizer = new Denormalizer($serializer);
             $denormalizer->registerMapping('Project', Project::class);
             $denormalizer->registerMapping('LagoonProject', LagoonProject::class);

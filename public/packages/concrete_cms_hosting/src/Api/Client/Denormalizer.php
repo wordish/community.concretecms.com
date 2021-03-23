@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace PortlandLabs\Hosting\Api\Client;
 
 use PortlandLabs\Hosting\Project\Project;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\SerializerInterface;
+use PortlandLabs\Hosting\Serializer\Serializer;
 
 /**
  * Register API client classes with Hydra types so that they can be easily denormalized into data objects.
@@ -24,7 +23,7 @@ class Denormalizer
      */
     protected $mappings = [];
 
-    public function __construct(SerializerInterface $serializer)
+    public function __construct(Serializer $serializer)
     {
         $this->serializer = $serializer;
     }

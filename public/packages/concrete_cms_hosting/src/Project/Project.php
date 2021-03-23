@@ -117,6 +117,11 @@ class Project
         }
     }
 
+    public function getSiteType()
+    {
+        return 'project';
+    }
+
     public function getSiteTypeString()
     {
         return t('Third Party');

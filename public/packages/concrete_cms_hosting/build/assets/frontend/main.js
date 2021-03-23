@@ -5,12 +5,15 @@
  * @author     Fabian Bitter (fabian@bitter.de)
  */
 
-import VueManager from '../../../../../packages/concrete_cms_theme/build/node_modules/@concretecms/bedrock/assets/cms/js/vue/Manager'
+import VueManager from '../../node_modules/@concretecms/bedrock/assets/cms/js/vue/Manager'
+
 VueManager.bindToWindow(window)
 
-import NewHostingProjectSelector from './components/NewHostingProjectSelector.vue'
+import HostingControlPanel from './components/HostingControlPanel'
+import NewHostingProjectSelector from './components/NewHostingProjectSelector'
 
 window.Concrete.Vue.createContext('frontend', {
+    HostingControlPanel,
     NewHostingProjectSelector
 }, 'frontend')
 
