@@ -3,6 +3,8 @@
 namespace Concrete\Package\ConcreteCmsCommunity;
 
 use Concrete\Core\Package\Package;
+use Concrete\Core\Page\Page;
+use Concrete\Core\Page\Single;
 use Concrete\Core\Support\Facade\Application;
 use Concrete\Core\Tree\Node\Type\GroupFolder;
 use Concrete\Core\Tree\Type\Group as GroupTree;
@@ -16,7 +18,7 @@ class Controller extends Package
 
     protected $pkgHandle = 'concrete_cms_community';
     protected $appVersionRequired = '9.0.0a1';
-    protected $pkgVersion = '0.81';
+    protected $pkgVersion = '0.84';
     protected $pkgAutoloaderMapCoreExtensions = true;
     protected $pkgAutoloaderRegistries = array(
         'src' => '\PortlandLabs\Community'
@@ -66,9 +68,12 @@ class Controller extends Package
 
     public function install()
     {
-        parent::install();
+        $pkg = parent::install();
         $this->installContentFile('data.xml');
         $this->installContentFile('content.xml');
+
+        Page::getByPath('/members/profile')->delete();
+        Single::add('/members/profile', $pkg)->update(['cName' => 'View Profile']);
 
         $this->configureTeamsFunctionality();
     }

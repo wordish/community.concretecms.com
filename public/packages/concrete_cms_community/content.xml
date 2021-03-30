@@ -1,6 +1,95 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <concrete5-cif version="1.0">
+    <blocktypes>
+        <blocktype handle="showcase_items" package="concrete_cms_community"/>
+        <blocktype handle="members_search" package="concrete_cms_community"/>
+    </blocktypes>
     <themes>
         <theme handle="concrete_cms" package="concrete_cms_theme" activated="1"/>
     </themes>
+    <pages>
+        <page name="Members Search" path="/members-search" public-date="2021-03-30 11:54:53" filename="" pagetype="page"
+              template="full" user="admin" description="" package="concrete_cms_theme">
+            <area name="Page Header">
+                <blocks/>
+            </area>
+            <area name="Main">
+                <blocks>
+                    <block type="page_title" name="">
+                        <style>
+                            <backgroundColor/>
+                            <backgroundRepeat>no-repeat</backgroundRepeat>
+                            <backgroundSize>auto</backgroundSize>
+                            <backgroundPosition>0% 0%</backgroundPosition>
+                            <borderWidth/>
+                            <borderColor/>
+                            <borderStyle/>
+                            <borderRadius/>
+                            <baseFontSize/>
+                            <alignment/>
+                            <textColor/>
+                            <linkColor/>
+                            <paddingTop/>
+                            <paddingBottom/>
+                            <paddingLeft/>
+                            <paddingRight/>
+                            <marginTop/>
+                            <marginBottom/>
+                            <marginLeft/>
+                            <marginRight/>
+                            <rotate/>
+                            <boxShadowHorizontal/>
+                            <boxShadowVertical/>
+                            <boxShadowBlur/>
+                            <boxShadowSpread/>
+                            <boxShadowColor/>
+                            <customClass>highlight</customClass>
+                            <customID/>
+                            <customElementAttribute/>
+                            <hideOnExtraSmallDevice/>
+                            <hideOnSmallDevice/>
+                            <hideOnMediumDevice/>
+                            <hideOnLargeDevice/>
+                        </style>
+                        <data table="btPageTitle">
+                            <record>
+                                <useCustomTitle><![CDATA[0]]></useCustomTitle>
+                                <useFilterTitle><![CDATA[0]]></useFilterTitle>
+                                <useFilterTopic><![CDATA[0]]></useFilterTopic>
+                                <useFilterTag><![CDATA[0]]></useFilterTag>
+                                <useFilterDate><![CDATA[0]]></useFilterDate>
+                                <topicTextFormat><![CDATA[0]]></topicTextFormat>
+                                <tagTextFormat><![CDATA[upperWord]]></tagTextFormat>
+                                <dateTextFormat><![CDATA[0]]></dateTextFormat>
+                                <filterDateFormat><![CDATA[F Y]]></filterDateFormat>
+                                <titleText><![CDATA[Members Search]]></titleText>
+                                <formatting><![CDATA[h1]]></formatting>
+                            </record>
+                        </data>
+                    </block>
+                    <block type="members_search" name="">
+                        <data table="btMembersSearch">
+                            <record/>
+                        </data>
+                    </block>
+                </blocks>
+            </area>
+        </page>
+    </pages>
+    <singlepages>
+        <page name="View Profile" path="/members/profile" filename="/members/profile.php" pagetype="" description=""
+              package="concrete_cms_community">
+            <attributes>
+                <attributekey handle="desktop_priority">
+                    <value>10</value>
+                </attributekey>
+                <attributekey handle="is_desktop">
+                    <value>1</value>
+                </attributekey>
+                <attributekey handle="exclude_nav">
+                    <value>1</value>
+                </attributekey>
+            </attributes>
+        </page>
+    </singlepages>
 </concrete5-cif>

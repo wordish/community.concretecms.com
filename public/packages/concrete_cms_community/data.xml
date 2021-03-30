@@ -2,6 +2,7 @@
 <concrete5-cif version="1.0">
     <blocktypes>
         <blocktype handle="showcase_items" package="concrete_cms_community"/>
+        <blocktype handle="members_search" package="concrete_cms_community"/>
     </blocktypes>
     <expressentities>
         <entity id="85d12748-67c1-11eb-a212-7aaef9d541c3" handle="submit_karma_request" plural_handle=""

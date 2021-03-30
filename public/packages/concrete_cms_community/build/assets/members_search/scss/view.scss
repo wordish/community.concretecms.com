@@ -1,0 +1,151 @@
+/**
+ * @project:   ConcreteCMS Community
+ *
+ * @copyright  (C) 2021 Portland Labs (https://www.portlandlabs.com)
+ * @author     Fabian Bitter (fabian@bitter.de)
+ */
+
+.members-search {
+
+  form {
+    margin-bottom: 15px;
+
+    .search-control {
+      height: 46px;
+      margin-right: 10px;
+    }
+
+    .dropdown-toggle {
+      background: transparent !important;
+      border: none !important;
+    }
+
+    .sort-by {
+      label {
+        color: rgb(153, 153, 153);
+        font-size: 16px;
+      }
+
+      .form-control {
+        height: 46px;
+        margin-left: 10px;
+        margin-right: 10px;
+      }
+    }
+
+    @media (max-width: 577px) {
+      .sort-by {
+        .form-control {
+          margin-left: 0;
+        }
+      }
+    }
+
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgba(151, 151, 151, 0.3);
+  }
+
+  .search-results {
+
+    .member {
+      min-height: 140px;
+      padding-bottom: 15px;
+
+      &:not(:last-child) {
+        margin-bottom: 15px;
+        border-bottom: 1px solid rgba(151, 151, 151, 0.3);
+      }
+
+      .avatar {
+        flex: 0 0 140px;
+
+        .image-wrapper {
+          border-radius: 50%;
+          width: 140px;
+          height: 140px;
+          box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.02);
+          overflow: hidden;
+
+          img {
+            width: 100%;
+            height: auto;
+            min-height: 100%;
+          }
+        }
+      }
+
+      .username {
+        font-size: 28px;
+        line-height: 34px;
+        color: #19191A;
+        opacity: 0.6;
+      }
+
+      .description {
+        font-size: 16px;
+        line-height: 24px;
+        color: #19191A;
+      }
+
+      .info {
+        color: #00465A;
+        font-size: 16px;
+        font-weight: 400;
+        float: right;
+        display: block;
+        width: 100%;
+        text-align: right;
+        margin-bottom: 15px;
+      }
+
+      .send-message {
+        float: right;
+        display: block;
+      }
+    }
+
+    @media (max-width: 577px) {
+      .member {
+        min-height: 100px;
+
+        .avatar {
+          position: absolute;
+          flex: none;
+          flex: 0 0 100px;
+
+          .image-wrapper {
+            width: 100px;
+            height: 100px;
+          }
+        }
+
+        .col:nth-child(2) {
+          margin-left: 120px;
+          flex: 100%;
+        }
+
+        .col:nth-child(3) {
+          margin-left: 120px;
+          flex: 100%;
+        }
+
+        .info {
+          float: left;
+          text-align: left;
+        }
+
+        .send-message {
+          float: left;
+        }
+      }
+    }
+  }
+
+  .pagination-container {
+    margin-top: 15px;
+
+    .pagination {
+      justify-content: center;
+    }
+  }
+}

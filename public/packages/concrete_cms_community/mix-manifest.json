@@ -1,5 +1,7 @@
 {
+    "/blocks/members_search/view.js": "/blocks/members_search/view.js",
     "/blocks/showcase_items/view.js": "/blocks/showcase_items/view.js",
+    "/blocks/members_search/view.css": "/blocks/members_search/view.css",
     "/js/karma.js": "/js/karma.js",
     "/js/teams.js": "/js/teams.js"
 }
