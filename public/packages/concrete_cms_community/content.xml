@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <concrete5-cif version="1.0">
-    <blocktypes>
-        <blocktype handle="showcase_items" package="concrete_cms_community"/>
-        <blocktype handle="members_search" package="concrete_cms_community"/>
-    </blocktypes>
     <themes>
         <theme handle="concrete_cms" package="concrete_cms_theme" activated="1"/>
     </themes>
     <pages>
-        <page name="Members Search" path="/members-search" public-date="2021-03-30 11:54:53" filename="" pagetype="page"
+        <page name="Community Members" path="/members" public-date="2021-03-30 11:54:53" filename="" pagetype="page"
               template="full" user="admin" description="" package="concrete_cms_theme">
             <area name="Page Header">
                 <blocks/>

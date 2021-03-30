@@ -9,6 +9,7 @@ use Concrete\Core\Asset\AssetList;
 use Concrete\Core\Foundation\Service\Provider;
 use PortlandLabs\Community\API\ServiceProvider as ApiServiceProvider;
 use PortlandLabs\Community\Discourse\ServiceProvider as DiscourseProvider;
+use PortlandLabs\ConcreteCmsTheme\Navigation\HeaderNavigationFactory;
 
 class ServiceProvider extends Provider
 {
@@ -26,5 +27,13 @@ class ServiceProvider extends Provider
         $al = AssetList::getInstance();
         $al->register("javascript", "community/teams", "js/teams.js", ["position" => Asset::ASSET_POSITION_FOOTER], "concrete_cms_community");
         $al->register("javascript", "community/karma", "js/karma.js", ["position" => Asset::ASSET_POSITION_FOOTER], "concrete_cms_community");
+
+        $this->app->make('director')->addListener('on_before_render', function($event) {
+            // must be done in an event because it must come AFTER the concrete cms package registers the
+            // header navigation factory class as a singleton.
+            $headerNavigationFactory = app(HeaderNavigationFactory::class);
+            $headerNavigationFactory->setActiveSection(HeaderNavigationFactory::SECTION_COMMUNITY);
+        });
+
     }
 }
