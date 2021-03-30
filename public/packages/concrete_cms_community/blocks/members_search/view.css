@@ -1,0 +1,141 @@
+/**
+ * @project:   ConcreteCMS Community
+ *
+ * @copyright  (C) 2021 Portland Labs (https://www.portlandlabs.com)
+ * @author     Fabian Bitter (fabian@bitter.de)
+ */
+
+.members-search form {
+  margin-bottom: 15px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid rgba(151, 151, 151, 0.3);
+}
+
+.members-search form .search-control {
+  height: 46px;
+  margin-right: 10px;
+}
+
+.members-search form .dropdown-toggle {
+  background: transparent !important;
+  border: none !important;
+}
+
+.members-search form .sort-by label {
+  color: #999999;
+  font-size: 16px;
+}
+
+.members-search form .sort-by .form-control {
+  height: 46px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+@media (max-width: 577px) {
+  .members-search form .sort-by .form-control {
+    margin-left: 0;
+  }
+}
+
+.members-search .search-results .member {
+  min-height: 140px;
+  padding-bottom: 15px;
+}
+
+.members-search .search-results .member:not(:last-child) {
+  margin-bottom: 15px;
+  border-bottom: 1px solid rgba(151, 151, 151, 0.3);
+}
+
+.members-search .search-results .member .avatar {
+  flex: 0 0 140px;
+}
+
+.members-search .search-results .member .avatar .image-wrapper {
+  border-radius: 50%;
+  width: 140px;
+  height: 140px;
+  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.02);
+  overflow: hidden;
+}
+
+.members-search .search-results .member .avatar .image-wrapper img {
+  width: 100%;
+  height: auto;
+  min-height: 100%;
+}
+
+.members-search .search-results .member .username {
+  font-size: 28px;
+  line-height: 34px;
+  color: #19191A;
+  opacity: 0.6;
+}
+
+.members-search .search-results .member .description {
+  font-size: 16px;
+  line-height: 24px;
+  color: #19191A;
+}
+
+.members-search .search-results .member .info {
+  color: #00465A;
+  font-size: 16px;
+  font-weight: 400;
+  float: right;
+  display: block;
+  width: 100%;
+  text-align: right;
+  margin-bottom: 15px;
+}
+
+.members-search .search-results .member .send-message {
+  float: right;
+  display: block;
+}
+
+@media (max-width: 577px) {
+  .members-search .search-results .member {
+    min-height: 100px;
+  }
+
+  .members-search .search-results .member .avatar {
+    position: absolute;
+    flex: none;
+    flex: 0 0 100px;
+  }
+
+  .members-search .search-results .member .avatar .image-wrapper {
+    width: 100px;
+    height: 100px;
+  }
+
+  .members-search .search-results .member .col:nth-child(2) {
+    margin-left: 120px;
+    flex: 100%;
+  }
+
+  .members-search .search-results .member .col:nth-child(3) {
+    margin-left: 120px;
+    flex: 100%;
+  }
+
+  .members-search .search-results .member .info {
+    float: left;
+    text-align: left;
+  }
+
+  .members-search .search-results .member .send-message {
+    float: left;
+  }
+}
+
+.members-search .pagination-container {
+  margin-top: 15px;
+}
+
+.members-search .pagination-container .pagination {
+  justify-content: center;
+}
+

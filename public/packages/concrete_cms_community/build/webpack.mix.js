@@ -33,5 +33,7 @@ mix.setPublicPath('../');
 
 mix
     .js('assets/showcase_items/js/view.js', '../blocks/showcase_items/view.js')
+    .js('assets/members_search/js/view.js', '../blocks/members_search/view.js')
+    .sass('assets/members_search/scss/view.scss', '../blocks/members_search/view.css')
     .js('assets/karma/js/main.js', '../js/karma.js')
     .js('assets/teams/js/main.js', '../js/teams.js')
