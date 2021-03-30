@@ -86,6 +86,17 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./assets/members_search/scss/view.scss":
+/*!**********************************************!*\
+  !*** ./assets/members_search/scss/view.scss ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
 /***/ "./assets/showcase_items/html/add.html":
 /*!*********************************************!*\
   !*** ./assets/showcase_items/html/add.html ***!
@@ -3743,13 +3754,14 @@ module.exports = g;
 /***/ }),
 
 /***/ 0:
-/*!************************************************!*\
-  !*** multi ./assets/showcase_items/js/view.js ***!
-  \************************************************/
+/*!***************************************************************************************!*\
+  !*** multi ./assets/showcase_items/js/view.js ./assets/members_search/scss/view.scss ***!
+  \***************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/fabianbitter/Projekte/community.concretecms.com/public/packages/concrete_cms_community/build/assets/showcase_items/js/view.js */"./assets/showcase_items/js/view.js");
+__webpack_require__(/*! /Users/andrewembler/projects/community.concretecms.com/public/packages/concrete_cms_community/build/assets/showcase_items/js/view.js */"./assets/showcase_items/js/view.js");
+module.exports = __webpack_require__(/*! /Users/andrewembler/projects/community.concretecms.com/public/packages/concrete_cms_community/build/assets/members_search/scss/view.scss */"./assets/members_search/scss/view.scss");
 
 
 /***/ })
