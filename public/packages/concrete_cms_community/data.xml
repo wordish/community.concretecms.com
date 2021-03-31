@@ -154,25 +154,6 @@
               filename="/dashboard/concrete_cms_community/settings.php" pagetype="" description=""
               package="concrete_cms_community">
         </page>
-        <page name="Community Points" path="/dashboard/users/points" filename="/dashboard/users/points/view.php"
-              pagetype="" package="concrete_cms_community">
-            <attributes>
-                <attributekey handle="meta_keywords">
-                    <value>community, points, karma</value>
-                </attributekey>
-            </attributes>
-        </page>
-        <page name="Assign Points" path="/dashboard/users/points/assign" filename="/dashboard/users/points/assign.php"
-              pagetype="" package="concrete_cms_community">
-        </page>
-        <page name="Actions" path="/dashboard/users/points/actions" filename="/dashboard/users/points/actions.php"
-              pagetype="" package="concrete_cms_community">
-            <attributes>
-                <attributekey handle="meta_keywords">
-                    <value>action, community actions</value>
-                </attributekey>
-            </attributes>
-        </page>
     </singlepages>
     <pages>
         <page name="Submit Karma Request" path="/account/karma/submit-karma-request" public-date="2021-02-05 15:49:24"

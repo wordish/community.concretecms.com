@@ -11,11 +11,15 @@
 namespace Concrete\Package\ConcreteCmsCommunity\Controller\SinglePage\Account;
 
 use Concrete\Core\Database\Connection\Connection;
+use Concrete\Core\Entity\Package;
+use Concrete\Core\Http\Response;
+use Concrete\Core\Http\ResponseFactory;
+use Concrete\Core\Package\PackageService;
 use Concrete\Core\Search\Pagination\Pagination;
 use Concrete\Core\Search\Pagination\PaginationFactory;
 use Concrete\Core\Support\Facade\Url;
-use PortlandLabs\Community\User\Point\Entry;
-use PortlandLabs\Community\User\Point\EntryList as UserPointEntryList;
+use PortlandLabs\CommunityBadges\User\Point\Entry;
+use PortlandLabs\CommunityBadges\User\Point\EntryList as UserPointEntryList;
 use Concrete\Core\User\User;
 use PortlandLabs\Community\Page\Controller\AccountPageController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -37,6 +41,15 @@ class Karma extends AccountPageController
         $this->db = $this->app->make(Connection::class);
         $this->user = new User();
         $this->dateService = $this->app->make(Date::class);
+
+        /** @var PackageService $packageService */
+        $packageService = $this->app->make(PackageService::class);
+        if (!$packageService->getByHandle("community_badges") instanceof Package) {
+            /** @var ResponseFactory $responseFactory */
+            $responseFactory = $this->app->make(ResponseFactory::class);
+            $responseFactory->create(t("You need to install the Community Badges add-on to view this site."), Response::HTTP_OK)->send();
+            $this->app->shutdown();
+        }
     }
 
     private function getActionList()
