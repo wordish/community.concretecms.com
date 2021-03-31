@@ -22,7 +22,7 @@ use Concrete\Core\Page\Page;
 use Concrete\Core\Support\Facade\Application;
 use Concrete\Core\Support\Facade\Url;
 use Concrete\Core\User\Group\Group;
-use Concrete\Core\User\Point\Entry;
+use PortlandLabs\Community\User\Point\Entry;
 use Concrete\Core\User\PrivateMessage\Mailbox as UserPrivateMessageMailbox;
 use Concrete\Core\User\User;
 use Concrete\Core\User\UserInfo;

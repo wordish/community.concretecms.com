@@ -13,7 +13,7 @@ use Concrete\Core\Localization\Service\Date;
 use Concrete\Core\Page\Page;
 use Concrete\Core\Support\Facade\Application;
 use Concrete\Core\Support\Facade\Url;
-use Concrete\Core\User\Point\Entry;
+use PortlandLabs\Community\User\Point\Entry;
 use Concrete\Core\User\User;
 use Concrete\Core\Config\Repository\Repository;
 
