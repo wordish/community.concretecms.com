@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace PortlandLabs\Community;
 
+use Concrete\Core\Application\Application;
 use Concrete\Core\Asset\Asset;
 use Concrete\Core\Asset\AssetList;
 use Concrete\Core\Foundation\Service\Provider;
+use Concrete\Core\Page\Theme\ThemeRouteCollection;
 use PortlandLabs\Community\API\ServiceProvider as ApiServiceProvider;
 use PortlandLabs\Community\Discourse\ServiceProvider as DiscourseProvider;
 use PortlandLabs\ConcreteCmsTheme\Navigation\HeaderNavigationFactory;
@@ -17,6 +19,19 @@ class ServiceProvider extends Provider
         DiscourseProvider::class, // Discourse connect SSO
         ApiServiceProvider::class
     ];
+
+    /**
+     * @var ThemeRouteCollection
+     */
+    protected $themeRouteCollection;
+
+    public function __construct(
+        Application $app,
+        ThemeRouteCollection $themeRouteCollection)
+    {
+        parent::__construct($app);
+        $this->themeRouteCollection = $themeRouteCollection;
+    }
 
     public function register()
     {
@@ -34,6 +49,9 @@ class ServiceProvider extends Provider
             $headerNavigationFactory = app(HeaderNavigationFactory::class);
             $headerNavigationFactory->setActiveSection(HeaderNavigationFactory::SECTION_COMMUNITY);
         });
+
+        $this->themeRouteCollection->setThemeByRoute('/account', 'concrete_cms_theme', 'view_full.php');
+        $this->themeRouteCollection->setThemeByRoute('/account/*', 'concrete_cms_theme', 'view_full.php');
 
     }
 }
