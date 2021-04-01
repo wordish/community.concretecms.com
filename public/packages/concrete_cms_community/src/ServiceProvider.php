@@ -52,6 +52,5 @@ class ServiceProvider extends Provider
 
         $this->themeRouteCollection->setThemeByRoute('/account', 'concrete_cms_theme', 'view_full.php');
         $this->themeRouteCollection->setThemeByRoute('/account/*', 'concrete_cms_theme', 'view_full.php');
-
     }
 }

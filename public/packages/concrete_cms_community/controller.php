@@ -2,6 +2,8 @@
 
 namespace Concrete\Package\ConcreteCmsCommunity;
 
+use Concrete\Core\Application\UserInterface\Dashboard\Navigation\FavoritesNavigationCache;
+use Concrete\Core\Application\UserInterface\Dashboard\Navigation\NavigationCache;
 use Concrete\Core\Package\Package;
 use Concrete\Core\Page\Page;
 use Concrete\Core\Page\Single;
@@ -18,7 +20,7 @@ class Controller extends Package
 
     protected $pkgHandle = 'concrete_cms_community';
     protected $appVersionRequired = '9.0.0a1';
-    protected $pkgVersion = '0.84';
+    protected $pkgVersion = '0.85';
     protected $pkgAutoloaderMapCoreExtensions = true;
     protected $pkgAutoloaderRegistries = array(
         'src' => '\PortlandLabs\Community'
@@ -84,6 +86,13 @@ class Controller extends Package
         $this->installContentFile('data.xml');
 
         $this->configureTeamsFunctionality();
+
+        // Clear the cache to prevent navigation issues
+        /** @var NavigationCache $navigationCache */
+        $navigationCache = $this->app->make(NavigationCache::class);
+        $navigationCache->clear();
+        $navigationCache = $this->app->make(FavoritesNavigationCache::class);
+        $navigationCache->clear();
     }
     
     public function on_start()
