@@ -21,7 +21,7 @@ class GetProjectQuery implements QueryInterface
 
     public function getEndpoint(): string
     {
-        return '/api/projects/' . (string) $this->projectId;
+        return '/projects/' . (string) $this->projectId;
     }
 
 

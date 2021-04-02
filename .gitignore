@@ -11,7 +11,8 @@
 
 # Ignore build files
 /public/application/css/main.css
-/public/application/js/main.js
+/public/application/js/hosting.js
+/public/application/js/hosting.js.LICENSE.txt
 
 # Ignore developer stuff
 /.idea

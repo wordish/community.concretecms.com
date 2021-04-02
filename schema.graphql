@@ -1,0 +1,396 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+"A node, according to the Relay specification."
+interface Node {
+    "The id of this node."
+    id: ID!
+}
+
+type Deployment implements Node {
+    _id: Int!
+    dateCompleted: String
+    dateCreated: String!
+    dateStarted: String
+    id: ID!
+    name: String!
+    remoteId: String!
+    status: String!
+    uiLink: String!
+}
+
+type Environment implements Node {
+    _id: Int!
+    autoIdle: Int!
+    dateCreated: String
+    dateDeleted: String
+    dateUpdated: String
+    deployBaseRef: String!
+    deployHeadRef: String!
+    deployType: String!
+    environmentType: String!
+    facts: Iterable!
+    id: ID!
+    mainRoute: String!
+    monitoringUrls: Iterable!
+    monthHits: Int!
+    monthHours: Iterable!
+    monthStorageUsed: Iterable!
+    name: String!
+    namespace: String!
+    problems: Iterable!
+    routes: Iterable!
+    tasks: Iterable!
+}
+
+type LagoonProject implements Node {
+    _id: Int!
+    autoIdle: Int!
+    availability: String!
+    branches: Boolean!
+    created: String
+    developmentEnvironmentsLimit: Int!
+    environments: Iterable!
+    gitUrl: String!
+    id: ID!
+    kubernetes: String!
+    kubernetesNamespacePattern: String!
+    metadata: Iterable!
+    name: String!
+    productionAlias: String!
+    productionEnvironment: String!
+    productionRoutes: String!
+    pullrequests: Boolean!
+    standbyAlias: String!
+    standbyProductionEnvironment: String!
+    standbyRoutes: String!
+    storageCalc: Int!
+    subfolder: String!
+}
+
+"Connection for LagoonProject."
+type LagoonProjectConnection {
+    edges: [LagoonProjectEdge]
+    pageInfo: LagoonProjectPageInfo!
+    totalCount: Int!
+}
+
+"Edge of LagoonProject."
+type LagoonProjectEdge {
+    cursor: String!
+    node: LagoonProject
+}
+
+"Information about the current page."
+type LagoonProjectPageInfo {
+    endCursor: String
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+    startCursor: String
+}
+
+type Mutation {
+    "Cancels a Deployment."
+    cancelDeployment(input: cancelDeploymentInput!): cancelDeploymentPayload
+    "Creates a Environment."
+    createEnvironment(input: createEnvironmentInput!): createEnvironmentPayload
+    "Creates a LagoonProject."
+    createLagoonProject(input: createLagoonProjectInput!): createLagoonProjectPayload
+    "Creates a Project."
+    createProject(input: createProjectInput!): createProjectPayload
+    "Deletes a Environment."
+    deleteEnvironment(input: deleteEnvironmentInput!): deleteEnvironmentPayload
+    "Deletes a LagoonProject."
+    deleteLagoonProject(input: deleteLagoonProjectInput!): deleteLagoonProjectPayload
+    "Deletes a Project."
+    deleteProject(input: deleteProjectInput!): deleteProjectPayload
+    "Deploys a Project."
+    deployProject(input: deployProjectInput!): deployProjectPayload
+    "Updates a Environment."
+    updateEnvironment(input: updateEnvironmentInput!): updateEnvironmentPayload
+    "Updates a LagoonProject."
+    updateLagoonProject(input: updateLagoonProjectInput!): updateLagoonProjectPayload
+}
+
+type Project implements Node {
+    _id: Int!
+    authorizedAdmins: Iterable!
+    authorizedUsers: Iterable!
+    dateCreated: String!
+    dateUpdated: String!
+    gitUrl: String!
+    id: ID!
+    lagoonName: String!
+    lagoonProject: LagoonProject
+    name: String!
+    productionBranch: String!
+    stageBranches: Iterable!
+}
+
+"Connection for Project."
+type ProjectConnection {
+    edges: [ProjectEdge]
+    pageInfo: ProjectPageInfo!
+    totalCount: Int!
+}
+
+"Edge of Project."
+type ProjectEdge {
+    cursor: String!
+    node: Project
+}
+
+"Information about the current page."
+type ProjectPageInfo {
+    endCursor: String
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+    startCursor: String
+}
+
+type Query {
+    environment(id: ID!): Environment
+    environments: [Environment]
+    lagoonProject(id: ID!): LagoonProject
+    lagoonProjects(
+        "Returns the elements in the list that come after the specified cursor."
+        after: String,
+        "Returns the elements in the list that come before the specified cursor."
+        before: String,
+        "Returns the first n elements from the list."
+        first: Int,
+        "Returns the last n elements from the list."
+        last: Int
+    ): LagoonProjectConnection
+    node(id: ID!): Node
+    project(id: ID!): Project
+    projects(
+        "Returns the elements in the list that come after the specified cursor."
+        after: String,
+        "Returns the elements in the list that come before the specified cursor."
+        before: String,
+        "Returns the first n elements from the list."
+        first: Int,
+        id: Int,
+        id_list: [Int],
+        "Returns the last n elements from the list."
+        last: Int,
+        name: String,
+        order: [ProjectFilter_order]
+    ): ProjectConnection
+}
+
+type cancelDeploymentPayload {
+    clientMutationId: String
+    deployment: Deployment
+}
+
+type createEnvironmentPayload {
+    clientMutationId: String
+    environment: Environment
+}
+
+type createLagoonProjectPayload {
+    clientMutationId: String
+    lagoonProject: LagoonProject
+}
+
+type createProjectPayload {
+    clientMutationId: String
+    project: Project
+}
+
+type deleteEnvironmentPayload {
+    clientMutationId: String
+    environment: Environment
+}
+
+type deleteLagoonProjectPayload {
+    clientMutationId: String
+    lagoonProject: LagoonProject
+}
+
+type deleteProjectPayload {
+    clientMutationId: String
+    project: Project
+}
+
+type deployProjectPayload {
+    clientMutationId: String
+    project: Project
+}
+
+type updateEnvironmentPayload {
+    clientMutationId: String
+    environment: Environment
+}
+
+type updateLagoonProjectPayload {
+    clientMutationId: String
+    lagoonProject: LagoonProject
+}
+
+input ProjectFilter_order {
+    dateCreated: String
+    id: String
+    name: String
+}
+
+input cancelDeploymentInput {
+    _id: Int!
+    apiClient: String!
+    clientMutationId: String
+    dateCompleted: String
+    dateCreated: String!
+    dateStarted: String
+    id: ID!
+    name: String!
+    remoteId: String!
+    status: String!
+    uiLink: String!
+}
+
+input createEnvironmentInput {
+    _id: Int!
+    apiClient: String!
+    autoIdle: Int!
+    clientMutationId: String
+    dateCreated: String
+    dateDeleted: String
+    dateUpdated: String
+    deployBaseRef: String!
+    deployHeadRef: String!
+    deployType: String!
+    environmentType: String!
+    facts: Iterable!
+    mainRoute: String!
+    monitoringUrls: Iterable!
+    monthHits: Int!
+    monthHours: Iterable!
+    monthStorageUsed: Iterable!
+    name: String!
+    namespace: String!
+    problems: Iterable!
+    routes: Iterable!
+    tasks: Iterable!
+}
+
+input createLagoonProjectInput {
+    _id: Int!
+    apiClient: String!
+    autoIdle: Int!
+    availability: String!
+    branches: Boolean!
+    clientMutationId: String
+    created: String
+    developmentEnvironmentsLimit: Int!
+    environments: Iterable!
+    gitUrl: String!
+    kubernetes: String!
+    kubernetesNamespacePattern: String!
+    metadata: Iterable!
+    name: String!
+    productionAlias: String!
+    productionEnvironment: String!
+    productionRoutes: String!
+    pullrequests: Boolean!
+    standbyAlias: String!
+    standbyProductionEnvironment: String!
+    standbyRoutes: String!
+    storageCalc: Int!
+    subfolder: String!
+}
+
+input createProjectInput {
+    authorizedAdmins: Iterable!
+    authorizedUsers: Iterable!
+    clientMutationId: String
+    gitUrl: String!
+    name: String!
+    productionBranch: String!
+    stageBranches: Iterable!
+}
+
+input deleteEnvironmentInput {
+    clientMutationId: String
+    id: ID!
+}
+
+input deleteLagoonProjectInput {
+    clientMutationId: String
+    id: ID!
+}
+
+input deleteProjectInput {
+    clientMutationId: String
+    id: ID!
+}
+
+input deployProjectInput {
+    "The branch to deploy"
+    branch: String!
+    clientMutationId: String
+    "The project to deploy"
+    project: Int!
+}
+
+input updateEnvironmentInput {
+    _id: Int
+    apiClient: String
+    autoIdle: Int
+    clientMutationId: String
+    dateCreated: String
+    dateDeleted: String
+    dateUpdated: String
+    deployBaseRef: String
+    deployHeadRef: String
+    deployType: String
+    environmentType: String
+    facts: Iterable
+    id: ID!
+    mainRoute: String
+    monitoringUrls: Iterable
+    monthHits: Int
+    monthHours: Iterable
+    monthStorageUsed: Iterable
+    name: String
+    namespace: String
+    problems: Iterable
+    routes: Iterable
+    tasks: Iterable
+}
+
+input updateLagoonProjectInput {
+    _id: Int
+    apiClient: String
+    autoIdle: Int
+    availability: String
+    branches: Boolean
+    clientMutationId: String
+    created: String
+    developmentEnvironmentsLimit: Int
+    environments: Iterable
+    gitUrl: String
+    id: ID!
+    kubernetes: String
+    kubernetesNamespacePattern: String
+    metadata: Iterable
+    name: String
+    productionAlias: String
+    productionEnvironment: String
+    productionRoutes: String
+    pullrequests: Boolean
+    standbyAlias: String
+    standbyProductionEnvironment: String
+    standbyRoutes: String
+    storageCalc: Int
+    subfolder: String
+}
+
+
+"The `Iterable` scalar type represents an array or a Traversable with any kind of data."
+scalar Iterable

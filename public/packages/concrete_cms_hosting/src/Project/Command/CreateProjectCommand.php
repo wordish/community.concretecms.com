@@ -46,7 +46,4 @@ class CreateProjectCommand
     {
         $this->userId = $userId;
     }
-
-
-
 }

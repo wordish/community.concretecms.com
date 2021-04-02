@@ -20,7 +20,7 @@ class DeleteProjectCommandHandler
 
     public function handle(DeleteProjectCommand $command)
     {
-        $this->client->delete('/api/projects/' . $command->getProjectId());
+        $this->client->delete('/projects/' . $command->getProjectId());
     }
 
     

@@ -149,10 +149,16 @@ class Projects extends DashboardPageController
             $this->error->add(t($this->token->getErrorMessage()));
         }
         if (!$this->error->has()) {
-
             if ($this->request->request->get('projectType') == 'lagoon') {
                 $command = new CreateLagoonProjectCommand();
-                $command->setLagoonId($this->request->request->get('lagoonId'));
+                $command->adminUsers = [$this->request->get('userId')];
+                $command->users = [];
+                $command->gitUrl = $this->request->get('gitUrl');
+                $command->productionBranch = $this->request->get('productionBranch');
+                $command->stageBranches = array_map(
+                    function($string) { return trim($string); },
+                    explode(',', $this->request->get('stageBranches'))
+                );
             } else {
                 $command = new CreateProjectCommand();
             }

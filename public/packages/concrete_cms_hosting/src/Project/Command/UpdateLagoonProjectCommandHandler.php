@@ -20,7 +20,7 @@ class UpdateLagoonProjectCommandHandler extends UpdateProjectCommandHandler
             'dateCreated' => time(),
             'lagoonId' => $command->getLagoonId(),
         ];
-        $response = $this->client->updateResource('/api/projects/' . $command->getId(), $data);
+        $response = $this->client->updateResource('/projects/' . $command->getId(), $data);
 
         $project = $this->denormalizer->denormalize(json_decode($response->getBody(), true));
 

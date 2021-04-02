@@ -12,13 +12,16 @@ class CreateLagoonProjectCommandHandler extends CreateProjectCommandHandler
      */
     public function handle($command)
     {
-        $data = [
+        $request = [
             'name' => $command->getName(),
-            'userId' => $command->getUserId(),
-            'dateCreated' => time(),
-            'lagoonId' => $command->getLagoonId(),
+            'gitUrl' => $command->gitUrl,
+            'authorizedAdmins' => $command->adminUsers,
+            'authorizedUsers' => $command->users,
+            'productionBranch' => $command->productionBranch,
+            'stageBranches' => $command->stageBranches,
         ];
-        $response = $this->client->createResource('/api/lagoon_projects', $data);
+
+        $response = $this->client->createResource('/projects', $request);
         $project = $this->denormalizer->denormalize(json_decode($response->getBody(), true));
 
         return $project;

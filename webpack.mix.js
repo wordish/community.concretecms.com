@@ -7,10 +7,7 @@ mix
     .setPublicPath('public')
 
     // Simple ES6 JavaScript
-    .babel('resources/js/main.js', 'public/application/js/main.js')
-
-    // Less CSS Compilation
-    .less('resources/css/main.less', 'public/application/css/main.css');
+    .js('resources/js/hosting.js', 'public/application/js/hosting.js').vue()
 
 // Other options:
 // mix.sass, mix.js, mix.scripts, mix.stylus, mix.styles, mix.react, mix.webpackConfig, mix.copy, mix.copyDirectory,

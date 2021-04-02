@@ -5,28 +5,16 @@ namespace PortlandLabs\Hosting\Project\Command;
 class CreateLagoonProjectCommand extends CreateProjectCommand
 {
 
-    /**
-     * @var string
-     */
-    protected $lagoonId;
+    /** @var int[] */
+    public array $adminUsers;
 
-    /**
-     * @return string
-     */
-    public function getLagoonId(): string
-    {
-        return $this->lagoonId;
-    }
+    /** @var int[] */
+    public array $users;
 
-    /**
-     * @param string $lagoonId
-     */
-    public function setLagoonId(string $lagoonId): void
-    {
-        $this->lagoonId = $lagoonId;
-    }
+    public string $gitUrl;
 
+    public string $productionBranch;
 
-
-
+    /** @var string[] */
+    public array $stageBranches;
 }
