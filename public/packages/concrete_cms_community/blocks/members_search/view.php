@@ -55,72 +55,32 @@ $profileFormRenderer = new Renderer(
 <div class="members-search">
     <div class="card">
         <div class="card-body">
-            <div class="card-text">
+            <div>
                 <form action="#" method="get">
                     <div class="">
                         <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <div class="input-group">
-                                        <?php echo $form->text("q", $q, ["placeholder" => t("Search Developers"), "class" => "search-control"]); ?>
+                                        <div class="ccm-search-input">
+                                            <?php echo $form->text("q", $q, ["placeholder" => t("Search Developers"), "class" => "search-control"]); ?>
+                                        </div>
 
                                         <div class="input-group-append">
                                             <div class="dropdown position-static">
-                                                <button type="button" class="btn btn-secondary dropdown-toggle"
-                                                        id="toggleFilters"
-                                                        data-toggle="dropdown" aria-haspopup="true"
-                                                        aria-expanded="false">
-                                                    <?php echo t("Filters"); ?>
+                                                <button type="button" class="btn btn-secondary toggle-dropdown" id="toggleFilters">
+                                                    <span class="inner-text">
+                                                        <?php echo t("Filters"); ?>
+                                                    </span>
                                                 </button>
-
-                                                <div class="dropdown-menu p-4 w-100" aria-labelledby="toggleFilters">
-                                                    <div class="row">
-                                                        <?php if ($displayCertificationFilter) { ?>
-                                                            <div class="col">
-                                                                <h3>
-                                                                    <?php echo t("Certification"); ?>
-                                                                </h3>
-
-                                                                <?php foreach ($certificationTestOptions as $testId => $testName) { ?>
-                                                                    <div class="form-check">
-                                                                        <?php echo $form->checkbox("certification[" . $testId . "]", 1, $selectedCertificationsTests[$testId], ["class" => "form-check-input", "id" => "ccm-test-" . $testId]); ?>
-                                                                        <?php echo $form->label("ccm-test-" . $testId, $testName, ["class" => "form-check-label"]); ?>
-                                                                    </div>
-                                                                <?php } ?>
-                                                            </div>
-                                                        <?php } ?>
-
-                                                        <?php foreach ($selectedAttributeKeys as $akHandle) { ?>
-                                                            <?php $attributeKey = $userCategory->getAttributeKeyByHandle($akHandle); ?>
-
-                                                            <?php if ($attributeKey instanceof AttributeKeyInterface) { ?>
-                                                                <div class="col">
-                                                                    <h3>
-                                                                        <?php echo $attributeKey->getAttributeKeyDisplayName(); ?>
-                                                                    </h3>
-
-                                                                    <?php /** @noinspection PhpUndefinedMethodInspection */
-                                                                    /** @var RendererBuilder $view */
-                                                                    $view = $profileFormRenderer->buildView($attributeKey);
-                                                                    /** @noinspection PhpUndefinedMethodInspection */
-                                                                    $view->setSupportsLabel(false);
-                                                                    /** @noinspection PhpUndefinedMethodInspection */
-                                                                    $view->setIsRequired(false);
-                                                                    $view->render();
-                                                                    ?>
-                                                                </div>
-                                                            <?php } ?>
-                                                        <?php } ?>
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-sm-6">
-                                <div class="float-md-right float-lg-right float-xl-right float-sm-none float-xs-none">
+                            <div class="col-md-6">
+                                <div class="float-md-right float-lg-right float-xl-right float-sm-right float-xs-none">
                                     <div class="form-group form-inline sort-by">
                                         <?php echo $form->label("sortBy", t("Sort By")); ?>
 
@@ -139,7 +99,46 @@ $profileFormRenderer = new Renderer(
                         </div>
                     </div>
 
+                    <div class="ccm-dropdown-menu d-none">
+                        <div class="row">
+                            <?php if ($displayCertificationFilter) { ?>
+                                <div class="col">
+                                    <h3>
+                                        <?php echo t("Certification"); ?>
+                                    </h3>
 
+                                    <?php foreach ($certificationTestOptions as $testId => $testName) { ?>
+                                        <div class="form-check">
+                                            <?php echo $form->checkbox("certification[" . $testId . "]", 1, $selectedCertificationsTests[$testId], ["class" => "form-check-input", "id" => "ccm-test-" . $testId]); ?>
+                                            <?php echo $form->label("ccm-test-" . $testId, $testName, ["class" => "form-check-label"]); ?>
+                                        </div>
+                                    <?php } ?>
+                                </div>
+                            <?php } ?>
+
+                            <?php foreach ($selectedAttributeKeys as $akHandle) { ?>
+                                <?php $attributeKey = $userCategory->getAttributeKeyByHandle($akHandle); ?>
+
+                                <?php if ($attributeKey instanceof AttributeKeyInterface) { ?>
+                                    <div class="col">
+                                        <h3>
+                                            <?php echo $attributeKey->getAttributeKeyDisplayName(); ?>
+                                        </h3>
+
+                                        <?php /** @noinspection PhpUndefinedMethodInspection */
+                                        /** @var RendererBuilder $view */
+                                        $view = $profileFormRenderer->buildView($attributeKey);
+                                        /** @noinspection PhpUndefinedMethodInspection */
+                                        $view->setSupportsLabel(false);
+                                        /** @noinspection PhpUndefinedMethodInspection */
+                                        $view->setIsRequired(false);
+                                        $view->render();
+                                        ?>
+                                    </div>
+                                <?php } ?>
+                            <?php } ?>
+                        </div>
+                    </div>
                 </form>
 
                 <?php if (count($results) === 0) { ?>

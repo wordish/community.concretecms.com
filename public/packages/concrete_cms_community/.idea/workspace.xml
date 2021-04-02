@@ -2,27 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="df6289e2-a4d4-4636-bed6-622dc9f2d5e2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/build/assets/karma/js/main.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/assets/teams/js/main.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/controllers/single_page/account/karma.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/controllers/single_page/account/teams.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/controllers/single_page/dashboard/concrete_cms_community.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/controllers/single_page/dashboard/concrete_cms_community/settings.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/single_pages/account/karma.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/single_pages/account/teams.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/single_pages/dashboard/concrete_cms_community.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/single_pages/dashboard/concrete_cms_community/settings.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/API/V1/Teams.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Page/Controller/AccountPageController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/TeamsService.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blocks/showcase_items/mix-manifest.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/blocks/showcase_items/view.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/webpack.mix.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/webpack.mix.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/controller.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data.xml" beforeDir="false" afterPath="$PROJECT_DIR$/data.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/API/ServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/API/ServiceProvider.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/ServiceProvider.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blocks/members_search/view.css" beforeDir="false" afterPath="$PROJECT_DIR$/blocks/members_search/view.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blocks/members_search/view.js" beforeDir="false" afterPath="$PROJECT_DIR$/blocks/members_search/view.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blocks/members_search/view.php" beforeDir="false" afterPath="$PROJECT_DIR$/blocks/members_search/view.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blocks/showcase_items/view.js" beforeDir="false" afterPath="$PROJECT_DIR$/blocks/showcase_items/view.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/assets/members_search/js/view.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/assets/members_search/js/view.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/assets/members_search/scss/view.scss" beforeDir="false" afterPath="$PROJECT_DIR$/build/assets/members_search/scss/view.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/karma.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/karma.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/teams.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/teams.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -93,6 +81,10 @@
       <workItem from="1614860006271" duration="2003000" />
       <workItem from="1614862291668" duration="4000" />
       <workItem from="1614959074315" duration="2030000" />
+      <workItem from="1617264657680" duration="501000" />
+      <workItem from="1617268075523" duration="2000" />
+      <workItem from="1617296212821" duration="56000" />
+      <workItem from="1617366650173" duration="4914000" />
     </task>
     <servers />
   </component>
