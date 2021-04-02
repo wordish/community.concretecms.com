@@ -148,7 +148,7 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/andrewembler/projects/community.concretecms.com/public/packages/concrete_cms_community/build/assets/teams/js/main.js */"./assets/teams/js/main.js");
+module.exports = __webpack_require__(/*! /Users/fabianbitter/Projekte/community.concretecms.com/public/packages/concrete_cms_community/build/assets/teams/js/main.js */"./assets/teams/js/main.js");
 
 
 /***/ })
