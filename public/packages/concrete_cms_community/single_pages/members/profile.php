@@ -22,7 +22,7 @@ use Concrete\Core\Page\Page;
 use Concrete\Core\Support\Facade\Application;
 use Concrete\Core\Support\Facade\Url;
 use Concrete\Core\User\Group\Group;
-use Concrete\Core\User\Point\Entry;
+use PortlandLabs\CommunityBadges\User\Point\Entry;
 use Concrete\Core\User\PrivateMessage\Mailbox as UserPrivateMessageMailbox;
 use Concrete\Core\User\User;
 use Concrete\Core\User\UserInfo;
@@ -74,7 +74,7 @@ $isCommunityAwardsModuleInstalled = $packageService->getByHandle("community_badg
 $isCertificationsModuleInstalled = $packageService->getByHandle("certification") instanceof Package;
 
 if ($isCommunityAwardsModuleInstalled) {
-    $communityBadgesPackageEntity = $packageService->getByHandle("community_Badges");
+    $communityBadgesPackageEntity = $packageService->getByHandle("community_badges");
     /** @var \Concrete\Core\Package\Package $communityBadgesPackage */
     $communityBadgesPackage = $communityBadgesPackageEntity->getController();
     $jsFile = $communityBadgesPackage->getRelativePath() . "/blocks/community_badges/view.js";
@@ -119,7 +119,7 @@ if ($isCommunityAwardsModuleInstalled) {
                                 $profile->getUserName(),
                                 "<strong>" . t2("%s message", "%s messages", $totalMessages, number_format($totalMessages)) . "</strong>",
                                 "<strong>" . t2("%s achievement", "%s achievements", $totalAchievements, number_format($totalAchievements)) . "</strong>",
-                                "<strong>" . t2("%s karma point", "%s karma points", (int)Entry::getTotal($profile), number_format((int)Entry::getTotal($profile))) . "</strong>",
+                                "<strong>" . t2("%s karma point", "%s karma points", ($isCommunityAwardsModuleInstalled ? (int)Entry::getTotal($profile) : 0), number_format(($isCommunityAwardsModuleInstalled ? (int)Entry::getTotal($profile) : 0))) . "</strong>",
                                 $dateHelper->formatDate($profile->getUserDateAdded(), true)
                             ); ?>
                         <?php } else { ?>
@@ -128,7 +128,7 @@ if ($isCommunityAwardsModuleInstalled) {
                                 '%s has posted %s and has accumulated %s since joining concretecms.org on %s.',
                                 $profile->getUserName(),
                                 "<strong>" . t2("%s message", "%s messages", $totalMessages, number_format($totalMessages)) . "</strong>",
-                                "<strong>" . t2("%s karma point", "%s karma points", (int)Entry::getTotal($profile), number_format((int)Entry::getTotal($profile))) . "</strong>",
+                                "<strong>" . t2("%s karma point", "%s karma points", ($isCommunityAwardsModuleInstalled ? (int)Entry::getTotal($profile) : 0), number_format(($isCommunityAwardsModuleInstalled ? (int)Entry::getTotal($profile) : 0))) . "</strong>",
                                 $dateHelper->formatDate($profile->getUserDateAdded(), true)
                             ); ?>
                         <?php } ?>
