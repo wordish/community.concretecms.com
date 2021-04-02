@@ -19,12 +19,13 @@
 <script>
 import {store} from '../../store/store'
 import {router} from '../../routes/routes'
+import config from '../../config'
 
 export default {
     name: "list",
     data: () => ({
-        username: 'korvin@portlandlabs.com',
-        password: 'password',
+        username: '',
+        password: '',
         authenticating: false,
         error: '',
     }),
@@ -33,7 +34,7 @@ export default {
             const self = this
             self.authenticating = true
 
-            const response = await fetch('http://localhost:8125/login', {
+            const response = await fetch(`${config.apiBaseUrl}/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

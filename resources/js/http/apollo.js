@@ -6,9 +6,10 @@ import { setContext } from 'apollo-link-context'
 import { onError } from 'apollo-link-error'
 import { store } from '../store/store'
 import { router } from '../routes/routes'
+import config from '../config'
 
 const httpLink = createHttpLink({
-    uri: 'http://localhost:8125/graphql',
+    uri: `${config.apiBaseUrl}/graphql`,
 })
 
 const authLink = setContext(async (_, { headers }) => {
