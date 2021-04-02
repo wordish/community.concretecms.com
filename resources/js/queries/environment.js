@@ -13,4 +13,34 @@ export const M_ENVIRONMENT_DEPLOY = gql`
             }
         }
     }
-`;
+`
+
+export const M_ENVIRONMENT_BACKUP = gql`
+    mutation($environment: String!, $projectId: Int!) {
+        backupProject(input:{
+            project:$projectId
+            environment:$environment
+        }) {
+            project {
+                lagoonProject {
+                    environments
+                }
+            }
+        }
+    }
+`
+
+export const M_ENVIRONMENT_RESTORE = gql`
+    mutation($environment: String!, $projectId: Int!) {
+        restoreProject(input:{
+            project:$projectId
+            environment:$environment
+        }) {
+            project {
+                lagoonProject {
+                    environments
+                }
+            }
+        }
+    }
+`

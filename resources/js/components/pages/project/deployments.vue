@@ -49,7 +49,8 @@
                         </thead>
                         <tbody>
                             <deployment-row :key="deployment.id" v-for="deployment of selectedEnvironment.deployments.slice(0, 20)"
-                                            :started="deployment.created"
+                                            :created="deployment.created"
+                                            :started="deployment.started"
                                             :ended="deployment.completed"
                                             :status="deployment.status"
                                             :name="deployment.name"

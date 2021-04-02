@@ -63,6 +63,9 @@ export default {
             },
             set (value) {
                 store.commit('selectProject', value)
+                if (this.$route.params.id !== value) {
+                    this.$router.push(`/projects/${value}/`)
+                }
             }
         }
     },

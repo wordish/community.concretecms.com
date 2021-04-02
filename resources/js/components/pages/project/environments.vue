@@ -21,7 +21,7 @@
 
                 <tr v-for="env in expectedEnvironments">
                     <td>{{ env.name }}</td>
-                    <td><a :href="env.url" target="_blank">{{ env.url }}</a></td>
+                    <td class="w-80"><a :href="env.url" target="_blank">{{ env.url }}</a></td>
                     <td>{{ env.branch }}</td>
                     <td>{{ env.type }}</td>
                     <td>{{ env.status }}</td>

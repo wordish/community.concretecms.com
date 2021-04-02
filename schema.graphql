@@ -51,7 +51,7 @@ type LagoonProject implements Node {
     _id: Int!
     autoIdle: Int!
     availability: String!
-    branches: Boolean!
+    branches: String!
     created: String
     developmentEnvironmentsLimit: Int!
     environments: Iterable!
@@ -64,7 +64,7 @@ type LagoonProject implements Node {
     productionAlias: String!
     productionEnvironment: String!
     productionRoutes: String!
-    pullrequests: Boolean!
+    pullrequests: String!
     standbyAlias: String!
     standbyProductionEnvironment: String!
     standbyRoutes: String!
@@ -94,6 +94,8 @@ type LagoonProjectPageInfo {
 }
 
 type Mutation {
+    "Backups a Project."
+    backupProject(input: backupProjectInput!): backupProjectPayload
     "Cancels a Deployment."
     cancelDeployment(input: cancelDeploymentInput!): cancelDeploymentPayload
     "Creates a Environment."
@@ -110,6 +112,8 @@ type Mutation {
     deleteProject(input: deleteProjectInput!): deleteProjectPayload
     "Deploys a Project."
     deployProject(input: deployProjectInput!): deployProjectPayload
+    "Restores a Project."
+    restoreProject(input: restoreProjectInput!): restoreProjectPayload
     "Updates a Environment."
     updateEnvironment(input: updateEnvironmentInput!): updateEnvironmentPayload
     "Updates a LagoonProject."
@@ -119,7 +123,7 @@ type Mutation {
 type Project implements Node {
     _id: Int!
     authorizedAdmins: Iterable!
-    authorizedUsers: Iterable!
+    authorizedUsers: Iterable
     dateCreated: String!
     dateUpdated: String!
     gitUrl: String!
@@ -184,6 +188,11 @@ type Query {
     ): ProjectConnection
 }
 
+type backupProjectPayload {
+    clientMutationId: String
+    project: Project
+}
+
 type cancelDeploymentPayload {
     clientMutationId: String
     deployment: Deployment
@@ -224,6 +233,11 @@ type deployProjectPayload {
     project: Project
 }
 
+type restoreProjectPayload {
+    clientMutationId: String
+    project: Project
+}
+
 type updateEnvironmentPayload {
     clientMutationId: String
     environment: Environment
@@ -238,6 +252,14 @@ input ProjectFilter_order {
     dateCreated: String
     id: String
     name: String
+}
+
+input backupProjectInput {
+    clientMutationId: String
+    "The environment to backup"
+    environment: String!
+    "The project to backup"
+    project: Int!
 }
 
 input cancelDeploymentInput {
@@ -284,7 +306,7 @@ input createLagoonProjectInput {
     apiClient: String!
     autoIdle: Int!
     availability: String!
-    branches: Boolean!
+    branches: String!
     clientMutationId: String
     created: String
     developmentEnvironmentsLimit: Int!
@@ -297,7 +319,7 @@ input createLagoonProjectInput {
     productionAlias: String!
     productionEnvironment: String!
     productionRoutes: String!
-    pullrequests: Boolean!
+    pullrequests: String!
     standbyAlias: String!
     standbyProductionEnvironment: String!
     standbyRoutes: String!
@@ -307,7 +329,7 @@ input createLagoonProjectInput {
 
 input createProjectInput {
     authorizedAdmins: Iterable!
-    authorizedUsers: Iterable!
+    authorizedUsers: Iterable
     clientMutationId: String
     gitUrl: String!
     name: String!
@@ -335,6 +357,14 @@ input deployProjectInput {
     branch: String!
     clientMutationId: String
     "The project to deploy"
+    project: Int!
+}
+
+input restoreProjectInput {
+    clientMutationId: String
+    "The environment to restore"
+    environment: String!
+    "The environment to restore"
     project: Int!
 }
 
@@ -369,7 +399,7 @@ input updateLagoonProjectInput {
     apiClient: String
     autoIdle: Int
     availability: String
-    branches: Boolean
+    branches: String
     clientMutationId: String
     created: String
     developmentEnvironmentsLimit: Int
@@ -383,7 +413,7 @@ input updateLagoonProjectInput {
     productionAlias: String
     productionEnvironment: String
     productionRoutes: String
-    pullrequests: Boolean
+    pullrequests: String
     standbyAlias: String
     standbyProductionEnvironment: String
     standbyRoutes: String

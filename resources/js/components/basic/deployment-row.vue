@@ -1,13 +1,13 @@
 <template>
-    <tr :class="status === 'running' && 'active-row'">
+    <tr :class="normalStatus === 'running' && 'active-row'">
         <td>
-            {{formattedStartDate}}
+            {{formattedCreationDate}}
         </td>
         <td>
             {{name}}
         </td>
         <td>
-            {{status}}
+            <span :class="statusClass">{{this.normalStatus}}</span>
         </td>
         <td>
             {{duration}}
@@ -21,10 +21,11 @@ import moment from "moment-timezone";
 export default {
     name: "deployment-row",
     props: {
+        name: {type: String, required: true},
+        created: {type: String, required: true},
         status: {type: String, required: true},
         started: {type: String, required: true},
         ended: String,
-        name: {type: Date, required: true},
     },
     mounted() {
         this.startInterval()
@@ -35,14 +36,25 @@ export default {
         this.updateDuration()
     },
     computed: {
-        formattedStartDate() {
-            return moment.tz(this.started, 'UTC').tz(moment.tz.guess()).format('DD MMM YYYY h:mm a')
+        normalStatus() {
+            return this.status === 'active' ? 'running' : this.status
+        },
+        statusClass() {
+            const map = {
+                'complete': 'text-info',
+                'succeeded': 'text-info',
+                'failed': 'text-danger',
+            }
+            return map[this.status] ? map[this.status] : ''
+        },
+        formattedCreationDate() {
+            return moment.tz(this.created, 'UTC').tz(moment.tz.guess()).format('DD MMM YYYY h:mm a')
         },
     },
     methods: {
         startInterval() {
             const self = this
-            if (this.status === 'running' && !this.interval) {
+            if (this.normalStatus === 'running' && !this.interval) {
                 this.interval = setInterval(function () {
                     self.updateDuration()
                     if (self.ended) {
@@ -53,7 +65,7 @@ export default {
             }
         },
         updateDuration() {
-            if (this.status !== 'running' && !this.ended) {
+            if (this.normalStatus !== 'running' && !this.ended) {
                 this.duration = ''
                 return
             }

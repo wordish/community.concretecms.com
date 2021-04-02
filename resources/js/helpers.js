@@ -9,6 +9,7 @@ export function expectedEnvironments(project) {
         url: '',
         type: 'Production',
         deployments: [],
+        tasks: [],
         status: 'New',
     }
 
@@ -18,6 +19,7 @@ export function expectedEnvironments(project) {
         url: '',
         type: 'Stage',
         deployments: [],
+        tasks: [],
         status: 'New',
     }))
 
@@ -44,6 +46,7 @@ export function expectedEnvironments(project) {
                 }
                 stage.url = environment.route !== 'undefined' ? environment.route : ''
                 stage.deployments = deployments
+                stage.tasks = environment.tasks ? [...environment.tasks] : []
             }
         }
     }

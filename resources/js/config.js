@@ -1,3 +1,3 @@
 export default {
-    apiBaseUrl: 'https://api.concretecms.com'
+    apiBaseUrl: 'http://localhost:8125'
 }
