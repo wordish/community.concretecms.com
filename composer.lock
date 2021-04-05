@@ -498,12 +498,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/concrete5/community_badges.git",
-                "reference": "a38cc69d1b588ebbd1e762c39dceb27e68288086"
+                "reference": "a6efbba00932481b2075d41c7a1774cbc66b37a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/concrete5/community_badges/zipball/a38cc69d1b588ebbd1e762c39dceb27e68288086",
-                "reference": "a38cc69d1b588ebbd1e762c39dceb27e68288086",
+                "url": "https://api.github.com/repos/concrete5/community_badges/zipball/a6efbba00932481b2075d41c7a1774cbc66b37a9",
+                "reference": "a6efbba00932481b2075d41c7a1774cbc66b37a9",
                 "shasum": ""
             },
             "type": "concrete5-package",
@@ -517,7 +517,7 @@
                 "MIT"
             ],
             "description": "Integrate the community awards feature awards into your site.",
-            "time": "2021-02-05T23:14:09+00:00"
+            "time": "2021-04-01T13:40:14+00:00"
         },
         {
             "name": "concrete5/concrete_cms_theme",
