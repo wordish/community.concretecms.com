@@ -20,7 +20,7 @@ class Controller extends Package
 
     protected $pkgHandle = 'concrete_cms_community';
     protected $appVersionRequired = '9.0.0a1';
-    protected $pkgVersion = '0.85';
+    protected $pkgVersion = '0.86';
     protected $pkgAutoloaderMapCoreExtensions = true;
     protected $pkgAutoloaderRegistries = array(
         'src' => '\PortlandLabs\Community'
@@ -94,7 +94,8 @@ class Controller extends Package
         $navigationCache = $this->app->make(FavoritesNavigationCache::class);
         $navigationCache->clear();
     }
-    
+
+
     public function on_start()
     {
         // Register our service providers
