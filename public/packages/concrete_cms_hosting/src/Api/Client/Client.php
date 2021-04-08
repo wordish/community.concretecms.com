@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PortlandLabs\Hosting\Api\Client;
 
 use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Exception\ServerException;
 use League\Url\Url;
 use PortlandLabs\Hosting\Api\Client\Query\QueryInterface;
 use PortlandLabs\Hosting\Api\Client\Query\Result;
@@ -108,8 +109,4 @@ class Client
         $arguments[0] = $url;
         return $this->client->$name(...$arguments);
     }
-
-
-
-
 }

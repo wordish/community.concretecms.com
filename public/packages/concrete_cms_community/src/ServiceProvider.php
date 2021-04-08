@@ -50,6 +50,7 @@ class ServiceProvider extends Provider
             $headerNavigationFactory->setActiveSection(HeaderNavigationFactory::SECTION_COMMUNITY);
         });
 
+        $this->themeRouteCollection->setThemeByRoute('/members/profile', 'concrete_cms_theme', 'view_full.php');
         $this->themeRouteCollection->setThemeByRoute('/account', 'concrete_cms_theme', 'view_full.php');
         $this->themeRouteCollection->setThemeByRoute('/account/*', 'concrete_cms_theme', 'view_full.php');
     }

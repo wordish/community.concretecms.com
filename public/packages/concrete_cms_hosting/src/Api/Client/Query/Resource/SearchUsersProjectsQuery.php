@@ -21,7 +21,7 @@ class SearchUsersProjectsQuery extends AbstractSearchQuery
 
     public function getEndpoint(): string
     {
-        return '/api/projects';
+        return '/projects';
     }
 
 

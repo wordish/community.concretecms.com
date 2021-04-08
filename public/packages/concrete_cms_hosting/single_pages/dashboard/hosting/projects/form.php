@@ -2,6 +2,7 @@
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
+/** @var \Concrete\Core\Form\Service\Widget\UserSelector $userSelector */
 $userSelector = app(Concrete\Core\Form\Service\Widget\UserSelector::class);
 
 if ($project) {
@@ -10,12 +11,12 @@ if ($project) {
     $tokenString = 'update_project';
     $backURL = URL::to('/dashboard/hosting/projects', 'view_details', $project->getId());
     $name = $project->getName();
-    $userId = $project->getUserId();
-    if ($project instanceof \PortlandLabs\Hosting\Project\LagoonProject) {
+    $userId = $project->get;
+    if ($project instanceof \PortlandLabs\Hosting\Project\Project && !$project instanceof \PortlandLabs\Hosting\Project\LagoonProject) {
+        $projectType = 'project';
+    } else {
         $projectType = 'lagoon';
         $lagoonId = $project->getLagoonId();
-    } else {
-        $projectType = 'project';
     }
 } else {
     $buttonText = t('Create Project');
@@ -38,20 +39,27 @@ if ($project) {
 
         <div class="form-group">
             <?= $form->label('userId', t('Owner')) ?>
-            <?=$userSelector->quickSelect('userId', $userId)?>
+            <?=/** @TODO Replace with multiselect when that works */$userSelector->quickSelect('userId', $admins[0])?>
         </div>
     </fieldset>
 
     <?php if ($projectType == 'lagoon') { ?>
-
         <fieldset>
             <legend><?=t('Concrete Hosting Options')?></legend>
             <div class="form-group">
-                <?= $form->label('lagoonId', t('Lagoon ID')) ?>
-                <?= $form->text('lagoonId', $lagoonId) ?>
+                <?= $form->label('gitUrl', t('Git URL')) ?>
+                <?= $form->text('gitUrl', $gitUrl) ?>
+            </div>
+            <div class="form-group">
+                <?= $form->label('productionBranch', t('Production branch name')) ?>
+                <?= $form->text('productionBranch', $productionBranch, ['placeholder' => 'main']) ?>
+            </div>
+            <div class="form-group">
+                <?= $form->label('stageBranches', t('Stage branch names')) ?>
+                <?= $form->text('stageBranches', $stageBranches, ['placeholder' => 'stage,dev']) ?>
+                <p class="help-block">Comma separated</p>
             </div>
         </fieldset>
-
     <?php } ?>
 
 

@@ -36,7 +36,7 @@ class CreateProjectCommandHandler
             'userId' => $command->getUserId(),
             'dateCreated' => time(),
         ];
-        $response = $this->client->createResource('/api/projects', $data);
+        $response = $this->client->createResource('/projects', $data);
 
         $project = $this->denormalizer->denormalize(json_decode($response->getBody(), true));
 
