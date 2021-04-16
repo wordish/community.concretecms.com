@@ -4,7 +4,7 @@
         <theme handle="concrete_cms" package="concrete_cms_theme" activated="1"/>
     </themes>
     <pages>
-        <page name="Community Members" path="/members" public-date="2021-03-30 11:54:53" filename="" pagetype="page"
+        <page name="Community Members" path="/members/directory" public-date="2021-03-30 11:54:53" filename="" pagetype="page"
               template="full" user="admin" description="" package="concrete_cms_theme">
             <area name="Page Header">
                 <blocks/>
