@@ -113,11 +113,6 @@ export default {
         pendingProject() {
             return store.state.addedProject
         },
-        pages() {
-            if (!this.projects) {
-
-            }
-        }
     },
     methods: {
         async changePage(after, before, difference) {

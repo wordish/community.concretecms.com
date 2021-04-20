@@ -18,7 +18,13 @@ export const store = new Vuex.Store({
         addedProject: null,
     },
     getters: {
-        isLoggedIn: (state) => !!state.jwt
+        isLoggedIn: (state) => !!state.jwt,
+        jwtData: (state) => {
+            const base64 = state.jwt.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+            return JSON.parse(decodeURIComponent(atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join('')));
+        }
     },
     mutations: {
         async selectProject(state, project) {

@@ -44,6 +44,7 @@
 <script>
 import {Q_STARTING_POINTS_FULL} from "../../queries/starting-point";
 import {M_PROJECT_CREATE} from "../../queries/project";
+import {store} from "../../store/store";
 
 export default {
     name: "create-project-modal",
@@ -89,7 +90,7 @@ export default {
                 variables: {
                     name: this.name,
                     startingPoint: this.startingPoint,
-                    adminIds: ["2"],
+                    adminIds: [store.getters.jwtData.id],
                 }
             })
 
