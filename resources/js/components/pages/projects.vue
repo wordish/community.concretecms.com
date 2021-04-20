@@ -13,17 +13,17 @@
 
                     <tr v-if="extraProject">
                         <td><router-link :to="extraProject.id">{{ extraProject.name }}</router-link></td>
-                        <td>Concrete Hosting</td>
+                        <td>&nbsp;</td>
                     </tr>
                     <tr v-for="{node} in projects.edges">
                         <td><router-link :to='node.id'>{{ node.name }}</router-link></td>
-                        <td>Concrete Hosting</td>
+                        <td>{{ node.projectType }}</td>
                     </tr>
                 </table>
             </div>
         </card>
 
-        <div v-if="this.projects" class="ccm-search-results-pagination">
+        <div v-if="this.projects && this.projects.pageInfo" class="ccm-search-results-pagination">
             <div class="d-flex justify-content-center w-100">
                 <div>
                     <ul class="pagination">
@@ -50,16 +50,14 @@ import {store} from "../../store/store";
 
 const QUERY = gql`
 query($after: String, $before: String, $perPage: Int!) {
-    projects(after: $after, before: $before, first: $perPage) {
+    projects: projects(after: $after, before: $before, first: $perPage) {
         totalCount
         edges {
             cursor
             node {
                 name
                 id
-                gitUrl
-                productionBranch
-                stageBranches
+                projectType
                 dateCreated
                 dateUpdated
             }
@@ -90,7 +88,7 @@ export default {
         }
     },
     data: () => ({
-        projects: [{name: 'foo'}],
+        projects: [],
         extraProject: null,
         currentPage: 1,
         count: 20

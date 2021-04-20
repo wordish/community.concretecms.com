@@ -2,7 +2,7 @@ import gql from "graphql-tag";
 
 export const Q_PROJECT_FULL = gql`
     query($projectId: ID!) {
-        project(id: $projectId) {
+        project: hostingProject(id: $projectId) {
             gitUrl
             _id
             id
@@ -22,7 +22,7 @@ export const Q_PROJECT_FULL = gql`
 
 export const M_PROJECT_CREATE = gql`
     mutation($name: String!, $startingPoint: String!, $adminIds: Iterable!) {
-        createProject(input: {
+        createProject: createHostingProject(input: {
             name: $name,
             startingPoint: $startingPoint,
             productionBranch: "main",
@@ -31,7 +31,7 @@ export const M_PROJECT_CREATE = gql`
             authorizedAdmins: $adminIds,
             authorizedUsers: ["-10"],
         }) {
-            project {
+            project: hostingProject {
                 id
                 _id
                 name

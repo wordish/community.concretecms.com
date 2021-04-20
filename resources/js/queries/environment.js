@@ -2,11 +2,11 @@ import gql from "graphql-tag";
 
 export const M_ENVIRONMENT_DEPLOY = gql`
     mutation($branch: String!, $projectId: Int!) {
-        deployProject(input:{
+        deployHostingProject(input:{
             project:$projectId
             branch:$branch
         }) {
-            project {
+            project: hostingProject {
                 lagoonProject {
                     environments
                 }
@@ -17,11 +17,11 @@ export const M_ENVIRONMENT_DEPLOY = gql`
 
 export const M_ENVIRONMENT_BACKUP = gql`
     mutation($environment: String!, $projectId: Int!) {
-        backupProject(input:{
+        backupHostingProject(input:{
             project:$projectId
             environment:$environment
         }) {
-            project {
+            project: hostingProject {
                 lagoonProject {
                     environments
                 }
@@ -32,11 +32,11 @@ export const M_ENVIRONMENT_BACKUP = gql`
 
 export const M_ENVIRONMENT_RESTORE = gql`
     mutation($environment: String!, $projectId: Int!) {
-        restoreProject(input:{
+        restoreHostingProject(input:{
             project:$projectId
             environment:$environment
         }) {
-            project {
+            project: hostingProject {
                 lagoonProject {
                     environments
                 }

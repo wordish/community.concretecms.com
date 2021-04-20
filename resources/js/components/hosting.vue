@@ -2,7 +2,6 @@
     <div class="container">
         <div class="row">
             <div class="col">
-
                 <div class="d-flex">
                     <h1 class="highlight mb-3 w-100"><span @click="goHome">Hosting</span></h1>
                     <div class="d-flex flex-column justify-content-center">
@@ -17,16 +16,16 @@
                 <div v-if="this.$route.params.id && selectedProject">
                     <ul class="nav nav-tabs">
                         <li class="nav-item">
-                            <router-link :to="`/projects/${selectedProject}/environments`" class="nav-link" exact-active-class="active">Environments</router-link>
+                            <router-link :to="`/hosting_projects/${selectedProject}/environments`" class="nav-link" exact-active-class="active">Environments</router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link :to="`/projects/${selectedProject}/code`" class="nav-link" active-class="active">Code</router-link>
+                            <router-link :to="`/hosting_projects/${selectedProject}/code`" class="nav-link" active-class="active">Code</router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link :to="`/projects/${selectedProject}/deployments`" class="nav-link" active-class="active">Deployments</router-link>
+                            <router-link :to="`/hosting_projects/${selectedProject}/deployments`" class="nav-link" active-class="active">Deployments</router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link :to="`/projects/${selectedProject}/backups`" class="nav-link" active-class="active">Backups</router-link>
+                            <router-link :to="`/hosting_projects/${selectedProject}/backups`" class="nav-link" active-class="active">Backups</router-link>
                         </li>
                     </ul>
                     <hr class="mt-0">

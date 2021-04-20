@@ -10,11 +10,11 @@ import backups from "../components/pages/project/backups";
 export const routes = [
     { name: 'login', path: '/api-login', component: login },
     { path: '/', component: projects, meta: { auth: true } },
-    { path: '/projects/:id', redirect: '/projects/:id/environments', meta: { auth: true } },
-    { path: '/projects/:id/environments', component: environments, meta: { auth: true } },
-    { path: '/projects/:id/code', component: code, meta: { auth: true } },
-    { path: '/projects/:id/deployments', component: deployments, meta: { auth: true } },
-    { path: '/projects/:id/backups', component: backups, meta: { auth: true } },
+    { path: '/hosting_projects/:id', redirect: '/hosting_projects/:id/environments', meta: { auth: true } },
+    { path: '/hosting_projects/:id/environments', component: environments, meta: { auth: true } },
+    { path: '/hosting_projects/:id/code', component: code, meta: { auth: true } },
+    { path: '/hosting_projects/:id/deployments', component: deployments, meta: { auth: true } },
+    { path: '/hosting_projects/:id/backups', component: backups, meta: { auth: true } },
 
     // Redirect everything else to home
     {path: '*', redirect: '/'},

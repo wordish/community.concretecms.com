@@ -23,28 +23,42 @@ type Deployment implements Node {
     uiLink: String!
 }
 
-type Environment implements Node {
+type HostingProject implements Node {
     _id: Int!
-    autoIdle: Int!
-    dateCreated: String
-    dateDeleted: String
-    dateUpdated: String
-    deployBaseRef: String!
-    deployHeadRef: String!
-    deployType: String!
-    environmentType: String!
-    facts: Iterable!
+    authorizedAdmins: Iterable!
+    authorizedUsers: Iterable
+    dateCreated: String!
+    dateUpdated: String!
+    gitPath: String!
+    gitUrl: String!
     id: ID!
-    mainRoute: String!
-    monitoringUrls: Iterable!
-    monthHits: Int!
-    monthHours: Iterable!
-    monthStorageUsed: Iterable!
+    lagoonName: String!
+    lagoonProject: LagoonProject
     name: String!
-    namespace: String!
-    problems: Iterable!
-    routes: Iterable!
-    tasks: Iterable!
+    productionBranch: String!
+    stageBranches: Iterable!
+    startingPoint: StartingPoint!
+}
+
+"Connection for HostingProject."
+type HostingProjectConnection {
+    edges: [HostingProjectEdge]
+    pageInfo: HostingProjectPageInfo!
+    totalCount: Int!
+}
+
+"Edge of HostingProject."
+type HostingProjectEdge {
+    cursor: String!
+    node: HostingProject
+}
+
+"Information about the current page."
+type HostingProjectPageInfo {
+    endCursor: String
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+    startCursor: String
 }
 
 type LagoonProject implements Node {
@@ -72,21 +86,30 @@ type LagoonProject implements Node {
     subfolder: String!
 }
 
-"Connection for LagoonProject."
-type LagoonProjectConnection {
-    edges: [LagoonProjectEdge]
-    pageInfo: LagoonProjectPageInfo!
+type Membership implements Node {
+    dateCreated: String!
+    dateUpdated: String!
+    id: ID!
+    role: String!
+    team: Team!
+    user: User!
+}
+
+"Connection for Membership."
+type MembershipConnection {
+    edges: [MembershipEdge]
+    pageInfo: MembershipPageInfo!
     totalCount: Int!
 }
 
-"Edge of LagoonProject."
-type LagoonProjectEdge {
+"Edge of Membership."
+type MembershipEdge {
     cursor: String!
-    node: LagoonProject
+    node: Membership
 }
 
 "Information about the current page."
-type LagoonProjectPageInfo {
+type MembershipPageInfo {
     endCursor: String
     hasNextPage: Boolean!
     hasPreviousPage: Boolean!
@@ -94,30 +117,50 @@ type LagoonProjectPageInfo {
 }
 
 type Mutation {
-    "Backups a Project."
-    backupProject(input: backupProjectInput!): backupProjectPayload
+    "Backups a HostingProject."
+    backupHostingProject(input: backupHostingProjectInput!): backupHostingProjectPayload
     "Cancels a Deployment."
     cancelDeployment(input: cancelDeploymentInput!): cancelDeploymentPayload
-    "Creates a Environment."
-    createEnvironment(input: createEnvironmentInput!): createEnvironmentPayload
-    "Creates a LagoonProject."
-    createLagoonProject(input: createLagoonProjectInput!): createLagoonProjectPayload
+    "Creates a HostingProject."
+    createHostingProject(input: createHostingProjectInput!): createHostingProjectPayload
+    "Creates a Membership."
+    createMembership(input: createMembershipInput!): createMembershipPayload
     "Creates a Project."
     createProject(input: createProjectInput!): createProjectPayload
-    "Deletes a Environment."
-    deleteEnvironment(input: deleteEnvironmentInput!): deleteEnvironmentPayload
-    "Deletes a LagoonProject."
-    deleteLagoonProject(input: deleteLagoonProjectInput!): deleteLagoonProjectPayload
+    "Creates a StartingPoint."
+    createStartingPoint(input: createStartingPointInput!): createStartingPointPayload
+    "Creates a Team."
+    createTeam(input: createTeamInput!): createTeamPayload
+    "Creates a User."
+    createUser(input: createUserInput!): createUserPayload
+    "Deletes a HostingProject."
+    deleteHostingProject(input: deleteHostingProjectInput!): deleteHostingProjectPayload
+    "Deletes a Membership."
+    deleteMembership(input: deleteMembershipInput!): deleteMembershipPayload
     "Deletes a Project."
     deleteProject(input: deleteProjectInput!): deleteProjectPayload
-    "Deploys a Project."
-    deployProject(input: deployProjectInput!): deployProjectPayload
-    "Restores a Project."
-    restoreProject(input: restoreProjectInput!): restoreProjectPayload
-    "Updates a Environment."
-    updateEnvironment(input: updateEnvironmentInput!): updateEnvironmentPayload
-    "Updates a LagoonProject."
-    updateLagoonProject(input: updateLagoonProjectInput!): updateLagoonProjectPayload
+    "Deletes a StartingPoint."
+    deleteStartingPoint(input: deleteStartingPointInput!): deleteStartingPointPayload
+    "Deletes a Team."
+    deleteTeam(input: deleteTeamInput!): deleteTeamPayload
+    "Deletes a User."
+    deleteUser(input: deleteUserInput!): deleteUserPayload
+    "Deploys a HostingProject."
+    deployHostingProject(input: deployHostingProjectInput!): deployHostingProjectPayload
+    "Edits a HostingProject."
+    editHostingProject(input: editHostingProjectInput!): editHostingProjectPayload
+    "Edits a Project."
+    editProject(input: editProjectInput!): editProjectPayload
+    "Restores a HostingProject."
+    restoreHostingProject(input: restoreHostingProjectInput!): restoreHostingProjectPayload
+    "Updates a Membership."
+    updateMembership(input: updateMembershipInput!): updateMembershipPayload
+    "Updates a StartingPoint."
+    updateStartingPoint(input: updateStartingPointInput!): updateStartingPointPayload
+    "Updates a Team."
+    updateTeam(input: updateTeamInput!): updateTeamPayload
+    "Updates a User."
+    updateUser(input: updateUserInput!): updateUserPayload
 }
 
 type Project implements Node {
@@ -126,13 +169,8 @@ type Project implements Node {
     authorizedUsers: Iterable
     dateCreated: String!
     dateUpdated: String!
-    gitUrl: String!
     id: ID!
-    lagoonName: String!
-    lagoonProject: LagoonProject
     name: String!
-    productionBranch: String!
-    stageBranches: Iterable!
 }
 
 "Connection for Project."
@@ -157,10 +195,23 @@ type ProjectPageInfo {
 }
 
 type Query {
-    environment(id: ID!): Environment
-    environments: [Environment]
-    lagoonProject(id: ID!): LagoonProject
-    lagoonProjects(
+    hostingProject(id: ID!): HostingProject
+    hostingProjects(
+        "Returns the elements in the list that come after the specified cursor."
+        after: String,
+        "Returns the elements in the list that come before the specified cursor."
+        before: String,
+        "Returns the first n elements from the list."
+        first: Int,
+        id: Int,
+        id_list: [Int],
+        "Returns the last n elements from the list."
+        last: Int,
+        name: String,
+        order: [HostingProjectFilter_order]
+    ): HostingProjectConnection
+    membership(id: ID!): Membership
+    memberships(
         "Returns the elements in the list that come after the specified cursor."
         after: String,
         "Returns the elements in the list that come before the specified cursor."
@@ -169,7 +220,7 @@ type Query {
         first: Int,
         "Returns the last n elements from the list."
         last: Int
-    ): LagoonProjectConnection
+    ): MembershipConnection
     node(id: ID!): Node
     project(id: ID!): Project
     projects(
@@ -186,11 +237,133 @@ type Query {
         name: String,
         order: [ProjectFilter_order]
     ): ProjectConnection
+    startingPoint(id: ID!): StartingPoint
+    startingPoints: [StartingPoint]
+    team(id: ID!): Team
+    teams(
+        "Returns the elements in the list that come after the specified cursor."
+        after: String,
+        "Returns the elements in the list that come before the specified cursor."
+        before: String,
+        "Returns the first n elements from the list."
+        first: Int,
+        "Returns the last n elements from the list."
+        last: Int
+    ): TeamConnection
+    user(id: ID!): User
+    users(
+        "Returns the elements in the list that come after the specified cursor."
+        after: String,
+        "Returns the elements in the list that come before the specified cursor."
+        before: String,
+        "Returns the first n elements from the list."
+        first: Int,
+        "Returns the last n elements from the list."
+        last: Int
+    ): UserConnection
 }
 
-type backupProjectPayload {
+type StartingPoint implements Node {
+    """
+
+    The repository to base new projects with this starting point off of
+    EX: git@github.com:concrete5/concrete5.git
+    """
+    baseRepository: String!
+    dateCreated: String!
+    dateUpdated: String!
+    handle: String!
+    id: ID!
+    "The human readable name for this starting point"
+    name: String!
+    """
+
+    The name of the starting point to use. We basically clone $baseRepository and run c5:install with this value
+    provided for --starting-point
+    """
+    startingPoint: String!
+}
+
+type Team implements Node {
+    _id: String!
+    dateCreated: String!
+    dateUpdated: String!
+    id: ID!
+    members(
+        "Returns the elements in the list that come after the specified cursor."
+        after: String,
+        "Returns the elements in the list that come before the specified cursor."
+        before: String,
+        "Returns the first n elements from the list."
+        first: Int,
+        "Returns the last n elements from the list."
+        last: Int
+    ): MembershipConnection
+}
+
+"Connection for Team."
+type TeamConnection {
+    edges: [TeamEdge]
+    pageInfo: TeamPageInfo!
+    totalCount: Int!
+}
+
+"Edge of Team."
+type TeamEdge {
+    cursor: String!
+    node: Team
+}
+
+"Information about the current page."
+type TeamPageInfo {
+    endCursor: String
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+    startCursor: String
+}
+
+type User implements Node {
+    "We need to have a remote ID provided in order to create a member"
+    _id: Int!
+    dateCreated: String!
+    dateUpdated: String!
+    id: ID!
+    memberships(
+        "Returns the elements in the list that come after the specified cursor."
+        after: String,
+        "Returns the elements in the list that come before the specified cursor."
+        before: String,
+        "Returns the first n elements from the list."
+        first: Int,
+        "Returns the last n elements from the list."
+        last: Int
+    ): MembershipConnection
+}
+
+"Connection for User."
+type UserConnection {
+    edges: [UserEdge]
+    pageInfo: UserPageInfo!
+    totalCount: Int!
+}
+
+"Edge of User."
+type UserEdge {
+    cursor: String!
+    node: User
+}
+
+"Information about the current page."
+type UserPageInfo {
+    endCursor: String
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+    startCursor: String
+}
+
+type backupHostingProjectPayload {
     clientMutationId: String
-    project: Project
+    hostingProject: HostingProject
 }
 
 type cancelDeploymentPayload {
@@ -198,14 +371,14 @@ type cancelDeploymentPayload {
     deployment: Deployment
 }
 
-type createEnvironmentPayload {
+type createHostingProjectPayload {
     clientMutationId: String
-    environment: Environment
+    hostingProject: HostingProject
 }
 
-type createLagoonProjectPayload {
+type createMembershipPayload {
     clientMutationId: String
-    lagoonProject: LagoonProject
+    membership: Membership
 }
 
 type createProjectPayload {
@@ -213,14 +386,29 @@ type createProjectPayload {
     project: Project
 }
 
-type deleteEnvironmentPayload {
+type createStartingPointPayload {
     clientMutationId: String
-    environment: Environment
+    startingPoint: StartingPoint
 }
 
-type deleteLagoonProjectPayload {
+type createTeamPayload {
     clientMutationId: String
-    lagoonProject: LagoonProject
+    team: Team
+}
+
+type createUserPayload {
+    clientMutationId: String
+    user: User
+}
+
+type deleteHostingProjectPayload {
+    clientMutationId: String
+    hostingProject: HostingProject
+}
+
+type deleteMembershipPayload {
+    clientMutationId: String
+    membership: Membership
 }
 
 type deleteProjectPayload {
@@ -228,24 +416,65 @@ type deleteProjectPayload {
     project: Project
 }
 
-type deployProjectPayload {
+type deleteStartingPointPayload {
+    clientMutationId: String
+    startingPoint: StartingPoint
+}
+
+type deleteTeamPayload {
+    clientMutationId: String
+    team: Team
+}
+
+type deleteUserPayload {
+    clientMutationId: String
+    user: User
+}
+
+type deployHostingProjectPayload {
+    clientMutationId: String
+    hostingProject: HostingProject
+}
+
+type editHostingProjectPayload {
+    clientMutationId: String
+    hostingProject: HostingProject
+}
+
+type editProjectPayload {
     clientMutationId: String
     project: Project
 }
 
-type restoreProjectPayload {
+type restoreHostingProjectPayload {
     clientMutationId: String
-    project: Project
+    hostingProject: HostingProject
 }
 
-type updateEnvironmentPayload {
+type updateMembershipPayload {
     clientMutationId: String
-    environment: Environment
+    membership: Membership
 }
 
-type updateLagoonProjectPayload {
+type updateStartingPointPayload {
     clientMutationId: String
-    lagoonProject: LagoonProject
+    startingPoint: StartingPoint
+}
+
+type updateTeamPayload {
+    clientMutationId: String
+    team: Team
+}
+
+type updateUserPayload {
+    clientMutationId: String
+    user: User
+}
+
+input HostingProjectFilter_order {
+    dateCreated: String
+    id: String
+    name: String
 }
 
 input ProjectFilter_order {
@@ -254,7 +483,7 @@ input ProjectFilter_order {
     name: String
 }
 
-input backupProjectInput {
+input backupHostingProjectInput {
     clientMutationId: String
     "The environment to backup"
     environment: String!
@@ -276,73 +505,67 @@ input cancelDeploymentInput {
     uiLink: String!
 }
 
-input createEnvironmentInput {
-    _id: Int!
-    apiClient: String!
-    autoIdle: Int!
+input createHostingProjectInput {
+    authorizedAdmins: Iterable!
+    authorizedUsers: Iterable
     clientMutationId: String
-    dateCreated: String
-    dateDeleted: String
-    dateUpdated: String
-    deployBaseRef: String!
-    deployHeadRef: String!
-    deployType: String!
-    environmentType: String!
-    facts: Iterable!
-    mainRoute: String!
-    monitoringUrls: Iterable!
-    monthHits: Int!
-    monthHours: Iterable!
-    monthStorageUsed: Iterable!
     name: String!
-    namespace: String!
-    problems: Iterable!
-    routes: Iterable!
-    tasks: Iterable!
+    productionBranch: String!
+    stageBranches: Iterable!
+    startingPoint: String!
 }
 
-input createLagoonProjectInput {
-    _id: Int!
-    apiClient: String!
-    autoIdle: Int!
-    availability: String!
-    branches: String!
+input createMembershipInput {
     clientMutationId: String
-    created: String
-    developmentEnvironmentsLimit: Int!
-    environments: Iterable!
-    gitUrl: String!
-    kubernetes: String!
-    kubernetesNamespacePattern: String!
-    metadata: Iterable!
-    name: String!
-    productionAlias: String!
-    productionEnvironment: String!
-    productionRoutes: String!
-    pullrequests: String!
-    standbyAlias: String!
-    standbyProductionEnvironment: String!
-    standbyRoutes: String!
-    storageCalc: Int!
-    subfolder: String!
+    role: String!
+    team: String!
+    user: String!
 }
 
 input createProjectInput {
     authorizedAdmins: Iterable!
     authorizedUsers: Iterable
     clientMutationId: String
-    gitUrl: String!
     name: String!
-    productionBranch: String!
-    stageBranches: Iterable!
 }
 
-input deleteEnvironmentInput {
+input createStartingPointInput {
+    """
+
+    The repository to base new projects with this starting point off of
+    EX: git@github.com:concrete5/concrete5.git
+    """
+    baseRepository: String!
+    clientMutationId: String
+    handle: String!
+    "The human readable name for this starting point"
+    name: String!
+    """
+
+    The name of the starting point to use. We basically clone $baseRepository and run c5:install with this value
+    provided for --starting-point
+    """
+    startingPoint: String!
+}
+
+input createTeamInput {
+    clientMutationId: String
+    members: [String]
+}
+
+input createUserInput {
+    "We need to have a remote ID provided in order to create a member"
+    _id: Int!
+    clientMutationId: String
+    memberships: [String]
+}
+
+input deleteHostingProjectInput {
     clientMutationId: String
     id: ID!
 }
 
-input deleteLagoonProjectInput {
+input deleteMembershipInput {
     clientMutationId: String
     id: ID!
 }
@@ -352,7 +575,22 @@ input deleteProjectInput {
     id: ID!
 }
 
-input deployProjectInput {
+input deleteStartingPointInput {
+    clientMutationId: String
+    id: ID!
+}
+
+input deleteTeamInput {
+    clientMutationId: String
+    id: ID!
+}
+
+input deleteUserInput {
+    clientMutationId: String
+    id: ID!
+}
+
+input deployHostingProjectInput {
     "The branch to deploy"
     branch: String!
     clientMutationId: String
@@ -360,7 +598,26 @@ input deployProjectInput {
     project: Int!
 }
 
-input restoreProjectInput {
+input editHostingProjectInput {
+    authorizedAdmins: Iterable!
+    authorizedUsers: Iterable
+    clientMutationId: String
+    id: ID!
+    name: String!
+    productionBranch: String!
+    stageBranches: Iterable!
+    startingPoint: String!
+}
+
+input editProjectInput {
+    authorizedAdmins: Iterable!
+    authorizedUsers: Iterable
+    clientMutationId: String
+    id: ID!
+    name: String!
+}
+
+input restoreHostingProjectInput {
     clientMutationId: String
     "The environment to restore"
     environment: String!
@@ -368,57 +625,46 @@ input restoreProjectInput {
     project: Int!
 }
 
-input updateEnvironmentInput {
-    _id: Int
-    apiClient: String
-    autoIdle: Int
+input updateMembershipInput {
     clientMutationId: String
-    dateCreated: String
-    dateDeleted: String
-    dateUpdated: String
-    deployBaseRef: String
-    deployHeadRef: String
-    deployType: String
-    environmentType: String
-    facts: Iterable
     id: ID!
-    mainRoute: String
-    monitoringUrls: Iterable
-    monthHits: Int
-    monthHours: Iterable
-    monthStorageUsed: Iterable
-    name: String
-    namespace: String
-    problems: Iterable
-    routes: Iterable
-    tasks: Iterable
+    role: String
+    team: String
+    user: String
 }
 
-input updateLagoonProjectInput {
-    _id: Int
-    apiClient: String
-    autoIdle: Int
-    availability: String
-    branches: String
+input updateStartingPointInput {
+    """
+
+    The repository to base new projects with this starting point off of
+    EX: git@github.com:concrete5/concrete5.git
+    """
+    baseRepository: String
     clientMutationId: String
-    created: String
-    developmentEnvironmentsLimit: Int
-    environments: Iterable
-    gitUrl: String
+    handle: String
     id: ID!
-    kubernetes: String
-    kubernetesNamespacePattern: String
-    metadata: Iterable
+    "The human readable name for this starting point"
     name: String
-    productionAlias: String
-    productionEnvironment: String
-    productionRoutes: String
-    pullrequests: String
-    standbyAlias: String
-    standbyProductionEnvironment: String
-    standbyRoutes: String
-    storageCalc: Int
-    subfolder: String
+    """
+
+    The name of the starting point to use. We basically clone $baseRepository and run c5:install with this value
+    provided for --starting-point
+    """
+    startingPoint: String
+}
+
+input updateTeamInput {
+    clientMutationId: String
+    id: ID!
+    members: [String]
+}
+
+input updateUserInput {
+    "We need to have a remote ID provided in order to create a member"
+    _id: Int
+    clientMutationId: String
+    id: ID!
+    memberships: [String]
 }
 
 

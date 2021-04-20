@@ -4,14 +4,14 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Create a Site</h5>
+                        <h5 class="modal-title">Create a Hosting Project</h5>
                         <button :disabled="creating" @click="close" type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label" for="siteName">Site Name</label>
+                            <label class="col-sm-3 col-form-label" for="siteName">Project Name</label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" id="siteName" v-model="name">
                             </div>
@@ -31,7 +31,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button :disabled="creating" type="button" class="btn btn-primary" @click="createProject">Create Site</button>
+                        <button :disabled="creating" type="button" class="btn btn-primary" @click="createProject">Create Project</button>
                         <button :disabled="creating" type="button" class="btn btn-secondary" @click="close">Cancel</button>
                     </div>
                 </div>
