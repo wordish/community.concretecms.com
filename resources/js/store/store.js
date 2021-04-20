@@ -15,6 +15,7 @@ export const store = new Vuex.Store({
         count: 0,
         jwt: '',
         selectedProject: null,
+        addedProject: null,
     },
     getters: {
         isLoggedIn: (state) => !!state.jwt
@@ -34,7 +35,10 @@ export const store = new Vuex.Store({
             state.jwt = ''
             await apolloClient.resetStore();
             await router.replace('/api-login')
-        }
+        },
+        createProject(state, project) {
+            state.addedProject = project
+        },
     },
     plugins: [vuexLocal.plugin]
 })

@@ -4,10 +4,14 @@
             <div class="mb-5">
                 <h4>LOCAL EDITING</h4>
                 <p>Edit on your local machine by cloning our git repository</p>
-                <div class="d-flex align-items-center">
-                    <strong>Git Repository</strong>
+                <div class="row">
+                    <strong class="col-sm-2">Git Repository</strong>
                     <span class="px-4">{{ project.gitUrl }}</span>
                     <div><button class="btn btn-sm" @click="notImplemented">Clone</button></div>
+                </div>
+                <div class="row">
+                    <strong class="col-sm-2">Site Type</strong>
+                    <span class="px-4">{{ project.startingPoint.name }}</span>
                 </div>
             </div>
             <div>

@@ -1,3 +1,3 @@
 export default {
-    apiBaseUrl: 'https://api.concretecms.com'
+    apiBaseUrl: process.env.MIX_CONCRETE_API_URL
 }
