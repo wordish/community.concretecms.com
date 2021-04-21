@@ -17,7 +17,6 @@
 /.idea
 /node_modules
 /.env
-/public/mix-manifest.json
 /phpunit.xml
 /build
 /.phpunit.*

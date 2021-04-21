@@ -7,7 +7,9 @@ mix
     .setPublicPath('public')
 
     // Simple ES6 JavaScript
-    .js('resources/js/hosting.js', 'public/application/js/hosting.js').vue()
+    .js('resources/js/hosting.js', 'public/application/js/hosting.js')
+    .vue()
+    .version('public/application/js/hosting.js')
 
 // Other options:
 // mix.sass, mix.js, mix.scripts, mix.stylus, mix.styles, mix.react, mix.webpackConfig, mix.copy, mix.copyDirectory,

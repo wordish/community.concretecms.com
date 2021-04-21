@@ -15,9 +15,16 @@ export const store = new Vuex.Store({
         count: 0,
         jwt: '',
         selectedProject: null,
+        addedProject: null,
     },
     getters: {
-        isLoggedIn: (state) => !!state.jwt
+        isLoggedIn: (state) => !!state.jwt,
+        jwtData: (state) => {
+            const base64 = state.jwt.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+            return JSON.parse(decodeURIComponent(atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join('')));
+        }
     },
     mutations: {
         async selectProject(state, project) {
@@ -34,7 +41,10 @@ export const store = new Vuex.Store({
             state.jwt = ''
             await apolloClient.resetStore();
             await router.replace('/api-login')
-        }
+        },
+        createProject(state, project) {
+            state.addedProject = project
+        },
     },
     plugins: [vuexLocal.plugin]
 })
