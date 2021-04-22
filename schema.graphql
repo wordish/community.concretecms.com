@@ -25,7 +25,7 @@ type Deployment implements Node {
 
 type HostingProject implements Node {
     _id: Int!
-    authorizedAdmins: Iterable!
+    authorizedAdmins: Iterable
     authorizedUsers: Iterable
     dateCreated: String!
     dateUpdated: String!
@@ -36,6 +36,7 @@ type HostingProject implements Node {
     lagoonProject: LagoonProject
     name: String!
     productionBranch: String!
+    projectType: String!
     stageBranches: Iterable!
     startingPoint: StartingPoint!
 }
@@ -151,6 +152,8 @@ type Mutation {
     editHostingProject(input: editHostingProjectInput!): editHostingProjectPayload
     "Edits a Project."
     editProject(input: editProjectInput!): editProjectPayload
+    "Installs a HostingProject."
+    installHostingProject(input: installHostingProjectInput!): installHostingProjectPayload
     "Restores a HostingProject."
     restoreHostingProject(input: restoreHostingProjectInput!): restoreHostingProjectPayload
     "Updates a Membership."
@@ -165,12 +168,13 @@ type Mutation {
 
 type Project implements Node {
     _id: Int!
-    authorizedAdmins: Iterable!
+    authorizedAdmins: Iterable
     authorizedUsers: Iterable
     dateCreated: String!
     dateUpdated: String!
     id: ID!
     name: String!
+    projectType: String!
 }
 
 "Connection for Project."
@@ -446,6 +450,11 @@ type editProjectPayload {
     project: Project
 }
 
+type installHostingProjectPayload {
+    clientMutationId: String
+    hostingProject: HostingProject
+}
+
 type restoreHostingProjectPayload {
     clientMutationId: String
     hostingProject: HostingProject
@@ -506,7 +515,7 @@ input cancelDeploymentInput {
 }
 
 input createHostingProjectInput {
-    authorizedAdmins: Iterable!
+    authorizedAdmins: Iterable
     authorizedUsers: Iterable
     clientMutationId: String
     name: String!
@@ -523,7 +532,7 @@ input createMembershipInput {
 }
 
 input createProjectInput {
-    authorizedAdmins: Iterable!
+    authorizedAdmins: Iterable
     authorizedUsers: Iterable
     clientMutationId: String
     name: String!
@@ -599,7 +608,7 @@ input deployHostingProjectInput {
 }
 
 input editHostingProjectInput {
-    authorizedAdmins: Iterable!
+    authorizedAdmins: Iterable
     authorizedUsers: Iterable
     clientMutationId: String
     id: ID!
@@ -610,11 +619,19 @@ input editHostingProjectInput {
 }
 
 input editProjectInput {
-    authorizedAdmins: Iterable!
+    authorizedAdmins: Iterable
     authorizedUsers: Iterable
     clientMutationId: String
     id: ID!
     name: String!
+}
+
+input installHostingProjectInput {
+    clientMutationId: String
+    "The environment to install"
+    environment: String!
+    "The project to install"
+    project: Int!
 }
 
 input restoreHostingProjectInput {
