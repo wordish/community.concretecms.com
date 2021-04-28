@@ -44,3 +44,19 @@ export const M_ENVIRONMENT_RESTORE = gql`
         }
     }
 `
+
+export const M_ENVIRONMENT_INSTALL = gql`
+    mutation($environment: String!, $projectId: Int!) {
+        installHostingProject(input:{
+            project:$projectId
+            environment:$environment
+        }) {
+            project: hostingProject {
+                lagoonProject {
+                    environments
+                }
+            }
+        }
+    }
+`
+

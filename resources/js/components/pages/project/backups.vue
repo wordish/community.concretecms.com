@@ -30,6 +30,7 @@
                                 <select v-model="action">
                                     <option value="backup">Backup</option>
                                     <option value="restore">Restore</option>
+                                    <option value="install">Install</option>
                                 </select>
                                 <span>the</span>
                                 <strong>{{ selectedEnvironment.name }}</strong>
@@ -70,7 +71,7 @@
 import Card from "../../basic/card";
 import {Q_PROJECT_FULL} from "../../../queries/project";
 import {expectedEnvironments} from "../../../helpers";
-import {M_ENVIRONMENT_BACKUP, M_ENVIRONMENT_RESTORE} from "../../../queries/environment";
+import {M_ENVIRONMENT_BACKUP, M_ENVIRONMENT_RESTORE, M_ENVIRONMENT_INSTALL} from "../../../queries/environment";
 import moment from 'moment-timezone'
 import DeploymentRow from "../../basic/deployment-row";
 export default {
@@ -141,7 +142,11 @@ export default {
             const environment = this.selectedEnvironment
             this.$apollo.mutate({
                 // Query
-                mutation: this.action === 'backup' ? M_ENVIRONMENT_BACKUP : M_ENVIRONMENT_RESTORE,
+                mutation: {
+                    'backup': M_ENVIRONMENT_BACKUP,
+                    'restore': M_ENVIRONMENT_RESTORE,
+                    'install': M_ENVIRONMENT_INSTALL,
+                }[this.action],
                 // Parameters
                 variables: {
                     projectId: this.project._id,
