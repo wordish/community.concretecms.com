@@ -33,7 +33,7 @@ class ProjectList extends ItemList
 
     public function executeGetResults()
     {
-        throw new \exception('executeGetResults');
+        return false;
     }
 
     public function debugStart()
@@ -58,7 +58,7 @@ class ProjectList extends ItemList
 
     public function getTotalResults()
     {
-        throw new \exception('getTotalResults');
+        return false;
     }
 
     public function filterByKeywords($keywords)

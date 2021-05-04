@@ -13,6 +13,7 @@ use PortlandLabs\Hosting\Api\Client\Denormalizer;
 use PortlandLabs\Hosting\Project\LagoonProject;
 use PortlandLabs\Hosting\Project\Project;
 use PortlandLabs\Hosting\Serializer\Serializer;
+use PortlandLabs\Hosting\Software\ConcreteRelease;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\CustomNormalizer;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
@@ -71,6 +72,7 @@ class ServiceProvider extends Provider
             $denormalizer = new Denormalizer($serializer);
             $denormalizer->registerMapping('Project', Project::class);
             $denormalizer->registerMapping('LagoonProject', LagoonProject::class);
+            $denormalizer->registerMapping('ConcreteRelease', ConcreteRelease::class);
             return $denormalizer;
         });
 
@@ -82,6 +84,9 @@ class ServiceProvider extends Provider
                          ['PortlandLabs\Hosting\Project\Command\CreateLagoonProjectCommand', 'PortlandLabs\Hosting\Project\Command\CreateLagoonProjectCommandHandler'],
                          ['PortlandLabs\Hosting\Project\Command\UpdateProjectCommand', 'PortlandLabs\Hosting\Project\Command\UpdateProjectCommandHandler'],
                          ['PortlandLabs\Hosting\Project\Command\UpdateLagoonProjectCommand', 'PortlandLabs\Hosting\Project\Command\UpdateLagoonProjectCommandHandler'],
+                         ['PortlandLabs\Hosting\Software\Command\DeleteConcreteReleaseCommand', 'PortlandLabs\Hosting\Software\Command\DeleteConcreteReleaseCommandHandler'],
+                         ['PortlandLabs\Hosting\Software\Command\CreateConcreteReleaseCommand', 'PortlandLabs\Hosting\Software\Command\CreateConcreteReleaseCommandHandler'],
+                         ['PortlandLabs\Hosting\Software\Command\UpdateConcreteReleaseCommand', 'PortlandLabs\Hosting\Software\Command\UpdateConcreteReleaseCommandHandler'],
                      ] as $entry) {
                 $command = $entry[0];
                 $handler = $entry[1];
