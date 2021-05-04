@@ -48,7 +48,20 @@ class Client
         $url = Url::createFromUrl($apiUrl . $query->getEndpoint());
         $url->getQuery()->set($queryParams);
 
-        $response = $this->client->get((string) $url);
+        return $this->getCollectionResult((string) $url);
+    }
+
+    public function getCollection(QueryInterface $query)
+    {
+        $apiUrl = $this->getApiUrl();
+        $url = $apiUrl . $query->getEndpoint();
+
+        return $this->getCollectionResult($url);
+    }
+
+    protected function getCollectionResult(string $url)
+    {
+        $response = $this->client->get($url);
 
         $data = json_decode((string) $response->getBody(), true);
 
