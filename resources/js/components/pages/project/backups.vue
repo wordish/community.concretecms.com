@@ -228,9 +228,6 @@ export default {
 .row:last-child {
     border:none !important;
 }
-.table td {
-    opacity: 70%;
-}
 .table tr:nth-child(even) {
     background-color: rgba(216, 216, 216, .1);
 }
