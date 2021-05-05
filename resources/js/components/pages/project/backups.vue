@@ -36,7 +36,7 @@
                             <td>{{ backup.environmentName }}</td>
                             <td class="text-center"><span :class="statusColor(backup.status)">{{ backup.status }}</span></td>
                             <td class="text-right">
-                                <button class="btn btn-secondary btn-sm" @click="downloadBackup(backup)" v-if="backup.downloadUrl">Download</button>
+                                <a class="btn btn-secondary btn-sm" :href='fullUrl(backup.downloadUrl)' v-if="backup.downloadUrl">Download</a>
                                 <button class="btn btn-secondary btn-sm" @click="restore(backup)" v-if="backup.downloadUrl">Restore</button>
                             </td>
                         </tr>
