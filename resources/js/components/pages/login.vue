@@ -2,7 +2,7 @@
     <div class="login-form w-50 m-auto">
         <form @submit.prevent.stop="attemptLogin()" method="post">
             <h2 class="text-center">Log in</h2>
-            <div class="help-block error" v-if="error">{{ error }}</div>
+            <div class="alert alert-danger" v-if="error">{{ error }}</div>
             <div class="form-group">
                 <input name="email" v-model="username" type="email" class="form-control" placeholder="Email" required="required" autocomplete="off">
             </div>
@@ -34,21 +34,34 @@ export default {
             const self = this
             self.authenticating = true
 
+            let caught = null
             const response = await fetch(`${config.apiBaseUrl}/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    email: this.username,
-                    password: this.password,
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: this.username,
+                        password: this.password,
+                    })
                 })
-            }).then((response) => response.json())
+                .then((response) => response.json())
+                .catch((error) => {
+                    caught = error
+                });
+
+            if (caught) {
+                this.error('Unknown error occurred.');
+                this.authenticating = false
+                return
+            }
 
             // Start validating
-            if (response.message) {
-                this.error = response.message ? response.message : 'Unknown error.'
-                this.authenticating = false;
+            const errorMessage = response.detail || response.message
+            if (errorMessage) {
+                this.error = errorMessage
+                this.authenticating = false
                 return
             }
 
