@@ -39,3 +39,28 @@ export const M_PROJECT_CREATE = gql`
         }
     }
 `
+export const Q_PROJECT_BACKUPS = gql`
+    query($projectId: ID!, $after: String, $before: String, $perPage: Int!) {
+        hostingProject(id: $projectId) {
+            id
+            _id
+            name
+            productionBranch
+            stageBranches
+            backups(order: {dateCreated: "desc"}, first: $perPage, after: $after, before: $before) {
+                edges {
+                    node {
+                        environmentName
+                        downloadUrl
+                        status
+                        dateCreated
+                        dateUpdated
+                        taskId
+                        id
+                        _id
+                    }
+                }
+            }
+        }
+    },
+`

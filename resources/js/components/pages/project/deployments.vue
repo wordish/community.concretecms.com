@@ -88,8 +88,7 @@ export default {
                         this.selectedEnvironment.deployments = newEnvironment.deployments
                     }
                 }
-            },
-            pollInterval: 2000
+            }
         },
     },
     computed: {

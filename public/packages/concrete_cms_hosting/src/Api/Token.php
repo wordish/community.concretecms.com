@@ -36,7 +36,7 @@ class Token
             );
 
             $data = json_decode($response->getBody()->getContents(), true) ?: [];
-            $token = $data['token'];
+            $token = $data['jwt'];
 
             $this->jwt = $token;
         } catch (ServerException $e) {

@@ -3,12 +3,82 @@
 schema {
     query: Query
     mutation: Mutation
+    subscription: Subscription
 }
 
 "A node, according to the Relay specification."
 interface Node {
     "The id of this node."
     id: ID!
+}
+
+type Backup implements Node {
+    _id: String!
+    dateCreated: String!
+    dateUpdated: String!
+    downloadUrl: String
+    environmentName: String!
+    id: ID!
+    project: HostingProject
+    status: String!
+    taskId: String!
+    "How many seconds this backup will be valid, default to 1 hour"
+    ttl: Int!
+}
+
+"Connection for Backup."
+type BackupConnection {
+    edges: [BackupEdge]
+    pageInfo: BackupPageInfo!
+    totalCount: Int!
+}
+
+"Edge of Backup."
+type BackupEdge {
+    cursor: String!
+    node: Backup
+}
+
+"Information about the current page."
+type BackupPageInfo {
+    endCursor: String
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+    startCursor: String
+}
+
+type ConcreteRelease implements Node {
+    _id: Int!
+    dateReleased: String!
+    downloadUrl: String
+    id: ID!
+    isPublished: Boolean!
+    md5sum: String!
+    releaseNotes: String
+    releaseNotesUrl: String
+    upgradeNotes: String
+    version: String!
+}
+
+"Connection for ConcreteRelease."
+type ConcreteReleaseConnection {
+    edges: [ConcreteReleaseEdge]
+    pageInfo: ConcreteReleasePageInfo!
+    totalCount: Int!
+}
+
+"Edge of ConcreteRelease."
+type ConcreteReleaseEdge {
+    cursor: String!
+    node: ConcreteRelease
+}
+
+"Information about the current page."
+type ConcreteReleasePageInfo {
+    endCursor: String
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+    startCursor: String
 }
 
 type Deployment implements Node {
@@ -27,6 +97,17 @@ type HostingProject implements Node {
     _id: Int!
     authorizedAdmins: Iterable
     authorizedUsers: Iterable
+    backups(
+        "Returns the elements in the list that come after the specified cursor."
+        after: String,
+        "Returns the elements in the list that come before the specified cursor."
+        before: String,
+        "Returns the first n elements from the list."
+        first: Int,
+        "Returns the last n elements from the list."
+        last: Int,
+        order: [BackupFilter_order]
+    ): BackupConnection
     dateCreated: String!
     dateUpdated: String!
     gitPath: String!
@@ -122,6 +203,8 @@ type Mutation {
     backupHostingProject(input: backupHostingProjectInput!): backupHostingProjectPayload
     "Cancels a Deployment."
     cancelDeployment(input: cancelDeploymentInput!): cancelDeploymentPayload
+    "Creates a ConcreteRelease."
+    createConcreteRelease(input: createConcreteReleaseInput!): createConcreteReleasePayload
     "Creates a HostingProject."
     createHostingProject(input: createHostingProjectInput!): createHostingProjectPayload
     "Creates a Membership."
@@ -134,6 +217,8 @@ type Mutation {
     createTeam(input: createTeamInput!): createTeamPayload
     "Creates a User."
     createUser(input: createUserInput!): createUserPayload
+    "Deletes a ConcreteRelease."
+    deleteConcreteRelease(input: deleteConcreteReleaseInput!): deleteConcreteReleasePayload
     "Deletes a HostingProject."
     deleteHostingProject(input: deleteHostingProjectInput!): deleteHostingProjectPayload
     "Deletes a Membership."
@@ -148,16 +233,18 @@ type Mutation {
     deleteUser(input: deleteUserInput!): deleteUserPayload
     "Deploys a HostingProject."
     deployHostingProject(input: deployHostingProjectInput!): deployHostingProjectPayload
-    "Edits a HostingProject."
-    editHostingProject(input: editHostingProjectInput!): editHostingProjectPayload
-    "Edits a Project."
-    editProject(input: editProjectInput!): editProjectPayload
     "Installs a HostingProject."
     installHostingProject(input: installHostingProjectInput!): installHostingProjectPayload
     "Restores a HostingProject."
     restoreHostingProject(input: restoreHostingProjectInput!): restoreHostingProjectPayload
+    "Updates a ConcreteRelease."
+    updateConcreteRelease(input: updateConcreteReleaseInput!): updateConcreteReleasePayload
+    "Updates a HostingProject."
+    updateHostingProject(input: updateHostingProjectInput!): updateHostingProjectPayload
     "Updates a Membership."
     updateMembership(input: updateMembershipInput!): updateMembershipPayload
+    "Updates a Project."
+    updateProject(input: updateProjectInput!): updateProjectPayload
     "Updates a StartingPoint."
     updateStartingPoint(input: updateStartingPointInput!): updateStartingPointPayload
     "Updates a Team."
@@ -199,6 +286,19 @@ type ProjectPageInfo {
 }
 
 type Query {
+    backup(id: ID!): Backup
+    concreteRelease(id: ID!): ConcreteRelease
+    concreteReleases(
+        "Returns the elements in the list that come after the specified cursor."
+        after: String,
+        "Returns the elements in the list that come before the specified cursor."
+        before: String,
+        "Returns the first n elements from the list."
+        first: Int,
+        "Returns the last n elements from the list."
+        last: Int,
+        order: [ConcreteReleaseFilter_order]
+    ): ConcreteReleaseConnection
     hostingProject(id: ID!): HostingProject
     hostingProjects(
         "Returns the elements in the list that come after the specified cursor."
@@ -288,6 +388,13 @@ type StartingPoint implements Node {
     startingPoint: String!
 }
 
+type Subscription {
+    "Subscribes to the update event of a HostingProject."
+    updateHostingProjectSubscribe(input: updateHostingProjectSubscriptionInput!): updateHostingProjectSubscriptionPayload
+    "Subscribes to the update event of a Project."
+    updateProjectSubscribe(input: updateProjectSubscriptionInput!): updateProjectSubscriptionPayload
+}
+
 type Team implements Node {
     _id: String!
     dateCreated: String!
@@ -375,6 +482,11 @@ type cancelDeploymentPayload {
     deployment: Deployment
 }
 
+type createConcreteReleasePayload {
+    clientMutationId: String
+    concreteRelease: ConcreteRelease
+}
+
 type createHostingProjectPayload {
     clientMutationId: String
     hostingProject: HostingProject
@@ -403,6 +515,11 @@ type createTeamPayload {
 type createUserPayload {
     clientMutationId: String
     user: User
+}
+
+type deleteConcreteReleasePayload {
+    clientMutationId: String
+    concreteRelease: ConcreteRelease
 }
 
 type deleteHostingProjectPayload {
@@ -440,16 +557,6 @@ type deployHostingProjectPayload {
     hostingProject: HostingProject
 }
 
-type editHostingProjectPayload {
-    clientMutationId: String
-    hostingProject: HostingProject
-}
-
-type editProjectPayload {
-    clientMutationId: String
-    project: Project
-}
-
 type installHostingProjectPayload {
     clientMutationId: String
     hostingProject: HostingProject
@@ -460,9 +567,36 @@ type restoreHostingProjectPayload {
     hostingProject: HostingProject
 }
 
+type updateConcreteReleasePayload {
+    clientMutationId: String
+    concreteRelease: ConcreteRelease
+}
+
+type updateHostingProjectPayload {
+    clientMutationId: String
+    hostingProject: HostingProject
+}
+
+type updateHostingProjectSubscriptionPayload {
+    clientSubscriptionId: String
+    hostingProject: HostingProject
+    mercureUrl: String
+}
+
 type updateMembershipPayload {
     clientMutationId: String
     membership: Membership
+}
+
+type updateProjectPayload {
+    clientMutationId: String
+    project: Project
+}
+
+type updateProjectSubscriptionPayload {
+    clientSubscriptionId: String
+    mercureUrl: String
+    project: Project
 }
 
 type updateStartingPointPayload {
@@ -478,6 +612,15 @@ type updateTeamPayload {
 type updateUserPayload {
     clientMutationId: String
     user: User
+}
+
+input BackupFilter_order {
+    dateCreated: String
+}
+
+input ConcreteReleaseFilter_order {
+    dateReleased: String
+    id: String
 }
 
 input HostingProjectFilter_order {
@@ -514,9 +657,22 @@ input cancelDeploymentInput {
     uiLink: String!
 }
 
+input createConcreteReleaseInput {
+    clientMutationId: String
+    dateReleased: String!
+    downloadUrl: String
+    isPublished: Boolean!
+    md5sum: String!
+    releaseNotes: String
+    releaseNotesUrl: String
+    upgradeNotes: String
+    version: String!
+}
+
 input createHostingProjectInput {
     authorizedAdmins: Iterable
     authorizedUsers: Iterable
+    backups: [String]
     clientMutationId: String
     name: String!
     productionBranch: String!
@@ -569,6 +725,11 @@ input createUserInput {
     memberships: [String]
 }
 
+input deleteConcreteReleaseInput {
+    clientMutationId: String
+    id: ID!
+}
+
 input deleteHostingProjectInput {
     clientMutationId: String
     id: ID!
@@ -607,25 +768,6 @@ input deployHostingProjectInput {
     project: Int!
 }
 
-input editHostingProjectInput {
-    authorizedAdmins: Iterable
-    authorizedUsers: Iterable
-    clientMutationId: String
-    id: ID!
-    name: String!
-    productionBranch: String!
-    stageBranches: Iterable!
-    startingPoint: String!
-}
-
-input editProjectInput {
-    authorizedAdmins: Iterable
-    authorizedUsers: Iterable
-    clientMutationId: String
-    id: ID!
-    name: String!
-}
-
 input installHostingProjectInput {
     clientMutationId: String
     "The environment to install"
@@ -635,11 +777,43 @@ input installHostingProjectInput {
 }
 
 input restoreHostingProjectInput {
+    "The backup to restore from"
+    backup: String!
     clientMutationId: String
     "The environment to restore"
     environment: String!
     "The environment to restore"
     project: Int!
+}
+
+input updateConcreteReleaseInput {
+    clientMutationId: String
+    dateReleased: String
+    downloadUrl: String
+    id: ID!
+    isPublished: Boolean
+    md5sum: String
+    releaseNotes: String
+    releaseNotesUrl: String
+    upgradeNotes: String
+    version: String
+}
+
+input updateHostingProjectInput {
+    authorizedAdmins: Iterable
+    authorizedUsers: Iterable
+    backups: [String]
+    clientMutationId: String
+    id: ID!
+    name: String
+    productionBranch: String
+    stageBranches: Iterable
+    startingPoint: String
+}
+
+input updateHostingProjectSubscriptionInput {
+    clientSubscriptionId: String
+    id: ID!
 }
 
 input updateMembershipInput {
@@ -648,6 +822,19 @@ input updateMembershipInput {
     role: String
     team: String
     user: String
+}
+
+input updateProjectInput {
+    authorizedAdmins: Iterable
+    authorizedUsers: Iterable
+    clientMutationId: String
+    id: ID!
+    name: String
+}
+
+input updateProjectSubscriptionInput {
+    clientSubscriptionId: String
+    id: ID!
 }
 
 input updateStartingPointInput {

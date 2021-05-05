@@ -17,6 +17,7 @@
 
 <script>
 import moment from "moment-timezone";
+import {dateFormat} from "../../helpers";
 
 export default {
     name: "deployment-row",
@@ -48,7 +49,7 @@ export default {
             return map[this.status] ? map[this.status] : ''
         },
         formattedCreationDate() {
-            return moment.tz(this.created, 'UTC').tz(moment.tz.guess()).format('DD MMM YYYY h:mm a')
+            return dateFormat(this.created)
         },
     },
     methods: {

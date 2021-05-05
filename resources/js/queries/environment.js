@@ -31,10 +31,11 @@ export const M_ENVIRONMENT_BACKUP = gql`
 `
 
 export const M_ENVIRONMENT_RESTORE = gql`
-    mutation($environment: String!, $projectId: Int!) {
+    mutation($environment: String!, $projectId: Int!, $backup: String!) {
         restoreHostingProject(input:{
             project:$projectId
             environment:$environment
+            backup:$backup
         }) {
             project: hostingProject {
                 lagoonProject {

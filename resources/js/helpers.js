@@ -1,3 +1,5 @@
+import moment from "moment-timezone";
+
 export function expectedEnvironments(project) {
     if (!project) {
         return []
@@ -55,4 +57,12 @@ export function expectedEnvironments(project) {
         production,
         ...stages
     ]
+}
+
+export function dateFormat(date) {
+    return moment.tz(date, 'UTC').tz(moment.tz.guess()).format('DD MMM YYYY h:mm a')
+}
+
+export function timeSince(date) {
+    return moment.tz(date, 'UTC').tz(moment.tz.guess()).from(moment())
 }

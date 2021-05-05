@@ -47,20 +47,20 @@ export default {
 
             // Start validating
             if (response.message) {
-                this.error = response.message
+                this.error = response.message ? response.message : 'Unknown error.'
                 this.authenticating = false;
                 return
             }
 
-            if (!response.token) {
+            if (!response.jwt) {
                 this.error = 'Invalid login response, please try again later.'
                 this.authenticating = false
                 return
             }
 
-            store.commit('login', response.token)
-            self.authenticating = false
+            store.commit('login', response.jwt)
 
+            self.authenticating = false
             await router.replace('/');
         }
     }

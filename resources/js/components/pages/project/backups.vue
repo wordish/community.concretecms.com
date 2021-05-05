@@ -1,64 +1,45 @@
 <template>
     <card :loading="$apollo.loading || loading">
         <div class="card-body">
-            <div v-if="!selectedEnvironment">
-                <div class="mb-5">
-                    <h4>Backups</h4>
-                    <p>Backups are smart, don't be a dummy.</p>
-                </div>
-                <div class="container">
-                    <div @click="selectedEnvironment=env" style="cursor: pointer" class="row py-3 border-bottom justify-content-center align-items-center" :key="env.name" v-for="env in expectedEnvironments">
-                        <span class="col-3">
-                            {{ env.name }}
-                        </span>
-                        <strong class="col-4">
-                            {{env.type}}
-                        </strong>
-                        <i class="fas fa-chevron-right" />
-                    </div>
-                </div>
-            </div>
-            <div v-else>
+            <div>
                 <div class="mb-5">
                     <h4>Backup</h4>
                 </div>
                 <div class="border-bottom border-top py-2 px-2">
                     <div class="container">
                         <div class="row align-items-center justify-content-between">
-                            <div class="pr-3"><i @click="selectedEnvironment=null" style="cursor: pointer" class="fas fa-chevron-left"></i></div>
                             <div>
-                                <select v-model="action">
-                                    <option value="backup">Backup</option>
-                                    <option value="restore">Restore</option>
-                                    <option value="install">Install</option>
-                                </select>
+                                Backup
                                 <span>the</span>
-                                <strong>{{ selectedEnvironment.name }}</strong>
+                                <select v-model="selectedEnvironment">
+                                    <option v-for="env of expectedEnvironments" :value="env.name">{{ env.name }} ({{ env.type }})</option>
+                                </select>
                                 <span>environment</span>
                             </div>
-                            <button @click="deploy" class="btn btn-primary">Start</button>
+                            <button @click="backup" class="btn btn-primary">Start</button>
                         </div>
                     </div>
                 </div>
-                <div v-if="selectedEnvironment.tasks.length" class="mt-5">
+                <div v-if="backups.length" class="mt-5">
                     <table class="table w-100">
                         <thead>
                         <tr>
-                            <th>Date</th>
-                            <th>Type</th>
-                            <th>Status</th>
-                            <th>Duration</th>
+                            <th>Created</th>
+                            <th>Environment</th>
+                            <th class="text-center">Status</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
-                        <deployment-row :key="task.id" v-for="task of selectedEnvironment.tasks.slice(0, 20)"
-                                        :started="task.created"
-                                        :created="task.created"
-                                        :ended="task.completed"
-                                        :status="task.status"
-                                        :name="task.name"
-                        >
-                        </deployment-row>
+                        <tr v-for="backup of backups">
+                            <td>{{ formatDate(backup.dateCreated) }}</td>
+                            <td>{{ backup.environmentName }}</td>
+                            <td class="text-center"><span :class="statusColor(backup.status)">{{ backup.status }}</span></td>
+                            <td class="text-right">
+                                <button class="btn btn-secondary btn-sm" @click="downloadBackup(backup)" v-if="backup.downloadUrl">Download</button>
+                                <button class="btn btn-secondary btn-sm" @click="restore(backup)" v-if="backup.downloadUrl">Restore</button>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -69,28 +50,33 @@
 
 <script>
 import Card from "../../basic/card";
-import {Q_PROJECT_FULL} from "../../../queries/project";
-import {expectedEnvironments} from "../../../helpers";
+import {Q_PROJECT_BACKUPS} from "../../../queries/project";
+import {dateFormat, expectedEnvironments, timeSince} from "../../../helpers";
 import {M_ENVIRONMENT_BACKUP, M_ENVIRONMENT_RESTORE, M_ENVIRONMENT_INSTALL} from "../../../queries/environment";
 import moment from 'moment-timezone'
 import DeploymentRow from "../../basic/deployment-row";
+import config from "../../../config";
+import {store} from "../../../store/store";
+
 export default {
     name: "backups",
     components: {DeploymentRow, Card},
     apollo: {
-        project: {
-            query: Q_PROJECT_FULL,
+        backups: {
+            query: Q_PROJECT_BACKUPS,
             variables: function() {
                 return {
-                    projectId: `projects/${this.$route.params.id}`
+                    projectId: `hosting_projects/${this.$route.params.id}`,
+                    perPage: 10,
                 }
             },
-            result({data}) {
-                for (const newEnvironment of data.project.lagoonProject.environments) {
-                    if (newEnvironment.deployBaseRef === this.selectedEnvironment.branch) {
-                        this.selectedEnvironment.tasks = newEnvironment.tasks
-                    }
+            update(data) {
+                this.project = data.hostingProject
+                if (!this.selectedEnvironment) {
+                    this.selectedEnvironment = this.project.productionBranch
                 }
+
+                return data.hostingProject.backups.edges.map(edge => edge.node)
             },
             pollInterval: 2000
         },
@@ -101,6 +87,8 @@ export default {
         }
     },
     data: () => ({
+        project: null,
+        backups: [],
         action: 'backup',
         selectedEnvironment: null,
         loading: false
@@ -133,24 +121,86 @@ export default {
                 `${seconds}s`
             ].join('')
         },
-        formattedStartDate(deployment) {
-            return moment.tz(deployment.created, 'UTC').tz(moment.tz.guess()).format('DD MMM YYYY h:mm a')
+        formatDate(date) {
+            return timeSince(date)
         },
-        deploy() {
+        fullUrl(path) {
+            return config.apiBaseUrl + path
+        },
+        downloadBackup(backup) {
+            alert('This isn\'t working right now, check back later.')
+            return
+            const request = new XMLHttpRequest();
+            request.open('GET', this.fullUrl(backup.downloadUrl))
+            request.setRequestHeader('Authorization', 'Bearer ' + store.state.jwt)
+            request.responseType = 'blob'
+
+            request.onload = function(e) {
+                const blob = e.currentTarget.response;
+                const contentDispo = e.currentTarget.getResponseHeader('Content-Disposition');
+                const fileName = contentDispo.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/)[1];
+
+                const a = document.createElement('a');
+                a.href = window.URL.createObjectURL(blob);
+                a.download = fileName;
+                a.dispatchEvent(new MouseEvent('click'));
+            }
+            request.send()
+        },
+        statusColor(status) {
+            switch(status) {
+                case 'ready':
+                    return 'badge text-capitalize badge-success border border-success'
+                case 'uploading':
+                    return 'badge text-capitalize badge-secondary border border-secondary'
+                default:
+                    return 'badge text-capitalize border'
+            }
+        },
+        backup() {
             const self = this
             this.loading = true
             const environment = this.selectedEnvironment
+
             this.$apollo.mutate({
                 // Query
-                mutation: {
-                    'backup': M_ENVIRONMENT_BACKUP,
-                    'restore': M_ENVIRONMENT_RESTORE,
-                    'install': M_ENVIRONMENT_INSTALL,
-                }[this.action],
+                mutation: M_ENVIRONMENT_BACKUP,
                 // Parameters
                 variables: {
                     projectId: this.project._id,
-                    environment: environment.name,
+                    environment: environment,
+                },
+                update: (store, { data: { deployProject } }) => {
+                    self.project.lagoonProject = {
+                        ...(self.project.lagoonProject ? self.project.lagoonProject : {}),
+                        environments: deployProject.project.lagoonProject.environments
+                    }
+
+                    for (const newEnvironment of deployProject.project.lagoonProject.environments) {
+                        if (newEnvironment.deployBaseRef === self.selectedEnvironment.branch) {
+                            self.selectedEnvironment.tasks = newEnvironment.tasks
+                        }
+                    }
+                }
+            }).catch((error) => {
+                debugger
+            }).finally(() => {
+                this.loading = false;
+            })
+        },
+        restore(backup) {
+            const self = this
+            this.loading = true
+            const environment = this.selectedEnvironment
+
+            this.$apollo.mutate({
+                // Query
+                mutation: M_ENVIRONMENT_RESTORE,
+                // Parameters
+                variables: {
+                    projectId: this.project._id,
+                    environment: environment,
+                    backup: backup._id
                 },
                 update: (store, { data: { deployProject } }) => {
                     self.project.lagoonProject = {
