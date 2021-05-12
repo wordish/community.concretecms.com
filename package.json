@@ -29,7 +29,7 @@
   "devDependencies": {
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
-    "postcss": "^8.2.9",
+    "postcss": "^8.2.10",
     "vue-loader": "^15.9.6",
     "vue-template-compiler": "^2.6.12"
   }
