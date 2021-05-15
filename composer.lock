@@ -525,12 +525,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/concrete5/concrete_cms_theme.git",
-                "reference": "be40c64eefe9883d30450705dffa42f3d1884758"
+                "reference": "fbdce7cb4cdd34a41f1fd61611eccfa0df0c5bfb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/concrete5/concrete_cms_theme/zipball/be40c64eefe9883d30450705dffa42f3d1884758",
-                "reference": "be40c64eefe9883d30450705dffa42f3d1884758",
+                "url": "https://api.github.com/repos/concrete5/concrete_cms_theme/zipball/fbdce7cb4cdd34a41f1fd61611eccfa0df0c5bfb",
+                "reference": "fbdce7cb4cdd34a41f1fd61611eccfa0df0c5bfb",
                 "shasum": ""
             },
             "type": "concrete5-package",
@@ -539,7 +539,7 @@
                 "MIT"
             ],
             "description": "Package that contains the official ConcreteCMS Theme.",
-            "time": "2021-05-04T22:37:05+00:00"
+            "time": "2021-05-15T17:01:42+00:00"
         },
         {
             "name": "concrete5/core",
@@ -5370,6 +5370,18 @@
                 "php": ">=5.3.2"
             },
             "type": "library",
+            "extra": {
+                "patches_applied": {
+                    "hash": "43699395013691839330f8406ee49fa752c163fb",
+                    "list": [
+                        {
+                            "from-package": "concrete5/dependency-patches 1.5.0",
+                            "path": "sunra/php-simple-html-dom-parser/minus-in-regular-expressions.patch",
+                            "description": "Fix minus in regular expressions"
+                        }
+                    ]
+                }
+            },
             "autoload": {
                 "psr-0": {
                     "Sunra\\PhpSimple\\HtmlDomParser": "Src/"
@@ -5397,19 +5409,7 @@
                 "html",
                 "parser"
             ],
-            "time": "2016-11-22T22:57:47+00:00",
-            "extra": {
-                "patches_applied": {
-                    "hash": "43699395013691839330f8406ee49fa752c163fb",
-                    "list": [
-                        {
-                            "from-package": "concrete5/dependency-patches 1.5.0",
-                            "path": "sunra/php-simple-html-dom-parser/minus-in-regular-expressions.patch",
-                            "description": "Fix minus in regular expressions"
-                        }
-                    ]
-                }
-            }
+            "time": "2016-11-22T22:57:47+00:00"
         },
         {
             "name": "symfony/class-loader",
