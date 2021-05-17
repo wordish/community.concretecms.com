@@ -525,12 +525,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/concrete5/concrete_cms_theme.git",
-                "reference": "b9c93f8ae09f3e42d466db2fdd6a6e00dc82737e"
+                "reference": "29a77a17ee6dc6cd38c10b6e53b09d20c1f6b050"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/concrete5/concrete_cms_theme/zipball/b9c93f8ae09f3e42d466db2fdd6a6e00dc82737e",
-                "reference": "b9c93f8ae09f3e42d466db2fdd6a6e00dc82737e",
+                "url": "https://api.github.com/repos/concrete5/concrete_cms_theme/zipball/29a77a17ee6dc6cd38c10b6e53b09d20c1f6b050",
+                "reference": "29a77a17ee6dc6cd38c10b6e53b09d20c1f6b050",
                 "shasum": ""
             },
             "type": "concrete5-package",
@@ -539,7 +539,7 @@
                 "MIT"
             ],
             "description": "Package that contains the official ConcreteCMS Theme.",
-            "time": "2021-05-17T19:57:47+00:00"
+            "time": "2021-05-17T22:46:40+00:00"
         },
         {
             "name": "concrete5/core",
