@@ -8,6 +8,7 @@ use PortlandLabs\Community\API\V1\Achievements;
 use PortlandLabs\Community\API\V1\Middleware\FractalNegotiatorMiddleware;
 use PortlandLabs\Community\API\V1\ShowcaseItems;
 use PortlandLabs\Community\API\V1\Teams;
+use PortlandLabs\Community\API\V1\Discourse;
 
 class ServiceProvider extends Provider
 {
@@ -28,6 +29,7 @@ class ServiceProvider extends Provider
                 $groupRouter->get('/showcase_items/delete', [ShowcaseItems::class, 'delete']);
                 $groupRouter->post('/teams/search', [Teams::class, 'search']);
                 $groupRouter->post('/achievements/assign', [Achievements::class, 'assign']);
+                $groupRouter->all('/discourse/handle_webhook_event', [Discourse::class, 'handleWebhookEvent']);
             });
     }
 }
