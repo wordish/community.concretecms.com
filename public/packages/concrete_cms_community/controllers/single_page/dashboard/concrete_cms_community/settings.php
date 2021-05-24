@@ -64,6 +64,7 @@ class Settings extends DashboardPageController
         $this->set('discourseEndpoint', $config->get("concrete_cms_community.discourse.endpoint", ''));
         $this->set('discourseApiKey', $config->get("concrete_cms_community.discourse.api_key", ''));
         $this->set('discourseAchievementsMapping', $config->get("concrete_cms_community.discourse.achievements_mapping", []));
+        $this->set('discourseCommunityPointsMapping', $config->get("concrete_cms_community.discourse.community_points_mapping", []));
         $this->set('availableDiscourseEventTypes',$availableDiscourseEventTypes);
     }
 
@@ -83,6 +84,7 @@ class Settings extends DashboardPageController
                 $config->save("concrete_cms_community.discourse.endpoint", (string)$this->request->request->get("discourseEndpoint"));
                 $config->save("concrete_cms_community.discourse.api_key", (string)$this->request->request->get("discourseApiKey"));
                 $config->save("concrete_cms_community.discourse.achievements_mapping", $this->request->request->get("discourseAchievementsMapping", []));
+                $config->save("concrete_cms_community.discourse.community_points_mapping", $this->request->request->get("discourseCommunityPointsMapping", []));
 
                 $teamsService->setTeamsGroupFolder(GroupFolder::getByID($this->request->request->get("teamsGroupFolderId")));
                 $teamsService->setTeamsGroupType(GroupType::getByID($this->request->request->get("teamsGroupTypeId")));

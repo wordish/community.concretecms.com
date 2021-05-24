@@ -28,6 +28,8 @@ use PortlandLabs\CommunityBadges\Exceptions\AchievementAlreadyExists;
 use PortlandLabs\CommunityBadges\Exceptions\InvalidBadgeType;
 use PortlandLabs\CommunityBadges\Exceptions\MailTransportError;
 use PortlandLabs\CommunityBadges\Exceptions\NoUserSelected;
+use PortlandLabs\CommunityBadges\User\Point\Action\Action as UserPointAction;
+use PortlandLabs\CommunityBadges\User\Point\Action\ActionDescription as UserPointActionDescription;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Exception;
@@ -83,6 +85,7 @@ class Discourse
                         is_array($this->config->get("concrete_cms_community.discourse.achievements_mapping"))) {
 
                         $achievementsMapping = $this->config->get("concrete_cms_community.discourse.achievements_mapping");
+                        $communityPointsMapping = $this->config->get("concrete_cms_community.discourse.community_points_mapping");
 
                         if (0 === strpos($this->request->headers->get('Content-Type'), 'application/json')) {
                             $data = json_decode($this->request->getContent(), true);
@@ -93,94 +96,115 @@ class Discourse
                                         $eventName = $this->request->headers->get("X-Discourse-Event");
                                         $eventType = $this->request->headers->get("X-Discourse-Event-Type");
 
-                                        if (isset($achievementsMapping[$eventName])) {
-                                            $achievementHandle = $achievementsMapping[$eventName];
 
-                                            try {
-                                                $achievement = $awardService->getBadgeByHandle($achievementHandle);
-                                            } catch (Exception $e) {
-                                                $achievement = null;
-                                            }
+                                        if (isset($data[$eventType])) {
+                                            if (isset($data[$eventType]["user_id"])) {
+                                                $userId = $data[$eventType]["user_id"];
 
-                                            if (isset($achievement)) {
-                                                if (isset($data[$eventType])) {
-                                                    if (isset($data[$eventType]["user_id"])) {
-                                                        $userId = $data[$eventType]["user_id"];
+                                                $this->logger->info(t("Event %s raised for discourse user with ID #%s.", $eventName, $userId));
 
-                                                        $this->logger->info(t("Event %s raised for discourse user with ID #%s.", $eventName, $userId));
+                                                /*
+                                                 * Resolve mail address through discourse API
+                                                 *
+                                                 * @see https://docs.discourse.org/#tag/Users/paths/~1admin~1users~1{id}.json/get
+                                                 */
 
-                                                        /*
-                                                         * Resolve mail address through discourse API
-                                                         *
-                                                         * @see https://docs.discourse.org/#tag/Users/paths/~1admin~1users~1{id}.json/get
-                                                         */
+                                                $path = sprintf("/admin/users/%s.json", $userId);
 
-                                                        $path = sprintf("/admin/users/%s.json", $userId);
+                                                $url = new Uri($discourseEndpoint);
 
-                                                        $url = new Uri($discourseEndpoint);
+                                                $url = $url
+                                                    ->withPath($path);
 
-                                                        $url = $url
-                                                            ->withPath($path);
+                                                try {
+                                                    $response = $this->client->request("GET", $url, [
+                                                        "headers" => [
+                                                            "Api-Key" => $discourseApiKey
+                                                        ]
+                                                    ]);
 
-                                                        try {
-                                                            $response = $this->client->request("GET", $url, [
-                                                                "headers" => [
-                                                                    "Api-Key" => $discourseApiKey
-                                                                ]
-                                                            ]);
+                                                    if ($response->getStatusCode() === JsonResponse::HTTP_OK) {
+                                                        $rawResponse = $response->getBody()->getContents();
+                                                        $json = json_decode($rawResponse, true);
 
-                                                            if ($response->getStatusCode() === JsonResponse::HTTP_OK) {
-                                                                $rawResponse = $response->getBody()->getContents();
-                                                                $json = json_decode($rawResponse, true);
+                                                        if (is_array($json) && count($json) > 0) {
+                                                            if (isset($json["email"]) && filter_var($json["email"], FILTER_VALIDATE_EMAIL)) {
+                                                                $email = $json["email"];
 
-                                                                if (is_array($json) && count($json) > 0) {
-                                                                    if (isset($json["email"]) && filter_var($json["email"], FILTER_VALIDATE_EMAIL)) {
-                                                                        $email = $json["email"];
+                                                                $userInfo = $this->userInfoRepository->getByEmail($email);
 
-                                                                        $userInfo = $this->userInfoRepository->getByEmail($email);
+                                                                if ($userInfo instanceof UserInfo) {
+                                                                    $user = $userInfo->getUserObject();
 
-                                                                        if ($userInfo instanceof UserInfo) {
-                                                                            $user = $userInfo->getUserObject();
+                                                                    if (isset($achievementsMapping[$eventName])) {
+                                                                        $achievementHandle = $achievementsMapping[$eventName];
 
-                                                                            $awardService->giveBadge($achievement, $user);
-
-                                                                            $editResponse->setMessage(t("The achievement has been successfully assigned."));
-
-                                                                        } else {
-                                                                            $errorList->add(t("The received mail address from the discourse api is not associated with an user account at this site."));
+                                                                        try {
+                                                                            $achievement = $awardService->getBadgeByHandle($achievementHandle);
+                                                                        } catch (Exception $e) {
+                                                                            $achievement = null;
                                                                         }
-                                                                    } else {
-                                                                        $errorList->add(t("Error while looking up the user details. The received response doesn't contain an valid email property."));
+
+                                                                        if (isset($achievement)) {
+                                                                            $awardService->giveBadge($achievement, $user);
+                                                                        } else {
+                                                                            $errorList->add(t("The achievement with the handle %s does not exists.", $achievementHandle));
+                                                                        }
+                                                                    }
+
+                                                                    if (isset($communityPointsMapping[$eventName])) {
+                                                                        $communityPoints = (int)$communityPointsMapping[$eventName];
+
+                                                                        if ($communityPoints > 0) {
+                                                                            $userPointAction = UserPointAction::getByHandle("discourse_action");
+
+                                                                            if (!$userPointAction instanceof UserPointAction) {
+                                                                                UserPointAction::add(
+                                                                                    "discourse_action",
+                                                                                    t("Discourse Action"),
+                                                                                    50,
+                                                                                    null
+                                                                                );
+
+                                                                                $userPointAction = UserPointAction::getByHandle("discourse_action");
+                                                                            }
+
+                                                                            $userPointActionDescription = new UserPointActionDescription();
+                                                                            $userPointActionDescription->setComments(t("Action: %s", $eventName));
+
+                                                                            $userPointAction->addEntry($user, $userPointActionDescription, $communityPoints);
+                                                                        }
                                                                     }
                                                                 } else {
-                                                                    $errorList->add(t("Error while looking up the user details. The received response is empty."));
+                                                                    $errorList->add(t("The received mail address from the discourse api is not associated with an user account at this site."));
                                                                 }
                                                             } else {
-                                                                $errorList->add(t("Error while looking up the user details. Invalid status code received."));
+                                                                $errorList->add(t("Error while looking up the user details. The received response doesn't contain an valid email property."));
                                                             }
-                                                        } catch (GuzzleException $e) {
-                                                            $errorList->add(t("Error while looking up the user details. Internal server error."));
-                                                        } catch (AchievementAlreadyExists $e) {
-                                                            $errorList->add(t("Error while assign the achievement. The achievement already exists."));
-                                                        } catch (InvalidBadgeType $e) {
-                                                            $errorList->add(t("Error while assign the achievement. Invalid badge type."));
-                                                        } catch (MailTransportError $e) {
-                                                            $errorList->add(t("Error while assign the achievement. Mail transport error."));
-                                                        } catch (NoUserSelected $e) {
-                                                            $errorList->add(t("Error while assign the achievement. Invalid user."));
+                                                        } else {
+                                                            $errorList->add(t("Error while looking up the user details. The received response is empty."));
                                                         }
                                                     } else {
-                                                        $errorList->add(t("User id is missing.", $eventType));
+                                                        $errorList->add(t("Error while looking up the user details. Invalid status code received."));
                                                     }
-                                                } else {
-                                                    $errorList->add(t("Item %s is missing in payload.", $eventType));
+                                                } catch (GuzzleException $e) {
+                                                    $errorList->add(t("Error while looking up the user details. Internal server error."));
+                                                } catch (AchievementAlreadyExists $e) {
+                                                    $errorList->add(t("Error while assign the achievement. The achievement already exists."));
+                                                } catch (InvalidBadgeType $e) {
+                                                    $errorList->add(t("Error while assign the achievement. Invalid badge type."));
+                                                } catch (MailTransportError $e) {
+                                                    $errorList->add(t("Error while assign the achievement. Mail transport error."));
+                                                } catch (NoUserSelected $e) {
+                                                    $errorList->add(t("Error while assign the achievement. Invalid user."));
                                                 }
                                             } else {
-                                                $errorList->add(t("The achievement with the handle %s does not exists.", $achievementHandle));
+                                                $errorList->add(t("User id is missing.", $eventType));
                                             }
                                         } else {
-                                            $errorList->add(t("There is no achievement mapped with the given event type."));
+                                            $errorList->add(t("Item %s is missing in payload.", $eventType));
                                         }
+
                                     } else {
                                         $errorList->add(t("Header X-Discourse-Event-Type is missing."));
                                     }

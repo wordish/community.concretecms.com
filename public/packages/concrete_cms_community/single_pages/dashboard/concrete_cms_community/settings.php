@@ -22,6 +22,7 @@ use Concrete\Core\Validation\CSRF\Token;
 /** @var string $discourseEndpoint */
 /** @var string $discourseApiKey */
 /** @var array $discourseAchievementsMapping */
+/** @var array $discourseCommunityPointsMapping */
 /** @var array $availableDiscourseEventTypes */
 
 $app = Application::getFacadeApplication();
@@ -125,11 +126,22 @@ $token = $app->make(Token::class);
 
         <?php foreach ($availableDiscourseEventTypes as $availableDiscourseEventType) { ?>
             <div class="form-group">
-                <?php echo $form->label($availableDiscourseEventType, t("Achievement handle for discourse event <code>%s</code>", $availableDiscourseEventType)); ?>
-                <?php echo $form->text("discourseAchievementsMapping[" . $availableDiscourseEventType . "]", $discourseAchievementsMapping[$availableDiscourseEventType], [
-                        "id" => $availableDiscourseEventType,
-                    "placeholder" => t("Enter an achievement handle or leave empty...")
-                ]); ?>
+                <?php echo $form->label($availableDiscourseEventType, t("Achievement and community points for discourse event <code>%s</code>", $availableDiscourseEventType)); ?>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <?php echo $form->text("discourseAchievementsMapping[" . $availableDiscourseEventType . "]", $discourseAchievementsMapping[$availableDiscourseEventType], [
+                            "id" => $availableDiscourseEventType,
+                            "placeholder" => t("Enter an achievement handle or leave empty...")
+                        ]); ?>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <?php echo $form->text("discourseCommunityPointsMapping[" . $availableDiscourseEventType . "]", $discourseCommunityPointsMapping[$availableDiscourseEventType], [
+                            "placeholder" => t("Enter the amount of community points or leave empty...")
+                        ]); ?>
+                    </div>
+                </div>
             </div>
         <?php } ?>
     </fieldset>
