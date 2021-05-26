@@ -51,7 +51,7 @@ class AssignAnniversaryBadges extends Command
          * Build a mapping array with all badges for the years 1 to 16.
          */
 
-        $maxYears = (int)$config->get("concrete_cms_community.assign.anniversary_badges.total_years", 16);
+        $maxYears = (int)$config->get("concrete_cms_community.badges.anniversary.total_years", 16);
 
         $anniversaryBadges = [];
 
