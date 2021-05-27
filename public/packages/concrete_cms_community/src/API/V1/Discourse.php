@@ -14,6 +14,7 @@ use Concrete\Core\Application\EditResponse;
 use Concrete\Core\Config\Repository\Repository;
 use Concrete\Core\Entity\Package;
 use Concrete\Core\Error\ErrorList\ErrorList;
+use Concrete\Core\Events\EventDispatcher;
 use Concrete\Core\Http\Client\Client;
 use Concrete\Core\Http\Request;
 use Concrete\Core\Logging\LoggerFactory;
@@ -23,6 +24,7 @@ use Concrete\Core\User\UserInfo;
 use Concrete\Core\User\UserInfoRepository;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Uri;
+use PortlandLabs\Community\Events\DiscourseWebhookCall;
 use PortlandLabs\CommunityBadges\AwardService;
 use PortlandLabs\CommunityBadges\Exceptions\AchievementAlreadyExists;
 use PortlandLabs\CommunityBadges\Exceptions\InvalidBadgeType;
@@ -74,6 +76,8 @@ class Discourse
             $app = Application::getFacadeApplication();
             /** @var AwardService $awardService */
             $awardService = $app->make(AwardService::class);
+            /** @var EventDispatcher $eventDispatcher */
+            $eventDispatcher = $app->make(EventDispatcher::class);
 
             if ($this->config->has("concrete_cms_community.discourse.endpoint")) {
                 $discourseEndpoint = $this->config->get("concrete_cms_community.discourse.endpoint");
@@ -95,7 +99,6 @@ class Discourse
                                     if ($this->request->headers->has("X-Discourse-Event-Type")) {
                                         $eventName = $this->request->headers->get("X-Discourse-Event");
                                         $eventType = $this->request->headers->get("X-Discourse-Event-Type");
-
 
                                         if (isset($data[$eventType])) {
                                             if (isset($data[$eventType]["user_id"])) {
@@ -135,6 +138,13 @@ class Discourse
 
                                                                 if ($userInfo instanceof UserInfo) {
                                                                     $user = $userInfo->getUserObject();
+
+                                                                    $event = new DiscourseWebhookCall();
+                                                                    $event->setUser($user);
+                                                                    $event->setEventName($eventName);
+                                                                    $event->setEventType($eventType);
+                                                                    $event->setPayload($data);
+                                                                    $eventDispatcher->dispatch("on_discourse_webhook_call", $event);
 
                                                                     if (isset($achievementsMapping[$eventName])) {
                                                                         $achievementHandle = $achievementsMapping[$eventName];

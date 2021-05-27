@@ -14,6 +14,7 @@ use Concrete\Core\Page\Theme\ThemeRouteCollection;
 use Concrete\Core\User\UserInfo;
 use PortlandLabs\Community\API\ServiceProvider as ApiServiceProvider;
 use PortlandLabs\Community\Discourse\ServiceProvider as DiscourseProvider;
+use PortlandLabs\Community\Events\DiscourseWebhookCall;
 use PortlandLabs\CommunityBadges\AwardService;
 use PortlandLabs\CommunityBadges\Entity\Achievement;
 use PortlandLabs\CommunityBadges\Events\AfterAssignCommunityPoints;
@@ -58,6 +59,76 @@ class ServiceProvider extends Provider
             // header navigation factory class as a singleton.
             $headerNavigationFactory = app(HeaderNavigationFactory::class);
             $headerNavigationFactory->setActiveSection(HeaderNavigationFactory::SECTION_COMMUNITY);
+        });
+
+        $this->app->make('director')->addListener('on_discourse_webhook_call', function ($event) {
+            /** @var DiscourseWebhookCall $event */
+
+            $app = \Concrete\Core\Support\Facade\Application::getFacadeApplication();
+            /** @var Repository $config */
+            $config = $app->make(Repository::class);
+            /** @var AwardService $awardService */
+            $awardService = $app->make(AwardService::class);
+
+            if ($event->getEventName() === "topic_created") {
+                $attributeKeyName = "forums_total_posts";
+
+                $totalPostsBadgesMapping = $config->get("concrete_cms_community.badges.forums.posts_badges_mapping", [
+                    1 => "post_1",
+                    20 => "post_20",
+                    50 => "post_50",
+                    100 => "post_100",
+                    200 => "post_200",
+                    500 => "post_500",
+                    1000 => "post_1000",
+                ]);
+            } else if ($event->getEventName() === "post_created") {
+                $attributeKeyName = "forums_total_replies";
+
+                if((int)$event->getPayload()["post"]["topic_posts_count"] === 1) {
+
+                    /*
+                     * Ignore this event.
+                     *
+                     * When you create a topic discourse fire up 2 events:
+                     * topic_created + post_created
+                     *
+                     * We only want to process posts that are replies.
+                     */
+
+                    return;
+                }
+
+                $totalPostsBadgesMapping = $config->get("concrete_cms_community.badges.forums.replies_badges_mapping", [
+                    1 => "post_reply_1"
+                ]);
+            } else {
+                return; // ignore all other events
+            }
+
+            $userTotalPosts = (int)$event->getUser()->getUserInfoObject()->getAttribute($attributeKeyName);
+
+            $userTotalPosts++;
+
+            $event->getUser()->getUserInfoObject()->setAttribute($attributeKeyName, $userTotalPosts);
+
+            ksort($totalPostsBadgesMapping);
+
+            foreach ($totalPostsBadgesMapping as $countOfPosts => $karmaBadgeHandle) {
+                if ($userTotalPosts >= $countOfPosts) {
+                    try {
+                        $karmaBadge = $awardService->getBadgeByHandle($karmaBadgeHandle);
+
+                        if ($karmaBadge instanceof Achievement) {
+                            $awardService->giveAchievement($karmaBadge, $event->getUser());
+                        }
+                    } catch (BadgeNotFound | MailTransportError |NoUserSelected | AchievementAlreadyExists $e) {
+                        // Ignore all possible exceptions
+                    }
+                } else {
+                    break;
+                }
+            }
         });
 
         $this->app->make('director')->addListener('on_after_assign_community_points', function ($event) {
