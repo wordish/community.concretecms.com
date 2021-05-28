@@ -66,18 +66,20 @@ class ShowcaseItems
         }
 
         if ($response instanceof Response) {
-            $body = $response->getBody();
-            $html = $body->getContents();
+            //$body = $response->getBody();
+            //$html = $body->getContents();
 
-            preg_match_all('/<meta name="generator" content="([^"]+)">/', $html, $matches, PREG_SET_ORDER);
+            //preg_match_all('/<meta name="generator" content="([^"]+)">/', $html, $matches, PREG_SET_ORDER);
 
-            if (is_array($matches) && isset($matches[0]) && isset($matches[0][1])) {
-                if (strpos($matches[0][1], "concrete") !== false) {
-                    return true;
-                }
-            }
+            //if (is_array($matches) && isset($matches[0]) && isset($matches[0][1])) {
+            //    if (strpos($matches[0][1], "concrete") !== false) {
+            //        return true;
+            //    }
+            //}
 
-            throw new Exception(t("The given url is not a valid concrete5/concreteCMS site."));
+            //throw new Exception(t("The given url is not a valid concrete5/concreteCMS site."));
+
+            return true;
         } else {
             throw new Exception(t("The given url can not be found."));
         }
