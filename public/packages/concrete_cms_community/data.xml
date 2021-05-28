@@ -160,6 +160,12 @@
         </page>
     </singlepages>
     <attributekeys>
+        <attributekey handle="forums_total_posts" name="Forums Total Posts" package="concrete_cms_theme" searchable="1" indexed="1"
+                      type="number"
+                      category="user"/>
+        <attributekey handle="forums_total_replies" name="Forums Total Replies" package="concrete_cms_theme" searchable="1" indexed="1"
+                      type="number"
+                      category="user"/>
         <attributekey handle="profile_private_messages_enabled" name="Private Messages" package="concrete_cms_theme"
                       searchable="1"
                       indexed="1" type="boolean" category="user">
