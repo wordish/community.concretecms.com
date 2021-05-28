@@ -12,6 +12,7 @@ use Concrete\Core\Tree\Node\Type\GroupFolder;
 use Concrete\Core\Tree\Type\Group as GroupTree;
 use Concrete\Core\User\Group\GroupRole;
 use Concrete\Core\User\Group\GroupType;
+use PortlandLabs\Community\Console\Command\AssignAnniversaryBadges;
 use PortlandLabs\Community\ServiceProvider;
 use PortlandLabs\Community\TeamsService;
 
@@ -100,5 +101,10 @@ class Controller extends Package
     {
         // Register our service providers
         $this->app->make(ServiceProvider::class)->register();
+
+        if ($this->app->isRunThroughCommandLineInterface()) {
+            $console = $this->app->make('console');
+            $console->add(new AssignAnniversaryBadges());
+        }
     }
 }
