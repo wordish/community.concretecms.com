@@ -131,65 +131,80 @@ class Discourse
                                                         $json = json_decode($rawResponse, true);
 
                                                         if (is_array($json) && count($json) > 0) {
-                                                            if (isset($json["email"]) && filter_var($json["email"], FILTER_VALIDATE_EMAIL)) {
+
+                                                            if (isset($json["single_sign_on_record"]["external_id"])) {
+                                                                /*
+                                                                 * When discourse is running through an SSO there is no mail address
+                                                                 * in the user details.
+                                                                 *
+                                                                 * The only details that available to get the original user account is the property
+                                                                 * single_sign_on_record.external_id
+                                                                 *
+                                                                 * So let's check first if the property is available and if yes we use this property instead
+                                                                 * of the mail address to resolve the concrete user account.
+                                                                 */
+
+                                                                $userInfo = $this->userInfoRepository->getByID($json["single_sign_on_record"]["external_id"]);
+
+                                                            } else if (isset($json["email"]) && filter_var($json["email"], FILTER_VALIDATE_EMAIL)) {
                                                                 $email = $json["email"];
 
                                                                 $userInfo = $this->userInfoRepository->getByEmail($email);
+                                                            } else {
+                                                                $errorList->add(t("Error while looking up the user details. The received response doesn't contain not an valid email property or an external id property."));
+                                                            }
 
-                                                                if ($userInfo instanceof UserInfo) {
-                                                                    $user = $userInfo->getUserObject();
+                                                            if ($userInfo instanceof UserInfo) {
+                                                                $user = $userInfo->getUserObject();
 
-                                                                    $event = new DiscourseWebhookCall();
-                                                                    $event->setUser($user);
-                                                                    $event->setEventName($eventName);
-                                                                    $event->setEventType($eventType);
-                                                                    $event->setPayload($data);
-                                                                    $eventDispatcher->dispatch("on_discourse_webhook_call", $event);
+                                                                $event = new DiscourseWebhookCall();
+                                                                $event->setUser($user);
+                                                                $event->setEventName($eventName);
+                                                                $event->setEventType($eventType);
+                                                                $event->setPayload($data);
+                                                                $eventDispatcher->dispatch("on_discourse_webhook_call", $event);
 
-                                                                    if (isset($achievementsMapping[$eventName])) {
-                                                                        $achievementHandle = $achievementsMapping[$eventName];
+                                                                if (isset($achievementsMapping[$eventName])) {
+                                                                    $achievementHandle = $achievementsMapping[$eventName];
 
-                                                                        try {
-                                                                            $achievement = $awardService->getBadgeByHandle($achievementHandle);
-                                                                        } catch (Exception $e) {
-                                                                            $achievement = null;
-                                                                        }
-
-                                                                        if (isset($achievement)) {
-                                                                            $awardService->giveBadge($achievement, $user);
-                                                                        } else {
-                                                                            $errorList->add(t("The achievement with the handle %s does not exists.", $achievementHandle));
-                                                                        }
+                                                                    try {
+                                                                        $achievement = $awardService->getBadgeByHandle($achievementHandle);
+                                                                    } catch (Exception $e) {
+                                                                        $achievement = null;
                                                                     }
 
-                                                                    if (isset($communityPointsMapping[$eventName])) {
-                                                                        $communityPoints = (int)$communityPointsMapping[$eventName];
+                                                                    if (isset($achievement)) {
+                                                                        $awardService->giveBadge($achievement, $user);
+                                                                    } else {
+                                                                        $errorList->add(t("The achievement with the handle %s does not exists.", $achievementHandle));
+                                                                    }
+                                                                }
 
-                                                                        if ($communityPoints > 0) {
+                                                                if (isset($communityPointsMapping[$eventName])) {
+                                                                    $communityPoints = (int)$communityPointsMapping[$eventName];
+
+                                                                    if ($communityPoints > 0) {
+                                                                        $userPointAction = UserPointAction::getByHandle("discourse_action");
+
+                                                                        if (!$userPointAction instanceof UserPointAction) {
+                                                                            UserPointAction::add(
+                                                                                "discourse_action",
+                                                                                t("Discourse Action"),
+                                                                                50,
+                                                                                null
+                                                                            );
+
                                                                             $userPointAction = UserPointAction::getByHandle("discourse_action");
-
-                                                                            if (!$userPointAction instanceof UserPointAction) {
-                                                                                UserPointAction::add(
-                                                                                    "discourse_action",
-                                                                                    t("Discourse Action"),
-                                                                                    50,
-                                                                                    null
-                                                                                );
-
-                                                                                $userPointAction = UserPointAction::getByHandle("discourse_action");
-                                                                            }
-
-                                                                            $userPointActionDescription = new UserPointActionDescription();
-                                                                            $userPointActionDescription->setComments(t("Action: %s", $eventName));
-
-                                                                            $userPointAction->addEntry($user, $userPointActionDescription, $communityPoints);
                                                                         }
+
+                                                                        $userPointActionDescription = new UserPointActionDescription();
+                                                                        $userPointActionDescription->setComments(t("Action: %s", $eventName));
+
+                                                                        $userPointAction->addEntry($user, $userPointActionDescription, $communityPoints);
                                                                     }
-                                                                } else {
-                                                                    $errorList->add(t("The received mail address from the discourse api is not associated with an user account at this site."));
                                                                 }
                                                             } else {
-                                                                $errorList->add(t("Error while looking up the user details. The received response doesn't contain an valid email property."));
+                                                                $errorList->add(t("The received mail address from the discourse api is not associated with an user account at this site."));
                                                             }
                                                         } else {
                                                             $errorList->add(t("Error while looking up the user details. The received response is empty."));
