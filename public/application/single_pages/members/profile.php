@@ -237,12 +237,6 @@ if ($isCommunityAwardsModuleInstalled) {
                     <div class="clearfix"></div>
 
                     <div class="profile-description">
-                        <?php if (strlen($profile->getAttribute('description')) === 0) { ?>
-                            <?php echo t("No bio information entered."); ?>
-                        <?php } else { ?>
-                            <?php echo nl2br($profile->getAttribute('description')); ?>
-                        <?php } ?>
-
                         <?php if ($profile->getAttribute('website') != "") { ?>
                             <div class="profile-website">
                                 <a href="<?php echo h((string)$profile->getAttribute('website')) ?>">
@@ -252,6 +246,12 @@ if ($isCommunityAwardsModuleInstalled) {
                                     ?>
                                 </a>
                             </div>
+                        <?php } ?>
+
+                        <?php if (strlen($profile->getAttribute('description')) === 0) { ?>
+                            <?php echo t("None entered."); ?>
+                        <?php } else { ?>
+                            <?php echo nl2br($profile->getAttribute('description')); ?>
                         <?php } ?>
                     </div>
 
@@ -383,7 +383,7 @@ if ($isCommunityAwardsModuleInstalled) {
                 <?php } ?>
 
                 <div class="row">
-                    <div class="col-lg-8">
+                    <div class="col-lg-12">
                         <div class="card" id="info-card">
                             <div class="card-body">
                                 <div class="card-title">
@@ -444,190 +444,6 @@ if ($isCommunityAwardsModuleInstalled) {
                                                 "title" => t("Education"),
                                                 "attribute" => $profile->getAttribute('education')
                                             ]); ?>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4">
-                        <div class="card" id="achievements-card">
-                            <div class="card-body">
-                                <div class="card-title">
-                                    <span>
-                                        <?php echo t("Achievements"); ?>
-                                    </span>
-                                </div>
-
-                                <div class="achievements-box">
-                                    <?php if ($isCommunityAwardsModuleInstalled) { ?>
-                                        <?php
-                                        /** @var \PortlandLabs\CommunityBadges\AwardService $awardService */
-                                        $awardService = $app->make(\PortlandLabs\CommunityBadges\AwardService::class);
-                                        $communityBadgesPackageEntity = $packageService->getByHandle("community_Badges");
-                                        /** @var \Concrete\Core\Package\Package $communityBadgesPackage */
-                                        $communityBadgesPackage = $communityBadgesPackageEntity->getController();
-
-                                        $achievements = $awardService->getAllAchievementsByUser($profile->getUserObject());
-                                        $awards = $awardService->getAllAwardsGroupedByUser($profile->getUserObject());
-                                        ?>
-
-                                        <div class="awards">
-                                            <strong class="title">
-                                                <?php echo t("Awards"); ?>
-                                            </strong>
-
-                                            <div class="value">
-                                                <?php if (count($awards) === 0) { ?>
-                                                    <p>
-                                                        <?php echo t("No awards yet."); ?>
-                                                    </p>
-                                                <?php } else { ?>
-                                                    <div class="badge-list">
-                                                        <?php
-                                                        $maxAwardsToDisplay = 5;
-                                                        $hiddenAwards = 0;
-
-                                                        if (count($awards) > $maxAwardsToDisplay) {
-                                                            $hiddenAwards = count($awards) - $maxAwardsToDisplay;
-                                                            $awardsCounter = 0;
-                                                        }
-                                                        ?>
-
-                                                        <?php foreach ($awards as $award) { ?>
-                                                            <?php $awardsCounter++; ?>
-                                                            <div class="badge<?php echo($awardsCounter > $maxAwardsToDisplay ? " hidden-award" : ""); ?>">
-                                                                <?php
-                                                                $badgeUrl = $communityBadgesPackage->getRelativePath() . "/images/default_badge.png";
-
-                                                                $userBadge = $award["userBadge"];
-
-                                                                if ($userBadge instanceof \PortlandLabs\CommunityBadges\Entity\UserBadge) {
-                                                                    if ($userBadge->getBadge() instanceof \PortlandLabs\CommunityBadges\Entity\Badge) {
-                                                                        $badgeThumbnail = $userBadge->getBadge()->getThumbnail();
-                                                                        if ($badgeThumbnail instanceof File) {
-                                                                            $badgeThumbnailVersion = $badgeThumbnail->getApprovedVersion();
-                                                                            if ($badgeThumbnailVersion instanceof Version) {
-                                                                                $badgeUrl = $badgeThumbnailVersion->getURL();
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-
-                                                                $imageElement = new Image($badgeUrl, $userBadge->getBadge()->getName());
-
-                                                                if ($award["count"] > 1) {
-                                                                    $imageWrapper = new Element("div");
-                                                                    $imageWrapper->addClass("badge-container");
-                                                                    /** @noinspection PhpParamsInspection */
-                                                                    $imageWrapper->appendChild($imageElement);
-                                                                    $imageWrapper->appendChild(new Element("div", $award["count"], ["class" => "badge-counter"]));
-                                                                    echo $imageWrapper;
-                                                                } else {
-                                                                    echo $imageElement;
-                                                                }
-
-
-                                                                ?>
-                                                            </div>
-                                                        <?php } ?>
-                                                    </div>
-
-                                                    <?php if ($hiddenAwards > 0) { ?>
-                                                        <div class="hidden-awards">
-                                                            + <?php echo $hiddenAwards; ?>
-                                                        </div>
-                                                    <?php } ?>
-                                                <?php } ?>
-
-                                                <div class="clearfix"></div>
-                                            </div>
-                                        </div>
-
-                                        <div class="achievements">
-                                            <strong class="title">
-                                                <?php echo t("Achievements"); ?>
-                                            </strong>
-
-                                            <div class="value">
-                                                <?php if (count($achievements) === 0) { ?>
-                                                    <p>
-                                                        <?php echo t("No achievements yet."); ?>
-                                                    </p>
-                                                <?php } else { ?>
-                                                    <?php
-                                                    $maxAchievementsToDisplay = 5;
-                                                    $hiddenAchievements = 0;
-                                                    $achievementCounter = 0;
-
-                                                    if (count($achievements) > $maxAchievementsToDisplay) {
-                                                        $hiddenAchievements = count($achievements) - $maxAchievementsToDisplay;
-                                                    }
-                                                    ?>
-
-                                                    <div class="badge-list">
-                                                        <?php foreach ($achievements as $userBadge) { ?>
-                                                            <?php $achievementCounter++; ?>
-                                                            <div class="badge<?php echo($achievementCounter > $maxAchievementsToDisplay ? " hidden-achievement" : ""); ?>">
-                                                                <?php
-                                                                $badgeUrl = $communityBadgesPackage->getRelativePath() . "/images/default_badge.png";
-
-                                                                if ($userBadge->getBadge() instanceof \PortlandLabs\CommunityBadges\Entity\Badge) {
-                                                                    $badgeThumbnail = $userBadge->getBadge()->getThumbnail();
-                                                                    if ($badgeThumbnail instanceof File) {
-                                                                        $badgeThumbnailVersion = $badgeThumbnail->getApprovedVersion();
-                                                                        if ($badgeThumbnailVersion instanceof Version) {
-                                                                            $badgeUrl = $badgeThumbnailVersion->getURL();
-                                                                        }
-                                                                    }
-                                                                }
-
-                                                                $imageElement = new Image($badgeUrl, $userBadge->getBadge()->getName());
-                                                                echo $imageElement;
-                                                                ?>
-                                                            </div>
-                                                        <?php } ?>
-                                                    </div>
-
-                                                    <?php if ($hiddenAchievements > 0) { ?>
-                                                        <div class="hidden-achievements">
-                                                            + <?php echo $hiddenAchievements; ?>
-                                                        </div>
-                                                    <?php } ?>
-                                                <?php } ?>
-
-                                                <div class="clearfix"></div>
-                                            </div>
-                                        </div>
-                                    <?php } ?>
-
-                                    <div class="certifications">
-                                        <strong class="title">
-                                            <?php echo t("Certifications"); ?>
-                                        </strong>
-
-                                        <div class="value">
-                                            <?php if ($isCertificationsModuleInstalled) { ?>
-                                                <?php
-                                                /** @var \PortlandLabs\Certification\TestService $testService */
-                                                $testService = $app->make(\PortlandLabs\Certification\TestService::class);
-                                                $totalCertifications = count($testService->getAllPassedTests($profile->getUserObject()));
-                                                echo $totalCertifications;
-                                                ?>
-                                            <?php } ?>
-                                        </div>
-                                    </div>
-
-                                    <div class="total-karma">
-                                        <strong class="title">
-                                            <?php echo t("Total Karma"); ?>
-                                        </strong>
-
-                                        <div class="value">
-                                            <?php
-                                            echo (int)$db->fetchColumn("SELECT SUM(upPoints) FROM UserPointHistory WHERE upuID = ?", [$profile->getUserID()]);
-                                            ?>
                                         </div>
                                     </div>
                                 </div>

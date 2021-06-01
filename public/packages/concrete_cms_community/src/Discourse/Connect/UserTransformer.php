@@ -3,22 +3,11 @@ declare(strict_types=1);
 
 namespace PortlandLabs\Community\Discourse\Connect;
 
-use Concrete\Core\Url\Resolver\Manager\ResolverManager;
 use Concrete\Core\User\User;
 use League\Fractal\TransformerAbstract;
 
 class UserTransformer extends TransformerAbstract
 {
-
-    /**
-     * @var ResolverManager
-     */
-    private ResolverManager $urls;
-
-    public function __construct(ResolverManager $urls)
-    {
-        $this->urls = $urls;
-    }
 
     /**
      * Transform a given user into a DiscourseConnect friendly list of attributes.
@@ -31,6 +20,7 @@ class UserTransformer extends TransformerAbstract
     {
         $userInfo = $user->getUserInfoObject();
         $avatar = $userInfo->getUserAvatar();
+
         return [
             'external_id' => $user->getUserID(),
             'email' => $userInfo->getUserEmail(),
@@ -41,7 +31,7 @@ class UserTransformer extends TransformerAbstract
                     $userInfo->getAttribute('last_name'),
                 ]
             )->filter()->implode(' '),
-            'avatar_url' => $this->urls->resolve([$avatar->getPath()]),
+            'avatar_url' => (string)$avatar->getPath(),
             'avatar_force_update' => 'true',
             'suppress_welcome_message' => 'true',
 
