@@ -167,6 +167,15 @@
         <attributekey handle="forums_total_replies" name="Forums Total Replies" package="concrete_cms_theme" searchable="1" indexed="1"
                       type="number"
                       category="user"/>
+        <attributekey handle="forums_answer_count" name="Total Posts marked as best answer" package="concrete_cms_theme" searchable="1" indexed="1"
+                      type="number"
+                      category="user"/>
+        <attributekey handle="referrer_user_id" name="User ID of referrer" package="concrete_cms_theme" searchable="1" indexed="1"
+                      type="number"
+                      category="user"/>
+        <attributekey handle="internal_user_comment" name="Internal Comments" package="concrete_cms_theme" searchable="1" indexed="1"
+                      type="textarea"
+                      category="user"/>
         <attributekey handle="profile_private_messages_enabled" name="Private Messages" package="concrete_cms_theme"
                       searchable="1"
                       indexed="1" type="boolean" category="user">
