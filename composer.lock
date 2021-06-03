@@ -559,12 +559,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/concrete5/concrete_cms_theme.git",
-                "reference": "5155baaa7eeebbf0bfe7d51d015f6640e1dea695"
+                "reference": "a9767ff28be6f57c00d2e21158cba763a9e600f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/concrete5/concrete_cms_theme/zipball/5155baaa7eeebbf0bfe7d51d015f6640e1dea695",
-                "reference": "5155baaa7eeebbf0bfe7d51d015f6640e1dea695",
+                "url": "https://api.github.com/repos/concrete5/concrete_cms_theme/zipball/a9767ff28be6f57c00d2e21158cba763a9e600f0",
+                "reference": "a9767ff28be6f57c00d2e21158cba763a9e600f0",
                 "shasum": ""
             },
             "default-branch": true,
@@ -578,7 +578,7 @@
                 "issues": "https://github.com/concrete5/concrete_cms_theme/issues",
                 "source": "https://github.com/concrete5/concrete_cms_theme/tree/master"
             },
-            "time": "2021-06-02T02:28:44+00:00"
+            "time": "2021-06-03T23:04:22+00:00"
         },
         {
             "name": "concrete5/core",
@@ -586,12 +586,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/concrete5/concrete5-core.git",
-                "reference": "218c8e9cc9428bbbcc088a0383e89de5fff050da"
+                "reference": "fb91fccb8828f77f27a24366d576eff55ad14fb4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/concrete5/concrete5-core/zipball/218c8e9cc9428bbbcc088a0383e89de5fff050da",
-                "reference": "218c8e9cc9428bbbcc088a0383e89de5fff050da",
+                "url": "https://api.github.com/repos/concrete5/concrete5-core/zipball/fb91fccb8828f77f27a24366d576eff55ad14fb4",
+                "reference": "fb91fccb8828f77f27a24366d576eff55ad14fb4",
                 "shasum": ""
             },
             "require": {
@@ -712,7 +712,7 @@
                 "slack": "https://www.concrete5.org/slack",
                 "source": "http://documentation.concrete5.org/api/"
             },
-            "time": "2021-05-28T15:16:26+00:00"
+            "time": "2021-06-02T20:07:07+00:00"
         },
         {
             "name": "concrete5/dependency-patches",
@@ -4300,16 +4300,16 @@
         },
         {
             "name": "mlocati/ip-lib",
-            "version": "1.15.0",
+            "version": "1.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mlocati/ip-lib.git",
-                "reference": "77a1c0d7c8022f5e8f4e0ea34cd817a475e8428f"
+                "reference": "f3db91bff131b8c6a83d27a9f4dbbe768397ce47"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mlocati/ip-lib/zipball/77a1c0d7c8022f5e8f4e0ea34cd817a475e8428f",
-                "reference": "77a1c0d7c8022f5e8f4e0ea34cd817a475e8428f",
+                "url": "https://api.github.com/repos/mlocati/ip-lib/zipball/f3db91bff131b8c6a83d27a9f4dbbe768397ce47",
+                "reference": "f3db91bff131b8c6a83d27a9f4dbbe768397ce47",
                 "shasum": ""
             },
             "require": {
@@ -4355,7 +4355,7 @@
             ],
             "support": {
                 "issues": "https://github.com/mlocati/ip-lib/issues",
-                "source": "https://github.com/mlocati/ip-lib/tree/1.15.0"
+                "source": "https://github.com/mlocati/ip-lib/tree/1.16.0"
             },
             "funding": [
                 {
@@ -4367,7 +4367,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2021-05-26T12:32:37+00:00"
+            "time": "2021-05-31T20:43:23+00:00"
         },
         {
             "name": "mobiledetect/mobiledetectlib",
