@@ -30,17 +30,11 @@ $user = new \Concrete\Core\User\User();
 <?php if ($selectedTeam instanceof \Concrete\Core\User\Group\Group) { ?>
     <div class="teams-page">
         <div class="container">
-            <div class="row">
-                <div class="col">
-                    <h1 class="highlight">
-                        <?php echo t("Teams"); ?>
-                    </h1>
-
-                    <p>
-                        <?php echo t("Each level of certification build on the one before."); ?>
-                    </p>
-                </div>
-            </div>
+            <?php
+            $a = new \Concrete\Core\Area\Area('Main');
+            $a->enableGridContainer();
+            $a->display($c);
+            ?>
 
             <?php if ($selectedTeam->hasUserManagerPermissions($user)) { ?>
                 <div class="row">
