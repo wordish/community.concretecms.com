@@ -3,6 +3,7 @@
 namespace PortlandLabs\Community\API;
 
 use Concrete\Core\Foundation\Service\Provider;
+use Concrete\Core\Http\Middleware\OAuthAuthenticationMiddleware;
 use Concrete\Core\Routing\Router;
 use PortlandLabs\Community\API\V1\Achievements;
 use PortlandLabs\Community\API\V1\Middleware\FractalNegotiatorMiddleware;
@@ -28,8 +29,15 @@ class ServiceProvider extends Provider
                 $groupRouter->post('/showcase_items/update', [ShowcaseItems::class, 'update']);
                 $groupRouter->get('/showcase_items/delete', [ShowcaseItems::class, 'delete']);
                 $groupRouter->post('/teams/search', [Teams::class, 'search']);
-                $groupRouter->post('/achievements/assign', [Achievements::class, 'assign']);
                 $groupRouter->all('/discourse/handle_webhook_event', [Discourse::class, 'handleWebhookEvent']);
+            });
+
+        $router->buildGroup()
+            ->setPrefix('/api/v1')
+            ->addMiddleware(FractalNegotiatorMiddleware::class)
+            ->addMiddleware(OAuthAuthenticationMiddleware::class)
+            ->routes(function ($groupRouter) {
+                $groupRouter->post('/achievements/assign', [Achievements::class, 'assign']);
             });
     }
 }

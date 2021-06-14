@@ -117,9 +117,9 @@ if ($isCommunityAwardsModuleInstalled) {
                             echo t(
                                 '%s has posted %s, been awarded %s and has accumulated %s since joining concretecms.org on %s.',
                                 $profile->getUserName(),
-                                "<strong>" . t2("%s message", "%s messages", $totalMessages, number_format($totalMessages)) . "</strong>",
-                                "<strong>" . t2("%s achievement", "%s achievements", $totalAchievements, number_format($totalAchievements)) . "</strong>",
-                                "<strong>" . t2("%s karma point", "%s karma points", ($isCommunityAwardsModuleInstalled ? (int)Entry::getTotal($profile) : 0), number_format(($isCommunityAwardsModuleInstalled ? (int)Entry::getTotal($profile) : 0))) . "</strong>",
+                                sprintf("<a href=\"%s\"><strong>%s</strong></a>", (string)Url::to("/account/messages"), t2("%s message", "%s messages", $totalMessages, number_format($totalMessages))),
+                                sprintf("<a href=\"%s\"><strong>%s</strong></a>", (string)Url::to("/account/karma"), t2("%s achievement", "%s achievements", $totalAchievements, number_format($totalAchievements))),
+                                sprintf("<a href=\"%s\"><strong>%s</strong></a>", (string)Url::to("/account/karma"), t2("%s karma point", "%s karma points", ($isCommunityAwardsModuleInstalled ? (int)Entry::getTotal($profile) : 0), number_format(($isCommunityAwardsModuleInstalled ? (int)Entry::getTotal($profile) : 0)))),
                                 $dateHelper->formatDate($profile->getUserDateAdded(), true)
                             ); ?>
                         <?php } else { ?>

@@ -31,17 +31,11 @@ $config = $app->make(Repository::class);
 
 <div class="karma-page">
     <div class="container">
-        <div class="row">
-            <div class="col">
-                <h1 class="highlight">
-                    <?php echo t("Karma"); ?>
-                </h1>
-
-                <p>
-                    <?php echo t("Earn points and badges as you continue to use and create with Concrete. Helping others, promoting projects and doings various things within the community can generate points and badges. See below what you’ve won and what other types of badges are out there for you to earn."); ?>
-                </p>
-            </div>
-        </div>
+        <?php
+        $a = new \Concrete\Core\Area\Area('Main');
+        $a->enableGridContainer();
+        $a->display($c);
+        ?>
 
         <div class="row">
             <div class="col-lg-8" id="karma-list">
