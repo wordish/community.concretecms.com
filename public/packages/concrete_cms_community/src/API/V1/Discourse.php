@@ -17,9 +17,12 @@ use Concrete\Core\Error\ErrorList\ErrorList;
 use Concrete\Core\Events\EventDispatcher;
 use Concrete\Core\Http\Client\Client;
 use Concrete\Core\Http\Request;
+use Concrete\Core\Http\Response;
 use Concrete\Core\Logging\LoggerFactory;
 use Concrete\Core\Package\PackageService;
+use Concrete\Core\Routing\RedirectResponse;
 use Concrete\Core\Support\Facade\Application;
+use Concrete\Core\User\User;
 use Concrete\Core\User\UserInfo;
 use Concrete\Core\User\UserInfoRepository;
 use GuzzleHttp\Exception\GuzzleException;
@@ -63,6 +66,68 @@ class Discourse
         $this->userInfoRepository = $userInfoRepository;
         $this->packageService = $packageService;
         $this->logger = $this->loggerFactory->createLogger("discourse");
+    }
+
+    public function editFormInfo()
+    {
+        $currentUser = new User();
+        $app = Application::getFacadeApplication();
+        /** @var Repository $config */
+        $config = $app->make(Repository::class);
+        $errorList = new ErrorList();
+        $discourseEndpoint = $config->get("concrete_cms_community.discourse.endpoint");
+        $discourseApiKey = $config->get("concrete_cms_community.discourse.api_key");
+        $baseUrl = new Uri($discourseEndpoint);
+        $client = new Client();
+        $discourseUsername = "";
+
+        $apiUrl = $baseUrl
+            ->withPath(
+                sprintf(
+                    "/u/by-external/%s.json",
+                    (string)$currentUser->getUserID()
+                )
+            );
+
+        try {
+            $response = $client->request("GET", $apiUrl, [
+                "headers" => [
+                    "Api-Key" => $discourseApiKey
+                ]
+            ]);
+
+            if ($response->getStatusCode() === Response::HTTP_OK) {
+                $rawResponse = $response->getBody()->getContents();
+                $json = json_decode($rawResponse, true);
+
+                if (isset($json["user"]["username"])) {
+                    $discourseUsername = $json["user"]["username"];
+                } else {
+                    $errorList->add(t("Error while looking up the user details. Invalid payload."));
+                }
+            } else {
+                $errorList->add(t("Error while looking up the user details. Invalid status code."));
+            }
+
+        } catch (GuzzleException $e) {
+            $errorList->add(t("Error while looking up the user details. Internal server error."));
+        }
+
+        if (!$errorList->has()) {
+            $redirectUrl = (string)$baseUrl
+                ->withPath(
+                    sprintf(
+                        "/u/%s/preferences/account",
+                        $discourseUsername
+                    )
+                );
+
+            return new RedirectResponse($redirectUrl, Response::HTTP_TEMPORARY_REDIRECT);
+        } else {
+            $editResponse = new EditResponse();
+            $editResponse->setError($errorList);
+            return new JsonResponse($editResponse);
+        }
     }
 
     public function handleWebhookEvent()

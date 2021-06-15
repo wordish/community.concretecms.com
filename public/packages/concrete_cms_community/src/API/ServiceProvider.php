@@ -30,6 +30,7 @@ class ServiceProvider extends Provider
                 $groupRouter->get('/showcase_items/delete', [ShowcaseItems::class, 'delete']);
                 $groupRouter->post('/teams/search', [Teams::class, 'search']);
                 $groupRouter->all('/discourse/handle_webhook_event', [Discourse::class, 'handleWebhookEvent']);
+                $groupRouter->all('/discourse/edit_forum_info', [Discourse::class, 'editFormInfo']);
             });
 
         $router->buildGroup()
