@@ -48,10 +48,9 @@ $user = new User();
 ?>
 
 <div class="public-profile" style="margin-top: 0">
-    <?php if (count($badges) > 0) { ?>
         <div class="card">
             <div class="card-body">
-                <div class="card-title">
+                <div class="card-title" style="margin-bottom: 0;">
                     <span>
                         <?php echo t("Certifications"); ?>
                     </span>
@@ -107,7 +106,7 @@ $user = new User();
                                 <?php } ?>
                             </div>
                         <?php } else { ?>
-                            <div class="none-entered">
+                            <div class="none-entered text-muted">
                                 <?php echo t("None Entered"); ?>
                             </div>
                         <?php } ?>
@@ -115,5 +114,4 @@ $user = new User();
                 </div>
             </div>
         </div>
-    <?php } ?>
 </div>

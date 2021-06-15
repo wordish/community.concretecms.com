@@ -59,10 +59,10 @@ View::getInstance()->addFooterItem(
 ?>
 
 <div class="public-profile" style="margin-top: 0">
-    <?php if ($isOwnProfile && count($grantedAwards) > 0) { ?>
+    <?php if ($isOwnProfile) { ?>
         <div class="card">
             <div class="card-body">
-                <div class="card-title">
+                <div class="card-title" style="margin-bottom: 0;">
                     <span>
                         <?php echo t("Awards"); ?>
                     </span>
@@ -72,6 +72,7 @@ View::getInstance()->addFooterItem(
             <div class="card-text">
                 <div class="row">
                     <div class="col">
+                        <?php if (count($badges) > 0) { ?>
                         <div class="profile-badges">
                             <?php foreach ($grantedAwards as $grantedAward) { ?>
                                 <?php
@@ -156,6 +157,11 @@ View::getInstance()->addFooterItem(
                                 </div>
                             <?php } ?>
                         </div>
+                        <?php } else { ?>
+                            <div class="none-entered text-muted">
+                                <?php echo t("None Entered"); ?>
+                            </div>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
