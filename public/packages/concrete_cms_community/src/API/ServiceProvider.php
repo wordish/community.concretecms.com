@@ -7,6 +7,7 @@ use Concrete\Core\Http\Middleware\OAuthAuthenticationMiddleware;
 use Concrete\Core\Routing\Router;
 use PortlandLabs\Community\API\V1\Achievements;
 use PortlandLabs\Community\API\V1\Middleware\FractalNegotiatorMiddleware;
+use PortlandLabs\Community\API\V1\Profile;
 use PortlandLabs\Community\API\V1\ShowcaseItems;
 use PortlandLabs\Community\API\V1\Teams;
 use PortlandLabs\Community\API\V1\Discourse;
@@ -31,6 +32,7 @@ class ServiceProvider extends Provider
                 $groupRouter->post('/teams/search', [Teams::class, 'search']);
                 $groupRouter->all('/discourse/handle_webhook_event', [Discourse::class, 'handleWebhookEvent']);
                 $groupRouter->all('/discourse/edit_forum_info', [Discourse::class, 'editFormInfo']);
+                $groupRouter->all('/profile/lookup_email', [Profile::class, 'lookupEmail']);
             });
 
         $router->buildGroup()
