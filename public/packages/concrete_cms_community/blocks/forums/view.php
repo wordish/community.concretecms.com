@@ -24,7 +24,7 @@ defined('C5_EXECUTE') or die('Access denied');
                 </span>
 
                 <?php if ($isOwnProfile) { ?>
-                    <a href="<?php echo (string)Url::to(Page::getCurrentPage(), "edit_forum_info"); ?>" target="_blank"
+                    <a href="<?php echo (string)Url::to("/api/v1/discourse/edit_forum_info"); ?>" target="_blank"
                        class="btn btn-sm btn-secondary float-right">
                         <?php echo t("Edit Forum Info"); ?>
                     </a>
@@ -50,7 +50,7 @@ defined('C5_EXECUTE') or die('Access denied');
             <?php } ?>
 
             <?php if ($isOwnProfile) { ?>
-                <?php echo t("Visit your profile in forums %s.", sprintf("<a href=\"%s\" target=\"_blank\">%s</a>", (string)Url::to(Page::getCurrentPage(), "edit_forum_info"), t("here"))) ?>
+                <?php echo t("Visit your profile in forums %s.", sprintf("<a href=\"%s\" target=\"_blank\">%s</a>", (string)Url::to("/api/v1/discourse/edit_forum_info"), t("here"))) ?>
             <?php } ?>
         </div>
     </div>

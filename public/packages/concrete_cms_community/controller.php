@@ -75,8 +75,8 @@ class Controller extends Package
         $this->installContentFile('data.xml');
         $this->installContentFile('content.xml');
 
-        Page::getByPath('/members/profile')->delete();
-        Single::add('/members/profile', $pkg)->update(['cName' => 'View Profile']);
+        //Page::getByPath('/members/profile')->delete();
+        //Single::add('/members/profile', $pkg)->update(['cName' => 'View Profile']);
 
         $this->configureTeamsFunctionality();
     }

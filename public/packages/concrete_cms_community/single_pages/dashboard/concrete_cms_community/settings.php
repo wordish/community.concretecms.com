@@ -21,6 +21,7 @@ use Concrete\Core\Validation\CSRF\Token;
 /** @var Concrete\Core\Tree\Tree $tree */
 /** @var string $discourseEndpoint */
 /** @var string $discourseApiKey */
+/** @var string $discourseSignature */
 /** @var array $discourseAchievementsMapping */
 /** @var array $discourseCommunityPointsMapping */
 /** @var array $availableDiscourseEventTypes */
@@ -112,6 +113,11 @@ $token = $app->make(Token::class);
         <div class="form-group">
             <?php echo $form->label("discourseApiKey", t("Api Key")); ?>
             <?php echo $form->password('discourseApiKey', $discourseApiKey); ?>
+        </div>
+
+        <div class="form-group">
+            <?php echo $form->label("discourseSignature", t("Signature")); ?>
+            <?php echo $form->password('discourseSignature', $discourseSignature); ?>
         </div>
     </fieldset>
 

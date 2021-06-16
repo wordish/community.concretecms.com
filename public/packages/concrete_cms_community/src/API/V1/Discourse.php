@@ -17,9 +17,12 @@ use Concrete\Core\Error\ErrorList\ErrorList;
 use Concrete\Core\Events\EventDispatcher;
 use Concrete\Core\Http\Client\Client;
 use Concrete\Core\Http\Request;
+use Concrete\Core\Http\Response;
 use Concrete\Core\Logging\LoggerFactory;
 use Concrete\Core\Package\PackageService;
+use Concrete\Core\Routing\RedirectResponse;
 use Concrete\Core\Support\Facade\Application;
+use Concrete\Core\User\User;
 use Concrete\Core\User\UserInfo;
 use Concrete\Core\User\UserInfoRepository;
 use GuzzleHttp\Exception\GuzzleException;
@@ -65,6 +68,68 @@ class Discourse
         $this->logger = $this->loggerFactory->createLogger("discourse");
     }
 
+    public function editFormInfo()
+    {
+        $currentUser = new User();
+        $app = Application::getFacadeApplication();
+        /** @var Repository $config */
+        $config = $app->make(Repository::class);
+        $errorList = new ErrorList();
+        $discourseEndpoint = $config->get("concrete_cms_community.discourse.endpoint");
+        $discourseApiKey = $config->get("concrete_cms_community.discourse.api_key");
+        $baseUrl = new Uri($discourseEndpoint);
+        $client = new Client();
+        $discourseUsername = "";
+
+        $apiUrl = $baseUrl
+            ->withPath(
+                sprintf(
+                    "/u/by-external/%s.json",
+                    (string)$currentUser->getUserID()
+                )
+            );
+
+        try {
+            $response = $client->request("GET", $apiUrl, [
+                "headers" => [
+                    "Api-Key" => $discourseApiKey
+                ]
+            ]);
+
+            if ($response->getStatusCode() === Response::HTTP_OK) {
+                $rawResponse = $response->getBody()->getContents();
+                $json = json_decode($rawResponse, true);
+
+                if (isset($json["user"]["username"])) {
+                    $discourseUsername = $json["user"]["username"];
+                } else {
+                    $errorList->add(t("Error while looking up the user details. Invalid payload."));
+                }
+            } else {
+                $errorList->add(t("Error while looking up the user details. Invalid status code."));
+            }
+
+        } catch (GuzzleException $e) {
+            $errorList->add(t("Error while looking up the user details. Internal server error."));
+        }
+
+        if (!$errorList->has()) {
+            $redirectUrl = (string)$baseUrl
+                ->withPath(
+                    sprintf(
+                        "/u/%s/preferences/account",
+                        $discourseUsername
+                    )
+                );
+
+            return new RedirectResponse($redirectUrl, Response::HTTP_TEMPORARY_REDIRECT);
+        } else {
+            $editResponse = new EditResponse();
+            $editResponse->setError($errorList);
+            return new JsonResponse($editResponse);
+        }
+    }
+
     public function handleWebhookEvent()
     {
         $editResponse = new EditResponse();
@@ -82,182 +147,200 @@ class Discourse
             if ($this->config->has("concrete_cms_community.discourse.endpoint")) {
                 $discourseEndpoint = $this->config->get("concrete_cms_community.discourse.endpoint");
 
-                if ($this->config->has("concrete_cms_community.discourse.api_key")) {
-                    $discourseApiKey = $this->config->get("concrete_cms_community.discourse.api_key");
+                if ($this->config->has("concrete_cms_community.discourse.signature")) {
+                    $discourseSignature = $this->config->get("concrete_cms_community.discourse.signature");
 
-                    if ($this->config->has("concrete_cms_community.discourse.achievements_mapping") &&
-                        is_array($this->config->get("concrete_cms_community.discourse.achievements_mapping"))) {
+                    if ($this->config->has("concrete_cms_community.discourse.api_key")) {
+                        $discourseApiKey = $this->config->get("concrete_cms_community.discourse.api_key");
 
-                        $achievementsMapping = $this->config->get("concrete_cms_community.discourse.achievements_mapping");
-                        $communityPointsMapping = $this->config->get("concrete_cms_community.discourse.community_points_mapping");
+                        if ($this->config->has("concrete_cms_community.discourse.achievements_mapping") &&
+                            is_array($this->config->get("concrete_cms_community.discourse.achievements_mapping"))) {
 
-                        if (0 === strpos($this->request->headers->get('Content-Type'), 'application/json')) {
-                            $data = json_decode($this->request->getContent(), true);
+                            $achievementsMapping = $this->config->get("concrete_cms_community.discourse.achievements_mapping");
+                            $communityPointsMapping = $this->config->get("concrete_cms_community.discourse.community_points_mapping");
 
-                            if (is_array($data) || count($data) === 0) {
-                                if ($this->request->headers->has("X-Discourse-Event")) {
-                                    if ($this->request->headers->has("X-Discourse-Event-Type")) {
-                                        $eventName = $this->request->headers->get("X-Discourse-Event");
-                                        $eventType = $this->request->headers->get("X-Discourse-Event-Type");
+                            if (0 === strpos($this->request->headers->get('Content-Type'), 'application/json')) {
+                                $rawResponse = $this->request->getContent();
+                                $data = json_decode($rawResponse, true);
 
-                                        if (isset($data[$eventType])) {
-                                            if (isset($data[$eventType]["external_id"])) {
-                                                /*
-                                                 * Perfect in this payload the external id is given.
-                                                 * No need to use the API to retrieve user details.
-                                                 */
+                                if (is_array($data) || count($data) === 0) {
+                                    if ($this->request->headers->has("X-Discourse-Event")) {
+                                        if ($this->request->headers->has("X-Discourse-Event-Type")) {
+                                            if ($this->request->headers->has("X-Discourse-Event-Signature")) {
+                                                $eventName = $this->request->headers->get("X-Discourse-Event");
+                                                $eventType = $this->request->headers->get("X-Discourse-Event-Type");
+                                                $eventSignature = substr($this->request->headers->get("X-Discourse-Event-Signature"), 7); // 7 because of the leading "sha256="
 
-                                                $userInfo = $this->userInfoRepository->getByID($data[$eventType]["external_id"]);
+                                                $calculatedSignature = hash_hmac('sha256', $rawResponse, $discourseSignature);
 
-                                            } else if (isset($data[$eventType]["user_id"])) {
-                                                $userId = $data[$eventType]["user_id"];
+                                                if ($calculatedSignature === $eventSignature) {
 
-                                                $this->logger->info(t("Event %s raised for discourse user with ID #%s.", $eventName, $userId));
+                                                    if (isset($data[$eventType])) {
+                                                        if (isset($data[$eventType]["external_id"])) {
+                                                            /*
+                                                             * Perfect in this payload the external id is given.
+                                                             * No need to use the API to retrieve user details.
+                                                             */
 
-                                                /*
-                                                 * Resolve mail address through discourse API
-                                                 *
-                                                 * @see https://docs.discourse.org/#tag/Users/paths/~1admin~1users~1{id}.json/get
-                                                 */
+                                                            $userInfo = $this->userInfoRepository->getByID($data[$eventType]["external_id"]);
 
-                                                $path = sprintf("/admin/users/%s.json", $userId);
+                                                        } else if (isset($data[$eventType]["user_id"])) {
+                                                            $userId = $data[$eventType]["user_id"];
 
-                                                $url = new Uri($discourseEndpoint);
+                                                            $this->logger->info(t("Event %s raised for discourse user with ID #%s.", $eventName, $userId));
 
-                                                $url = $url
-                                                    ->withPath($path);
+                                                            /*
+                                                             * Resolve mail address through discourse API
+                                                             *
+                                                             * @see https://docs.discourse.org/#tag/Users/paths/~1admin~1users~1{id}.json/get
+                                                             */
 
-                                                try {
-                                                    $response = $this->client->request("GET", $url, [
-                                                        "headers" => [
-                                                            "Api-Key" => $discourseApiKey
-                                                        ]
-                                                    ]);
+                                                            $path = sprintf("/admin/users/%s.json", $userId);
 
-                                                    if ($response->getStatusCode() === JsonResponse::HTTP_OK) {
-                                                        $rawResponse = $response->getBody()->getContents();
-                                                        $json = json_decode($rawResponse, true);
+                                                            $url = new Uri($discourseEndpoint);
 
-                                                        if (is_array($json) && count($json) > 0) {
+                                                            $url = $url
+                                                                ->withPath($path);
 
-                                                            if (isset($json["single_sign_on_record"]["external_id"])) {
-                                                                /*
-                                                                 * When discourse is running through an SSO there is no mail address
-                                                                 * in the user details.
-                                                                 *
-                                                                 * The only details that available to get the original user account is the property
-                                                                 * single_sign_on_record.external_id
-                                                                 *
-                                                                 * So let's check first if the property is available and if yes we use this property instead
-                                                                 * of the mail address to resolve the concrete user account.
-                                                                 */
+                                                            try {
+                                                                $response = $this->client->request("GET", $url, [
+                                                                    "headers" => [
+                                                                        "Api-Key" => $discourseApiKey
+                                                                    ]
+                                                                ]);
 
-                                                                $userInfo = $this->userInfoRepository->getByID($json["single_sign_on_record"]["external_id"]);
+                                                                if ($response->getStatusCode() === JsonResponse::HTTP_OK) {
+                                                                    $rawResponse = $response->getBody()->getContents();
+                                                                    $json = json_decode($rawResponse, true);
 
-                                                            } else if (isset($json["email"]) && filter_var($json["email"], FILTER_VALIDATE_EMAIL)) {
-                                                                $email = $json["email"];
+                                                                    if (is_array($json) && count($json) > 0) {
 
-                                                                $userInfo = $this->userInfoRepository->getByEmail($email);
-                                                            } else {
-                                                                $errorList->add(t("Error while looking up the user details. The received response doesn't contain not an valid email property or an external id property."));
+                                                                        if (isset($json["single_sign_on_record"]["external_id"])) {
+                                                                            /*
+                                                                             * When discourse is running through an SSO there is no mail address
+                                                                             * in the user details.
+                                                                             *
+                                                                             * The only details that available to get the original user account is the property
+                                                                             * single_sign_on_record.external_id
+                                                                             *
+                                                                             * So let's check first if the property is available and if yes we use this property instead
+                                                                             * of the mail address to resolve the concrete user account.
+                                                                             */
+
+                                                                            $userInfo = $this->userInfoRepository->getByID($json["single_sign_on_record"]["external_id"]);
+
+                                                                        } else if (isset($json["email"]) && filter_var($json["email"], FILTER_VALIDATE_EMAIL)) {
+                                                                            $email = $json["email"];
+
+                                                                            $userInfo = $this->userInfoRepository->getByEmail($email);
+                                                                        } else {
+                                                                            $errorList->add(t("Error while looking up the user details. The received response doesn't contain not an valid email property or an external id property."));
+                                                                        }
+                                                                    } else {
+                                                                        $errorList->add(t("Error while looking up the user details. The received response is empty."));
+                                                                    }
+                                                                } else {
+                                                                    $errorList->add(t("Error while looking up the user details. Invalid status code received."));
+                                                                }
+                                                            } catch (GuzzleException $e) {
+                                                                $errorList->add(t("Error while looking up the user details. Internal server error."));
                                                             }
                                                         } else {
-                                                            $errorList->add(t("Error while looking up the user details. The received response is empty."));
+                                                            $errorList->add(t("User id is missing.", $eventType));
+                                                        }
+
+                                                        if ($userInfo instanceof UserInfo) {
+                                                            $user = $userInfo->getUserObject();
+
+                                                            $event = new DiscourseWebhookCall();
+                                                            $event->setUser($user);
+                                                            $event->setEventName($eventName);
+                                                            $event->setEventType($eventType);
+                                                            $event->setPayload($data);
+                                                            $eventDispatcher->dispatch("on_discourse_webhook_call", $event);
+
+                                                            if (isset($achievementsMapping[$eventName])) {
+                                                                $achievementHandle = $achievementsMapping[$eventName];
+
+                                                                try {
+                                                                    $achievement = $awardService->getBadgeByHandle($achievementHandle);
+                                                                } catch (Exception $e) {
+                                                                    $achievement = null;
+                                                                }
+
+                                                                if (isset($achievement)) {
+                                                                    try {
+                                                                        $awardService->giveBadge($achievement, $user);
+                                                                    } catch (AchievementAlreadyExists $e) {
+                                                                        $errorList->add(t("Error while assign the achievement. The achievement already exists."));
+                                                                    } catch (InvalidBadgeType $e) {
+                                                                        $errorList->add(t("Error while assign the achievement. Invalid badge type."));
+                                                                    } catch (MailTransportError $e) {
+                                                                        $errorList->add(t("Error while assign the achievement. Mail transport error."));
+                                                                    } catch (NoUserSelected $e) {
+                                                                        $errorList->add(t("Error while assign the achievement. Invalid user."));
+                                                                    }
+                                                                } else {
+                                                                    $errorList->add(t("The achievement with the handle %s does not exists.", $achievementHandle));
+                                                                }
+                                                            }
+
+                                                            if (isset($communityPointsMapping[$eventName])) {
+                                                                $communityPoints = (int)$communityPointsMapping[$eventName];
+
+                                                                if ($communityPoints > 0) {
+                                                                    $userPointAction = UserPointAction::getByHandle("discourse_action");
+
+                                                                    if (!$userPointAction instanceof UserPointAction) {
+                                                                        UserPointAction::add(
+                                                                            "discourse_action",
+                                                                            t("Discourse Action"),
+                                                                            50,
+                                                                            null
+                                                                        );
+
+                                                                        $userPointAction = UserPointAction::getByHandle("discourse_action");
+                                                                    }
+
+                                                                    $userPointActionDescription = new UserPointActionDescription();
+                                                                    $userPointActionDescription->setComments(t("Action: %s", $eventName));
+
+                                                                    $userPointAction->addEntry($user, $userPointActionDescription, $communityPoints);
+                                                                }
+                                                            }
+                                                        } else {
+                                                            $errorList->add(t("The received mail address from the discourse api is not associated with an user account at this site."));
                                                         }
                                                     } else {
-                                                        $errorList->add(t("Error while looking up the user details. Invalid status code received."));
+                                                        $errorList->add(t("Item %s is missing in payload.", $eventType));
                                                     }
-                                                } catch (GuzzleException $e) {
-                                                    $errorList->add(t("Error while looking up the user details. Internal server error."));
+                                                } else {
+                                                    $errorList->add(t("The signature is invalid."));
                                                 }
                                             } else {
-                                                $errorList->add(t("User id is missing.", $eventType));
-                                            }
-
-                                            if ($userInfo instanceof UserInfo) {
-                                                $user = $userInfo->getUserObject();
-
-                                                $event = new DiscourseWebhookCall();
-                                                $event->setUser($user);
-                                                $event->setEventName($eventName);
-                                                $event->setEventType($eventType);
-                                                $event->setPayload($data);
-                                                $eventDispatcher->dispatch("on_discourse_webhook_call", $event);
-
-                                                if (isset($achievementsMapping[$eventName])) {
-                                                    $achievementHandle = $achievementsMapping[$eventName];
-
-                                                    try {
-                                                        $achievement = $awardService->getBadgeByHandle($achievementHandle);
-                                                    } catch (Exception $e) {
-                                                        $achievement = null;
-                                                    }
-
-                                                    if (isset($achievement)) {
-                                                        try {
-                                                            $awardService->giveBadge($achievement, $user);
-                                                        } catch (AchievementAlreadyExists $e) {
-                                                            $errorList->add(t("Error while assign the achievement. The achievement already exists."));
-                                                        } catch (InvalidBadgeType $e) {
-                                                            $errorList->add(t("Error while assign the achievement. Invalid badge type."));
-                                                        } catch (MailTransportError $e) {
-                                                            $errorList->add(t("Error while assign the achievement. Mail transport error."));
-                                                        } catch (NoUserSelected $e) {
-                                                            $errorList->add(t("Error while assign the achievement. Invalid user."));
-                                                        }
-                                                    } else {
-                                                        $errorList->add(t("The achievement with the handle %s does not exists.", $achievementHandle));
-                                                    }
-                                                }
-
-                                                if (isset($communityPointsMapping[$eventName])) {
-                                                    $communityPoints = (int)$communityPointsMapping[$eventName];
-
-                                                    if ($communityPoints > 0) {
-                                                        $userPointAction = UserPointAction::getByHandle("discourse_action");
-
-                                                        if (!$userPointAction instanceof UserPointAction) {
-                                                            UserPointAction::add(
-                                                                "discourse_action",
-                                                                t("Discourse Action"),
-                                                                50,
-                                                                null
-                                                            );
-
-                                                            $userPointAction = UserPointAction::getByHandle("discourse_action");
-                                                        }
-
-                                                        $userPointActionDescription = new UserPointActionDescription();
-                                                        $userPointActionDescription->setComments(t("Action: %s", $eventName));
-
-                                                        $userPointAction->addEntry($user, $userPointActionDescription, $communityPoints);
-                                                    }
-                                                }
-                                            } else {
-                                                $errorList->add(t("The received mail address from the discourse api is not associated with an user account at this site."));
+                                                $errorList->add(t("Header X-Discourse-Event-Signature is missing."));
                                             }
                                         } else {
-                                            $errorList->add(t("Item %s is missing in payload.", $eventType));
+                                            $errorList->add(t("Header X-Discourse-Event-Type is missing."));
                                         }
-
                                     } else {
-                                        $errorList->add(t("Header X-Discourse-Event-Type is missing."));
+                                        $errorList->add(t("Header X-Discourse-Event is missing."));
                                     }
                                 } else {
-                                    $errorList->add(t("Header X-Discourse-Event is missing."));
+                                    $errorList->add(t("Payload is empty."));
                                 }
                             } else {
-                                $errorList->add(t("Payload is empty."));
+                                $errorList->add(t("Content type is invalid."));
                             }
                         } else {
-                            $errorList->add(t("Content type is invalid."));
+                            $errorList->add(t("There are no achievements mapped with the discourse events."));
                         }
-                    } else {
-                        $errorList->add(t("There are no achievements mapped with the discourse events."));
-                    }
 
+                    } else {
+                        $errorList->add(t("You need to define an api key for the discourse integration."));
+                    }
                 } else {
-                    $errorList->add(t("You need to define an api key for the discourse integration."));
+                    $errorList->add(t("You need to define a signature for the discourse integration."));
                 }
             } else {
                 $errorList->add(t("You need to define an endpoint for the discourse integration."));
