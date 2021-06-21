@@ -39,7 +39,7 @@ $config = $app->make(Repository::class);
 
         <div class="row">
             <div class="col-lg-8" id="karma-list">
-                <div class="card">
+                <div class="card mt-2">
                     <div class="card-body">
                         <div class="card-title">
                             <span>
