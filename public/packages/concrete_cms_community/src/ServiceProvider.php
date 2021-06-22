@@ -18,10 +18,13 @@ use PortlandLabs\Community\Events\DiscourseWebhookCall;
 use PortlandLabs\CommunityBadges\AwardService;
 use PortlandLabs\CommunityBadges\Entity\Achievement;
 use PortlandLabs\CommunityBadges\Events\AfterAssignCommunityPoints;
+use PortlandLabs\CommunityBadges\Events\AfterGiveAchievement;
 use PortlandLabs\CommunityBadges\Exceptions\AchievementAlreadyExists;
 use PortlandLabs\CommunityBadges\Exceptions\BadgeNotFound;
 use PortlandLabs\CommunityBadges\Exceptions\MailTransportError;
 use PortlandLabs\CommunityBadges\Exceptions\NoUserSelected;
+use PortlandLabs\CommunityBadges\User\Point\Action\Action;
+use PortlandLabs\CommunityBadges\User\Point\Action\ActionDescription;
 use PortlandLabs\ConcreteCmsTheme\Navigation\HeaderNavigationFactory;
 
 class ServiceProvider extends Provider
@@ -190,6 +193,24 @@ class ServiceProvider extends Provider
                     }
                 } else {
                     break;
+                }
+            }
+        });
+
+
+        $this->app->make('director')->addListener('on_after_give_achievement', function ($event) {
+            /**
+             * @var $event AfterGiveAchievement
+             */
+            $userBadge = $event->getUserBadge();
+            if ($userBadge) {
+                $user = $userBadge->getUser();
+                if ($user) {
+                    $wonBadgeAction = Action::getByHandle('won_badge');
+                    if ($wonBadgeAction) {
+                        // Let's award the user additional karma points because they won a badge.
+                        $wonBadgeAction->addEntry($user, new ActionDescription());
+                    }
                 }
             }
         });
