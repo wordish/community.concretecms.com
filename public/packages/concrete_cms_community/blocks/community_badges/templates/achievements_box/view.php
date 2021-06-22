@@ -49,69 +49,70 @@ $user = new User();
 
 <div class="public-profile" style="margin-top: 0">
     <div class="card">
-        <div class="card-body">
-            <div class="card-title" style="margin-bottom: 0;">
-                    <span>
-                        <?php echo t("Achievements"); ?>
-                    </span>
+        <div class="card-header d-flex align-items-center">
+            <?php echo t("Achievements"); ?>
 
-                <?php if ($isOwnProfile) { ?>
-                    <a href="<?php echo (string)Url::to('/account/karma') ?>"
-                       class="btn btn-sm btn-secondary float-right">
-                        <?php echo t("Earn Achievements"); ?>
-                    </a>
-                <?php } ?>
-            </div>
+            <?php if ($isOwnProfile) { ?>
+                <a href="<?php echo (string)Url::to('/account/karma') ?>"
+                   class="ml-auto btn btn-sm btn-secondary float-right">
+                    <?php echo t("Earn Achievements"); ?>
+                </a>
+            <?php } ?>
+
         </div>
+        <div class="card-body">
 
-        <div class="card-text">
-            <div class="row">
-                <div class="col">
-                    <?php if (count($badges) > 0) { ?>
-                        <div class="profile-badges">
-                            <?php foreach ($badges as $badge) { ?>
-                                <div class="profile-badge">
-                                    <?php
-                                    $badgeUrl = $package->getRelativePath() . "/images/default_badge.png";
+            <div class="card-text">
+                <div class="row">
+                    <div class="col">
+                        <?php if (count($badges) > 0) { ?>
+                            <div class="profile-badges">
+                                <?php foreach ($badges as $badge) { ?>
+                                    <div class="profile-badge">
+                                        <?php
+                                        $badgeUrl = $package->getRelativePath() . "/images/default_badge.png";
 
-                                    $userBadge = $badge["userBadge"];
+                                        $userBadge = $badge["userBadge"];
 
-                                    if ($userBadge instanceof UserBadge) {
-                                        if ($userBadge->getBadge() instanceof Badge) {
-                                            $badgeThumbnail = $userBadge->getBadge()->getThumbnail();
-                                            if ($badgeThumbnail instanceof File) {
-                                                $badgeThumbnailVersion = $badgeThumbnail->getApprovedVersion();
-                                                if ($badgeThumbnailVersion instanceof Version) {
-                                                    $badgeUrl = $badgeThumbnailVersion->getURL();
+                                        if ($userBadge instanceof UserBadge) {
+                                            if ($userBadge->getBadge() instanceof Badge) {
+                                                $badgeThumbnail = $userBadge->getBadge()->getThumbnail();
+                                                if ($badgeThumbnail instanceof File) {
+                                                    $badgeThumbnailVersion = $badgeThumbnail->getApprovedVersion();
+                                                    if ($badgeThumbnailVersion instanceof Version) {
+                                                        $badgeUrl = $badgeThumbnailVersion->getURL();
+                                                    }
                                                 }
                                             }
                                         }
-                                    }
 
-                                    $imageElement = new Image($badgeUrl, $userBadge->getBadge()->getName());
+                                        $imageElement = new Image($badgeUrl, $userBadge->getBadge()->getName());
 
-                                    if ($badge["count"] > 1) {
-                                        $imageWrapper = new Element("div");
-                                        $imageWrapper->addClass("badge-container");
-                                        /** @noinspection PhpParamsInspection */
-                                        $imageWrapper->appendChild($imageElement);
-                                        $imageWrapper->appendChild(new Element("div", $badge["count"], ["class" => "badge-counter", "style" => "margin: 0;"]));
-                                        echo $imageWrapper;
-                                    } else {
-                                        echo $imageElement;
-                                    }
+                                        if ($badge["count"] > 1) {
+                                            $imageWrapper = new Element("div");
+                                            $imageWrapper->addClass("badge-container");
+                                            /** @noinspection PhpParamsInspection */
+                                            $imageWrapper->appendChild($imageElement);
+                                            $imageWrapper->appendChild(new Element("div", $badge["count"], ["class" => "badge-counter", "style" => "margin: 0;"]));
+                                            echo $imageWrapper;
+                                        } else {
+                                            echo $imageElement;
+                                        }
 
-                                    ?>
-                                </div>
-                            <?php } ?>
-                        </div>
-                    <?php } else { ?>
-                        <div class="none-entered text-muted">
-                            <?php echo t("None Entered"); ?>
-                        </div>
-                    <?php } ?>
+                                        ?>
+                                    </div>
+                                <?php } ?>
+                            </div>
+                        <?php } else { ?>
+                            <div class="none-entered text-muted">
+                                <?php echo t("None Entered"); ?>
+                            </div>
+                        <?php } ?>
+                    </div>
                 </div>
             </div>
+
         </div>
+
     </div>
 </div>

@@ -31,22 +31,20 @@ $pkg = $packageService->getByHandle("concrete_cms_community")->getController();
 
 <div class="public-profile" style="margin-top: 0">
     <div class="card">
-        <div class="card-body">
-            <div class="card-title">
-                <span>
-                    <?php echo t("Showcase"); ?>
-                </span>
+        <div class="card-header d-flex align-items-center">
+            <?php echo t("Showcase"); ?>
 
-                <?php if ($isOwnProfile) { ?>
-                    <a href="javascript:void(0);"
-                       class="btn btn-sm btn-secondary float-right create-showcase-item">
-                        <?php echo t("Add Showcase Item"); ?>
-                    </a>
-                <?php } ?>
-            </div>
+            <?php if ($isOwnProfile) { ?>
+                <a href="javascript:void(0);"
+                   class="ml-auto btn btn-sm btn-secondary float-right create-showcase-item">
+                    <?php echo t("Add Showcase Item"); ?>
+                </a>
+            <?php } ?>
         </div>
 
-        <div class="card-text">
+        <div class="card-body">
+
+            <div class="card-text">
             <?php if (count($showcaseItems) === 0) { ?>
                 <?php echo t("No showcase items available yet."); ?>
             <?php } else { ?>
@@ -125,6 +123,8 @@ $pkg = $packageService->getByHandle("concrete_cms_community")->getController();
                     <?php } ?>
                 </div>
             <?php } ?>
+        </div>
+
         </div>
     </div>
 </div>

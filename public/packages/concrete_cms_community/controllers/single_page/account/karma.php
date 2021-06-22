@@ -15,9 +15,11 @@ use Concrete\Core\Entity\Package;
 use Concrete\Core\Http\Response;
 use Concrete\Core\Http\ResponseFactory;
 use Concrete\Core\Package\PackageService;
+use Concrete\Core\Page\Controller\PageController;
 use Concrete\Core\Search\Pagination\Pagination;
 use Concrete\Core\Search\Pagination\PaginationFactory;
 use Concrete\Core\Support\Facade\Url;
+use Concrete\Core\User\UserInfoRepository;
 use PortlandLabs\CommunityBadges\User\Point\Entry;
 use PortlandLabs\CommunityBadges\User\Point\EntryList as UserPointEntryList;
 use Concrete\Core\User\User;
@@ -26,7 +28,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Concrete\Core\Localization\Service\Date;
 use Exception;
 
-class Karma extends AccountPageController
+class Karma extends PageController
 {
     /** @var Connection */
     protected $db;
@@ -140,9 +142,24 @@ class Karma extends AccountPageController
         ]);
     }
 
-    public function view()
+    public function view($uID = null)
     {
+        $repository = $this->app->make(UserInfoRepository::class);
+        $profile = null;
+        if ($uID > 0) {
+            $profile = $repository->getByID($uID);
+        } else {
+            $u = $this->app->make(User::class);
+            if ($u->isRegistered()) {
+                $profile = $repository->getByID($u->getUserID());
+            }
+        }
+        if (!$profile) {
+            return $this->replace('/login');
+        }
+
         $entryList = new UserPointEntryList();
+        $entryList->filterByUserID($profile->getUserID());
         $entryList->setItemsPerPage(100);
         $entryList->sortBy('uph.timestamp', 'desc');
         /** @var PaginationFactory $factory */

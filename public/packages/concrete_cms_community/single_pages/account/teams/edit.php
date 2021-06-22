@@ -40,12 +40,10 @@ $user = new \Concrete\Core\User\User();
                 <div class="row">
                     <div class="col">
                         <div class="card">
+                            <div class="card-header">
+                                <?php echo t("Edit Details"); ?>
+                            </div>
                             <div class="card-body">
-                                <div class="card-title">
-                                    <span>
-                                        <?php echo t("Edit Details"); ?>
-                                    </span>
-                                </div>
 
                                 <div class="card-text">
                                     <form action="<?php echo (string)Url::to("/account/teams", "edit", $selectedTeam->getGroupID()); ?>"
@@ -86,13 +84,10 @@ $user = new \Concrete\Core\User\User();
                 <div class="row">
                     <div class="col">
                         <div class="card">
+                            <div class="card-header">
+                                <?php echo $selectedTeam->getGroupName(); ?>
+                            </div>
                             <div class="card-body">
-                                <div class="card-title">
-                                        <span>
-                                            <?php echo $selectedTeam->getGroupName(); ?>
-                                        </span>
-                                </div>
-
                                 <div class="card-text">
                                     <?php echo $selectedTeam->getGroupDescription(); ?>
                                 </div>
@@ -105,13 +100,10 @@ $user = new \Concrete\Core\User\User();
             <div class="row">
                 <div class="col">
                     <div class="card">
+                        <div class="card-header">
+                            <?php echo t("Members"); ?>
+                        </div>
                         <div class="card-body">
-                            <div class="card-title">
-                                    <span>
-                                        <?php echo t("Members"); ?>
-                                    </span>
-                            </div>
-
                             <div class="card-text">
                                 <table class="table">
                                     <thead>
@@ -173,12 +165,10 @@ $user = new \Concrete\Core\User\User();
                 <div class="row">
                     <div class="col">
                         <div class="card">
+                            <div class="card-header">
+                                <?php echo t("Join Requests"); ?>
+                            </div>
                             <div class="card-body">
-                                <div class="card-title">
-                                        <span>
-                                            <?php echo t("Join Requests"); ?>
-                                        </span>
-                                </div>
 
                                 <div class="card-text">
                                     <table class="table">
@@ -236,12 +226,10 @@ $user = new \Concrete\Core\User\User();
                 <div class="row">
                     <div class="col">
                         <div class="card">
+                            <div class="card-header">
+                                <?php echo t("Delete Team"); ?>
+                            </div>
                             <div class="card-body">
-                                <div class="card-title">
-                                    <span>
-                                        <?php echo t("Delete Team"); ?>
-                                    </span>
-                                </div>
 
                                 <div class="card-text">
                                     <p>
@@ -261,12 +249,10 @@ $user = new \Concrete\Core\User\User();
                 <div class="row">
                     <div class="col">
                         <div class="card">
+                            <div class="card-header">
+                                <?php echo t("Leave Team"); ?>
+                            </div>
                             <div class="card-body">
-                                <div class="card-title">
-                                <span>
-                                    <?php echo t("Leave Team"); ?>
-                                </span>
-                                </div>
                                 <div class="card-text">
                                     <p>
                                         <?php echo t("If you want to leave the team click the button below."); ?>

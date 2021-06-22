@@ -36,15 +36,13 @@ $user = new User();
         $a->display($c);
         ?>
 
-        <div class="row">
+        <div class="row mt-2">
             <div class="col">
-                <div class="card mt-2">
+                <div class="card">
+                    <div class="card-header">
+                        <?php echo t("My Teams"); ?>
+                    </div>
                     <div class="card-body">
-                        <div class="card-title">
-                                    <span>
-                                        <?php echo t("My Teams"); ?>
-                                    </span>
-                        </div>
 
                         <div class="card-text">
                             <?php if (count($myTeams) === 0) { ?>
@@ -111,12 +109,10 @@ $user = new User();
         <div class="row">
             <div class="col">
                 <div class="card">
+                    <div class="card-header">
+                        <?php echo t("Join a Team"); ?>
+                    </div>
                     <div class="card-body">
-                        <div class="card-title">
-                            <span>
-                                <?php echo t("Join a Team"); ?>
-                            </span>
-                        </div>
 
                         <div class="card-text">
                             <p>
@@ -145,12 +141,10 @@ $user = new User();
         <div class="row">
             <div class="col">
                 <div class="card">
+                    <div class="card-header">
+                        <?php echo t("Create a Team"); ?>
+                    </div>
                     <div class="card-body">
-                        <div class="card-title">
-                            <span>
-                                <?php echo t("Create a Team"); ?>
-                            </span>
-                        </div>
 
                         <div class="card-text">
                             <form action="<?php echo (string)Url::to("/account/teams", "create"); ?>" method="post">

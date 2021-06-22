@@ -49,20 +49,18 @@ $user = new User();
 
 <div class="public-profile" style="margin-top: 0">
         <div class="card">
-            <div class="card-body">
-                <div class="card-title" style="margin-bottom: 0;">
-                    <span>
-                        <?php echo t("Certifications"); ?>
-                    </span>
+            <div class="card-header d-flex align-items-center">
+                <?php echo t("Certifications"); ?>
 
-                    <?php if ($isOwnProfile) { ?>
-                        <a href="https://training.concretecms.com/"
-                           class="btn btn-sm btn-secondary float-right">
-                            <?php echo t("Get Certified"); ?>
-                        </a>
-                    <?php } ?>
-                </div>
+                <?php if ($isOwnProfile) { ?>
+                    <a href="https://training.concretecms.com/"
+                       class="ml-auto btn btn-sm btn-secondary float-right">
+                        <?php echo t("Get Certified"); ?>
+                    </a>
+                <?php } ?>
             </div>
+
+            <div class="card-body">
 
             <div class="card-text">
                 <div class="row">
@@ -112,6 +110,8 @@ $user = new User();
                         <?php } ?>
                     </div>
                 </div>
+            </div>
+
             </div>
         </div>
 </div>

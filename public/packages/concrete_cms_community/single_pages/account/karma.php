@@ -37,15 +37,13 @@ $config = $app->make(Repository::class);
         $a->display($c);
         ?>
 
-        <div class="row">
+        <div class="row mt-2">
             <div class="col-lg-8" id="karma-list">
-                <div class="card mt-2">
+                <div class="card">
+                    <div class="card-header">
+                        <?php echo t("Karma Earned (Everyone)"); ?>
+                    </div>
                     <div class="card-body">
-                        <div class="card-title">
-                            <span>
-                                <?php echo t("Karma Earned (Everyone)"); ?>
-                            </span>
-                        </div>
 
                         <div class="card-text">
                             <?php if (count($entries) === 0) { ?>
@@ -139,13 +137,10 @@ $config = $app->make(Repository::class);
 
             <div class="col-lg-4" id="my-karma">
                 <div class="card">
+                    <div class="card-header">
+                        <?php echo t("My Karma"); ?>
+                    </div>
                     <div class="card-body">
-                        <div class="card-title">
-                            <span>
-                                <?php echo t("My Karma"); ?>
-                            </span>
-                        </div>
-
                         <div class="card-text">
                             <div class="karma-totals">
                                 <?php $totalSum = 0; ?>

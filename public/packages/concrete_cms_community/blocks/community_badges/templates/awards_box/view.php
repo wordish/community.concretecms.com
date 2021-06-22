@@ -61,13 +61,10 @@ View::getInstance()->addFooterItem(
 <div class="public-profile" style="margin-top: 0">
     <?php if ($isOwnProfile) { ?>
         <div class="card">
-            <div class="card-body">
-                <div class="card-title" style="margin-bottom: 0;">
-                    <span>
-                        <?php echo t("Awards"); ?>
-                    </span>
-                </div>
+            <div class="card-header">
+                <?php echo t("Awards"); ?>
             </div>
+            <div class="card-body">
 
             <div class="card-text">
                 <div class="row">
@@ -165,6 +162,9 @@ View::getInstance()->addFooterItem(
                     </div>
                 </div>
             </div>
+
+            </div>
+
         </div>
     <?php } ?>
 </div>
