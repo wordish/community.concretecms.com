@@ -65,14 +65,14 @@ class Karma extends PageController
         return $actionList;
     }
 
-    private function getMyTotalList()
+    private function getMyTotalList($uID)
     {
         $myTotalList = [];
 
         foreach ($this->getActionList() as $actionId => $actionName) {
             $totalByAction = (int)$this->db->fetchColumn("SELECT SUM(upPoints) FROM UserPointHistory WHERE upaID = ? AND upuID = ?", [
                 $actionId,
-                $this->user->getUserID()
+                $uID,
             ]);
 
             if ($totalByAction > 0) {
@@ -226,7 +226,7 @@ class Karma extends PageController
         $entries = $pagination->getCurrentPageResults();
 
         $this->set('entries', $entries);
-        $this->set('myTotalList', $this->getMyTotalList());
+        $this->set('myTotalList', $this->getMyTotalList($profile->getUserID()));
         $this->set('hasNextPage', $pagination->hasNextPage());
         $this->set('loadMoreURL', $loadMoreURL);
         $this->set('profile', $profile);
