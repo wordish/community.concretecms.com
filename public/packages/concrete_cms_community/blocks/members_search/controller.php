@@ -208,7 +208,8 @@ class Controller extends BlockController
         switch ($this->get("sortBy")) {
             case self::SORT_BY_COMMUNITY_LEADERS:
                 $userList->getQueryObject()->leftJoin("u", "UserPointHistory", "userPoints", "u.uID = userPoints.upuID");
-                $userList->sortBy("SUM(userPoints.upPoints)", "DESC");
+                $userList->getQueryObject()->addSelect("SUM(userPoints.upPoints) AS totalPoints");
+                $userList->sortBy("totalPoints", "DESC");
                 break;
 
             case self::SORT_BY_EARLIEST_JOINED:
