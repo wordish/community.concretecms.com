@@ -83,13 +83,27 @@ class Karma extends PageController
         return $myTotalList;
     }
 
-    public function fetch_results()
+    public function fetch_results($uID = null)
     {
+        list($profile, $loadMoreURL) = $this->getKarmaUser($uID);
+        if (!$profile) {
+            throw new \Exception(t('Invalid user to retrieve karma for.'));
+        }
+
         $results = [];
+        list($filterUser, $sortList) = $this->getFilterOptions();
 
         $entryList = new UserPointEntryList();
-        $entryList->setItemsPerPage(100);
-        $entryList->sortBy('uph.timestamp', 'desc');
+        if ($filterUser == 'user') {
+            $entryList->filterByUserID($profile->getUserID());
+        }
+        $entryList->setItemsPerPage(20);
+        if ($sortList == 'recent') {
+            $entryList->sortBy('uph.timestamp', 'desc');
+        } else {
+            // sort by points
+            $entryList->sortBy('upPoints', 'desc');
+        }
         /** @var PaginationFactory $factory */
         $factory = $this->app->make(PaginationFactory::class, [$this->request]);
         /** @var Pagination $pagination */
@@ -99,8 +113,8 @@ class Karma extends PageController
             $result = [];
 
             /** @var Entry $entry */
-            $targetUser = new User($entry->getUserPointEntryUserID());
-            $result["avatar"] = $targetUser->getUserInfoObject()->getUserAvatar()->getPath();
+            $targetUser = $entry->getUserPointEntryUserObject();
+            $result["avatar"] = $targetUser->getUserAvatar()->getPath();
             $result["username"] = $targetUser->getUserName();
 
             try {
@@ -142,26 +156,69 @@ class Karma extends PageController
         ]);
     }
 
-    public function view($uID = null)
+    private function getKarmaUser($uID = null)
     {
         $repository = $this->app->make(UserInfoRepository::class);
+        $u = $this->app->make(User::class);
         $profile = null;
+        $loadMoreURL = null;
         if ($uID > 0) {
             $profile = $repository->getByID($uID);
+            $loadMoreURL = \URL::to('/account/karma', 'fetch_results', h($uID));
         } else {
-            $u = $this->app->make(User::class);
             if ($u->isRegistered()) {
                 $profile = $repository->getByID($u->getUserID());
+                $loadMoreURL = \URL::to('/account/karma', 'fetch_results', $profile->getUserID());
             }
         }
+
+        if (!empty($_SERVER['QUERY_STRING'])) {
+            $loadMoreURL .= '?' . $_SERVER['QUERY_STRING'];
+        }
+        return [$profile, $loadMoreURL];
+    }
+
+    private function getFilterOptions()
+    {
+        $filterUser = 'user';
+        $sortList = 'recent';
+        if ($this->request->query->has('filterUser') && in_array($this->request->query->get('filterUser'),
+                ['user', 'all'])) {
+            $filterUser = $this->request->query->get('filterUser');
+        }
+        if ($this->request->query->has('sortList') && in_array($this->request->query->get('sortList'),
+                ['points', 'recent'])) {
+            $sortList = $this->request->query->get('sortList');
+        }
+
+        return [$filterUser, $sortList];
+    }
+
+    public function view($uID = null)
+    {
+        list($profile, $loadMoreURL) = $this->getKarmaUser($uID);
         if (!$profile) {
             return $this->replace('/login');
         }
 
+        list($filterUser, $sortList) = $this->getFilterOptions();
+        if ($filterUser == 'all') {
+            $karmaDescriptionText = t('Karma Earned (Everyone)');
+        } else {
+            $karmaDescriptionText = t('Karma Earned');
+        }
+
         $entryList = new UserPointEntryList();
-        $entryList->filterByUserID($profile->getUserID());
-        $entryList->setItemsPerPage(100);
-        $entryList->sortBy('uph.timestamp', 'desc');
+        if ($filterUser == 'user') {
+            $entryList->filterByUserID($profile->getUserID());
+        }
+        $entryList->setItemsPerPage(20);
+        if ($sortList == 'recent') {
+            $entryList->sortBy('uph.timestamp', 'desc');
+        } else {
+            // sort by points
+            $entryList->sortBy('upPoints', 'desc');
+        }
         /** @var PaginationFactory $factory */
         $factory = $this->app->make(PaginationFactory::class, [$this->request]);
         /** @var Pagination $pagination */
@@ -171,6 +228,12 @@ class Karma extends PageController
         $this->set('entries', $entries);
         $this->set('myTotalList', $this->getMyTotalList());
         $this->set('hasNextPage', $pagination->hasNextPage());
+        $this->set('loadMoreURL', $loadMoreURL);
+        $this->set('profile', $profile);
+        $this->set('filterUser', $filterUser);
+        $this->set('sortList', $sortList);
+        $this->set('karmaDescriptionText', $karmaDescriptionText);
+
 
         $this->requireAsset("javascript", "community/karma");
 

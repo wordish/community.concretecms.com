@@ -108,7 +108,7 @@ if ($isCommunityAwardsModuleInstalled) {
                             echo t(
                                 '%s has posted %s, been awarded %s and has accumulated %s since joining the community on %s.',
                                 $profile->getUserName(),
-                                sprintf("<a href=\"%s\"><strong>%s</strong></a>", (string)Url::to("/account/messages"), t2("%s message", "%s messages", number_format($totalMessages))),
+                                sprintf("<b>%s</b>", t2("%s message", "%s messages", number_format($totalMessages))),
                                 sprintf("<a href=\"%s\"><strong>%s</strong></a>", (string)Url::to("/account/karma", $profile->getUserID()), t2("%s achievement", "%s achievements", number_format($totalAchievements))),
                                 sprintf("<a href=\"%s\"><strong>%s</strong></a>", (string)Url::to("/account/karma", $profile->getUserID()), t2("%s karma point", "%s karma points", number_format($communityPoints))),
                                 $dateHelper->formatDate($profile->getUserDateAdded(), true)
