@@ -23,7 +23,6 @@ use Concrete\Core\Support\Facade\Application;
 use Concrete\Core\Support\Facade\Url;
 use Concrete\Core\User\Group\Group;
 use PortlandLabs\CommunityBadges\User\Point\Entry;
-use Concrete\Core\User\PrivateMessage\Mailbox as UserPrivateMessageMailbox;
 use Concrete\Core\User\User;
 use Concrete\Core\User\UserInfo;
 use Concrete\Core\View\View;
@@ -59,15 +58,7 @@ $earnBadgesPageId = (int)$config->get("concrete_cms_theme.earn_badges_page_id");
 $earnBadgesPage = Page::getByID($earnBadgesPageId);
 
 $user = new User();
-
-$mailbox = UserPrivateMessageMailbox::get($profile, UserPrivateMessageMailbox::MBTYPE_INBOX);
-$totalMessages = 0;
-
-if ($mailbox instanceof UserPrivateMessageMailbox) {
-    $messageList = $mailbox->getMessageList();
-    $totalMessages = $messageList->getTotal();
-}
-
+$totalMessages = $profile->getAttribute('forums_total_posts');
 $isOwnProfile = $profile->getUserID() == $user->getUserID();
 
 $isCommunityAwardsModuleInstalled = $packageService->getByHandle("community_badges") instanceof Package;
@@ -112,23 +103,14 @@ if ($isCommunityAwardsModuleInstalled) {
                             /** @var \PortlandLabs\CommunityBadges\AwardService $awardService */
                             $awardService = $app->make(\PortlandLabs\CommunityBadges\AwardService::class);
                             $totalAchievements = count($awardService->getAllAchievementsByUser($profile->getUserObject()));
-
+                            $communityPoints = Entry::getTotal($profile);
                             /** @noinspection PhpUnhandledExceptionInspection */
                             echo t(
-                                '%s has posted %s, been awarded %s and has accumulated %s since joining concretecms.org on %s.',
+                                '%s has posted %s, been awarded %s and has accumulated %s since joining the community on %s.',
                                 $profile->getUserName(),
-                                sprintf("<a href=\"%s\"><strong>%s</strong></a>", (string)Url::to("/account/messages"), t2("%s message", "%s messages", $totalMessages, number_format($totalMessages))),
-                                sprintf("<a href=\"%s\"><strong>%s</strong></a>", (string)Url::to("/account/karma"), t2("%s achievement", "%s achievements", $totalAchievements, number_format($totalAchievements))),
-                                sprintf("<a href=\"%s\"><strong>%s</strong></a>", (string)Url::to("/account/karma"), t2("%s karma point", "%s karma points", ($isCommunityAwardsModuleInstalled ? (int)Entry::getTotal($profile) : 0), number_format(($isCommunityAwardsModuleInstalled ? (int)Entry::getTotal($profile) : 0)))),
-                                $dateHelper->formatDate($profile->getUserDateAdded(), true)
-                            ); ?>
-                        <?php } else { ?>
-                            <?php /** @noinspection PhpUnhandledExceptionInspection */
-                            echo t(
-                                '%s has posted %s and has accumulated %s since joining concretecms.org on %s.',
-                                $profile->getUserName(),
-                                "<strong>" . t2("%s message", "%s messages", $totalMessages, number_format($totalMessages)) . "</strong>",
-                                "<strong>" . t2("%s karma point", "%s karma points", ($isCommunityAwardsModuleInstalled ? (int)Entry::getTotal($profile) : 0), number_format(($isCommunityAwardsModuleInstalled ? (int)Entry::getTotal($profile) : 0))) . "</strong>",
+                                sprintf("<b>%s</b>", t2("%s message", "%s messages", number_format($totalMessages))),
+                                sprintf("<a href=\"%s\"><strong>%s</strong></a>", (string)Url::to("/account/karma", $profile->getUserID()), t2("%s achievement", "%s achievements", number_format($totalAchievements))),
+                                sprintf("<a href=\"%s\"><strong>%s</strong></a>", (string)Url::to("/account/karma", $profile->getUserID()), t2("%s karma point", "%s karma points", number_format($communityPoints))),
                                 $dateHelper->formatDate($profile->getUserDateAdded(), true)
                             ); ?>
                         <?php } ?>
@@ -385,19 +367,16 @@ if ($isCommunityAwardsModuleInstalled) {
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card" id="info-card">
+                            <div class="card-header d-flex align-items-center">
+                                <?php echo t("Information"); ?>
+                                <?php if ($isOwnProfile) { ?>
+                                    <a href="<?php echo (string)Url::to('/account/edit_profile') ?>"
+                                       class="ml-auto btn btn-sm btn-secondary float-right">
+                                        <?php echo t("Edit Profile"); ?>
+                                    </a>
+                                <?php } ?>
+                            </div>
                             <div class="card-body">
-                                <div class="card-title">
-                                    <span>
-                                        <?php echo t("Information"); ?>
-                                    </span>
-
-                                    <?php if ($isOwnProfile) { ?>
-                                        <a href="<?php echo (string)Url::to('/account/edit_profile') ?>"
-                                           class="btn btn-sm btn-secondary float-right">
-                                            <?php echo t("Edit Profile"); ?>
-                                        </a>
-                                    <?php } ?>
-                                </div>
 
                                 <div class="card-text">
                                     <div class="row">

@@ -174,12 +174,15 @@ var currentPage = 2;
 /* harmony default export */ __webpack_exports__["default"] = (function (options) {
   var tpl = __webpack_require__(/*! ../html/result_list.html */ "./assets/karma/html/result_list.html");
 
+  $("#load-more a").addClass('d-none');
+  $("#load-more i").removeClass('d-none');
+
   if ($("#load-more").hasClass("d-none")) {
     return;
   }
 
   $.ajax({
-    url: CCM_DISPATCHER_FILENAME + "/account/karma/fetch_results",
+    url: $('#load-more').attr('data-load-more-url'),
     method: "GET",
     data: {
       ccm_paging_p: currentPage
@@ -187,6 +190,8 @@ var currentPage = 2;
     success: function success(response) {
       var html = tpl(response);
       $("#karma-container").append(html);
+      $("#load-more a").removeClass('d-none');
+      $("#load-more i").addClass('d-none');
 
       if (!response.hasNextPage) {
         $("#load-more").addClass("d-none");
@@ -206,7 +211,7 @@ var currentPage = 2;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/fabianbitter/Projekte/community.concretecms.com/public/packages/concrete_cms_community/build/assets/karma/js/main.js */"./assets/karma/js/main.js");
+module.exports = __webpack_require__(/*! /Users/andrewembler/projects/community.concretecms.com/public/packages/concrete_cms_community/build/assets/karma/js/main.js */"./assets/karma/js/main.js");
 
 
 /***/ })
