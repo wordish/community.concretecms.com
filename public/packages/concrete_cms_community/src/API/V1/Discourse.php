@@ -110,7 +110,7 @@ class Discourse
             }
 
         } catch (GuzzleException $e) {
-            $errorList->add(t("Error while looking up the user details. Internal server error."));
+            $errorList->add(t("You need to create a user account first at forums.concretecms.org."));
         }
 
         if (!$errorList->has()) {
@@ -124,9 +124,8 @@ class Discourse
 
             return new RedirectResponse($redirectUrl, Response::HTTP_TEMPORARY_REDIRECT);
         } else {
-            $editResponse = new EditResponse();
-            $editResponse->setError($errorList);
-            return new JsonResponse($editResponse);
+            // redirect to discourse so that a user account can be created
+            return new RedirectResponse($config->get("concrete_cms_community.discourse.endpoint"), Response::HTTP_TEMPORARY_REDIRECT);
         }
     }
 
