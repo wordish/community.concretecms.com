@@ -223,7 +223,7 @@ $userDisplayName = h(trim($profileData['first_name'] . " " . $profileData['last_
                                     <?php echo t("Inbox"); ?>
                                 </a>
 
-                                <?php if (!$isOwnProfile) { ?>
+                                <?php if (!$isOwnProfile && $user->isRegistered()) { ?>
                                     <a href="javascript:void(0);" class="btn btn-primary send-message"
                                        data-receiver="<?php echo (int) $profile->getUserID(); ?>">
                                         <?php echo t("Send Message"); ?>
@@ -256,7 +256,7 @@ $userDisplayName = h(trim($profileData['first_name'] . " " . $profileData['last_
                             <?php echo t("Inbox"); ?>
                         </a>
 
-                        <?php if (!$isOwnProfile) { ?>
+                        <?php if (!$isOwnProfile && $user->isRegistered()) { ?>
                             <a href="javascript:void(0);" class="btn btn-primary send-message"
                                data-receiver="<?php echo (int) $profile->getUserID(); ?>">
                                 <?php echo t("Send Message"); ?>
