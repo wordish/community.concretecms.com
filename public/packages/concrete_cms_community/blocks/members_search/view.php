@@ -84,7 +84,7 @@ $profileFormRenderer = new Renderer(
                                     <div class="form-group form-inline sort-by">
                                         <?php echo $form->label("sortBy", t("Sort By")); ?>
 
-                                        <div class="input-groupg" style="align-items: center">
+                                        <div class="input-group" style="align-items: center">
                                             <?php echo $form->select("sortBy", $sortByOptions, $sortBy); ?>
 
                                             <div class="input-group-append">
