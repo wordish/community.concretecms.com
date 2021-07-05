@@ -93,7 +93,7 @@ foreach ($attributes as $key) {
     $profileData[$key] = $profile->getAttribute($key);
 }
 
-$userDisplayName = h(trim($profile['first_name'] . " " . $profile['last_name']));
+$userDisplayName = h(trim($profileData['first_name'] . " " . $profileData['last_name']));
 ?>
 
 <div class="public-profile">
