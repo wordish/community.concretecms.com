@@ -22,6 +22,7 @@ use Concrete\Core\Page\Page;
 use Concrete\Core\Support\Facade\Application;
 use Concrete\Core\Support\Facade\Url;
 use Concrete\Core\User\Group\Group;
+use PortlandLabs\CommunityBadges\Entity\Award;
 use PortlandLabs\CommunityBadges\User\Point\Entry;
 use Concrete\Core\User\User;
 use Concrete\Core\User\UserInfo;
@@ -72,16 +73,37 @@ if ($isCommunityAwardsModuleInstalled) {
     View::getInstance()->addFooterItem($htmlServer->javascript($jsFile));
 }
 
+// Load user attributes
+$attributes = [
+    'first_name',
+    'last_name',
+    'description',
+    'header_image',
+    'website',
+    'past_experience',
+    'association',
+    'address',
+    'phone',
+    'current_specialties',
+    'education',
+];
+$profileData = [];
+
+foreach ($attributes as $key) {
+    $profileData[$key] = $profile->getAttribute($key);
+}
+
+$userDisplayName = h(trim($profile['first_name'] . " " . $profile['last_name']));
 ?>
 
 <div class="public-profile">
     <div class="profile-header-image">
         <?php
-        $headerImage = $profile->getAttribute("header_image");
+        $headerImage = $profileData['header_image'];
         if ($headerImage instanceof File) {
             $fileVersion = $headerImage->getApprovedVersion();
             if ($fileVersion instanceof Version) {
-                echo '<img src="' . $fileVersion->getURL() . '" alt="' . h(t("Header Image of %s", $profile->getUserName())) . '">';
+                echo '<img src="' . $fileVersion->getURL() . '" alt="' . t("Header Image of %s", h($profile->getUserName())) . '">';
             }
         }
         ?>
@@ -98,8 +120,8 @@ if ($isCommunityAwardsModuleInstalled) {
                     </div>
 
                     <div class="profile-intro">
-                        <?php if ($isCommunityAwardsModuleInstalled) { ?>
-                            <?php
+                        <?php
+                        if ($isCommunityAwardsModuleInstalled) {
                             /** @var \PortlandLabs\CommunityBadges\AwardService $awardService */
                             $awardService = $app->make(\PortlandLabs\CommunityBadges\AwardService::class);
                             $totalAchievements = count($awardService->getAllAchievementsByUser($profile->getUserObject()));
@@ -107,24 +129,19 @@ if ($isCommunityAwardsModuleInstalled) {
                             /** @noinspection PhpUnhandledExceptionInspection */
                             echo t(
                                 '%s has posted %s, been awarded %s and has accumulated %s since joining the community on %s.',
-                                $profile->getUserName(),
+                                h($profile->getUserName()),
                                 sprintf("<b>%s</b>", t2("%s message", "%s messages", number_format($totalMessages))),
                                 sprintf("<a href=\"%s\"><strong>%s</strong></a>", (string)Url::to("/account/karma", $profile->getUserID()), t2("%s achievement", "%s achievements", number_format($totalAchievements))),
                                 sprintf("<a href=\"%s\"><strong>%s</strong></a>", (string)Url::to("/account/karma", $profile->getUserID()), t2("%s karma point", "%s karma points", number_format($communityPoints))),
                                 $dateHelper->formatDate($profile->getUserDateAdded(), true)
-                            ); ?>
-                        <?php } ?>
+                            );
+                        }
+                        ?>
                     </div>
 
                     <div class="profile-username">
                         <h1>
-                            <?php
-                            $userDisplayName = (string)$profile->getAttribute('first_name') . " " . (string)$profile->getAttribute('last_name');
-                            if (strlen(trim($userDisplayName)) === 0) {
-                                $userDisplayName = $profile->getUserName();
-                            }
-                            echo $userDisplayName;
-                            ?>
+                            <?= $userDisplayName ?: h($profile->getUserName()); ?>
                         </h1>
 
                         <div class="profile-user-actions">
@@ -143,7 +160,7 @@ if ($isCommunityAwardsModuleInstalled) {
                                         if ($grantedAward instanceof \PortlandLabs\CommunityBadges\Entity\AwardGrant) {
                                             $award = $grantedAward->getAward();
 
-                                            if ($award instanceof \PortlandLabs\CommunityBadges\Entity\Award) {
+                                            if ($award instanceof Award) {
                                                 $grantedAwardList[$grantedAward->getId()] = $award->getName();
                                             }
                                         }
@@ -182,7 +199,7 @@ if ($isCommunityAwardsModuleInstalled) {
                                                         <div class="form-group">
                                                             <?php echo $form->hidden("user", $profile->getUserID()); ?>
                                                             <?php echo $form->label("userName", t("User")); ?>
-                                                            <?php echo $form->text("userName", $profile->getUserName(), ["readonly" => "readonly"]); ?>
+                                                            <?php echo $form->text("userName", h($profile->getUserName()), ["readonly" => "readonly"]); ?>
                                                         </div>
                                                     </div>
 
@@ -208,7 +225,7 @@ if ($isCommunityAwardsModuleInstalled) {
 
                                 <?php if (!$isOwnProfile) { ?>
                                     <a href="javascript:void(0);" class="btn btn-primary send-message"
-                                       data-receiver="<?php echo h($profile->getUserID()); ?>">
+                                       data-receiver="<?php echo (int) $profile->getUserID(); ?>">
                                         <?php echo t("Send Message"); ?>
                                     </a>
                                 <?php } ?>
@@ -221,30 +238,27 @@ if ($isCommunityAwardsModuleInstalled) {
                     <div class="profile-description">
                         <?php if ($profile->getAttribute('website') != "") { ?>
                             <div class="profile-website">
-                                <a href="<?php echo h((string)$profile->getAttribute('website')) ?>">
-                                    <?php
-                                    $urlParts = parse_url((string)$profile->getAttribute('website'));
-                                    echo $urlParts["host"];
-                                    ?>
+                                <a href="<?php echo h($profileData['website']) ?>">
+                                    <?= parse_url((string) $profileData['website'], PHP_URL_HOST); ?>
                                 </a>
                             </div>
                         <?php } ?>
 
-                        <?php if (strlen($profile->getAttribute('description')) === 0) { ?>
+                        <?php if (!trim($profileData['description'])) { ?>
                             <?php echo t("None entered."); ?>
                         <?php } else { ?>
-                            <?php echo nl2br($profile->getAttribute('description')); ?>
+                            <?php echo nl2br(h($profileData['description'])); ?>
                         <?php } ?>
                     </div>
 
                     <div class="profile-user-actions">
-                        <a href="<?php echo (string)Url::to("account/messages"); ?>" class="btn btn-secondary">
+                        <a href="<?= Url::to("account/messages"); ?>" class="btn btn-secondary">
                             <?php echo t("Inbox"); ?>
                         </a>
 
                         <?php if (!$isOwnProfile) { ?>
                             <a href="javascript:void(0);" class="btn btn-primary send-message"
-                               data-receiver="<?php echo h($profile->getUserID()); ?>">
+                               data-receiver="<?php echo (int) $profile->getUserID(); ?>">
                                 <?php echo t("Send Message"); ?>
                             </a>
                         <?php } ?>
@@ -260,16 +274,15 @@ if ($isCommunityAwardsModuleInstalled) {
                     $communityBadgesPackageEntity = $packageService->getByHandle("community_Badges");
                     /** @var \Concrete\Core\Package\Package $communityBadgesPackage */
                     $communityBadgesPackage = $communityBadgesPackageEntity->getController();
-                    ?>
 
-                    <?php foreach ($awardService->getAllGrantedAwardsByUser($user) as $awardGrant) { ?>
-                        <?php $award = $awardGrant->getAward(); ?>
-
-                        <?php if ($award instanceof \PortlandLabs\CommunityBadges\Entity\Award && !$awardGrant->isDismissed()) { ?>
+                    foreach ($awardService->getAllGrantedAwardsByUser($user) as $awardGrant) {
+                        $award = $awardGrant->getAward();
+                        if ($award instanceof Award && !$awardGrant->isDismissed()) {
+                            ?>
                             <div class="row">
                                 <div class="col">
                                     <div class="alert alert-new-badge alert-dismissible fade show" role="alert"
-                                         data-award-grant-id="<?php echo (int)$awardGrant->getId(); ?>">
+                                         data-award-grant-id="<?php echo $awardGrant->getId(); ?>">
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -302,7 +315,7 @@ if ($isCommunityAwardsModuleInstalled) {
 
                                         <div class="badge-name">
                                             <div class="text-center">
-                                                <?php echo $award->getName(); ?>
+                                                <?= h($award->getName()); ?>
                                             </div>
                                         </div>
 
@@ -331,7 +344,7 @@ if ($isCommunityAwardsModuleInstalled) {
                                         <div class="modal-body">
                                             <div class="form-group">
                                                 <?php echo $form->label("grantedAwardName", t("Award")); ?>
-                                                <?php echo $form->text("grantedAwardName", $award->getName(), ["readonly" => "readonly"]); ?>
+                                                <?php echo $form->text("grantedAwardName", h($award->getName()), ["readonly" => "readonly"]); ?>
                                                 <?php echo $form->hidden("grantedAwardId", $awardGrant->getId()); ?>
                                             </div>
 
@@ -342,7 +355,7 @@ if ($isCommunityAwardsModuleInstalled) {
                                                 <?php } else { ?>
                                                     <?php echo $form->hidden("user", $profile->getUserID()); ?>
                                                     <?php echo $form->label("userName", t("User")); ?>
-                                                    <?php echo $form->text("userName", $profile->getUserName(), ["readonly" => "readonly"]); ?>
+                                                    <?php echo $form->text("userName", h($profile->getUserName()), ["readonly" => "readonly"]); ?>
                                                 <?php } ?>
                                             </div>
                                         </div>
@@ -370,7 +383,7 @@ if ($isCommunityAwardsModuleInstalled) {
                             <div class="card-header d-flex align-items-center">
                                 <?php echo t("Information"); ?>
                                 <?php if ($isOwnProfile) { ?>
-                                    <a href="<?php echo (string)Url::to('/account/edit_profile') ?>"
+                                    <a href="<?= Url::to('/account/edit_profile') ?>"
                                        class="ml-auto btn btn-sm btn-secondary float-right">
                                         <?php echo t("Edit Profile"); ?>
                                     </a>
@@ -403,16 +416,16 @@ if ($isCommunityAwardsModuleInstalled) {
                                                 "attribute" => $profile->getAttribute('address')
                                             ]); ?>
                                             <?php if ($profile->getAttribute('phone') != "") { ?>
-                                                <a href="tel:<?php echo h((string)$profile->getAttribute('phone')) ?>">
-                                                    <?php echo (string)$profile->getAttribute('phone') ?>
+                                                <a href="tel:<?php echo h($profileData['phone']) ?>">
+                                                    <?php echo h($profileData['phone']) ?>
                                                 </a>
                                             <?php } ?>
                                         </div>
 
                                         <div class="col-md-6">
                                             <?php $this->inc('elements/members/user_attribute.php', [
-                                                "title" => t("Current Specialies"),
-                                                "attribute" => $profile->getAttribute('current_specialties')
+                                                "title" => t("Current Specialties"),
+                                                "attribute" => $profileData['current_specialties']
                                             ]); ?>
                                         </div>
                                     </div>
@@ -421,7 +434,7 @@ if ($isCommunityAwardsModuleInstalled) {
                                         <div class="col-md">
                                             <?php $this->inc('elements/members/user_attribute.php', [
                                                 "title" => t("Education"),
-                                                "attribute" => $profile->getAttribute('education')
+                                                "attribute" => $profileData['education'],
                                             ]); ?>
                                         </div>
                                     </div>
