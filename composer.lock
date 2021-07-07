@@ -559,12 +559,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/concrete5/concrete_cms_theme.git",
-                "reference": "929958455c3eb93629d1d7157c00e31e47cf3fc2"
+                "reference": "58ea1f760d2cbf580f6bc7391f9997a202756f64"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/concrete5/concrete_cms_theme/zipball/929958455c3eb93629d1d7157c00e31e47cf3fc2",
-                "reference": "929958455c3eb93629d1d7157c00e31e47cf3fc2",
+                "url": "https://api.github.com/repos/concrete5/concrete_cms_theme/zipball/58ea1f760d2cbf580f6bc7391f9997a202756f64",
+                "reference": "58ea1f760d2cbf580f6bc7391f9997a202756f64",
                 "shasum": ""
             },
             "default-branch": true,
@@ -578,7 +578,7 @@
                 "issues": "https://github.com/concrete5/concrete_cms_theme/issues",
                 "source": "https://github.com/concrete5/concrete_cms_theme/tree/master"
             },
-            "time": "2021-07-02T22:26:07+00:00"
+            "time": "2021-07-07T22:40:11+00:00"
         },
         {
             "name": "concrete5/core",
@@ -586,12 +586,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/concrete5/concrete5-core.git",
-                "reference": "d358a6da6b9a885dbbc957fc97e10fc06bb7ab66"
+                "reference": "c4fe1d1134a4ae8a856e0ceb69d411e044d8a59e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/concrete5/concrete5-core/zipball/d358a6da6b9a885dbbc957fc97e10fc06bb7ab66",
-                "reference": "d358a6da6b9a885dbbc957fc97e10fc06bb7ab66",
+                "url": "https://api.github.com/repos/concrete5/concrete5-core/zipball/c4fe1d1134a4ae8a856e0ceb69d411e044d8a59e",
+                "reference": "c4fe1d1134a4ae8a856e0ceb69d411e044d8a59e",
                 "shasum": ""
             },
             "require": {
@@ -712,7 +712,7 @@
                 "slack": "https://www.concrete5.org/slack",
                 "source": "http://documentation.concrete5.org/api/"
             },
-            "time": "2021-07-02T18:33:39+00:00"
+            "time": "2021-07-05T16:00:24+00:00"
         },
         {
             "name": "concrete5/dependency-patches",
