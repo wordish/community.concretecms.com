@@ -60,7 +60,7 @@ $profileFormRenderer = new Renderer(
                     <div class="">
                         <div class="row">
                             <div class="col-md-6 align-self-center">
-                                <?php echo $form->text("q", $q, ["placeholder" => t("Search Developers"), "class" => "search-control"]); ?>
+                                <?php echo $form->text("q", $q, ["placeholder" => t("Search Members"), "class" => "search-control"]); ?>
                                 <button type="button" class="btn btn-secondary toggle-dropdown" id="toggleFilters">
                                     <?php echo t("Filters"); ?>
                                     <i class="fas fa-filter"></i>
