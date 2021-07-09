@@ -59,40 +59,24 @@ $profileFormRenderer = new Renderer(
                 <form action="#" method="get">
                     <div class="">
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <div class="input-group" style="align-items: center">
-                                        <div class="ccm-search-input">
-                                            <?php echo $form->text("q", $q, ["placeholder" => t("Search Members"), "class" => "search-control"]); ?>
-                                        </div>
-
-                                        <div class="input-group-append">
-                                            <div class="dropdown position-static">
-                                                <button type="button" class="btn btn-secondary toggle-dropdown" id="toggleFilters">
-                                                    <span class="inner-text">
-                                                        <?php echo t("Filters"); ?>
-                                                    </span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="col-md-6 align-self-center">
+                                <?php echo $form->text("q", $q, ["placeholder" => t("Search Members"), "class" => "search-control"]); ?>
+                                <button type="button" class="btn btn-secondary toggle-dropdown" id="toggleFilters">
+                                    <?php echo t("Filters"); ?>
+                                    <i class="fas fa-filter"></i>
+                                </button>
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-6 align-self-center">
                                 <div class="float-md-right float-lg-right float-xl-right float-sm-right float-xs-none">
-                                    <div class="form-group form-inline sort-by">
+                                    <div class="form-inline sort-by">
                                         <?php echo $form->label("sortBy", t("Sort By")); ?>
 
-                                        <div class="input-group" style="align-items: center">
                                             <?php echo $form->select("sortBy", $sortByOptions, $sortBy); ?>
 
-                                            <div class="input-group-append">
-                                                <button type="submit" class="btn btn-primary btn-search">
-                                                    <?php echo t("Search"); ?>
-                                                </button>
-                                            </div>
-                                        </div>
+                                            <button type="submit" class="btn btn-primary">
+                                                <?php echo t("Search"); ?>
+                                            </button>
                                     </div>
                                 </div>
                             </div>
