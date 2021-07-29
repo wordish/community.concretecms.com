@@ -3,25 +3,10 @@ docker-compose-yaml: .lagoon-docker-compose.yml
 project: concrete5-hosting-project
 
 environments:
-  main:
-    routes:
-      - nginx:
-          - "concreteelephpant.com":
-              tls-acme: 'true'
-              insecure: Redirect
-              hsts: max-age=31536000
-          - "www.concreteelephpant.com":
-              tls-acme: 'true'
-              insecure: Redirect
-              hsts: max-age=31536000
-    types:
-      mariadb: mariadb-shared
-    rollouts:
-      mariadb: statefulset
   develop:
     routes:
       - nginx:
-          - "stage.concreteelephpant.com":
+          - "community.stage.concretecms.com":
               tls-acme: 'true'
               insecure: Redirect
               hsts: max-age=31536000
