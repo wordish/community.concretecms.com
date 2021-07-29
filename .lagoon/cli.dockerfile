@@ -1,4 +1,4 @@
-FROM amazeeio/php:7.2-cli
+FROM amazeeio/php:7.4-cli
 
 # Install PHP extensions
 RUN docker-php-ext-install intl

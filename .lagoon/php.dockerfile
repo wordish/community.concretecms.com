@@ -1,7 +1,7 @@
 ARG CLI_IMAGE
 FROM ${CLI_IMAGE} as cli
 
-FROM amazeeio/php:7.2-fpm
+FROM amazeeio/php:7.4-fpm
 
 # Install PHP extensions
 RUN docker-php-ext-install intl
