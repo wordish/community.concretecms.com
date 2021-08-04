@@ -447,3 +447,14 @@ $userDisplayName = h(trim($profileData['first_name'] . " " . $profileData['last_
         </div>
     </div>
 </div>
+
+<?php if (!empty($_REQUEST['send_message']) && $_REQUEST['send_message'] == '1') {
+    // If we add a send_message=1 to the query string, we trigger the send message popup when the page is laoded
+    // This is useful for certain interactions coming from the marketplace.concretecms.com site.
+    ?>
+    <script type="text/javascript">
+        $(function() {
+            $('.send-message').trigger('click')
+        })
+    </script>
+<?php } ?>
