@@ -99,13 +99,12 @@ export default {
                 return
             }
 
-            store.commit('connectToMercure', 'deploy')
-            store.state.eventSource.addEventListener('message', (e) => {
+            store.commit('connectToMercure', {topics: 'deploy', listener: (e) => {
                 const data = JSON.parse(e.data)
                 if (data["project"] === hostingProjectId(this.$route.params.id) && data['environmentName'] === this.$route.params.environment) {
                     this.handleUpdate(data)
                 }
-            })
+            }})
         },
         handleUpdate(data) {
             let deploy = null

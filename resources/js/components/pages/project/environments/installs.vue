@@ -98,8 +98,7 @@ export default {
     }),
     methods: {
         startMonitoring() {
-            store.commit('connectToMercure', 'task')
-            store.state.eventSource.addEventListener('message', (e) => {
+            store.commit('connectToMercure', {topics: 'task', listener: (e) => {
                 const data = JSON.parse(e.data)
                 if (
                     data["project"] === hostingProjectId(this.$route.params.id)
@@ -108,7 +107,7 @@ export default {
                 ) {
                     this.handleUpdate(data)
                 }
-            })
+            }})
         },
         handleUpdate(data) {
             let task = null

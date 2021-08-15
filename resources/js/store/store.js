@@ -28,7 +28,7 @@ export const store = new Vuex.Store({
         }
     },
     mutations: {
-        connectToMercure(state, topics) {
+        connectToMercure(state, {topics, listener}) {
             const url = config.mercureUrl + '?topic=' + topics;
             if (state.eventSource && typeof state.eventSource.close === 'function') {
                 state.eventSource.close()
@@ -39,6 +39,15 @@ export const store = new Vuex.Store({
                     Authorization: "Bearer " + config.mercureToken,
                 }
             })
+
+            let retry = 0;
+            state.eventSource.addEventListener('message', (e) => {
+                retry = 0
+                return listener(e)
+            })
+            state.eventSource.onerror = function(e) {
+                store.commit('connectToMercure', {topics, listener})
+            }
 
             return state.eventSource
         },
