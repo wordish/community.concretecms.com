@@ -19,7 +19,7 @@
                                     <strong>{{ selectedEnvironment }}</strong>
                                     <span>environment</span>
                                 </div>
-                                <button @click="triggerDeploy" class="btn btn-primary">Start Deploy</button>
+                                <button @click="triggerDeploy" class="btn btn-sm btn-primary">Start Deploy</button>
                             </div>
                         </div>
                     </div>
@@ -100,8 +100,11 @@ export default {
                 return
             }
 
-            store.commit('connectToMercure', {topics: 'deploy', listener: (e) => {
+            store.commit('setEventSourceListener', {key: 'env/deploys', listener: (e) => {
                 const data = JSON.parse(e.data)
+                if (data['@type'] !== 'Deploy') {
+                    return
+                }
                 if (data["project"] === hostingProjectId(this.$route.params.id) && data['environmentName'] === this.$route.params.environment) {
                     this.handleUpdate(data)
                 }
@@ -153,6 +156,10 @@ export default {
     },
     mounted() {
         this.startMonitoring()
+    },
+    beforeRouteLeave(to, from, next) {
+        store.commit('setEventSourceListener', {key: 'env/deploys', listener: null});
+        next(vm => vm)
     },
     beforeRouteEnter(to, from, next) {
         next(vm => vm.$apollo.queries.deploys.refetch())

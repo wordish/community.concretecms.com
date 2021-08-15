@@ -108,7 +108,7 @@ export default {
             const breadcrumbs = []
 
             breadcrumbs.push([
-                'Projects',
+                'Hosting Projects',
                 '/'
             ])
 

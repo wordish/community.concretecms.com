@@ -18,7 +18,7 @@
                                     <strong>{{ selectedEnvironment }}</strong>
                                     <span>environment</span>
                                 </div>
-                                <button @click="triggerBackup" class="btn btn-primary">
+                                <button @click="triggerBackup" class="btn btn-primary btn-sm">
                                     Start Backup
                                 </button>
                             </div>
@@ -103,7 +103,7 @@ export default {
     }),
     methods: {
         startMonitoring() {
-            store.commit('connectToMercure', {topic: 'task', listener: (e) => {
+            store.commit('setEventSourceListener', {key: 'env/backups', listener: (e) => {
                 const data = JSON.parse(e.data)
                 if (
                     data["project"] === hostingProjectId(this.$route.params.id)
@@ -163,6 +163,10 @@ export default {
     },
     mounted() {
         this.startMonitoring()
+    },
+    beforeRouteLeave(to, from, next) {
+        store.commit('setEventSourceListener', {key: 'env/backups', listener: null});
+        next(vm => vm)
     },
     beforeRouteEnter(to, from, next) {
         next(vm => vm.$apollo.queries.environmentTasks.refetch())

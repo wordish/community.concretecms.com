@@ -11,6 +11,7 @@ const vuexLocal = new VuexPersistence({
     storage: window.localStorage
 })
 
+let lastEventId = null
 export const store = new Vuex.Store({
     state: {
         jwt: null,
@@ -21,6 +22,7 @@ export const store = new Vuex.Store({
         selectedProject: null,
         postLoginRedirect: null,
         eventSource: null,
+        eventSourceListeners: {},
     },
     getters: {
         isLoggedIn(state) {
@@ -28,25 +30,62 @@ export const store = new Vuex.Store({
         }
     },
     mutations: {
-        connectToMercure(state, {topics, listener}) {
-            const url = config.mercureUrl + '?topic=' + topics;
+
+        setEventSourceListener(state, {key, listener}) {
+            store.commit('connectToMercure');
+            state.eventSourceListeners[key] = listener
+        },
+
+        connectToMercure(state, backoff) {
+            if (state.eventSource && state.eventSource.readyState === 1) {
+                return
+            }
+
+            const lastEventString = lastEventId ? '&Last-Event-ID=' + lastEventId : ''
+            const url = config.mercureUrl + '?topic=deploy&topic=task' + lastEventString
+
+            backoff = Math.max(0, parseInt(backoff))
             if (state.eventSource && typeof state.eventSource.close === 'function') {
                 state.eventSource.close()
             }
 
             state.eventSource = new EventSource(url, {
+                lastEventIdQueryParameterName: 'Last-Event-ID',
                 headers: {
                     Authorization: "Bearer " + config.mercureToken,
                 }
             })
 
-            let retry = 0;
-            state.eventSource.addEventListener('message', (e) => {
-                retry = 0
-                return listener(e)
-            })
+            state.eventSource.onmessage = function(e) {
+                backoff = 0
+                lastEventId = e.lastEventId
+
+                if (process.env.NODE_ENV !== 'production') {
+                    const data = JSON.parse(e.data)
+                    console.groupCollapsed('[' + data.group + '] EventSourceMessage ' + e.lastEventId);
+                    console.group('Event')
+                    console.log(e)
+                    console.groupEnd()
+                    console.group('Data')
+                    console.log(data)
+                    console.groupEnd()
+                    console.groupEnd()
+                }
+
+                for (let i in store.state.eventSourceListeners) {
+                    if (!store.state.eventSourceListeners.hasOwnProperty(i) || !store.state.eventSourceListeners[i]) {
+                        continue;
+                    }
+
+                    console.log('Sending to listener ' + i)
+                    store.state.eventSourceListeners[i](e)
+                }
+            }
             state.eventSource.onerror = function(e) {
-                store.commit('connectToMercure', {topics, listener})
+                console.log('MERCURE ERROR:', e)
+                setTimeout(function() {
+                    store.commit('connectToMercure', backoff ? backoff * 2 : 2)
+                }, backoff)
             }
 
             return state.eventSource

@@ -40,7 +40,7 @@
 <script>
 import Card from "../basic/card";
 import {store} from "../../store/store";
-import {Q_PROJECT_LIST} from "../../queries/project";
+import {Q_PROJECT_LIST, Q_PROJECT_LIST_LIGHT} from "../../queries/project";
 import Header from "../basic/header";
 import CreateProjectModal from "../basic/create-project-modal";
 import Pagination from "../basic/pagination";
@@ -50,7 +50,7 @@ export default {
     components: {Pagination, CreateProjectModal, Header, Card},
     apollo: {
         projects: {
-            query: Q_PROJECT_LIST,
+            query: Q_PROJECT_LIST_LIGHT,
             variables() {
                 return {
                     before: null,

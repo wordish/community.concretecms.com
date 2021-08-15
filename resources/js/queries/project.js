@@ -40,6 +40,33 @@ export const Q_PROJECT_LIST = gql`
     }
 `;
 
+export const Q_PROJECT_LIST_LIGHT = gql`
+query($after: String, $before: String, $perPage: Int!) {
+    projects: hostingProjects(after: $after, before: $before, first: $perPage) {
+        totalCount
+        edges {
+            cursor
+            node {
+                id
+                _id
+                name
+                lagoonName
+                startingPoint {
+                    id
+                    name
+                }
+            }
+        }
+        pageInfo {
+            hasNextPage
+            hasPreviousPage
+            endCursor
+            startCursor
+        }
+    }
+}
+`;
+
 export const Q_PROJECT_FULL = gql`
     ${F_PROJECT_FULL}
     query($projectId: ID!) {
