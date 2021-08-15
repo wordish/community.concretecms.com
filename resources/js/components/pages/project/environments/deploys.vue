@@ -79,7 +79,8 @@ export default {
                     projectId: `/hosting_projects/${this.$route.params.id}`,
                     environment: this.$route.params.environment
                 }
-            }
+            },
+            pollInterval: 30000
         }
     },
     computed: {
