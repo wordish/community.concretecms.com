@@ -13,12 +13,12 @@
                         <ul class="breadcrumb">
                             <router-link
                                 custom
-                                v-for="[name, link] in breadcrumb"
+                                v-for="[name, link, partialMatch] in breadcrumb"
                                 :key="link"
                                 :to="link"
                                 v-slot="{ href, route, navigate, isActive, isExactActive }">
                                 <li class="breadcrumb-item" :class="{active: isActive}">
-                                    <a v-if="!isExactActive" :href="href">{{name}}</a>
+                                    <a v-if="partialMatch ? !isActive : !isExactActive" :href="href" @click="navigate">{{name}}</a>
                                     <span v-else>{{name}}</span>
                                 </li>
                             </router-link>
@@ -112,23 +112,22 @@ export default {
                 '/'
             ])
 
+            const environment = this.$route.params.environment
+
             let path = '/'
             if (this.$route.params.id) {
+                breadcrumbs.push([
+                    this.projectName ? this.projectName : 'Project',
+                    path = `/${this.$route.params.id}`,
+                    !environment
+                ])
                 path = `/${this.$route.params.id}`
             }
 
-            const environment = this.$route.params.environment
             if (environment) {
-                breadcrumbs.push([
-                    this.projectName ? this.projectName : 'Project',
-                    path = `/${this.$route.params.id}`
-                ])
                 path = `/${this.$route.params.id}/env/${environment}`
-            }
-
-            if (this.title) {
                 breadcrumbs.push([
-                    this.title,
+                    environment,
                     `${path}/${this.title.toLowerCase()}`,
                 ]);
             }

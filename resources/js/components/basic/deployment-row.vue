@@ -172,7 +172,7 @@ export default {
             }
 
             this.duration = [
-                hours ? `${hours}m` : '',
+                hours ? `${hours}h` : '',
                 minutes ? `${minutes}m` : '',
                 `${seconds}s`
             ].join('')
