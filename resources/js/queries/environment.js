@@ -1,15 +1,14 @@
 import gql from "graphql-tag";
 
 export const M_ENVIRONMENT_DEPLOY = gql`
-    mutation($branch: String!, $projectId: Int!) {
-        deployHostingProject(input:{
-            project:$projectId
-            branch:$branch
+    mutation($branch: String!, $projectId: String!) {
+        createDeploy(input: {
+            project: $projectId
+            environmentName: $branch
         }) {
-            project: hostingProject {
-                lagoonProject {
-                    environments
-                }
+            deploy {
+                id
+                deployName
             }
         }
     }

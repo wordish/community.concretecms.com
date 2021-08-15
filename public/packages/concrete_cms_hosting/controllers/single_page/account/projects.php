@@ -13,7 +13,18 @@ use PortlandLabs\Hosting\Serializer\Serializer;
 class Projects extends AccountPageController
 {
 
-    public function view()
+    public function view(
+        $subpath = null,
+        $subpath2 = null,
+        $subpath3 = null,
+        $subpath4 = null,
+        $subpath5 = null,
+        $subpath6 = null,
+        $subpath7 = null,
+        $subpath8 = null,
+        $subpath9 = null,
+        $subpath10 = null
+    )
     {
     }
 

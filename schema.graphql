@@ -18,33 +18,25 @@ type Backup implements Node {
     dateUpdated: String!
     downloadUrl: String
     environmentName: String!
+    fulfillmentStatus: String!
     id: ID!
     project: HostingProject
+    restores(
+        "Returns the elements in the list that come after the specified cursor."
+        after: String,
+        "Returns the elements in the list that come before the specified cursor."
+        before: String,
+        "Returns the first n elements from the list."
+        first: Int,
+        "Returns the last n elements from the list."
+        last: Int,
+        order: [RestoreFilter_order]
+    ): RestoreConnection
     status: String!
-    taskId: String!
+    taskId: Int
+    taskType: String!
     "How many seconds this backup will be valid, default to 1 hour"
     ttl: Int!
-}
-
-"Connection for Backup."
-type BackupConnection {
-    edges: [BackupEdge]
-    pageInfo: BackupPageInfo!
-    totalCount: Int!
-}
-
-"Edge of Backup."
-type BackupEdge {
-    cursor: String!
-    node: Backup
-}
-
-"Information about the current page."
-type BackupPageInfo {
-    endCursor: String
-    hasNextPage: Boolean!
-    hasPreviousPage: Boolean!
-    startCursor: String
 }
 
 type ConcreteRelease implements Node {
@@ -81,6 +73,39 @@ type ConcreteReleasePageInfo {
     startCursor: String
 }
 
+type Deploy implements Node {
+    _id: String!
+    commit: String!
+    dateCreated: String!
+    dateUpdated: String!
+    deployName: String!
+    environmentName: String!
+    fulfillmentStatus: String!
+    id: ID!
+    project: HostingProject
+}
+
+"Connection for Deploy."
+type DeployConnection {
+    edges: [DeployEdge]
+    pageInfo: DeployPageInfo!
+    totalCount: Int!
+}
+
+"Edge of Deploy."
+type DeployEdge {
+    cursor: String!
+    node: Deploy
+}
+
+"Information about the current page."
+type DeployPageInfo {
+    endCursor: String
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+    startCursor: String
+}
+
 type Deployment implements Node {
     _id: Int!
     dateCompleted: String
@@ -93,11 +118,47 @@ type Deployment implements Node {
     uiLink: String!
 }
 
+type EnvironmentTask implements Node {
+    _id: String!
+    dateCreated: String!
+    dateUpdated: String!
+    environmentName: String!
+    fulfillmentStatus: String!
+    id: ID!
+    project: HostingProject
+    status: String!
+    taskId: Int
+    taskType: String!
+}
+
+"Connection for EnvironmentTask."
+type EnvironmentTaskConnection {
+    edges: [EnvironmentTaskEdge]
+    pageInfo: EnvironmentTaskPageInfo!
+    totalCount: Int!
+}
+
+"Edge of EnvironmentTask."
+type EnvironmentTaskEdge {
+    cursor: String!
+    node: EnvironmentTask
+}
+
+"Information about the current page."
+type EnvironmentTaskPageInfo {
+    endCursor: String
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+    startCursor: String
+}
+
 type HostingProject implements Node {
     _id: Int!
     authorizedAdmins: Iterable
     authorizedUsers: Iterable
-    backups(
+    dateCreated: String!
+    dateUpdated: String!
+    deploys(
         "Returns the elements in the list that come after the specified cursor."
         after: String,
         "Returns the elements in the list that come before the specified cursor."
@@ -106,10 +167,11 @@ type HostingProject implements Node {
         first: Int,
         "Returns the last n elements from the list."
         last: Int,
-        order: [BackupFilter_order]
-    ): BackupConnection
-    dateCreated: String!
-    dateUpdated: String!
+        order: [DeployFilter_order],
+        project: String,
+        project_list: [String]
+    ): DeployConnection
+    fulfillmentStatus: String!
     gitPath: String!
     gitUrl: String!
     id: ID!
@@ -120,6 +182,17 @@ type HostingProject implements Node {
     projectType: String!
     stageBranches: Iterable!
     startingPoint: StartingPoint!
+    tasks(
+        "Returns the elements in the list that come after the specified cursor."
+        after: String,
+        "Returns the elements in the list that come before the specified cursor."
+        before: String,
+        "Returns the first n elements from the list."
+        first: Int,
+        "Returns the last n elements from the list."
+        last: Int,
+        order: [EnvironmentTaskFilter_order]
+    ): EnvironmentTaskConnection
 }
 
 "Connection for HostingProject."
@@ -141,6 +214,19 @@ type HostingProjectPageInfo {
     hasNextPage: Boolean!
     hasPreviousPage: Boolean!
     startCursor: String
+}
+
+type Install implements Node {
+    _id: String!
+    dateCreated: String!
+    dateUpdated: String!
+    environmentName: String!
+    fulfillmentStatus: String!
+    id: ID!
+    project: HostingProject
+    status: String!
+    taskId: Int
+    taskType: String!
 }
 
 type LagoonProject implements Node {
@@ -199,18 +285,24 @@ type MembershipPageInfo {
 }
 
 type Mutation {
-    "Backups a HostingProject."
-    backupHostingProject(input: backupHostingProjectInput!): backupHostingProjectPayload
     "Cancels a Deployment."
     cancelDeployment(input: cancelDeploymentInput!): cancelDeploymentPayload
+    "Creates a Backup."
+    createBackup(input: createBackupInput!): createBackupPayload
     "Creates a ConcreteRelease."
     createConcreteRelease(input: createConcreteReleaseInput!): createConcreteReleasePayload
+    "Creates a Deploy."
+    createDeploy(input: createDeployInput!): createDeployPayload
     "Creates a HostingProject."
     createHostingProject(input: createHostingProjectInput!): createHostingProjectPayload
+    "Creates a Install."
+    createInstall(input: createInstallInput!): createInstallPayload
     "Creates a Membership."
     createMembership(input: createMembershipInput!): createMembershipPayload
     "Creates a Project."
     createProject(input: createProjectInput!): createProjectPayload
+    "Creates a Restore."
+    createRestore(input: createRestoreInput!): createRestorePayload
     "Creates a StartingPoint."
     createStartingPoint(input: createStartingPointInput!): createStartingPointPayload
     "Creates a Team."
@@ -233,12 +325,10 @@ type Mutation {
     deleteUser(input: deleteUserInput!): deleteUserPayload
     "Deploys a HostingProject."
     deployHostingProject(input: deployHostingProjectInput!): deployHostingProjectPayload
-    "Installs a HostingProject."
-    installHostingProject(input: installHostingProjectInput!): installHostingProjectPayload
-    "Restores a HostingProject."
-    restoreHostingProject(input: restoreHostingProjectInput!): restoreHostingProjectPayload
     "Updates a ConcreteRelease."
     updateConcreteRelease(input: updateConcreteReleaseInput!): updateConcreteReleasePayload
+    "Updates a Deploy."
+    updateDeploy(input: updateDeployInput!): updateDeployPayload
     "Updates a HostingProject."
     updateHostingProject(input: updateHostingProjectInput!): updateHostingProjectPayload
     "Updates a Membership."
@@ -299,6 +389,33 @@ type Query {
         last: Int,
         order: [ConcreteReleaseFilter_order]
     ): ConcreteReleaseConnection
+    currentSession: Session
+    deploy(id: ID!): Deploy
+    deploys(
+        "Returns the elements in the list that come after the specified cursor."
+        after: String,
+        "Returns the elements in the list that come before the specified cursor."
+        before: String,
+        "Returns the first n elements from the list."
+        first: Int,
+        "Returns the last n elements from the list."
+        last: Int,
+        order: [DeployFilter_order],
+        project: String,
+        project_list: [String]
+    ): DeployConnection
+    environmentTask(id: ID!): EnvironmentTask
+    environmentTasks(
+        "Returns the elements in the list that come after the specified cursor."
+        after: String,
+        "Returns the elements in the list that come before the specified cursor."
+        before: String,
+        "Returns the first n elements from the list."
+        first: Int,
+        "Returns the last n elements from the list."
+        last: Int,
+        order: [EnvironmentTaskFilter_order]
+    ): EnvironmentTaskConnection
     hostingProject(id: ID!): HostingProject
     hostingProjects(
         "Returns the elements in the list that come after the specified cursor."
@@ -314,6 +431,7 @@ type Query {
         name: String,
         order: [HostingProjectFilter_order]
     ): HostingProjectConnection
+    install(id: ID!): Install
     membership(id: ID!): Membership
     memberships(
         "Returns the elements in the list that come after the specified cursor."
@@ -341,6 +459,8 @@ type Query {
         name: String,
         order: [ProjectFilter_order]
     ): ProjectConnection
+    restore(id: ID!): Restore
+    session(id: ID!): Session
     startingPoint(id: ID!): StartingPoint
     startingPoints: [StartingPoint]
     team(id: ID!): Team
@@ -367,6 +487,48 @@ type Query {
     ): UserConnection
 }
 
+type Restore implements Node {
+    _id: String!
+    backup: Backup
+    dateCreated: String!
+    dateUpdated: String!
+    environmentName: String!
+    fulfillmentStatus: String!
+    id: ID!
+    project: HostingProject
+    status: String!
+    taskId: Int
+    taskType: String!
+}
+
+"Connection for Restore."
+type RestoreConnection {
+    edges: [RestoreEdge]
+    pageInfo: RestorePageInfo!
+    totalCount: Int!
+}
+
+"Edge of Restore."
+type RestoreEdge {
+    cursor: String!
+    node: Restore
+}
+
+"Information about the current page."
+type RestorePageInfo {
+    endCursor: String
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+    startCursor: String
+}
+
+type Session implements Node {
+    _id: String!
+    email: String!
+    id: ID!
+    username: String!
+}
+
 type StartingPoint implements Node {
     """
 
@@ -389,6 +551,8 @@ type StartingPoint implements Node {
 }
 
 type Subscription {
+    "Subscribes to the update event of a Deploy."
+    updateDeploySubscribe(input: updateDeploySubscriptionInput!): updateDeploySubscriptionPayload
     "Subscribes to the update event of a HostingProject."
     updateHostingProjectSubscribe(input: updateHostingProjectSubscriptionInput!): updateHostingProjectSubscriptionPayload
     "Subscribes to the update event of a Project."
@@ -472,14 +636,14 @@ type UserPageInfo {
     startCursor: String
 }
 
-type backupHostingProjectPayload {
-    clientMutationId: String
-    hostingProject: HostingProject
-}
-
 type cancelDeploymentPayload {
     clientMutationId: String
     deployment: Deployment
+}
+
+type createBackupPayload {
+    backup: Backup
+    clientMutationId: String
 }
 
 type createConcreteReleasePayload {
@@ -487,9 +651,19 @@ type createConcreteReleasePayload {
     concreteRelease: ConcreteRelease
 }
 
+type createDeployPayload {
+    clientMutationId: String
+    deploy: Deploy
+}
+
 type createHostingProjectPayload {
     clientMutationId: String
     hostingProject: HostingProject
+}
+
+type createInstallPayload {
+    clientMutationId: String
+    install: Install
 }
 
 type createMembershipPayload {
@@ -500,6 +674,11 @@ type createMembershipPayload {
 type createProjectPayload {
     clientMutationId: String
     project: Project
+}
+
+type createRestorePayload {
+    clientMutationId: String
+    restore: Restore
 }
 
 type createStartingPointPayload {
@@ -557,19 +736,20 @@ type deployHostingProjectPayload {
     hostingProject: HostingProject
 }
 
-type installHostingProjectPayload {
-    clientMutationId: String
-    hostingProject: HostingProject
-}
-
-type restoreHostingProjectPayload {
-    clientMutationId: String
-    hostingProject: HostingProject
-}
-
 type updateConcreteReleasePayload {
     clientMutationId: String
     concreteRelease: ConcreteRelease
+}
+
+type updateDeployPayload {
+    clientMutationId: String
+    deploy: Deploy
+}
+
+type updateDeploySubscriptionPayload {
+    clientSubscriptionId: String
+    deploy: Deploy
+    mercureUrl: String
 }
 
 type updateHostingProjectPayload {
@@ -614,13 +794,17 @@ type updateUserPayload {
     user: User
 }
 
-input BackupFilter_order {
-    dateCreated: String
-}
-
 input ConcreteReleaseFilter_order {
     dateReleased: String
     id: String
+}
+
+input DeployFilter_order {
+    dateCreated: String
+}
+
+input EnvironmentTaskFilter_order {
+    dateCreated: String
 }
 
 input HostingProjectFilter_order {
@@ -635,12 +819,8 @@ input ProjectFilter_order {
     name: String
 }
 
-input backupHostingProjectInput {
-    clientMutationId: String
-    "The environment to backup"
-    environment: String!
-    "The project to backup"
-    project: Int!
+input RestoreFilter_order {
+    dateCreated: String
 }
 
 input cancelDeploymentInput {
@@ -657,6 +837,13 @@ input cancelDeploymentInput {
     uiLink: String!
 }
 
+input createBackupInput {
+    clientMutationId: String
+    environmentName: String!
+    project: String
+    restores: [String]
+}
+
 input createConcreteReleaseInput {
     clientMutationId: String
     dateReleased: String!
@@ -669,15 +856,28 @@ input createConcreteReleaseInput {
     version: String!
 }
 
+input createDeployInput {
+    clientMutationId: String
+    environmentName: String!
+    project: String
+}
+
 input createHostingProjectInput {
     authorizedAdmins: Iterable
     authorizedUsers: Iterable
-    backups: [String]
     clientMutationId: String
+    deploys: [String]
     name: String!
     productionBranch: String!
     stageBranches: Iterable!
     startingPoint: String!
+    tasks: [String]
+}
+
+input createInstallInput {
+    clientMutationId: String
+    environmentName: String!
+    project: String
 }
 
 input createMembershipInput {
@@ -692,6 +892,13 @@ input createProjectInput {
     authorizedUsers: Iterable
     clientMutationId: String
     name: String!
+}
+
+input createRestoreInput {
+    backup: String
+    clientMutationId: String
+    environmentName: String!
+    project: String
 }
 
 input createStartingPointInput {
@@ -768,24 +975,6 @@ input deployHostingProjectInput {
     project: Int!
 }
 
-input installHostingProjectInput {
-    clientMutationId: String
-    "The environment to install"
-    environment: String!
-    "The project to install"
-    project: Int!
-}
-
-input restoreHostingProjectInput {
-    "The backup to restore from"
-    backup: String!
-    clientMutationId: String
-    "The environment to restore"
-    environment: String!
-    "The environment to restore"
-    project: Int!
-}
-
 input updateConcreteReleaseInput {
     clientMutationId: String
     dateReleased: String
@@ -799,16 +988,29 @@ input updateConcreteReleaseInput {
     version: String
 }
 
+input updateDeployInput {
+    clientMutationId: String
+    environmentName: String
+    id: ID!
+    project: String
+}
+
+input updateDeploySubscriptionInput {
+    clientSubscriptionId: String
+    id: ID!
+}
+
 input updateHostingProjectInput {
     authorizedAdmins: Iterable
     authorizedUsers: Iterable
-    backups: [String]
     clientMutationId: String
+    deploys: [String]
     id: ID!
     name: String
     productionBranch: String
     stageBranches: Iterable
     startingPoint: String
+    tasks: [String]
 }
 
 input updateHostingProjectSubscriptionInput {

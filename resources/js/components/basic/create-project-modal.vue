@@ -1,7 +1,7 @@
 <template>
     <div v-if="visible">
-        <div class="modal show d-block" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
+        <div class="modal show d-block mt-5" tabindex="-1" role="dialog">
+            <div class="modal-dialog shadow" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Create a Hosting Project</h5>
@@ -90,17 +90,12 @@ export default {
                 variables: {
                     name: this.name,
                     startingPoint: this.startingPoint,
-                    adminIds: [store.getters.jwtData.id],
+                    adminIds: [store.state.userData.id],
                 }
             })
 
             if (result.data.createProject && result.data.createProject.project && result.data.createProject.project.id) {
-                this.$emit('create', {
-                    name: this.name,
-                    startingPoint: this.startingPoint,
-                    id: result.data.createProject.project.id,
-                    _id: result.data.createProject.project._id,
-                })
+                this.$emit('create', result.data.createProject.project)
             } else {
                 alert('Unable to create project.')
             }

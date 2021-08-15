@@ -1,83 +1,56 @@
 <template>
     <div>
+        <Header>
+            <template v-slot:extraContent>
+                <div class="d-flex flex-column justify-content-center">
+                    <button @click="showModal=true" class="btn btn-primary text-nowrap">
+                        New Hosting Project
+                    </button>
+                </div>
+            </template>
+        </Header>
         <card :loading="$apollo.loading">
             <div class="card-body">
-
-                <table class="table">
+                <table class="table" v-if="projects">
                     <thead>
                     <tr>
-                        <th>NAME</th>
+                        <th>Name</th>
                         <th>Type</th>
+                        <th class="text-center">Handle</th>
                     </tr>
                     </thead>
-
-                    <tr v-if="extraProject">
-                        <td><router-link :to="extraProject.id">{{ extraProject.name }}</router-link></td>
-                        <td>&nbsp;</td>
-                    </tr>
                     <tr v-for="{node} in projects.edges">
-                        <td><router-link :to='node.id'>{{ node.name }}</router-link></td>
-                        <td>{{ node.projectType }}</td>
+                        <td><router-link :to="node._id + ''">{{ node.name }}</router-link></td>
+                        <td>{{ node.startingPoint.name }}</td>
+                        <td class="text-center">
+                            <span class="badge badge-light-gray border pointer" @click="$copyText(node.lagoonName)">{{node.lagoonName}} <i class="ml-2 far fa-copy"></i></span>
+                        </td>
                     </tr>
                 </table>
-            </div>
-        </card>
-
-        <div v-if="this.projects && this.projects.pageInfo" class="ccm-search-results-pagination">
-            <div class="d-flex justify-content-center w-100">
-                <div>
-                    <ul class="pagination">
-                        <li class="page-item" :class="{disabled: !this.projects.pageInfo.hasPreviousPage}">
-                            <a @click="previousPage" class="page-link" href="#">Previous</a>
-                        </li>
-                        <li class="page-item active">
-                            <a class="page-link">{{ currentPage }} <span class="sr-only">(current)</span></a>
-                        </li>
-                        <li class="page-item" :class="{disabled: !this.projects.pageInfo.hasNextPage}">
-                            <a @click="nextPage" class="page-link" href="#">Next</a>
-                        </li>
-                    </ul>
+                <div class="" v-else>
+                    <h4 class="text-center text-muted">You don't have any projects!</h4>
                 </div>
             </div>
-        </div>
+        </card>
+        <pagination @next="nextPage" @previous="previousPage" :current="this.currentPage" :total="this.projects.totalCount" :page-size="this.count"></pagination>
+        <create-project-modal v-model="showModal" @create="handleProjectCreate"></create-project-modal>
     </div>
 </template>
 
 <script>
-import gql from 'graphql-tag'
 import Card from "../basic/card";
 import {store} from "../../store/store";
-
-const QUERY = gql`
-query($after: String, $before: String, $perPage: Int!) {
-    projects: projects(after: $after, before: $before, first: $perPage) {
-        totalCount
-        edges {
-            cursor
-            node {
-                name
-                id
-                projectType
-                dateCreated
-                dateUpdated
-            }
-        }
-        pageInfo {
-            hasNextPage
-            hasPreviousPage
-            endCursor
-            startCursor
-        }
-    }
-}
-`;
+import {Q_PROJECT_LIST} from "../../queries/project";
+import Header from "../basic/header";
+import CreateProjectModal from "../basic/create-project-modal";
+import Pagination from "../basic/pagination";
 
 export default {
     name: "projects",
-    components: {Card},
+    components: {Pagination, CreateProjectModal, Header, Card},
     apollo: {
         projects: {
-            query: QUERY,
+            query: Q_PROJECT_LIST,
             variables() {
                 return {
                     before: null,
@@ -89,9 +62,11 @@ export default {
     },
     data: () => ({
         projects: [],
+        showModal: false,
         extraProject: null,
         currentPage: 1,
-        count: 20
+        count: 15,
+        totalCount: 100,
     }),
     watch: {
         projects(newProjects, oldProjects) {
@@ -148,6 +123,13 @@ export default {
         },
         async previousPage() {
             await this.changePage(null, this.projects.pageInfo.startCursor, -1);
+        },
+        async handleProjectCreate(e) {
+            if (this.currentPage > 1) {
+                await this.changePage(null, null, -(this.currentPage - 1))
+            } else {
+                this.$apollo.queries.projects.refetch()
+            }
         }
     }
 }
@@ -155,4 +137,7 @@ export default {
 
 <style scoped>
 
+.pointer {
+    cursor: pointer
+}
 </style>

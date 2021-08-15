@@ -1,54 +1,77 @@
 <template>
-    <card :loading="$apollo.loading">
-        <div class="card-body">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>NAME</th>
-                        <th>URL</th>
-                        <th>BRANCH</th>
-                        <th>LOCATION TYPE</th>
-                        <th>STATUS</th>
+    <div>
+        <project-header :project-name="project ? project.name : ''" title="Environments"></project-header>
+        <card :loading="$apollo.loading">
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>NAME</th>
+                            <th>BRANCH</th>
+                            <th>LOCATION TYPE</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tr class="ph-item border-0">
+                        <td>
+                            <div class="ph-row">
+                                <div class="ph-col-12"></div>
+                            </div>
+                        </td>
                     </tr>
-                </thead>
-                <tr class="ph-item border-0">
-                    <td>
-                        <div class="ph-row">
-                            <div class="ph-col-12"></div>
-                        </div>
-                    </td>
-                </tr>
 
-                <tr v-for="env in expectedEnvironments">
-                    <td>{{ env.name }}</td>
-                    <td class="w-80"><a :href="env.url" target="_blank">{{ env.url }}</a></td>
-                    <td>{{ env.branch }}</td>
-                    <td>{{ env.type }}</td>
-                    <td>{{ env.status }}</td>
-                </tr>
-            </table>
-        </div>
-    </card>
+                    <tr v-if="project" v-for="env in project.environments">
+                        <td><router-link :to="`env/${env.name}`">{{ env.name }}</router-link></td>
+                        <td>{{ env.name }}</td>
+                        <td>{{ env.name === project.productionBranch ? 'Production' : 'Development' }}</td>
+                        <td><a target="_blank" :href="urlFor(env)" v-if="urlFor(env)"><i class="fas fa-link"></i></a></td>
+                    </tr>
+                </table>
+            </div>
+        </card>
+    </div>
 </template>
 
 <script>
 import gql from "graphql-tag";
 import { Q_PROJECT_FULL } from "../../../queries/project";
 import Card from "../../basic/card";
-import {expectedEnvironments} from "../../../helpers";
+import {expectedEnvironments, hostingProjectId} from "../../../helpers";
+import Header from "../../basic/header"
+import ProjectHeader from "./project-header";
 
 export default {
     name: "environments",
-    components: {Card},
+    components: {ProjectHeader, Header, Card},
     apollo: {
         project: {
             query: Q_PROJECT_FULL,
             variables: function() {
                 return {
-                    projectId: `projects/${this.$route.params.id}`
+                    projectId: hostingProjectId(this.$route.params.id)
                 }
             },
+
         },
+    },
+    methods: {
+        urlFor(env) {
+            console.log('getting url: ', env)
+            if (typeof env['routes'] !== 'object') {
+                return ''
+            }
+
+            let result = '';
+            if (typeof env['routes']['main'] === 'string') {
+                result = env['routes']['main']
+            }
+
+            if (typeof env['routes']['routes'] === 'object' && typeof env['routes']['routes'][0] === 'string') {
+                result = env['routes']['routes'][0]
+            }
+
+            return result === 'undefined' ? '' : result;
+        }
     },
     computed: {
         expectedEnvironments() {
@@ -57,7 +80,7 @@ export default {
     },
     data: () => ({
         selectedProject: null,
-        project: null
+        project: {environments:[]}
     })
 }
 </script>
