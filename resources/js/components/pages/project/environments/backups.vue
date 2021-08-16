@@ -29,6 +29,7 @@
                             <thead>
                             <tr>
                                 <th>Date</th>
+                                <th class="text-center">Type</th>
                                 <th class="text-center">Status</th>
                                 <th>Duration</th>
                                 <th></th>
@@ -39,12 +40,13 @@
                                             :deploy-id="node.id"
                                             :created="node.dateCreated"
                                             :started="node.dateStarted"
+                                            :name="node.taskType"
                                             :ended="node.dateFulfilled"
                                             :status="node.fulfillmentStatus"
                             >
                                 <template v-slot:actions>
                                     <td>
-                                        <button class="btn-text btn btn-sm" v-if="node.status === 'fulfilled'">Restore</button>
+                                        <button class="btn-text btn btn-sm" v-if="node.taskType === 'Backup' && node.fulfillmentStatus === 'fulfilled'" @click="triggerRestore(node.id)">Restore</button>
                                     </td>
                                 </template>
                             </deployment-row>
@@ -63,7 +65,12 @@ import DeploymentRow from "../../../basic/deployment-row";
 import {Q_PROJECT_FULL} from "../../../../queries/project";
 import {M_DEPLOY_CREATE, Q_DEPLOYS_BY_PROJECT} from "../../../../queries/deploys";
 import {deployId, hostingProjectId} from "../../../../helpers";
-import {M_TASK_CREATE_BACKUP, M_TASK_CREATE_INSTALL, Q_TASKS_BY_PROJECT} from "../../../../queries/tasks";
+import {
+    M_TASK_CREATE_BACKUP,
+    M_TASK_CREATE_INSTALL,
+    M_TASK_CREATE_RESTORE,
+    Q_TASKS_BY_PROJECT
+} from "../../../../queries/tasks";
 import EnvironmentsHeader from "./environments-header";
 import {store} from "../../../../store/store";
 
@@ -108,7 +115,7 @@ export default {
                 if (
                     data["project"] === hostingProjectId(this.$route.params.id)
                     && data['environmentName'] === this.$route.params.environment
-                    && data['@type'] === 'Backup'
+                    && data['group'] === 'backup'
                 ) {
                     this.handleUpdate(data)
                 }
@@ -157,6 +164,16 @@ export default {
                 variables: {
                     projectId: `/hosting_projects/${this.$route.params.id}`,
                     environment: this.$route.params.environment,
+                }
+            })
+        },
+        async triggerRestore(id) {
+            await this.$apollo.mutate({
+                mutation: M_TASK_CREATE_RESTORE,
+                variables: {
+                    projectId: `/hosting_projects/${this.$route.params.id}`,
+                    environment: this.$route.params.environment,
+                    backupId: id,
                 }
             })
         }

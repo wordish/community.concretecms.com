@@ -84,8 +84,8 @@ export const M_TASK_CREATE_BACKUP = gql`
 
 export const M_TASK_CREATE_RESTORE = gql`
     ${F_RESTORE_FULL}
-    mutation createRestore($projectId: String!, $environment: String!) {
-        createRestore(input: {environmentName: $environment, project: $projectId}) {
+    mutation createRestore($projectId: String!, $environment: String!, $backupId: String!) {
+        createRestore(input: {environmentName: $environment, project: $projectId, backup: $backupId}) {
             restore {
                 ...RestoreFields
             }
