@@ -10,7 +10,7 @@
                             <th style="width:30%">BRANCH</th>
                             <th style="width:30%">LOCATION TYPE</th>
                             <th style="width:10%" class="text-right">
-                                <button class="btn btn-sm btn-info" v-if="showAddButton" @click="addEnvironmentModalOpen = true">
+                                <button class="btn btn-sm btn-info" v-if="showAddButton" @click="addEnvironmentModalOpen = true" title="Add Environment">
                                     <i class="fas fa-plus"></i>
                                 </button>
                                 <button class="btn btn-sm btn-info" v-else disabled title="Environment limit has been reached.">
@@ -104,7 +104,6 @@ export default {
 
             let environmentsLeft = this.project.developmentEnvironmentsLimit + 2;
             for (const {node: {environmentType}} of this.environments.edges) {
-                console.log(environmentType)
                 if (environmentType === 'DEVELOPMENT') {
                     environmentsLeft--;
                 }
@@ -132,11 +131,9 @@ export default {
                 }
             }
         },
-        loadingKey: 'loading'
     },
     methods: {
         urlFor(env) {
-            console.log('getting url: ', env)
             if (typeof env['routes'] !== 'object') {
                 return ''
             }

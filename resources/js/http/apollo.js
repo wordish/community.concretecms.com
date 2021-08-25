@@ -7,6 +7,7 @@ import { onError } from 'apollo-link-error'
 import { store } from '../store/store'
 import { router } from '../routes/routes'
 import config from '../config'
+import {io} from "../helpers";
 
 const httpLink = createHttpLink({
     uri: `${config.apiBaseUrl}/graphql`,
@@ -32,7 +33,7 @@ const errorLink = onError(({graphQLErrors, networkError}) => {
             needsAuth = needsAuth ? needsAuth : (message === 'Access Denied.'),
         );
 
-    if (networkError) console.log(`[Network error ${networkError.statusCode}]: ${networkError}`);
+    if (networkError) io.log(`[Network error ${networkError.statusCode}]: ${networkError}`);
 
     if ((networkError && networkError.statusCode === 401) || needsAuth) {
         if (store.getters.isLoggedIn) {

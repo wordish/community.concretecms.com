@@ -96,12 +96,11 @@ export default {
                 this.oauthHint = result.hint;
             } else {
                 store.commit('login', result.access_token)
-                await this.$router.replace('/')
+                await this.$router.replace('/').catch(() => {})
             }
         },
 
         async attemptAuthorize() {
-            console.log('Authorizing');
             const verifier = createVerifier();
             const randomState = Math.random();
 

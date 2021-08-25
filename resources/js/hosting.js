@@ -27,3 +27,4 @@ const app = new Vue({
         hosting
     }
 }).$mount('[data-pl-hosting-container]');
+

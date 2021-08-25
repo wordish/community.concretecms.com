@@ -87,3 +87,23 @@ export function hostingProjectId(id) {
 export function deployId(id) {
     return prefixedId(id, '/deploys/')
 }
+
+export const io = {
+    log: (...args) => io._call(console.log, args),
+    error: (...args) => io._call(console.error, args),
+    group: (options, callback) => {
+        io._call(console.group, [options])
+        io._call(callback, [io])
+        io._call(console.groupEnd)
+    },
+    groupCollapsed: (options, callback) => {
+        io._call(console.groupCollapsed, [options])
+        io._call(callback, [io])
+        io._call(console.groupEnd)
+    },
+    _call: (func, args) => process.env.NODE_ENV !== 'production' ? func(...(args || [])) : null
+}
+
+io.group('Mangrove Hosting Control Panel', function() {
+    io.log('Welcome to Mangrove Hosting Control Panel');
+})

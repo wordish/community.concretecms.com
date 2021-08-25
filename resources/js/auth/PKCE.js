@@ -29,6 +29,5 @@ export function urlEncode(code) {
         .replace(/\+/g, '-')
         .replace(/\//g, '_')
 
-    console.log('DONE...', before, after)
     return after;
 }

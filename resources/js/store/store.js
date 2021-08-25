@@ -5,6 +5,7 @@ import {router} from '../routes/routes'
 import Vue from 'vue';
 import config from "../config";
 import gql from "graphql-tag";
+import {io} from "../helpers";
 
 Vue.use(Vuex)
 
@@ -61,29 +62,26 @@ export const store = new Vuex.Store({
                 backoff = 0
                 lastEventId = e.lastEventId
 
-                if (process.env.NODE_ENV !== 'production') {
-                    const data = JSON.parse(e.data)
-                    console.groupCollapsed('[' + data.group + '] EventSourceMessage ' + e.lastEventId);
-                    console.group('Event')
-                    console.log(e)
-                    console.groupEnd()
-                    console.group('Data')
-                    console.log(data)
-                    console.groupEnd()
-                    console.groupEnd()
-                }
+                io.groupCollapsed('[' + data.group + '] EventSourceMessage ' + e.lastEventId, function() {
+                    io.group('Event', () => {
+                        io.log(e)
+                    })
+                    io.group('Data', () => {
+                        io.log(data)
+                    })
+                })
 
                 for (let i in store.state.eventSourceListeners) {
                     if (!store.state.eventSourceListeners.hasOwnProperty(i) || !store.state.eventSourceListeners[i]) {
                         continue;
                     }
 
-                    console.log('Sending to listener ' + i)
+                    io.log('Sending to listener ' + i)
                     store.state.eventSourceListeners[i](e)
                 }
             }
             state.eventSource.onerror = function(e) {
-                console.log('MERCURE ERROR:', e)
+                io.log('MERCURE ERROR:', e)
                 setTimeout(function() {
                     store.commit('connectToMercure', backoff ? backoff * 2 : 2)
                 }, backoff)
@@ -129,7 +127,7 @@ export const store = new Vuex.Store({
             fetchSession()
         },
         async login(state, jwt) {
-            console.log('SHOULD REDIRECT:' + state.postLoginRedirect)
+            io.log('SHOULD REDIRECT:' + state.postLoginRedirect)
             state.jwt = jwt
 
             const base64 = jwt.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
