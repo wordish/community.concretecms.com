@@ -24,18 +24,20 @@
                             </div>
                         </div>
                     </div>
-                    <div v-if="environmentTasks" class="mt-5">
+                    <div class="mt-5">
                         <table class="table w-100">
                             <thead>
                             <tr>
-                                <th>Date</th>
-                                <th class="text-center">Type</th>
+
+                                <th style="width:30%">Date</th>
+                                <th style="width:30%" class="text-center">Type</th>
                                 <th class="text-center">Status</th>
-                                <th>Duration</th>
-                                <th></th>
+                                <th style="width:10%">Duration</th>
+                                <th style="width:10%"></th>
                             </tr>
                             </thead>
                             <tbody>
+                            <template v-if="environmentTasks">
                             <deployment-row :key="node.id" v-for="{node} of environmentTasks.edges"
                                             :deploy-id="node.id"
                                             :created="node.dateCreated"
@@ -50,6 +52,23 @@
                                     </td>
                                 </template>
                             </deployment-row>
+                            </template>
+                            <template v-else>
+                                <tr v-for="i in (new Array(4)).keys()" :key="i">
+                                    <td>
+                                        <blink-box :size="22"></blink-box>
+                                    </td>
+                                    <td class="text-center">
+                                        <blink-box></blink-box>
+                                    </td>
+                                    <td class="text-center">
+                                        <blink-box :size="7"></blink-box>
+                                    </td>
+                                    <td>
+                                        <blink-box :min="2" :max="5"></blink-box>
+                                    </td>
+                                </tr>
+                            </template>
                             </tbody>
                         </table>
                     </div>
@@ -73,9 +92,10 @@ import {
 } from "../../../../queries/tasks";
 import EnvironmentsHeader from "./environments-header";
 import {store} from "../../../../store/store";
+import BlinkBox from "../../../basic/blink-box";
 
 export default {
-    components: {EnvironmentsHeader, Header, Card, DeploymentRow},
+    components: {BlinkBox, EnvironmentsHeader, Header, Card, DeploymentRow},
     apollo: {
         project: {
             query: Q_PROJECT_FULL,

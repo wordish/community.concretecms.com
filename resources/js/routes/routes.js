@@ -36,6 +36,8 @@ router.beforeEach((to, from, next) => {
         // this route requires auth, check if logged in
         // if not, redirect to login page.
         if (!store.getters.isLoggedIn) {
+            store.commit('logout')
+            store.commit('setPostLoginRedirect', to.fullPath)
             next('/api-login')
         } else {
             next() // go to wherever I'm going

@@ -9,7 +9,7 @@
                     <div class="row">
                         <strong class="col-sm-2">Git Repository</strong>
                         <span class="px-4">
-                            <a :href="`https://git.concretecms.com/concretehosting/${project.lagoonName}`">
+                            <a :href="`https://git.concretecms.com/concretehosting/${project.lagoonName}`" target="_blank">
                                 {{ project.gitUrl }}
                             </a>
                         </span>
@@ -22,7 +22,9 @@
                 <div>
                     <h4>CODE EDITOR</h4>
                     <p>Edit live with our code editor</p>
-                    <button class="btn btn-sm" @click="notImplemented">Launch Editor</button>
+                    <a :href="`https://git.concretecms.com/-/ide/project/concretehosting/${project.lagoonName}/edit/main/-/`" class="btn btn-sm" target="_blank">
+                        Launch Editor
+                    </a>
                 </div>
             </div>
         </card>

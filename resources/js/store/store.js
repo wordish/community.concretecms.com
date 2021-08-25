@@ -4,6 +4,7 @@ import {apolloClient} from '../http/apollo'
 import {router} from '../routes/routes'
 import Vue from 'vue';
 import config from "../config";
+import gql from "graphql-tag";
 
 Vue.use(Vuex)
 
@@ -12,6 +13,7 @@ const vuexLocal = new VuexPersistence({
 })
 
 let lastEventId = null
+let sessionListener = null
 export const store = new Vuex.Store({
     state: {
         jwt: null,
@@ -30,7 +32,6 @@ export const store = new Vuex.Store({
         }
     },
     mutations: {
-
         setEventSourceListener(state, {key, listener}) {
             store.commit('connectToMercure');
             state.eventSourceListeners[key] = listener
@@ -93,7 +94,42 @@ export const store = new Vuex.Store({
         async selectProject(state, project) {
             state.selectedProject = project
         },
+        startPollingSession(state) {
+            if (!this.isLoggedIn || sessionListener) {
+                return
+            }
+            const fetchSession = function() {
+                apolloClient.query({
+                    name: 'currentSession',
+                    query: gql`
+                        query currentSession {
+                            currentSession {
+                                username
+                                email
+                                id
+                                _id
+                            }
+                        }
+                    `,
+
+                    update({currentSession}) {
+                        if (!currentSession || parseInt(currentSession._id) !== parseInt(store.state.userData?.id)) {
+                            store.commit('logout')
+                        }
+                    }
+                }).then(function ({data:{currentSession}}) {
+                    if (currentSession === null) {
+                        store.commit('setPostLoginRedirect', router.currentRoute.fullPath)
+                        store.commit('logout')
+                    }
+                })
+            };
+
+            sessionListener = setInterval(fetchSession, 10000);
+            fetchSession()
+        },
         async login(state, jwt) {
+            console.log('SHOULD REDIRECT:' + state.postLoginRedirect)
             state.jwt = jwt
 
             const base64 = jwt.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
@@ -123,18 +159,25 @@ export const store = new Vuex.Store({
             await apolloClient.resetStore();
 
             if (state.postLoginRedirect) {
-                state.postLoginRedirect = null
                 await router.replace(state.postLoginRedirect)
+                state.postLoginRedirect = null
             }
+
+            store.commit('startPollingSession')
         },
         async logout(state) {
+            if (sessionListener) {
+                clearInterval(sessionListener)
+                sessionListener = null
+            }
             state.jwt = null
             state.jwtData = null
             state.userData = null
-            state.postLoginRedirect = router.currentRoute.fullPath
 
             await apolloClient.resetStore();
-            await router.replace('/api-login')
+        },
+        setPostLoginRedirect(state, redirect) {
+            state.postLoginRedirect = redirect
         },
         updateUser(state, {id, email, username}) {
             state.userData.id = id
@@ -152,3 +195,6 @@ export const store = new Vuex.Store({
         vuexLocal.plugin,
     ],
 })
+
+// Always poll session
+store.commit('startPollingSession')

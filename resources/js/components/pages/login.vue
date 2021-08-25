@@ -1,15 +1,34 @@
 <template>
-    <div class="login-form w-50 m-auto">
-        <form @submit.prevent.stop="attemptLogin()" method="post">
-            <h2 class="text-center">Log in</h2>
-            <div class="form-group">
-                <button :disabled="authenticating" type="submit" class="btn btn-primary btn-block">Verify Login</button>
+    <div>
+        <Header :showBreadcrumbs="false" :showUser="false" title='Login'>
+
+        </Header>
+        <Card>
+            <div class="card-body">
+                <form @submit.prevent.stop="attemptLogin()" method="post" class="text-center" v-if="!$route.query.code && !authenticating">
+                    <h3 class="text-center">Log in</h3>
+                    <p>You don't have permission to view this page. Please log in to continue.</p>
+                    <div class="form-group">
+                        <button :disabled="authenticating" type="submit" class="btn btn-primary btn-sm">Log In</button>
+                    </div>
+                </form>
+                <form @submit.prevent.stop="() => null" method="post" class="text-center" v-else>
+                    <h3 class="text-center">Log in</h3>
+                    <p>You don't have permission to view this page. Please log in to continue.</p>
+                    <div class="form-group">
+                        <button disabled type="submit" class="btn btn-primary btn-sm">
+                            <i class="fas fa-spinner fa-spin"></i>
+                        </button>
+                    </div>
+                </form>
             </div>
-        </form>
+        </Card>
     </div>
 </template>
 
 <script>
+import Header from '../basic/header'
+import Card from '../basic/card'
 import {store} from '../../store/store'
 import {router} from '../../routes/routes'
 import config from '../../config'
@@ -19,6 +38,7 @@ const OAUTH_URL_AUTHORIZE = config.apiBaseUrl + '/oauth/authorize'
 const OAUTH_URL_TOKEN = config.apiBaseUrl + '/oauth/token'
 
 export default {
+    components: {Card, Header},
     name: "Login",
     data: () => ({
         username: '',
@@ -28,21 +48,15 @@ export default {
     }),
     methods: {
         async attemptLogin() {
-            const code = this.$route.query.code
-            const state = this.$route.query.state
-
-            if (code && state) {
-
-                // Clear code from query
-                this.clearQuery();
-
+            this.authenticating = true
+            if (this.$route.query.code && state) {
                 if (state !== window.localStorage.getItem(config.login.stateKey)) {
                     alert('Unable to complete authentication. Please refresh to try again.')
                     return;
                 }
 
                 // Get the access token
-                return this.attemptToken(code);
+                return this.attemptToken(this.$route.query.code);
             }
 
             return this.attemptAuthorize()
@@ -65,8 +79,6 @@ export default {
                 code_verifier: verifier,
                 code,
             };
-
-            console.log(verifier);
 
             const formData = new FormData();
             for (let key in data) {
@@ -127,17 +139,6 @@ export default {
             window.location = OAUTH_URL_AUTHORIZE + "?" + queryString;
         },
 
-        clearQuery() {
-            let query = Object.assign({}, this.$route.query);
-            delete query.code;
-            delete query.error;
-            delete query.error_description;
-            delete query.hint;
-            delete query.message;
-            delete query.state;
-            this.$router.replace({ query });
-        },
-
         resolveCallback() {
             const l = window.location
             return `${l.protocol}//${l.host}${l.pathname}${l.hash}`
@@ -145,7 +146,13 @@ export default {
 
     },
     mounted() {
-        this.attemptLogin()
+        const code = this.$route.query.code
+        if (code) {
+            const self = this
+            setTimeout(function() {
+                self.attemptToken(code)
+            })
+        }
     }
 }
 </script>

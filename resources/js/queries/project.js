@@ -7,9 +7,9 @@ export const F_PROJECT_FULL = gql`
         id
         name
         lagoonName
+        lagoonId
+        developmentEnvironmentsLimit
         productionBranch
-        stageBranches
-        environments
         fulfillmentStatus
         authorizedAdmins
         authorizedUsers
@@ -19,9 +19,19 @@ export const F_PROJECT_FULL = gql`
         }
     }
 `
+
+export const Q_PROJECT_BRANCHES = gql`
+    query projectBranches($projectId: ID!) {
+        hostingProject(id: $projectId) {
+            id
+            branches
+        }
+    },
+`
+
 export const Q_PROJECT_LIST = gql`
     ${F_PROJECT_FULL}
-    query($after: String, $before: String, $perPage: Int!) {
+    query projectList($after: String, $before: String, $perPage: Int!) {
         projects: hostingProjects(after: $after, before: $before, first: $perPage) {
             totalCount
             edges {
@@ -41,7 +51,7 @@ export const Q_PROJECT_LIST = gql`
 `;
 
 export const Q_PROJECT_LIST_LIGHT = gql`
-query($after: String, $before: String, $perPage: Int!) {
+query projectListLight($after: String, $before: String, $perPage: Int!) {
     projects: hostingProjects(after: $after, before: $before, first: $perPage) {
         totalCount
         edges {
@@ -69,7 +79,7 @@ query($after: String, $before: String, $perPage: Int!) {
 
 export const Q_PROJECT_FULL = gql`
     ${F_PROJECT_FULL}
-    query($projectId: ID!) {
+    query project($projectId: ID!) {
         project: hostingProject(id: $projectId) {
             ...HostingProjectFields
         }
@@ -78,12 +88,11 @@ export const Q_PROJECT_FULL = gql`
 
 export const M_PROJECT_CREATE = gql`
     ${F_PROJECT_FULL}
-    mutation($name: String!, $startingPoint: String!, $adminIds: Iterable!) {
+    mutation projectCreate($name: String!, $startingPoint: String!, $adminIds: Iterable!) {
         createProject: createHostingProject(input: {
             name: $name,
             startingPoint: $startingPoint,
             productionBranch: "main",
-            stageBranches: ["develop"],
             # TODO Remove authorized* fields when we switch to teams
             authorizedAdmins: $adminIds,
             authorizedUsers: ["-10"],
@@ -95,7 +104,7 @@ export const M_PROJECT_CREATE = gql`
     }
 `
 export const Q_PROJECT_BACKUPS = gql`
-    query($projectId: ID!, $after: String, $before: String, $perPage: Int!) {
+    query projectBackups($projectId: ID!, $after: String, $before: String, $perPage: Int!) {
         hostingProject(id: $projectId) {
             id
             _id

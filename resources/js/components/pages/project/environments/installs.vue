@@ -25,24 +25,39 @@
                             </div>
                         </div>
                     </div>
-                    <div v-if="environmentTasks" class="mt-5">
+                    <div class="mt-5">
                         <table class="table w-100">
                             <thead>
                             <tr>
-                                <th>Date</th>
-                                <th class="text-center">Status</th>
+                                <th style="width:50%;">Date</th>
+                                <th style="width:30%" class="text-center">Status</th>
                                 <th>Duration</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <deployment-row :key="node.id" v-for="{node} of environmentTasks.edges"
-                                            :deploy-id="node.id"
-                                            :created="node.dateCreated"
-                                            :started="node.dateStarted"
-                                            :ended="node.dateFulfilled"
-                                            :status="node.fulfillmentStatus"
-                            >
-                            </deployment-row>
+                            <template v-if="environmentTasks">
+                                <deployment-row :key="node.id" v-for="{node} of environmentTasks.edges"
+                                                :deploy-id="node.id"
+                                                :created="node.dateCreated"
+                                                :started="node.dateStarted"
+                                                :ended="node.dateFulfilled"
+                                                :status="node.fulfillmentStatus"
+                                >
+                                </deployment-row>
+                            </template>
+                            <template v-else>
+                                <tr v-for="i in (new Array(4)).keys()" :key="i">
+                                    <td>
+                                        <blink-box :size="22"></blink-box>
+                                    </td>
+                                    <td class="text-center">
+                                        <blink-box :size="7"></blink-box>
+                                    </td>
+                                    <td>
+                                        <blink-box :min="2" :max="5"></blink-box>
+                                    </td>
+                                </tr>
+                            </template>
                             </tbody>
                         </table>
                     </div>
@@ -61,9 +76,10 @@ import {deployId, hostingProjectId} from "../../../../helpers";
 import {M_TASK_CREATE_BACKUP, M_TASK_CREATE_INSTALL, Q_TASKS_BY_PROJECT} from "../../../../queries/tasks";
 import EnvironmentsHeader from "./environments-header";
 import {store} from "../../../../store/store";
+import BlinkBox from "../../../basic/blink-box";
 
 export default {
-    components: {EnvironmentsHeader, Header, Card, DeploymentRow},
+    components: {BlinkBox, EnvironmentsHeader, Header, Card, DeploymentRow},
     apollo: {
         project: {
             query: Q_PROJECT_FULL,

@@ -56,7 +56,7 @@ export default {
         startingPoints: {
             query: Q_STARTING_POINTS_FULL,
             result(result) {
-                if (!this.startingPoint && result.data.startingPoints.length) {
+                if (!this.startingPoint && result.data?.startingPoints?.length) {
                     this.defaultStartingPoint = result.data.startingPoints[0].id
                     this.startingPoint = this.defaultStartingPoint
                 }

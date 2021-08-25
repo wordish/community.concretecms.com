@@ -1,10 +1,10 @@
 <template>
     <div class="ccm-search-results-pagination">
-        <div class="d-flex justify-content-center w-100">
+        <div class="d-flex justify-content-center w-100" v-if="lastPage > 1">
             <div>
                 <ul class="pagination">
-                    <li class="page-item border-left rounded" :class="{disabled: current <= 1}">
-                        <a @click.prevent="previousPage" class="page-link" href="#">Previous</a>
+                    <li class="page-item border-left rounded" :class="{disabled: disabled || !hasPreviousPage}">
+                        <a @click.prevent="!disabled && $emit('previous')" class="page-link" href="#">Previous</a>
                     </li>
                     <li
                         v-for="button in range"
@@ -19,8 +19,8 @@
                             {{button}}
                         </span>
                         <span class="page-link" v-else>{{button}}</span>
-                        <li class="page-item border-right rounded" :class="{disabled: current >= (Math.ceil(this.total / this.pageSize))}">
-                            <a @click.prevent="nextPage" class="page-link" href="#">Next</a>
+                        <li class="page-item border-right rounded" :class="{disabled: disabled || !hasNextPage}">
+                            <a @click.prevent="!disabled && $emit('next')" class="page-link" href="#">Next</a>
                         </li>
                     </li>
                 </ul>
@@ -33,7 +33,11 @@ export default {
     props: {
         total: Number,
         current: Number,
-        pageSize: Number
+        pageSize: Number,
+        disabled: {
+            type: Boolean,
+            default: false,
+        }
     },
     computed: {
         range() {
@@ -66,11 +70,14 @@ export default {
 
             return rangeWithDots;
         },
-        previousPage() {
-            this.$emit('previous')
+        lastPage() {
+            return Math.ceil(this.total / this.pageSize)
         },
-        nextPage() {
-            this.$emit('next')
+        hasNextPage() {
+            return this.current < this.lastPage
+        },
+        hasPreviousPage() {
+            return this.current > 1
         }
     }
 }

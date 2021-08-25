@@ -1,9 +1,6 @@
 <template>
     <div class="card" :class="loading ? 'position-relative' : ''">
         <slot></slot>
-        <div v-if="loading" class="position-absolute top-left w-100 h-100 d-flex loading-indicator align-items-center justify-content-center">
-            <i class="fas fa-spinner fa-spin fa-lg" />
-        </div>
     </div>
 </template>
 

@@ -6,9 +6,17 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>NAME</th>
-                            <th>BRANCH</th>
-                            <th>LOCATION TYPE</th>
+                            <th style="width:30%">NAME</th>
+                            <th style="width:30%">BRANCH</th>
+                            <th style="width:30%">LOCATION TYPE</th>
+                            <th style="width:10%" class="text-right">
+                                <button class="btn btn-sm btn-info" v-if="showAddButton" @click="addEnvironmentModalOpen = true">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                                <button class="btn btn-sm btn-info" v-else disabled title="Environment limit has been reached.">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </th>
                             <th></th>
                         </tr>
                     </thead>
@@ -20,29 +28,91 @@
                         </td>
                     </tr>
 
-                    <tr v-if="project" v-for="env in project.environments">
-                        <td><router-link :to="`env/${env.name}`">{{ env.name }}</router-link></td>
-                        <td>{{ env.name }}</td>
-                        <td>{{ env.name === project.productionBranch ? 'Production' : 'Development' }}</td>
-                        <td><a target="_blank" :href="urlFor(env)" v-if="urlFor(env)"><i class="fas fa-link"></i></a></td>
-                    </tr>
+                    <template v-if="!$apollo.loading && project">
+                        <tr v-if="project" v-for="{node: env} in environments.edges">
+                            <td><router-link :to="`env/${env.environmentName}`">{{ env.environmentName }}</router-link></td>
+                            <td><div class="badge badge-light border">{{ env.environmentName }}</div></td>
+                            <td>{{ env.environmentType === 'PRODUCTION' ? 'Production' : 'Development' }}</td>
+                            <td class="text-right">
+                                <a :title="env.services.join(', ')" :href="env.route" class="badge badge-success" v-if="env.services.length">
+                                    Running <i class="fas fa-link fa-sm"></i>
+                                </a>
+                                <span class="badge badge-info" v-else>
+                                    Pending
+                                </span>
+                            </td>
+                        </tr>
+                    </template>
+                    <template v-else>
+                        <tr v-for="i in (new Array(3)).keys()" :key="i">
+                            <td><blink-box></blink-box></td>
+                            <td><blink-box></blink-box></td>
+                            <td><blink-box></blink-box></td>
+                            <td><blink-box :min="4" :max="4"></blink-box></td>
+                        </tr>
+                    </template>
                 </table>
             </div>
         </card>
+        <pagination
+            @next="nextPage"
+            @previous="previousPage"
+            :current="this.currentPage"
+            :total="environments ? environments.totalCount : 1"
+            :page-size="this.count"
+            :disabled="$apollo.loading"
+        ></pagination>
+        <modal v-model="addEnvironmentModalOpen">
+            <template v-slot:title="{close}">
+                Add an environment
+            </template>
+            <template v-slot:body="{state}">
+                <p>
+                    Select a branch to add an environment
+                </p>
+                <branch-selector v-model="state.branch" :project-id="$route.params.id"></branch-selector>
+            </template>
+            <template v-slot:footer="{state, close}">
+                <button v-if="state.branch" @click="() => addEnvironment(state.branch, close)" class="btn btn-primary btn-sm">Add "{{state.branch}}" Environment</button>
+                <button v-else disabled class="btn btn-primary btn-sm">Add Environment</button>
+                <button type="button" class="btn btn-secondary btn-sm" @click="close">Cancel</button>
+            </template>
+        </modal>
     </div>
 </template>
 
 <script>
-import gql from "graphql-tag";
 import { Q_PROJECT_FULL } from "../../../queries/project";
 import Card from "../../basic/card";
-import {expectedEnvironments, hostingProjectId} from "../../../helpers";
+import {hostingProjectId} from "../../../helpers";
 import Header from "../../basic/header"
 import ProjectHeader from "./project-header";
+import BlinkBox from "../../basic/blink-box";
+import {M_ENVIRONMENT_CREATE, Q_ENVIRONMENTS_BY_PROJECT} from "../../../queries/environment";
+import Pagination from "../../basic/pagination";
+import Modal from "../../basic/modal";
+import BranchSelector from "../../basic/branch-selector";
 
 export default {
     name: "environments",
-    components: {ProjectHeader, Header, Card},
+    components: {BranchSelector, Modal, Pagination, BlinkBox, ProjectHeader, Header, Card},
+    computed: {
+        showAddButton() {
+            if (this.loading !== 0 || !this.environments || !this.project) {
+                return false;
+            }
+
+            let environmentsLeft = this.project.developmentEnvironmentsLimit + 2;
+            for (const {node: {environmentType}} of this.environments.edges) {
+                console.log(environmentType)
+                if (environmentType === 'DEVELOPMENT') {
+                    environmentsLeft--;
+                }
+            }
+
+            return environmentsLeft > 0
+        }
+    },
     apollo: {
         project: {
             query: Q_PROJECT_FULL,
@@ -51,8 +121,18 @@ export default {
                     projectId: hostingProjectId(this.$route.params.id)
                 }
             },
-
+            loadingKey: 'loading',
         },
+        environments: {
+            query: Q_ENVIRONMENTS_BY_PROJECT,
+            variables: function() {
+                return {
+                    projectId: hostingProjectId(this.$route.params.id),
+                    perPage: this.count
+                }
+            }
+        },
+        loadingKey: 'loading'
     },
     methods: {
         urlFor(env) {
@@ -71,16 +151,63 @@ export default {
             }
 
             return result === 'undefined' ? '' : result;
-        }
-    },
-    computed: {
-        expectedEnvironments() {
-            return expectedEnvironments(this.project)
-        }
+        },
+        async addEnvironment(name, close) {
+            await this.$apollo.mutate({
+                mutation: M_ENVIRONMENT_CREATE,
+                variables: {
+                    projectId: hostingProjectId(this.$route.params.id),
+                    environmentName: name
+                }
+            })
+
+            await this.$apollo.queries.environments.refetch()
+            close()
+        },
+
+        async changePage(after, before, difference) {
+            const self = this
+            await this.$apollo.queries.environments.fetchMore({
+                variables: {
+                    perPage: self.count,
+                    after: after,
+                    before: before,
+                },
+                updateQuery: (previousResult, { fetchMoreResult }) => {
+                    const newEdges = fetchMoreResult.environments.edges
+                    const pageInfo = fetchMoreResult.environments.pageInfo
+
+                    self.currentPage += difference
+                    return newEdges.length ? {
+                        ...previousResult,
+                        environments: {
+                            ...previousResult.environments,
+                            // Concat edges
+                            edges: [
+                                ...newEdges,
+                            ],
+                            // Override with new pageInfo
+                            pageInfo,
+                        }
+                    } : previousResult
+                }
+            })
+        },
+        async nextPage() {
+            await this.changePage(this.environments.pageInfo.endCursor, null,1);
+        },
+        async previousPage() {
+            await this.changePage(null, this.environments.pageInfo.startCursor, -1);
+        },
     },
     data: () => ({
-        selectedProject: null,
-        project: {environments:[]}
+        selectedBranch: null,
+        loading: 0,
+        currentPage: 1,
+        count: 10,
+        project: null,
+        environments: null,
+        addEnvironmentModalOpen: false,
     })
 }
 </script>

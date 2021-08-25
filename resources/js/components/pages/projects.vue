@@ -11,28 +11,43 @@
         </Header>
         <card :loading="$apollo.loading">
             <div class="card-body">
-                <table class="table" v-if="projects">
+                <table class="table" v-if="$apollo.loading || !projects.length">
                     <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Type</th>
+                        <th style="width:33%">Name</th>
+                        <th style="width:33%">Type</th>
                         <th class="text-center">Handle</th>
                     </tr>
                     </thead>
-                    <tr v-for="{node} in projects.edges">
-                        <td><router-link :to="node._id + ''">{{ node.name }}</router-link></td>
-                        <td>{{ node.startingPoint.name }}</td>
-                        <td class="text-center">
-                            <span class="badge badge-light-gray border pointer" @click="$copyText(node.lagoonName)">{{node.lagoonName}} <i class="ml-2 far fa-copy"></i></span>
-                        </td>
-                    </tr>
+                    <template v-if="!$apollo.loading">
+                        <tr v-for="{node} in projects.edges">
+                            <td><router-link :to="node._id + ''">{{ node.name }}</router-link></td>
+                            <td>{{ node.startingPoint.name }}</td>
+                            <td class="text-center">
+                                <span class="badge badge-light-gray border pointer" @click="$copyText(node.lagoonName)">{{node.lagoonName}} <i class="ml-2 far fa-copy"></i></span>
+                            </td>
+                        </tr>
+                    </template>
+                    <template v-else>
+                        <tr v-for="i in (new Array(5)).keys()" :key="i">
+                            <td>
+                                <blink-box></blink-box>
+                            </td>
+                            <td>
+                                <blink-box></blink-box>
+                            </td>
+                            <td class="text-center">
+                                <blink-box></blink-box>
+                            </td>
+                        </tr>
+                    </template>
                 </table>
                 <div class="" v-else>
                     <h4 class="text-center text-muted">You don't have any projects!</h4>
                 </div>
             </div>
         </card>
-        <pagination @next="nextPage" @previous="previousPage" :current="this.currentPage" :total="this.projects.totalCount" :page-size="this.count"></pagination>
+        <pagination @next="nextPage" @previous="previousPage" :current="this.currentPage" :total="projects ? projects.totalCount : 1" :page-size="this.count"></pagination>
         <create-project-modal v-model="showModal" @create="handleProjectCreate"></create-project-modal>
     </div>
 </template>
@@ -43,14 +58,15 @@ import {store} from "../../store/store";
 import {Q_PROJECT_LIST, Q_PROJECT_LIST_LIGHT} from "../../queries/project";
 import Header from "../basic/header";
 import CreateProjectModal from "../basic/create-project-modal";
+import BlinkBox from "../basic/blink-box";
 import Pagination from "../basic/pagination";
 
 export default {
     name: "projects",
-    components: {Pagination, CreateProjectModal, Header, Card},
+    components: {Pagination, CreateProjectModal, Header, Card, BlinkBox},
     apollo: {
         projects: {
-            query: Q_PROJECT_LIST_LIGHT,
+            query: Q_PROJECT_LIST,
             variables() {
                 return {
                     before: null,
@@ -61,34 +77,13 @@ export default {
         }
     },
     data: () => ({
-        projects: [],
+        projects: null,
         showModal: false,
         extraProject: null,
         currentPage: 1,
         count: 15,
         totalCount: 100,
     }),
-    watch: {
-        projects(newProjects, oldProjects) {
-            if (this.extraProject) {
-                for (const {node} of newProjects.edges) {
-                    if (node.id === this.extraProject.id) {
-                        this.extraProject = null
-                        break
-                    }
-                }
-            }
-        },
-        async pendingProject(newProject, oldProject) {
-            this.extraProject = newProject
-            await this.$apollo.queries.projects.refetch()
-        }
-    },
-    computed: {
-        pendingProject() {
-            return store.state.addedProject
-        },
-    },
     methods: {
         async changePage(after, before, difference) {
             const self = this
@@ -136,7 +131,6 @@ export default {
 </script>
 
 <style scoped>
-
 .pointer {
     cursor: pointer
 }

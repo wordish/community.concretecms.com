@@ -36,7 +36,9 @@ const errorLink = onError(({graphQLErrors, networkError}) => {
 
     if ((networkError && networkError.statusCode === 401) || needsAuth) {
         if (store.getters.isLoggedIn) {
+            store.commit('setPostLoginRedirect', router.currentRoute.fullPath)
             store.commit('logout')
+            router.replace('/api-login');
         }
     }
 })

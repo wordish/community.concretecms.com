@@ -10,7 +10,7 @@
                 </div>
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
-                        <ul class="breadcrumb">
+                        <ul class="breadcrumb" v-if="showBreadcrumbs">
                             <router-link
                                 custom
                                 v-for="[name, link, partialMatch] in breadcrumb"
@@ -25,7 +25,7 @@
                         </ul>
                     </div>
                     <div>
-                        <span class="badge badge-accent">
+                        <span class="badge badge-accent" v-if="showUser">
                             <router-link to="/api-login" class="text-white">{{ user }}</router-link>
                         </span>
                     </div>
@@ -43,26 +43,6 @@ import Modal from "./create-project-modal";
 import gql from "graphql-tag";
 
 export default {
-    apollo: {
-        currentSession: {
-            query: gql`
-                query currentSession {
-                    currentSession {
-                        username
-                        email
-                        id
-                        _id
-                    }
-                }
-            `,
-            pollInterval: 10000,
-            update({currentSession}) {
-                if (!currentSession || parseInt(currentSession._id) !== parseInt(store.state.userData.id)) {
-                    store.commit('logout')
-                }
-            }
-        }
-    },
     props: {
         project: {
             type: {
@@ -74,6 +54,14 @@ export default {
         title: {
             type: String,
             default: null
+        },
+        showBreadcrumbs: {
+            type: Boolean,
+            default: true,
+        },
+        showUser: {
+            type: Boolean,
+            default: true,
         },
         projectName: {
             type: String,
@@ -138,9 +126,6 @@ export default {
     methods: {
         async onCreate(project) {
             store.commit('createProject', project)
-        },
-        breadcrumbs: function(id, environment, projectName, title) {
-
         }
     },
     components: {

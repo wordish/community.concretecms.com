@@ -8,7 +8,7 @@
                 <router-link :to="`/${$route.params.id}/code`" class="nav-link" active-class="active">Code</router-link>
             </li>
             <li class="nav-item">
-                <router-link :to="`/${$route.params.id}/permissions`" class="nav-link" active-class="active">Permissions</router-link>
+                <router-link :to="`/${$route.params.id}/permissions`" class="nav-link" active-class="active">Settings</router-link>
             </li>
         </template>
     </Header>
