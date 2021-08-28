@@ -185,7 +185,11 @@ $profileFormRenderer = new Renderer(
                         $pages = $pagination->getCurrentPageResults();
                         if ($pagination->haveToPaginate()) {
                             $showPagination = true;
-                            echo $pagination->renderView('application');
+                            echo $pagination->renderView('application',[
+                                'prev_message' => tc('Pagination', '&larr;'),
+                                'next_message' => tc('Pagination', '&rarr;'),
+                                'proximity' => 1
+                            ]);
                         }
                         ?>
                     </div>
