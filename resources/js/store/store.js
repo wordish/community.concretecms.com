@@ -15,6 +15,7 @@ const vuexLocal = new VuexPersistence({
 
 let lastEventId = null
 let sessionListener = null
+let toastId = (new Date()).getTime();
 export const store = new Vuex.Store({
     state: {
         jwt: null,
@@ -26,6 +27,7 @@ export const store = new Vuex.Store({
         postLoginRedirect: null,
         eventSource: null,
         eventSourceListeners: {},
+        toasts: {},
     },
     getters: {
         isLoggedIn(state) {
@@ -33,6 +35,45 @@ export const store = new Vuex.Store({
         }
     },
     mutations: {
+        addToast(state, {title, message, canDismiss, timeout, type}) {
+            const currentToast = (new Date).getTime()
+            const expires = timeout ? (new Date).getTime() + (timeout * 1000) : 0
+
+
+            Vue.set(state.toasts, 'toast' + currentToast, {
+                title,
+                message,
+                canDismiss,
+                expires: expires,
+                id: currentToast,
+                type
+            })
+
+            if (timeout) {
+                setTimeout(() => store.commit('hideToast', currentToast), timeout * 1000)
+            }
+
+            store.commit('pruneToasts')
+        },
+        hideToast(state, toastId) {
+            io.log('Hiding Toast ' + toastId)
+            if (typeof state.toasts['toast' + toastId] !== "undefined") {
+                io.log('Found it')
+                Vue.delete(state.toasts, 'toast' + toastId)
+            }
+        },
+        pruneToasts(state) {
+            const now = (new Date()).getTime()
+            for (const toast in state.toasts) {
+                if (!state.toasts.hasOwnProperty(toast) || state.toasts[toast].expires === 0) {
+                    continue
+                }
+
+                if (state.toasts[toast].expires <= now) {
+                    Vue.delete(state.toasts, toast)
+                }
+            }
+        },
         setEventSourceListener(state, {key, listener}) {
             store.commit('connectToMercure');
             state.eventSourceListeners[key] = listener
@@ -62,6 +103,7 @@ export const store = new Vuex.Store({
                 backoff = 0
                 lastEventId = e.lastEventId
 
+                const data = JSON.parse(e.data)
                 io.groupCollapsed('[' + data.group + '] EventSourceMessage ' + e.lastEventId, function() {
                     io.group('Event', () => {
                         io.log(e)
@@ -81,6 +123,7 @@ export const store = new Vuex.Store({
                 }
             }
             state.eventSource.onerror = function(e) {
+                addToast('Reconnecting...', 10, 'warning')
                 io.log('MERCURE ERROR:', e)
                 setTimeout(function() {
                     store.commit('connectToMercure', backoff ? backoff * 2 : 2)
@@ -93,7 +136,7 @@ export const store = new Vuex.Store({
             state.selectedProject = project
         },
         startPollingSession(state) {
-            if (!this.isLoggedIn || sessionListener) {
+            if (!state.isLoggedIn || sessionListener) {
                 return
             }
             const fetchSession = function() {
@@ -196,3 +239,11 @@ export const store = new Vuex.Store({
 
 // Always poll session
 store.commit('startPollingSession')
+
+// Add toast helpers
+export function addToast(title, timeout, type, dismissable) {
+    timeout = timeout ? timeout : 8
+    type = type ? type : 'normal'
+    dismissable = typeof dismissable === 'boolean' ? dismissable : true
+    store.commit('addToast', {title, timeout, type, canDismiss: dismissable})
+}

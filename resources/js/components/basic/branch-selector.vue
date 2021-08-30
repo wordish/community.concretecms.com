@@ -9,7 +9,7 @@
                     v-for="branch in branches"
                     :key="branch.name"
                     :value="branch.name"
-                    :disabled="branch.hasEnvironment"
+                    :disabled="disableExisting && branch.hasEnvironment"
                 >
                     {{ branch.name }}
                 </option>
@@ -66,6 +66,10 @@ export default {
         projectId: {
             type: String,
             required: true,
+        },
+        disableExisting: {
+            type: Boolean,
+            default: true,
         }
     },
     mounted() {

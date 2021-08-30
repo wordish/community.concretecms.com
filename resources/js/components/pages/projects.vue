@@ -24,12 +24,12 @@
                             <td><router-link :to="node._id + ''">{{ node.name }}</router-link></td>
                             <td>{{ node.startingPoint.name }}</td>
                             <td class="text-center">
-                                <span class="badge badge-light-gray border pointer" @click="$copyText(node.lagoonName)">{{node.lagoonName}} <i class="ml-2 far fa-copy"></i></span>
+                                <a href="#" class="badge badge-light-gray border pointer" @click.prevent="$copyText(node.lagoonName)">{{node.lagoonName}} <i class="ml-2 far fa-copy"></i></a>
                             </td>
                         </tr>
                     </template>
                     <template v-else>
-                        <tr v-for="i in (new Array(5)).keys()" :key="i">
+                        <tr v-for="i in (new Array(loadingNodes)).keys()" :key="i">
                             <td>
                                 <blink-box></blink-box>
                             </td>
@@ -81,8 +81,9 @@ export default {
         showModal: false,
         extraProject: null,
         currentPage: 1,
-        count: 15,
+        count: 8,
         totalCount: 100,
+        loadingNodes: 5,
     }),
     methods: {
         async changePage(after, before, difference) {
@@ -114,9 +115,11 @@ export default {
             })
         },
         async nextPage() {
+            this.loadingNodes = this.projects.edges.length
             await this.changePage(this.projects.pageInfo.endCursor, null,1);
         },
         async previousPage() {
+            this.loadingNodes = this.projects.edges.length
             await this.changePage(null, this.projects.pageInfo.startCursor, -1);
         },
         async handleProjectCreate(e) {

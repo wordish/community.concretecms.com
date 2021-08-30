@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 export const F_PROJECT_FULL = gql`
     fragment HostingProjectFields on HostingProject {
         gitUrl
+        gitPath
         _id
         id
         name

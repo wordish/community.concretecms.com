@@ -34,7 +34,7 @@
                             <td><div class="badge badge-light border">{{ env.environmentName }}</div></td>
                             <td>{{ env.environmentType === 'PRODUCTION' ? 'Production' : 'Development' }}</td>
                             <td class="text-right">
-                                <a :title="env.services.join(', ')" :href="env.route" class="badge badge-success" v-if="env.services.length">
+                                <a :title="env.services.filter((v, i, s) => s.indexOf(v) === i).join(', ')" :href="env.route" class="badge badge-success" v-if="env.services.length">
                                     Running <i class="fas fa-link fa-sm"></i>
                                 </a>
                                 <span class="badge badge-info" v-else>

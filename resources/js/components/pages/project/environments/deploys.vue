@@ -33,36 +33,35 @@
                                 <th style="width:10%">Duration</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <template v-if="deploys !== null">
-                                <deployment-row :key="node.id" v-for="{node} of deploys.edges"
-                                                :deploy-id="node.id"
-                                                :created="node.dateCreated"
-                                                :started="node.dateStarted"
-                                                :ended="node.dateFulfilled"
-                                                :status="node.fulfillmentStatus"
-                                                :name="node.deployName ? node.deployName : '...'"
-                                >
-                                </deployment-row>
-                            </template>
-                            <template v-else>
-                                <tr v-for="i in (new Array(4)).keys()" :key="i">
-                                    <td>
-                                        <blink-box :size="22"></blink-box>
-                                    </td>
-                                    <td class="text-center">
-                                        <blink-box></blink-box>
-                                    </td>
-                                    <td class="text-center">
-                                        <blink-box :size="7"></blink-box>
-                                    </td>
-                                    <td>
-                                        <blink-box :min="2" :max="5"></blink-box>
-                                    </td>
-                                </tr>
-                            </template>
-
-                            </tbody>
+                            <transition-group tag="tbody">
+                                <template v-if="deploys !== null">
+                                    <deployment-row :key="node.id" v-for="{node} of deploys.edges"
+                                                    :deploy-id="node.id"
+                                                    :created="node.dateCreated"
+                                                    :started="node.dateStarted"
+                                                    :ended="node.dateFulfilled"
+                                                    :status="node.fulfillmentStatus"
+                                                    :name="node.deployName ? node.deployName : '...'"
+                                    >
+                                    </deployment-row>
+                                </template>
+                                <template v-else>
+                                    <tr v-for="i in (new Array(4)).keys()" :key="i">
+                                        <td>
+                                            <blink-box :size="22"></blink-box>
+                                        </td>
+                                        <td class="text-center">
+                                            <blink-box></blink-box>
+                                        </td>
+                                        <td class="text-center">
+                                            <blink-box :size="7"></blink-box>
+                                        </td>
+                                        <td>
+                                            <blink-box :min="2" :max="5"></blink-box>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </transition-group>
                         </table>
                     </div>
                 </div>
@@ -78,7 +77,7 @@ import {Q_PROJECT_FULL} from "../../../../queries/project";
 import {M_DEPLOY_CREATE, Q_DEPLOYS_BY_PROJECT} from "../../../../queries/deploys";
 import {deployId, hostingProjectId} from "../../../../helpers";
 import EnvironmentsHeader from "./environments-header";
-import {store} from "../../../../store/store";
+import {addToast, store} from "../../../../store/store";
 import BlinkBox from "../../../basic/blink-box";
 
 export default {
@@ -172,6 +171,8 @@ export default {
                     environment: this.$route.params.environment
                 }
             })
+
+            addToast('Added a new deploy.')
         }
     },
     mounted() {

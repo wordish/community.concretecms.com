@@ -37,38 +37,38 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <template v-if="environmentTasks">
-                            <deployment-row :key="node.id" v-for="{node} of environmentTasks.edges"
-                                            :deploy-id="node.id"
-                                            :created="node.dateCreated"
-                                            :started="node.dateStarted"
-                                            :name="node.taskType"
-                                            :ended="node.dateFulfilled"
-                                            :status="node.fulfillmentStatus"
-                            >
-                                <template v-slot:actions>
-                                    <td>
-                                        <button class="btn-text btn btn-sm" v-if="node.taskType === 'Backup' && node.fulfillmentStatus === 'fulfilled'" @click="triggerRestore(node.id)">Restore</button>
-                                    </td>
+                                <template v-if="environmentTasks">
+                                <deployment-row :key="node.id" v-for="{node} of environmentTasks.edges"
+                                                :deploy-id="node.id"
+                                                :created="node.dateCreated"
+                                                :started="node.dateStarted"
+                                                :name="node.taskType"
+                                                :ended="node.dateFulfilled"
+                                                :status="node.fulfillmentStatus"
+                                >
+                                    <template v-slot:actions>
+                                        <td>
+                                            <button class="btn-text btn btn-sm" v-if="node.taskType === 'Backup' && node.fulfillmentStatus === 'fulfilled'" @click="triggerRestore(node.id)">Restore</button>
+                                        </td>
+                                    </template>
+                                </deployment-row>
                                 </template>
-                            </deployment-row>
-                            </template>
-                            <template v-else>
-                                <tr v-for="i in (new Array(4)).keys()" :key="i">
-                                    <td>
-                                        <blink-box :size="22"></blink-box>
-                                    </td>
-                                    <td class="text-center">
-                                        <blink-box></blink-box>
-                                    </td>
-                                    <td class="text-center">
-                                        <blink-box :size="7"></blink-box>
-                                    </td>
-                                    <td>
-                                        <blink-box :min="2" :max="5"></blink-box>
-                                    </td>
-                                </tr>
-                            </template>
+                                <template v-else>
+                                    <tr v-for="i in (new Array(4)).keys()" :key="i">
+                                        <td>
+                                            <blink-box :size="22"></blink-box>
+                                        </td>
+                                        <td class="text-center">
+                                            <blink-box></blink-box>
+                                        </td>
+                                        <td class="text-center">
+                                            <blink-box :size="7"></blink-box>
+                                        </td>
+                                        <td>
+                                            <blink-box :min="2" :max="5"></blink-box>
+                                        </td>
+                                    </tr>
+                                </template>
                             </tbody>
                         </table>
                     </div>
@@ -91,7 +91,7 @@ import {
     Q_TASKS_BY_PROJECT
 } from "../../../../queries/tasks";
 import EnvironmentsHeader from "./environments-header";
-import {store} from "../../../../store/store";
+import {addToast, store} from "../../../../store/store";
 import BlinkBox from "../../../basic/blink-box";
 
 export default {
@@ -186,6 +186,7 @@ export default {
                     environment: this.$route.params.environment,
                 }
             })
+            addToast('Started a new backup')
         },
         async triggerRestore(id) {
             await this.$apollo.mutate({

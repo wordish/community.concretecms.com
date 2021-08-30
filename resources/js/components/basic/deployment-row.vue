@@ -4,7 +4,12 @@
             {{formattedCreationDate}}
         </td>
         <td v-if="name" class="text-center">
-            <span class="badge badge-light-gray border pointer" @click="$copyText(name)">{{name}} <i class="ml-2 far fa-copy"></i></span>
+            <a
+                href="#"
+                class="badge badge-light-gray border pointer"
+                @click.prevent="$copyText(name) && addCopyToast(name)">
+                {{name}} <i class="ml-2 far fa-copy"></i>
+            </a>
         </td>
         <td class="text-center">
             <span :class="statusClass">{{this.normalStatus}}</span>
@@ -21,6 +26,7 @@ import moment from "moment-timezone";
 import {dateFormat} from "../../helpers";
 import gql from "graphql-tag/lib/graphql-tag.umd";
 import {F_DEPLOY_FULL, Q_DEPLOY_FULL} from "../../queries/deploys";
+import {addToast} from "../../store/store";
 
 export default {
     name: "deployment-row",
@@ -176,6 +182,9 @@ export default {
                 minutes ? `${minutes}m` : '',
                 `${seconds}s`
             ].join('')
+        },
+        addCopyToast(name) {
+            addToast('Copied <code>"' + name + '"</code> to clipboard.', 5)
         }
     },
     data: () => ({
