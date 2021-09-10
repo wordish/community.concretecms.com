@@ -83,7 +83,7 @@ import Card from "../../../basic/card";
 import DeploymentRow from "../../../basic/deployment-row";
 import {Q_PROJECT_FULL} from "../../../../queries/project";
 import {M_DEPLOY_CREATE, Q_DEPLOYS_BY_PROJECT} from "../../../../queries/deploys";
-import {deployId, hostingProjectId} from "../../../../helpers";
+import {addToast, deployId, hostingProjectId} from "../../../../helpers";
 import {
     M_TASK_CREATE_BACKUP,
     M_TASK_CREATE_INSTALL,
@@ -91,8 +91,9 @@ import {
     Q_TASKS_BY_PROJECT
 } from "../../../../queries/tasks";
 import EnvironmentsHeader from "./environments-header";
-import {addToast, store} from "../../../../store/store";
+import {store} from "../../../../store/store";
 import BlinkBox from "../../../basic/blink-box";
+import {strings} from "../../../../strings";
 
 export default {
     components: {BlinkBox, EnvironmentsHeader, Header, Card, DeploymentRow},
@@ -186,7 +187,7 @@ export default {
                     environment: this.$route.params.environment,
                 }
             })
-            addToast('Started a new backup')
+            addToast(strings.toasts.addBackup, null,'danger')
         },
         async triggerRestore(id) {
             await this.$apollo.mutate({

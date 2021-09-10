@@ -115,7 +115,6 @@ export default {
                 client_id: config.login.oauthClient,
                 redirect_uri: this.resolveCallback(),
                 scope: [
-                    "ROLE_USER",
                     "PROJECT_VIEW",
                     "PROJECT_CREATE",
                     "PROJECT_EDIT",

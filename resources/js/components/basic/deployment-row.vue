@@ -23,10 +23,7 @@
 
 <script>
 import moment from "moment-timezone";
-import {dateFormat} from "../../helpers";
-import gql from "graphql-tag/lib/graphql-tag.umd";
-import {F_DEPLOY_FULL, Q_DEPLOY_FULL} from "../../queries/deploys";
-import {addToast} from "../../store/store";
+import {dateFormat, addToast} from "../../helpers";
 
 export default {
     name: "deployment-row",

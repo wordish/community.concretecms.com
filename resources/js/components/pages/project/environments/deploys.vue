@@ -19,7 +19,8 @@
                                     <strong>{{ selectedEnvironment }}</strong>
                                     <span>environment</span>
                                 </div>
-                                <button @click="triggerDeploy" class="btn btn-sm btn-primary">Start Deploy</button>
+                                <button v-if="activeDeploys < 2" @click="triggerDeploy" class="btn btn-sm btn-primary">Start Deploy</button>
+                                <button v-else :disabled=true class="btn btn-sm btn-primary">Start Deploy</button>
                             </div>
                         </div>
                     </div>
@@ -75,9 +76,9 @@ import Card from "../../../basic/card";
 import DeploymentRow from "../../../basic/deployment-row";
 import {Q_PROJECT_FULL} from "../../../../queries/project";
 import {M_DEPLOY_CREATE, Q_DEPLOYS_BY_PROJECT} from "../../../../queries/deploys";
-import {deployId, hostingProjectId} from "../../../../helpers";
+import {addToast, deployId, hostingProjectId} from "../../../../helpers";
 import EnvironmentsHeader from "./environments-header";
-import {addToast, store} from "../../../../store/store";
+import {store} from "../../../../store/store";
 import BlinkBox from "../../../basic/blink-box";
 
 export default {
@@ -105,6 +106,14 @@ export default {
     computed: {
         selectedEnvironment() {
             return this.$route.params.environment
+        },
+        activeDeploys() {
+            return this.deploys ? this.deploys.edges.reduce((carry, {node: deploy}) => {
+                if (deploy.fulfillmentStatus === 'unfulfilled' || deploy.fulfillmentStatus === 'started') {
+                    return ++carry
+                }
+                return carry
+            }, 0) : 0
         }
     },
     data: () => ({
@@ -172,7 +181,7 @@ export default {
                 }
             })
 
-            addToast('Added a new deploy.')
+            addToast('Started a new deploy.')
         }
     },
     mounted() {

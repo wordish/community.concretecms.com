@@ -16,10 +16,9 @@ export const routes = [
     { path: '/:id/environments', component: environments, meta: { auth: true } },
     { path: '/:id/code', component: code, meta: { auth: true } },
     { path: '/:id/permissions', component: permissions, meta: { auth: true } },
-    { path: '/:id/env/:environment', redirect: '/:id/env/:environment/deploys', meta: { auth: true } },
-    { path: '/:id/env/:environment/deploys', component: deploys, meta: { auth: true } },
-    { path: '/:id/env/:environment/backups', component: backups, meta: { auth: true } },
-    { path: '/:id/env/:environment/installs', component: installs, meta: { auth: true } },
+    { path: '/:id/env/:environment+/deploys',  component: deploys, meta: { auth: true } },
+    { path: '/:id/env/:environment+/backups', component: backups, meta: { auth: true } },
+    { path: '/:id/env/:environment+/installs', component: installs, meta: { auth: true } },
 
     // Redirect everything else to home
     {path: '*', redirect: '/'},

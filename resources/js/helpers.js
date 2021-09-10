@@ -1,4 +1,5 @@
 import moment from "moment-timezone";
+import {store} from "./store/store";
 
 export function expectedEnvironments(project) {
     if (!project) {
@@ -101,9 +102,68 @@ export const io = {
         io._call(callback, [io])
         io._call(console.groupEnd)
     },
-    _call: (func, args) => process.env.NODE_ENV !== 'production' ? func(...(args || [])) : null
+    _call: (func, args) => inDev(() => func(...(args || [])))
 }
 
 io.group('Mangrove Hosting Control Panel', function() {
     io.log('Welcome to Mangrove Hosting Control Panel');
 })
+
+/**
+ * @callback emptyCallback
+ */
+
+/**
+ * Run a function if running in dev
+ * @param {emptyCallback=} callback
+ */
+export function inDev(callback) {
+    if (typeof callback === "undefined") {
+        return process.env.NODE_ENV !== 'production'
+    }
+
+    if (inDev()) {
+        return callback()
+    }
+}
+
+/**
+ * Run a function if running in production
+ * @param {emptyCallback=} callback
+ */
+export function inProduction(callback) {
+    if (typeof callback === "undefined") {
+        return process.env.NODE_ENV === 'production'
+    }
+
+    if (inProduction()) {
+        return callback()
+    }
+}
+
+/**
+ * Add toast to be shown
+ * @param {string} title
+ * @param {number=} timeout
+ * @param {string=} type
+ * @param {boolean=} dismissable
+ * @param {string=} id
+ */
+export function addToast(title, timeout, type, dismissable, id) {
+    timeout = timeout ? timeout : 8
+    type = type ? type : 'normal'
+    dismissable = typeof dismissable === 'boolean' ? dismissable : true
+    store.commit('addToast', {title: title, timeout, type, id, canDismiss: dismissable})
+}
+
+/**
+ * Add toast to be shown only in dev
+ * @param {string} title
+ * @param {number=} timeout
+ * @param {string=} type
+ * @param {boolean=} dismissable
+ * @param {string=} id
+ */
+export function addDevToast(title, timeout, type, dismissable, id) {
+    inDev(() => addToast(`<strong>[DEV]</strong> ${title}`, timeout, type, dismissable, id));
+}

@@ -11,7 +11,7 @@
                         :title="toast.title"
                         :message="toast.message"
                         :type="toast.type"
-                        :dismissable="toast.canDismiss"
+                        :can-dismiss="toast.canDismiss"
                         @close="() => dismissToast(toast.id)"
                     ></toast>
                 </div>
@@ -26,8 +26,43 @@ import {store} from "../store/store"
 import {Q_PROJECT_FULL, Q_PROJECT_LIST} from "../queries/project";
 import {hostingProjectId} from "../helpers";
 import Toast from "./basic/toast";
+import gql from "graphql-tag";
 
 export default {
+    apollo: {
+        currentSession: {
+            query: gql`
+                    query currentSession {
+                        currentSession {
+                            username
+                            email
+                            id
+                            _id
+                            roles
+                        }
+                    }
+                `,
+            pollInterval: 10000,
+            errorPolicy: "ignore",
+            update(result) {
+                const session = result.currentSession
+
+                if (session === null || parseInt(session._id) !== parseInt(store.state.userData?.id) || !session.roles) {
+                    this.$apollo.queries.currentSession.stop()
+                    this.$apollo.queries.currentSession.stopPolling()
+                    // The user has timed out or something
+                    store.commit('logout');
+                    return
+                }
+
+                if (JSON.stringify(store.state.roles.sort()) !== JSON.stringify(session.roles)) {
+                    store.commit('setRoles', session.roles)
+                }
+
+                return
+            }
+        }
+    },
     components: {Toast},
     computed: {
         isLoggedIn() {
@@ -61,6 +96,15 @@ export default {
         }
     },
     watch: {
+        isLoggedIn(newStatus, oldStatus) {
+            if (newStatus === true && oldStatus === false) {
+                this.$apollo.queries.currentSession.startPolling(10000)
+            }
+
+            if (newStatus === false && oldStatus === true) {
+                this.$apollo.queries.currentSession.stopPolling();
+            }
+        },
         $route(to, from) {
             if (to.params.id && to.params.id !== this.selectedProject) {
                 this.selectedProject = to.params.id
@@ -83,6 +127,7 @@ export default {
         projects: [],
         project: null,
         pendingProject: null,
+        currentSession: null,
     }),
     methods: {
         goHome() {

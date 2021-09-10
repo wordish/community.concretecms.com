@@ -5,7 +5,8 @@ import {router} from '../routes/routes'
 import Vue from 'vue';
 import config from "../config";
 import gql from "graphql-tag";
-import {io} from "../helpers";
+import {addDevToast, addToast, inDev, io} from "../helpers";
+import sessionTracker from "../auth/sessiontracker";
 
 Vue.use(Vuex)
 
@@ -14,7 +15,6 @@ const vuexLocal = new VuexPersistence({
 })
 
 let lastEventId = null
-let sessionListener = null
 let toastId = (new Date()).getTime();
 export const store = new Vuex.Store({
     state: {
@@ -28,17 +28,21 @@ export const store = new Vuex.Store({
         eventSource: null,
         eventSourceListeners: {},
         toasts: {},
+        roles: [],
     },
     getters: {
         isLoggedIn(state) {
             return !!state.jwt && !!state.jwtExpiry && new Date(state.jwtExpiry) > new Date()
-        }
+        },
+        isAdmin(state) {
+            return state.roles.indexOf('ROLE_ADMIN') !== -1
+        },
     },
     mutations: {
-        addToast(state, {title, message, canDismiss, timeout, type}) {
-            const currentToast = (new Date).getTime()
+        addToast(state, {title, message, canDismiss, timeout, type, id}) {
             const expires = timeout ? (new Date).getTime() + (timeout * 1000) : 0
-
+            id = id ? id : (new Date).getTime()
+            const currentToast = id
 
             Vue.set(state.toasts, 'toast' + currentToast, {
                 title,
@@ -50,10 +54,9 @@ export const store = new Vuex.Store({
             })
 
             if (timeout) {
+                io.log('Setting toast timeout: ' + timeout)
                 setTimeout(() => store.commit('hideToast', currentToast), timeout * 1000)
             }
-
-            store.commit('pruneToasts')
         },
         hideToast(state, toastId) {
             io.log('Hiding Toast ' + toastId)
@@ -99,7 +102,7 @@ export const store = new Vuex.Store({
                 }
             })
 
-            state.eventSource.onmessage = function(e) {
+            state.eventSource.addEventListener('message', e => {
                 backoff = 0
                 lastEventId = e.lastEventId
 
@@ -121,53 +124,26 @@ export const store = new Vuex.Store({
                     io.log('Sending to listener ' + i)
                     store.state.eventSourceListeners[i](e)
                 }
-            }
-            state.eventSource.onerror = function(e) {
-                addToast('Reconnecting...', 10, 'warning')
+            })
+
+            state.eventSource.addEventListener('error', e => {
+                addToast('Connecting...', 0, 'warning', false, 'connecting')
                 io.log('MERCURE ERROR:', e)
-                setTimeout(function() {
+
+                addDevToast('Mercure Error', 8, 'info')
+                setTimeout(function () {
                     store.commit('connectToMercure', backoff ? backoff * 2 : 2)
                 }, backoff)
+            })
+
+            state.eventSource.onopen = function(e) {
+                setTimeout(() => store.commit('hideToast', 'connecting'))
             }
 
             return state.eventSource
         },
         async selectProject(state, project) {
             state.selectedProject = project
-        },
-        startPollingSession(state) {
-            if (!state.isLoggedIn || sessionListener) {
-                return
-            }
-            const fetchSession = function() {
-                apolloClient.query({
-                    name: 'currentSession',
-                    query: gql`
-                        query currentSession {
-                            currentSession {
-                                username
-                                email
-                                id
-                                _id
-                            }
-                        }
-                    `,
-
-                    update({currentSession}) {
-                        if (!currentSession || parseInt(currentSession._id) !== parseInt(store.state.userData?.id)) {
-                            store.commit('logout')
-                        }
-                    }
-                }).then(function ({data:{currentSession}}) {
-                    if (currentSession === null) {
-                        store.commit('setPostLoginRedirect', router.currentRoute.fullPath)
-                        store.commit('logout')
-                    }
-                })
-            };
-
-            sessionListener = setInterval(fetchSession, 10000);
-            fetchSession()
         },
         async login(state, jwt) {
             io.log('SHOULD REDIRECT:' + state.postLoginRedirect)
@@ -203,14 +179,8 @@ export const store = new Vuex.Store({
                 await router.replace(state.postLoginRedirect)
                 state.postLoginRedirect = null
             }
-
-            store.commit('startPollingSession')
         },
         async logout(state) {
-            if (sessionListener) {
-                clearInterval(sessionListener)
-                sessionListener = null
-            }
             state.jwt = null
             state.jwtData = null
             state.userData = null
@@ -224,6 +194,9 @@ export const store = new Vuex.Store({
             state.userData.id = id
             state.userData.email = email
             state.userData.username = username
+        },
+        setRoles(state, roles) {
+            state.roles = [...roles];
         }
     },
     plugins: process.env.NODE_ENV !== 'production' ?
@@ -237,13 +210,5 @@ export const store = new Vuex.Store({
     ],
 })
 
-// Always poll session
-store.commit('startPollingSession')
-
-// Add toast helpers
-export function addToast(title, timeout, type, dismissable) {
-    timeout = timeout ? timeout : 8
-    type = type ? type : 'normal'
-    dismissable = typeof dismissable === 'boolean' ? dismissable : true
-    store.commit('addToast', {title, timeout, type, canDismiss: dismissable})
-}
+// Prune any toasts
+store.commit('pruneToasts')

@@ -9,7 +9,7 @@
                 </div>
             </template>
         </Header>
-        <card :loading="$apollo.loading">
+        <card :loading="$apollo.loading && projects === null">
             <div class="card-body">
                 <table class="table" v-if="$apollo.loading || !projects.length">
                     <thead>
@@ -19,8 +19,8 @@
                         <th class="text-center">Handle</th>
                     </tr>
                     </thead>
-                    <template v-if="!$apollo.loading">
-                        <tr v-for="{node} in projects.edges">
+                    <template v-if="!$apollo.loading && projects !== null">
+                        <tr v-for="{node} in projects.edges" :style="node.fulfillmentStatus === 'terminated' ? 'opacity:.333' : ''">
                             <td><router-link :to="node._id + ''">{{ node.name }}</router-link></td>
                             <td>{{ node.startingPoint.name }}</td>
                             <td class="text-center">
@@ -60,10 +60,11 @@ import Header from "../basic/header";
 import CreateProjectModal from "../basic/create-project-modal";
 import BlinkBox from "../basic/blink-box";
 import Pagination from "../basic/pagination";
+import StatusBadge from "../basic/status-badge";
 
 export default {
     name: "projects",
-    components: {Pagination, CreateProjectModal, Header, Card, BlinkBox},
+    components: {StatusBadge, Pagination, CreateProjectModal, Header, Card, BlinkBox},
     apollo: {
         projects: {
             query: Q_PROJECT_LIST,

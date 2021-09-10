@@ -29,16 +29,19 @@
                     </tr>
 
                     <template v-if="!$apollo.loading && project">
-                        <tr v-if="project" v-for="{node: env} in environments.edges">
-                            <td><router-link :to="`env/${env.environmentName}`">{{ env.environmentName }}</router-link></td>
+                        <tr v-if="project" v-for="{node: env} in environments.edges" :style="env.fulfillmentStatus === 'terminated' ? 'opacity:.333;' : ''">
+                            <td><router-link :to="`env/${env.environmentName}/deploys`">{{ env.environmentName }}</router-link></td>
                             <td><div class="badge badge-light border">{{ env.environmentName }}</div></td>
                             <td>{{ env.environmentType === 'PRODUCTION' ? 'Production' : 'Development' }}</td>
                             <td class="text-right">
-                                <a :title="env.services.filter((v, i, s) => s.indexOf(v) === i).join(', ')" :href="env.route" class="badge badge-success" v-if="env.services.length">
+                                <a :title="env.services.filter((v, i, s) => s.indexOf(v) === i).join(', ')" :href="env.route" target="_blank" class="badge badge-success" v-if="env.services.length && env.fulfillmentStatus !== 'terminated'">
                                     Running <i class="fas fa-link fa-sm"></i>
                                 </a>
-                                <span class="badge badge-info" v-else>
+                                <span class="badge badge-info" v-else-if="env.fulfillmentStatus !== 'terminated'">
                                     Pending
+                                </span>
+                                <span class="badge badge-gray" v-else>
+                                    Terminated
                                 </span>
                             </td>
                         </tr>
@@ -102,7 +105,7 @@ export default {
                 return false;
             }
 
-            let environmentsLeft = this.project.developmentEnvironmentsLimit + 2;
+            let environmentsLeft = this.project.developmentEnvironmentsLimit;
             for (const {node: {environmentType}} of this.environments.edges) {
                 if (environmentType === 'DEVELOPMENT') {
                     environmentsLeft--;
@@ -121,6 +124,7 @@ export default {
                 }
             },
             loadingKey: 'loading',
+            fetchPolicy: 'cache-and-network',
         },
         environments: {
             query: Q_ENVIRONMENTS_BY_PROJECT,
