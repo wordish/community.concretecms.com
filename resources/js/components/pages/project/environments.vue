@@ -1,7 +1,7 @@
 <template>
     <div>
         <project-header :project-name="project ? project.name : ''" title="Environments"></project-header>
-        <card :loading="$apollo.loading">
+        <card :loading="$apollo.loading" :access-denied="accessDenied">
             <div class="card-body">
                 <table class="table">
                     <thead>
@@ -97,7 +97,6 @@ import Modal from "../../basic/modal";
 import BranchSelector from "../../basic/branch-selector";
 
 export default {
-    name: "environments",
     components: {BranchSelector, Modal, Pagination, BlinkBox, ProjectHeader, Header, Card},
     computed: {
         showAddButton() {
@@ -122,6 +121,10 @@ export default {
                 return {
                     projectId: hostingProjectId(this.$route.params.id)
                 }
+            },
+            errorPolicy: 'all',
+            error(error) {
+                this.accessDenied = error.gqlError.message === 'Access Denied.'
             },
             loadingKey: 'loading',
             fetchPolicy: 'cache-and-network',
@@ -209,6 +212,7 @@ export default {
         project: null,
         environments: null,
         addEnvironmentModalOpen: false,
+        accessDenied: false,
     })
 }
 </script>

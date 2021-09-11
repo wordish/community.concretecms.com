@@ -2,7 +2,7 @@
     <div>
         <environments-header :project-name="project ? project.name : null" title="Deploys"></environments-header>
 
-        <card :loading="$apollo.loading || loading">
+        <card :loading="$apollo.loading || loading" :access-denied="accessDenied">
             <div class="card-body">
                 <div>
                     <div class="mb-5">
@@ -91,6 +91,9 @@ export default {
                     projectId: `/hosting_projects/${this.$route.params.id}`
                 }
             },
+            error(error) {
+                this.accessDenied = error.gqlError.message === 'Access Denied.'
+            }
         },
         deploys: {
             query: Q_DEPLOYS_BY_PROJECT,
@@ -121,6 +124,7 @@ export default {
         deploys: null,
         loading: false,
         eventSource: null,
+        accessDenied: false,
     }),
     methods: {
         startMonitoring() {

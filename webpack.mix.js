@@ -11,6 +11,13 @@ mix
     .vue()
     .version('public/application/js/hosting.js')
 
+
+mix.options({
+    hmrOptions: {
+        host: 'community-concretecms-com.lndo.site',
+        port: 9565,
+    }
+});
 // Other options:
 // mix.sass, mix.js, mix.scripts, mix.stylus, mix.styles, mix.react, mix.webpackConfig, mix.copy, mix.copyDirectory,
 // mix.browserSync, mix.disableNotifications

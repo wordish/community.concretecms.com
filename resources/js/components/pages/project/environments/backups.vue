@@ -1,7 +1,7 @@
 <template>
     <div>
         <environments-header :project-name="project ? project.name : null" title="Backups"></environments-header>
-        <card :loading="$apollo.loading || loading">
+        <card :loading="$apollo.loading || loading" :access-denied="accessDenied">
             <div class="card-body">
                 <div>
                     <div class="mb-5">
@@ -105,6 +105,9 @@ export default {
                     projectId: `/hosting_projects/${this.$route.params.id}`
                 }
             },
+            error({gqlError: {message}}) {
+                this.accessDenied = message === 'Access Denied.'
+            }
         },
         environmentTasks: {
             query: Q_TASKS_BY_PROJECT,
@@ -114,6 +117,9 @@ export default {
                     environment: this.$route.params.environment,
                     group: 'backup'
                 }
+            },
+            error({gqlError: {message}}) {
+                this.accessDenied = message === 'Access Denied.'
             }
         }
     },
@@ -128,6 +134,7 @@ export default {
         environmentTasks: null,
         loading: false,
         eventSource: null,
+        accessDenied: false,
     }),
     methods: {
         startMonitoring() {

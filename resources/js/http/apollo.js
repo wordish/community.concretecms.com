@@ -33,10 +33,10 @@ const errorLink = onError(({graphQLErrors, networkError}) => {
             needsAuth = needsAuth ? needsAuth : (message === 'Access Denied.')
 
             const allowedMessages = [
-                'Access Denied.',
+                // 'Access Denied.',
             ]
             if (allowedMessages.indexOf(message) !== -1 || extensions.category === 'user') {
-                addToast(message, 10, extensions.status < 500 ? 'warning' : 'danger')
+                addToast(message, 3, extensions.status < 500 ? 'warning' : 'danger')
             } else {
                 addDevToast('Graphql Error: ' + message, 60, 'danger')
             }
@@ -45,14 +45,6 @@ const errorLink = onError(({graphQLErrors, networkError}) => {
     if (networkError) {
         io.log(`[Network error ${networkError.statusCode}]: ${networkError}`);
         addDevToast(`Network Error ${networkError.statusCode}: ${networkError.message}`, 60, 'danger')
-    }
-
-    if ((networkError && networkError.statusCode === 401) || needsAuth) {
-        if (store.getters.isLoggedIn) {
-            store.commit('setPostLoginRedirect', router.currentRoute.fullPath)
-            store.commit('logout')
-            router.replace('/api-login');
-        }
     }
 })
 

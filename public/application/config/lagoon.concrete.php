@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'api' => [
+        'enabled' => true
+    ],
     'debug' => [
         'detail' => 'message'
     ],

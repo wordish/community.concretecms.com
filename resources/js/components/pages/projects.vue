@@ -3,13 +3,13 @@
         <Header>
             <template v-slot:extraContent>
                 <div class="d-flex flex-column justify-content-center">
-                    <button @click="showModal=true" class="btn btn-primary text-nowrap">
+                    <button @click="showModal=true" class="btn btn-primary text-nowrap" v-if="isAdmin">
                         New Hosting Project
                     </button>
                 </div>
             </template>
         </Header>
-        <card :loading="$apollo.loading && projects === null">
+        <card :loading="$apollo.loading && projects === null" :access-denied="accessDenied">
             <div class="card-body">
                 <table class="table" v-if="$apollo.loading || !projects.length">
                     <thead>
@@ -78,6 +78,7 @@ export default {
         }
     },
     data: () => ({
+        accessDenied: false,
         projects: null,
         showModal: false,
         extraProject: null,
@@ -86,6 +87,11 @@ export default {
         totalCount: 100,
         loadingNodes: 5,
     }),
+    computed: {
+        isAdmin() {
+            return store.getters.isAdmin
+        }
+    },
     methods: {
         async changePage(after, before, difference) {
             const self = this

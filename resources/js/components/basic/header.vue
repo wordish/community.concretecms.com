@@ -25,8 +25,9 @@
                         </ul>
                     </div>
                     <div>
+                        <span class="badge badge-danger" v-if="showUser && isAdmin">Admin</span>
                         <span class="badge badge-accent" v-if="showUser">
-                            <router-link to="/api-login" class="text-white">{{ user }}</router-link>
+                            {{ user }}
                         </span>
                     </div>
                 </div>
@@ -89,6 +90,7 @@ export default {
     }),
     computed: {
         user: () => store.state.userData.email,
+        isAdmin: () => store.getters.isAdmin,
         breadcrumb: function() {
             if (!this.$route.params) {
                 return []
