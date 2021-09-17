@@ -6,9 +6,9 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th style="width:30%">NAME</th>
-                            <th style="width:30%">BRANCH</th>
-                            <th style="width:30%">LOCATION TYPE</th>
+                            <th style="width:30%">Name</th>
+                            <th style="width:30%">Branch</th>
+                            <th style="width:30%">Type</th>
                             <th style="width:10%" class="text-right">
                                 <button class="btn btn-sm btn-info" v-if="showAddButton" @click="addEnvironmentModalOpen = true" title="Add Environment">
                                     <i class="fas fa-plus"></i>
@@ -20,21 +20,22 @@
                             <th></th>
                         </tr>
                     </thead>
+
+                    <!-- Blank row to improve spacing -->
                     <tr class="ph-item border-0">
                         <td>
                             <div class="ph-row">
-                                <div class="ph-col-12"></div>
                             </div>
                         </td>
                     </tr>
 
                     <template v-if="!$apollo.loading && project">
-                        <tr v-if="project" v-for="{node: env} in environments.edges" :style="env.fulfillmentStatus === 'terminated' ? 'opacity:.333;' : ''">
+                        <tr v-if="project" v-for="{node: env} in environments.edges" :style="env.fulfillmentStatus === 'terminated' ? 'opacity:.333;' : ''" :class="`env-${env.environmentType.toLowerCase()}`">
                             <td><router-link :to="`env/${env.environmentName}/deploys`">{{ env.environmentName }}</router-link></td>
                             <td><div class="badge badge-light border">{{ env.environmentName }}</div></td>
-                            <td>{{ env.environmentType === 'PRODUCTION' ? 'Production' : 'Development' }}</td>
+                            <td class="env-type">{{ env.environmentType === 'PRODUCTION' ? 'Production' : 'Development' }}</td>
                             <td class="text-right">
-                                <a :title="env.services.filter((v, i, s) => s.indexOf(v) === i).join(', ')" :href="env.route" target="_blank" class="badge badge-success" v-if="env.services.length && env.fulfillmentStatus !== 'terminated'">
+                                <a :title="env.services.filter((v, i, s) => s.indexOf(v) === i).join(', ')" :href="env.route" target="_blank" class="badge badge-success text-white" v-if="env.services.length && env.fulfillmentStatus !== 'terminated'">
                                     Running <i class="fas fa-link fa-sm"></i>
                                 </a>
                                 <span class="badge badge-info" v-else-if="env.fulfillmentStatus !== 'terminated'">
@@ -76,8 +77,12 @@
                 <branch-selector v-model="state.branch" :project-id="$route.params.id"></branch-selector>
             </template>
             <template v-slot:footer="{state, close}">
-                <button v-if="state.branch" @click="() => addEnvironment(state.branch, close)" class="btn btn-primary btn-sm">Add "{{state.branch}}" Environment</button>
-                <button v-else disabled class="btn btn-primary btn-sm">Add Environment</button>
+                <button v-if="state.branch" @click="() => addEnvironment(state.branch, close)" class="btn btn-primary btn-sm">
+                    {{ $t.t($t.buttons.addBranchEnvironment, state.branch) }}
+                </button>
+                <button v-else disabled class="btn btn-primary btn-sm">
+                    {{ $t.buttons.addEnvironment }}
+                </button>
                 <button type="button" class="btn btn-secondary btn-sm" @click="close">Cancel</button>
             </template>
         </modal>
@@ -87,7 +92,7 @@
 <script>
 import { Q_PROJECT_FULL } from "../../../queries/project";
 import Card from "../../basic/card";
-import {hostingProjectId} from "../../../helpers";
+import {hostingProjectId, validateSession, validateSessionUpdate} from "../../../helpers";
 import Header from "../../basic/header"
 import ProjectHeader from "./project-header";
 import BlinkBox from "../../basic/blink-box";
@@ -95,6 +100,8 @@ import {M_ENVIRONMENT_CREATE, Q_ENVIRONMENTS_BY_PROJECT} from "../../../queries/
 import Pagination from "../../basic/pagination";
 import Modal from "../../basic/modal";
 import BranchSelector from "../../basic/branch-selector";
+import {Q_PROJECT_SESSION} from "../../../graphql/project";
+import {Q_QUERY_ENVIRONMENTS_LIST_SESSION_PROJECT} from "../../../graphql/environment";
 
 export default {
     components: {BranchSelector, Modal, Pagination, BlinkBox, ProjectHeader, Header, Card},
@@ -115,26 +122,32 @@ export default {
         }
     },
     apollo: {
-        project: {
-            query: Q_PROJECT_FULL,
-            variables: function() {
-                return {
-                    projectId: hostingProjectId(this.$route.params.id)
+        environments: {
+            query: Q_QUERY_ENVIRONMENTS_LIST_SESSION_PROJECT,
+            update(result) {
+                const envs = validateSessionUpdate('environments')(result)
+                if (envs && result.project) {
+                    this.project = result.project
+                }
+
+                return envs
+            },
+            error(error) {
+                for (const gqlError of error.graphQLErrors) {
+                    if (gqlError.message === 'Access Denied.') {
+                        this.accessDenied = true
+                    }
                 }
             },
-            errorPolicy: 'all',
-            error(error) {
-                this.accessDenied = error.gqlError.message === 'Access Denied.'
-            },
-            loadingKey: 'loading',
-            fetchPolicy: 'cache-and-network',
-        },
-        environments: {
-            query: Q_ENVIRONMENTS_BY_PROJECT,
             variables: function() {
                 return {
+                    environmentsProject: hostingProjectId(this.$route.params.id),
                     projectId: hostingProjectId(this.$route.params.id),
-                    perPage: this.count
+                    environmentsFirst: this.count,
+                    environmentsOrder: [
+                        {environmentType: 'desc'},
+                        {dateCreated: 'desc'},
+                    ]
                 }
             }
         },
@@ -173,7 +186,7 @@ export default {
             const self = this
             await this.$apollo.queries.environments.fetchMore({
                 variables: {
-                    perPage: self.count,
+                    environmentsPerPage: self.count,
                     after: after,
                     before: before,
                 },
@@ -218,5 +231,20 @@ export default {
 </script>
 
 <style scoped>
-
+.env-production {
+    position:relative;
+}
+.env-production .env-type {
+    font-weight: bold;
+}
+.env-production:after {
+    content: "";
+    position:absolute;
+    top:0px;
+    left: -1.25rem;
+    right: -1.25rem;
+    bottom: 0px;
+    background: rgba(89,173,21,.1);
+    pointer-events: none;
+}
 </style>

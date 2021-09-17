@@ -4,7 +4,7 @@
         <card :loading="loading > 0" :access-denied="accessDenied">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h4>PERMISSIONS</h4>
+                    <h4>Permissions</h4>
                     <button v-if="project" class="btn btn-primary btn-sm" @click="addUserModalOpen = true">Add Admin</button>
                 </div>
                 <p class="help-block">This is a stop-gap implementation of permissions. Check back later for more robust tools.</p>
@@ -106,13 +106,15 @@
 import Header from "../../basic/header";
 import Card from "../../basic/card";
 import {F_PROJECT_FULL, Q_PROJECT_FULL} from "../../../queries/project";
-import {hostingProjectId} from "../../../helpers";
+import {hostingProjectId, validateSession, validateSessionUpdate} from "../../../helpers";
 import ProjectHeader from "./project-header";
 import gql from "graphql-tag";
-import {store} from "../../../store/store";
+import store from "../../../store/store";
 import CreateProjectModal from "../../basic/create-project-modal";
 import Modal from "../../basic/modal";
 import BlinkBox from "../../basic/blink-box";
+import {Q_PROJECT_SESSION} from "../../../graphql/project";
+import {auth} from "../../../auth/Authentication";
 
 export default {
     components: {BlinkBox, Modal, CreateProjectModal, ProjectHeader, Card, Header},
@@ -127,19 +129,20 @@ export default {
         accessDenied: false,
     }),
     computed: {
-        userId: () => store.state.userData.id,
+        userId: () => auth.token?.id,
         admins() {
             return this.project ? this.project.authorizedAdmins.map((id) => parseInt(id)) : []
         }
     },
     apollo: {
         project: {
-            query: Q_PROJECT_FULL,
+            query: Q_PROJECT_SESSION,
             variables: function() {
                 return {
                     projectId: hostingProjectId(this.$route.params.id)
                 }
             },
+            update: validateSessionUpdate('project'),
             loadingKey: "loading",
             fetchPolicy: "cache-and-network",
             error(error) {

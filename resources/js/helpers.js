@@ -1,5 +1,7 @@
 import moment from "moment-timezone";
-import {store} from "./store/store";
+import store from "./store/store";
+import {router} from "./routes/routes";
+import {auth} from "./auth/Authentication";
 
 export function expectedEnvironments(project) {
     if (!project) {
@@ -166,4 +168,46 @@ export function addToast(title, timeout, type, dismissable, id) {
  */
 export function addDevToast(title, timeout, type, dismissable, id) {
     inDev(() => addToast(`<strong>[DEV]</strong> ${title}`, timeout, type, dismissable, id));
+}
+
+export function validateSessionUpdate(key) {
+    return (result) => {
+        if (validateSession(result.session)) {
+            return result[key]
+        }
+
+        return null
+    }
+}
+
+function arraysSame(arr1, arr2) {
+    for (const i of arr1) {
+        if (arr2.indexOf(i) === -1) {
+            return false
+        }
+    }
+
+    for (const i of arr2) {
+        if (arr1.indexOf(i) === -1) {
+            return false
+        }
+    }
+
+    return true
+}
+
+export function validateSession(session) {
+    if (session && session.roles.length > 0) {
+        const sessionRoles = [...session.roles]
+        const storeRoles = [...store.state.roles]
+
+        if (!arraysSame(sessionRoles, storeRoles)) {
+            store.commit('setRoles', sessionRoles)
+        }
+
+        return true
+    }
+
+    auth.logout()
+    router.replace('/api-login')
 }

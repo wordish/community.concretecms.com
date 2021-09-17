@@ -19,7 +19,9 @@
                                     <strong>{{ selectedEnvironment }}</strong>
                                     <span>environment</span>
                                 </div>
-                                <button v-if="activeDeploys < 2" @click="triggerDeploy" class="btn btn-sm btn-primary">Start Deploy</button>
+                                <button v-if="activeDeploys < 2" @click="triggerDeploy" class="btn btn-sm btn-primary">
+                                    {{$t.buttons.addDeploy}}
+                                </button>
                                 <button v-else :disabled=true class="btn btn-sm btn-primary">Start Deploy</button>
                             </div>
                         </div>
@@ -74,33 +76,36 @@
 import Header from "../../../basic/header";
 import Card from "../../../basic/card";
 import DeploymentRow from "../../../basic/deployment-row";
-import {Q_PROJECT_FULL} from "../../../../queries/project";
-import {M_DEPLOY_CREATE, Q_DEPLOYS_BY_PROJECT} from "../../../../queries/deploys";
-import {addToast, deployId, hostingProjectId} from "../../../../helpers";
+import {M_DEPLOY_CREATE} from "../../../../queries/deploys";
+import {addToast, deployId, hostingProjectId, validateSessionUpdate} from "../../../../helpers";
 import EnvironmentsHeader from "./environments-header";
-import {store} from "../../../../store/store";
+import store from "../../../../store/store";
 import BlinkBox from "../../../basic/blink-box";
+import { Q_QUERY_DEPLOYS_LIST_SESSION_PROJECT} from "../../../../graphql/deploy";
+import mercure from "../../../../http/Mercure";
+import {strings} from "../../../../strings";
 
 export default {
     components: {BlinkBox, EnvironmentsHeader, Header, Card, DeploymentRow},
     apollo: {
-        project: {
-            query: Q_PROJECT_FULL,
-            variables: function() {
-                return {
-                    projectId: `/hosting_projects/${this.$route.params.id}`
-                }
-            },
-            error(error) {
-                this.accessDenied = error.gqlError.message === 'Access Denied.'
-            }
-        },
         deploys: {
-            query: Q_DEPLOYS_BY_PROJECT,
+            query: Q_QUERY_DEPLOYS_LIST_SESSION_PROJECT,
+            update(result) {
+                const deploys = validateSessionUpdate('deploys')(result)
+                if (deploys && result.project) {
+                    this.project = result.project
+                }
+
+                return deploys
+            },
             variables: function() {
                 return {
                     projectId: `/hosting_projects/${this.$route.params.id}`,
-                    environment: this.$route.params.environment
+                    deploysProject: `/hosting_projects/${this.$route.params.id}`,
+                    deploysEnvironmentName: this.$route.params.environment,
+                    deploysOrder: [
+                        {dateCreated: 'desc'}
+                    ]
                 }
             },
             pollInterval: 30000
@@ -132,7 +137,7 @@ export default {
                 return
             }
 
-            store.commit('setEventSourceListener', {key: 'env/deploys', listener: (e) => {
+            mercure.addListener('env/deploys', (e) => {
                 const data = JSON.parse(e.data)
                 if (data['@type'] !== 'Deploy') {
                     return
@@ -140,7 +145,7 @@ export default {
                 if (data["project"] === hostingProjectId(this.$route.params.id) && data['environmentName'] === this.$route.params.environment) {
                     this.handleUpdate(data)
                 }
-            }})
+            })
         },
         handleUpdate(data) {
             let deploy = null
@@ -185,14 +190,14 @@ export default {
                 }
             })
 
-            addToast('Started a new deploy.')
+            addToast(strings.toasts.addDeploy)
         }
     },
     mounted() {
         this.startMonitoring()
     },
     beforeRouteLeave(to, from, next) {
-        store.commit('setEventSourceListener', {key: 'env/deploys', listener: null});
+        mercure.removeListener('env/deploys')
         next(vm => vm)
     },
     beforeRouteEnter(to, from, next) {

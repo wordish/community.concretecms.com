@@ -1,13 +1,16 @@
 import projects from "../components/pages/projects";
 import login from "../components/pages/login";
 import VueRouter from 'vue-router'
-import { store } from '../store/store'
+import store from '../store/store'
 import environments from "../components/pages/project/environments";
 import code from "../components/pages/project/code";
 import deploys from "../components/pages/project/environments/deploys";
 import backups from "../components/pages/project/environments/backups";
 import installs from "../components/pages/project/environments/installs";
 import permissions from "../components/pages/project/permissions";
+import {auth} from "../auth/Authentication";
+import {inDev} from "../helpers";
+import dev from "../components/pages/dev";
 
 export const routes = [
     { name: 'login', path: '/api-login', component: login },
@@ -24,19 +27,26 @@ export const routes = [
     {path: '*', redirect: '/'},
 ]
 
+inDev(() => routes.unshift({
+    name: "dev", path: "/dev", component: dev
+}))
+
 export const router = new VueRouter({
     mode: 'history',
     base: '/account/projects',
     routes
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
     if (to.matched.some(record => record.meta.auth)) {
         // this route requires auth, check if logged in
         // if not, redirect to login page.
-        if (!store.getters.isLoggedIn) {
-            store.commit('logout')
+        if (!auth.isLoggedIn()) {
+            const foo = auth
+            const foostore = store
+            debugger
             store.commit('setPostLoginRedirect', to.fullPath)
+            await auth.logout()
             next('/api-login')
         } else {
             next() // go to wherever I'm going

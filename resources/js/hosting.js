@@ -4,11 +4,15 @@ import Vuex from 'vuex';
 import VueRouter from 'vue-router'
 import hosting from './components/hosting'
 import VueClipboard from "vue-clipboard2";
+import Translate from "./plugin/translate";
 
 Vue.use(VueRouter)
 Vue.use(Vuex)
 Vue.use(VueApollo)
 Vue.use(VueClipboard)
+
+// Custom plugins
+Vue.use(Translate)
 
 const store = require('./store/store')['store']
 const apolloClient = require('./http/apollo')['apolloClient']

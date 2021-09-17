@@ -15,7 +15,7 @@
 </template>
 <script>
 import Header from "../../basic/header";
-import {store} from "../../../store/store";
+import store from "../../../store/store";
 
 export default {
     components: {Header},

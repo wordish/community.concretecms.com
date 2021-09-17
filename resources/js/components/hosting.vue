@@ -22,126 +22,18 @@
 </template>
 
 <script>
-import {store} from "../store/store"
+import store from "../store/store"
 import {Q_PROJECT_FULL, Q_PROJECT_LIST} from "../queries/project";
 import {hostingProjectId} from "../helpers";
 import Toast from "./basic/toast";
 import gql from "graphql-tag";
 
 export default {
-    apollo: {
-        currentSession: {
-            query: gql`
-                    query currentSession {
-                        currentSession {
-                            username
-                            email
-                            id
-                            _id
-                            roles
-                        }
-                    }
-                `,
-            pollInterval: 10000,
-            errorPolicy: "ignore",
-            update(result) {
-                const session = result.currentSession
-
-                if (session === null || parseInt(session._id) !== parseInt(store.state.userData?.id) || !session.roles) {
-                    this.$apollo.queries.currentSession.stop()
-                    this.$apollo.queries.currentSession.stopPolling()
-                    // The user has timed out or something
-                    store.commit('logout');
-                    return
-                }
-
-                if (JSON.stringify(store.state.roles.sort()) !== JSON.stringify(session.roles)) {
-                    store.commit('setRoles', session.roles)
-                }
-
-                return
-            }
-        }
-    },
     components: {Toast},
     computed: {
-        isLoggedIn() {
-            return store.getters.isLoggedIn
-        },
-        user() {
-            return store.state.userData?.username
-        },
-        selectedProject: {
-            get () {
-                return Number(store.state.selectedProject)
-            },
-            set (value) {
-                store.commit('selectProject', value)
-                if (value && this.$route.params.id !== value) {
-                    this.$router.push(`/projects/${value}/`)
-                }
-            }
-        },
-        activeProject() {
-            if (!this.$route) {
-                return null
-            }
-            return parseInt(this.$route.params.id) > 0
-        },
-        title() {
-            return this.project ? this.project.name : 'Hosting'
-        },
-        toasts() {
-            return store.state.toasts
-        }
+        toasts: () => store.state.toasts
     },
-    watch: {
-        isLoggedIn(newStatus, oldStatus) {
-            if (newStatus === true && oldStatus === false) {
-                this.$apollo.queries.currentSession.startPolling(10000)
-            }
-
-            if (newStatus === false && oldStatus === true) {
-                this.$apollo.queries.currentSession.stopPolling();
-            }
-        },
-        $route(to, from) {
-            if (to.params.id && to.params.id !== this.selectedProject) {
-                this.selectedProject = to.params.id
-            }
-
-            if (!to.params.id) {
-                this.selectedProject = null
-            }
-        }
-    },
-    mounted() {
-        if (!this.$route.params.id && this.selectedProject) {
-            store.commit('selectProject', '')
-        } else if (this.$route.params.id !== this.selectedProject) {
-            store.commit('selectProject', this.$route.params.id)
-        }
-    },
-    data: () => ({
-        showModal: false,
-        projects: [],
-        project: null,
-        pendingProject: null,
-        currentSession: null,
-    }),
     methods: {
-        goHome() {
-            if (this.$route.fullPath !== '/') {
-                this.$router.replace('/')
-            }
-        },
-        async onCreate(project) {
-            this.projects.edges = [
-                { node: project },
-                ...this.projects.edges
-            ]
-            store.commit('createProject', project)
-        },
         dismissToast(toastId) {
             store.commit('hideToast', toastId)
         }

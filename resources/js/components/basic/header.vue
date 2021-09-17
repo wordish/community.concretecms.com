@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="hosting-header">
         <div class="row">
             <div class="col">
                 <div class="d-flex mb-3 mt-4">
@@ -39,9 +39,10 @@
     </div>
 </template>
 <script>
-import {store} from "../../store/store"
+import store from "../../store/store"
 import Modal from "./create-project-modal";
 import gql from "graphql-tag";
+import {auth} from "../../auth/Authentication";
 
 export default {
     props: {
@@ -89,7 +90,7 @@ export default {
         showModal: false
     }),
     computed: {
-        user: () => store.state.userData.email,
+        user: () => auth.token?.email,
         isAdmin: () => store.getters.isAdmin,
         breadcrumb: function() {
             if (!this.$route.params) {
@@ -125,13 +126,14 @@ export default {
             return breadcrumbs
         }
     },
-    methods: {
-        async onCreate(project) {
-            store.commit('createProject', project)
-        }
-    },
     components: {
         Modal
     }
 }
 </script>
+<style>
+div.ccm-page .hosting-header .nav-tabs > li > a.active:hover {
+    color: #017ddd;
+    border-bottom:solid 3px #017ddd;
+}
+</style>

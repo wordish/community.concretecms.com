@@ -4,7 +4,7 @@
         <card :loading="$apollo.loading" :access-denied="accessDenied">
             <div class="card-body">
                 <div class="mb-5">
-                    <h4>LOCAL EDITING</h4>
+                    <h4>Local Editing</h4>
                     <p>Edit on your local machine by cloning our git repository</p>
                     <div class="row">
                         <strong class="col-sm-2">Git Repository</strong>
@@ -22,7 +22,7 @@
                     </div>
                 </div>
                 <div v-if="project">
-                    <h4>CODE EDITOR</h4>
+                    <h4>Code Editor</h4>
                     <p>Edit live with our code editor</p>
                     <state :initial="{visible: false, branch: null}">
                         <template v-slot="{state, setState, reset}">
@@ -62,12 +62,13 @@
 import Header from "../../basic/header";
 import Card from "../../basic/card";
 import {Q_PROJECT_FULL} from "../../../queries/project";
-import {hostingProjectId} from "../../../helpers";
+import {hostingProjectId, validateSession, validateSessionUpdate} from "../../../helpers";
 import ProjectHeader from "./project-header";
 import State from "../../powerplug/state";
 import Modal from "../../basic/modal";
 import BranchSelector from "../../basic/branch-selector";
 import BlinkBox from "../../basic/blink-box";
+import {Q_PROJECT_SESSION} from "../../../graphql/project";
 export default {
     components: {BlinkBox, BranchSelector, Modal, State, ProjectHeader, Card, Header},
     data: () => ({
@@ -76,12 +77,13 @@ export default {
     }),
     apollo: {
         project: {
-            query: Q_PROJECT_FULL,
+            query: Q_PROJECT_SESSION,
             variables: function() {
                 return {
                     projectId: hostingProjectId(this.$route.params.id)
                 }
             },
+            update: validateSessionUpdate('project'),
             error(error) {
                 this.accessDenied = error.gqlError.message === 'Access Denied.'
             },

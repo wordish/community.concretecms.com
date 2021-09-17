@@ -72,34 +72,38 @@ import Card from "../../../basic/card";
 import DeploymentRow from "../../../basic/deployment-row";
 import {Q_PROJECT_FULL} from "../../../../queries/project";
 import {M_DEPLOY_CREATE, Q_DEPLOYS_BY_PROJECT} from "../../../../queries/deploys";
-import {deployId, hostingProjectId} from "../../../../helpers";
+import {addToast, deployId, hostingProjectId, validateSessionUpdate} from "../../../../helpers";
 import {M_TASK_CREATE_BACKUP, M_TASK_CREATE_INSTALL, Q_TASKS_BY_PROJECT} from "../../../../queries/tasks";
 import EnvironmentsHeader from "./environments-header";
-import {store} from "../../../../store/store";
+import store from "../../../../store/store";
 import BlinkBox from "../../../basic/blink-box";
+import {Q_QUERY_TASKS_LIST_SESSION_PROJECT} from "../../../../graphql/task";
+import mercure from "../../../../http/Mercure";
+import {strings} from "../../../../strings";
 
 export default {
     components: {BlinkBox, EnvironmentsHeader, Header, Card, DeploymentRow},
     apollo: {
-        project: {
-            query: Q_PROJECT_FULL,
-            variables: function() {
-                return {
-                    projectId: `/hosting_projects/${this.$route.params.id}`
-                }
-            },
-            error({gqlError: {message}}) {
-                this.accessDenied = message === 'Access Denied.'
-            },
-        },
         environmentTasks: {
-            query: Q_TASKS_BY_PROJECT,
+            query: Q_QUERY_TASKS_LIST_SESSION_PROJECT,
             variables: function() {
                 return {
+                    tasksProject: `/hosting_projects/${this.$route.params.id}`,
+                    tasksEnvironmentName: this.$route.params.environment,
+                    tasksGroup: 'install',
                     projectId: `/hosting_projects/${this.$route.params.id}`,
-                    environment: this.$route.params.environment,
-                    group: 'install'
+                    tasksOrder: [
+                        {dateCreated: 'desc'}
+                    ]
                 }
+            },
+            update(result) {
+                const tasks = validateSessionUpdate('tasks')(result)
+                if (tasks && result.project) {
+                    this.project = result.project
+                }
+
+                return tasks
             },
             error({gqlError: {message}}) {
                 this.accessDenied = message === 'Access Denied.'
@@ -121,7 +125,7 @@ export default {
     }),
     methods: {
         startMonitoring() {
-            store.commit('setEventSourceListener', {key: 'env/installs', listener: (e) => {
+            mercure.addListener('env/installs', (e) => {
                 const data = JSON.parse(e.data)
                 if (
                     data["project"] === hostingProjectId(this.$route.params.id)
@@ -130,7 +134,7 @@ export default {
                 ) {
                     this.handleUpdate(data)
                 }
-            }})
+            })
         },
         handleUpdate(data) {
             let task = null
@@ -177,13 +181,15 @@ export default {
                     environment: this.$route.params.environment,
                 }
             })
+
+            addToast(strings.toasts.addInstall)
         }
     },
     mounted() {
         this.startMonitoring()
     },
     beforeRouteLeave(to, from, next) {
-        store.commit('setEventSourceListener', {key: 'env/deploys', listener: null});
+        mercure.removeListener('env/deploys')
         next(vm => vm)
     },
     beforeRouteEnter(to, from, next) {

@@ -37,8 +37,8 @@
                             </tr>
                             </thead>
                             <tbody>
-                                <template v-if="environmentTasks">
-                                <deployment-row :key="node.id" v-for="{node} of environmentTasks.edges"
+                                <template v-if="tasks">
+                                <deployment-row :key="node.id" v-for="{node} of tasks.edges"
                                                 :deploy-id="node.id"
                                                 :created="node.dateCreated"
                                                 :started="node.dateStarted"
@@ -48,7 +48,9 @@
                                 >
                                     <template v-slot:actions>
                                         <td>
-                                            <button class="btn-text btn btn-sm" v-if="node.taskType === 'Backup' && node.fulfillmentStatus === 'fulfilled'" @click="triggerRestore(node.id)">Restore</button>
+                                            <button class="btn-text btn btn-sm" v-if="node.taskType === 'Backup' && node.fulfillmentStatus === 'fulfilled'" @click="triggerRestore(node.id)">
+                                                {{ $t.buttons.addRestore }}
+                                            </button>
                                         </td>
                                     </template>
                                 </deployment-row>
@@ -83,7 +85,7 @@ import Card from "../../../basic/card";
 import DeploymentRow from "../../../basic/deployment-row";
 import {Q_PROJECT_FULL} from "../../../../queries/project";
 import {M_DEPLOY_CREATE, Q_DEPLOYS_BY_PROJECT} from "../../../../queries/deploys";
-import {addToast, deployId, hostingProjectId} from "../../../../helpers";
+import {addToast, deployId, hostingProjectId, validateSessionUpdate} from "../../../../helpers";
 import {
     M_TASK_CREATE_BACKUP,
     M_TASK_CREATE_INSTALL,
@@ -91,32 +93,35 @@ import {
     Q_TASKS_BY_PROJECT
 } from "../../../../queries/tasks";
 import EnvironmentsHeader from "./environments-header";
-import {store} from "../../../../store/store";
+import store from "../../../../store/store";
 import BlinkBox from "../../../basic/blink-box";
 import {strings} from "../../../../strings";
+import {Q_QUERY_TASKS_LIST_SESSION_PROJECT} from "../../../../graphql/task";
+import mercure from "../../../../http/Mercure";
 
 export default {
     components: {BlinkBox, EnvironmentsHeader, Header, Card, DeploymentRow},
     apollo: {
-        project: {
-            query: Q_PROJECT_FULL,
+        tasks: {
+            query: Q_QUERY_TASKS_LIST_SESSION_PROJECT,
             variables: function() {
                 return {
-                    projectId: `/hosting_projects/${this.$route.params.id}`
+                    tasksProject: `/hosting_projects/${this.$route.params.id}`,
+                    tasksEnvironmentName: this.$route.params.environment,
+                    tasksGroup: 'backup',
+                    projectId: `/hosting_projects/${this.$route.params.id}`,
+                    tasksOrder: [
+                        {dateCreated: 'desc'}
+                    ]
                 }
             },
-            error({gqlError: {message}}) {
-                this.accessDenied = message === 'Access Denied.'
-            }
-        },
-        environmentTasks: {
-            query: Q_TASKS_BY_PROJECT,
-            variables: function() {
-                return {
-                    projectId: `/hosting_projects/${this.$route.params.id}`,
-                    environment: this.$route.params.environment,
-                    group: 'backup'
+            update(result) {
+                const tasks = validateSessionUpdate('tasks')(result)
+                if (tasks && result.project) {
+                    this.project = result.project
                 }
+
+                return tasks
             },
             error({gqlError: {message}}) {
                 this.accessDenied = message === 'Access Denied.'
@@ -131,14 +136,14 @@ export default {
     data: () => ({
         action: 'backup',
         project: null,
-        environmentTasks: null,
+        tasks: null,
         loading: false,
         eventSource: null,
         accessDenied: false,
     }),
     methods: {
         startMonitoring() {
-            store.commit('setEventSourceListener', {key: 'env/backups', listener: (e) => {
+            mercure.addListener('env/backups', (e) => {
                 const data = JSON.parse(e.data)
                 if (
                     data["project"] === hostingProjectId(this.$route.params.id)
@@ -147,11 +152,11 @@ export default {
                 ) {
                     this.handleUpdate(data)
                 }
-            }});
+            })
         },
         handleUpdate(data) {
             let task = null
-            for (let { node } of this.environmentTasks.edges) {
+            for (let { node } of this.tasks.edges) {
                 if (node._id === data.id) {
                     task = node
                     break;
@@ -168,7 +173,7 @@ export default {
                 task._id = data.id
                 task.id = data['@id']
             } else {
-                this.environmentTasks.edges.unshift({
+                this.tasks.edges.unshift({
                     node: {
                         environmentName: data.environmentName,
                         taskType: data.taskType,
@@ -194,7 +199,7 @@ export default {
                     environment: this.$route.params.environment,
                 }
             })
-            addToast(strings.toasts.addBackup, null,'danger')
+            addToast(strings.toasts.addBackup)
         },
         async triggerRestore(id) {
             await this.$apollo.mutate({
@@ -211,11 +216,11 @@ export default {
         this.startMonitoring()
     },
     beforeRouteLeave(to, from, next) {
-        store.commit('setEventSourceListener', {key: 'env/backups', listener: null});
+        mercure.removeListener('env/backups')
         next(vm => vm)
     },
     beforeRouteEnter(to, from, next) {
-        next(vm => vm.$apollo.queries.environmentTasks.refetch())
+        next(vm => vm.$apollo.queries.tasks.refetch())
     }
 }
 </script>

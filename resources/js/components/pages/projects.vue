@@ -4,14 +4,14 @@
             <template v-slot:extraContent>
                 <div class="d-flex flex-column justify-content-center">
                     <button @click="showModal=true" class="btn btn-primary text-nowrap" v-if="isAdmin">
-                        New Hosting Project
+                        {{ $t.buttons.addProject }}
                     </button>
                 </div>
             </template>
         </Header>
         <card :loading="$apollo.loading && projects === null" :access-denied="accessDenied">
             <div class="card-body">
-                <table class="table" v-if="$apollo.loading || !projects.length">
+                <table class="table" v-if="$apollo.loading || (projects !== null && projects.edges.length !== 0)">
                     <thead>
                     <tr>
                         <th style="width:33%">Name</th>
@@ -47,44 +47,45 @@
                 </div>
             </div>
         </card>
-        <pagination @next="nextPage" @previous="previousPage" :current="this.currentPage" :total="projects ? projects.totalCount : 1" :page-size="this.count"></pagination>
+        <pagination @next="nextPage" @previous="previousPage" :current="this.currentPage" :total="projects !== null ? projects.totalCount : 1" :page-size="this.count"></pagination>
         <create-project-modal v-model="showModal" @create="handleProjectCreate"></create-project-modal>
     </div>
 </template>
 
 <script>
 import Card from "../basic/card";
-import {store} from "../../store/store";
-import {Q_PROJECT_LIST, Q_PROJECT_LIST_LIGHT} from "../../queries/project";
+import store from "../../store/store";
 import Header from "../basic/header";
 import CreateProjectModal from "../basic/create-project-modal";
 import BlinkBox from "../basic/blink-box";
 import Pagination from "../basic/pagination";
 import StatusBadge from "../basic/status-badge";
+import {Q_PROJECT_LIST_SESSION} from "../../graphql/project";
+import {validateSessionUpdate} from "../../helpers";
 
 export default {
     name: "projects",
     components: {StatusBadge, Pagination, CreateProjectModal, Header, Card, BlinkBox},
     apollo: {
         projects: {
-            query: Q_PROJECT_LIST,
+            query: Q_PROJECT_LIST_SESSION,
+            update: validateSessionUpdate('projects'),
             variables() {
                 return {
-                    before: null,
-                    after: null,
-                    perPage: this.count
+                    projectsBefore: null,
+                    projectsAfter: null,
+                    projectsFirst: this.count
                 }
-            }
+            },
         }
     },
     data: () => ({
         accessDenied: false,
         projects: null,
         showModal: false,
-        extraProject: null,
         currentPage: 1,
-        count: 8,
-        totalCount: 100,
+        count: 15,
+        totalCount: 15,
         loadingNodes: 5,
     }),
     computed: {
@@ -97,9 +98,9 @@ export default {
             const self = this
             await this.$apollo.queries.projects.fetchMore({
                 variables: {
-                    perPage: self.count,
-                    after: after,
-                    before: before,
+                    projectsBefore: before,
+                    projectsAfter: after,
+                    projectsFirst: self.count
                 },
                 updateQuery: (previousResult, { fetchMoreResult }) => {
                     const newEdges = fetchMoreResult.projects.edges
@@ -122,10 +123,16 @@ export default {
             })
         },
         async nextPage() {
+            if (this.projects === null) {
+                return;
+            }
             this.loadingNodes = this.projects.edges.length
             await this.changePage(this.projects.pageInfo.endCursor, null,1);
         },
         async previousPage() {
+            if (this.projects === null) {
+                return;
+            }
             this.loadingNodes = this.projects.edges.length
             await this.changePage(null, this.projects.pageInfo.startCursor, -1);
         },

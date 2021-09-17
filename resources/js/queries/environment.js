@@ -19,8 +19,8 @@ export const F_ENVIRONMENT_FULL = gql`
 
 export const Q_ENVIRONMENTS_BY_PROJECT = gql`
     ${F_ENVIRONMENT_FULL}
-    query environmentList($projectId: String!, $after: String, $before: String, $perPage: Int!) {
-        environments(after: $after, before: $before, first: $perPage, project: $projectId) {
+    query environmentList($projectId: String!, $after: String, $before: String, $perPage: Int!, $order: [EnvironmentFilter_order]) {
+        environments(after: $after, before: $before, first: $perPage, project: $projectId, order: $order) {
             totalCount
             pageInfo {
                 hasNextPage

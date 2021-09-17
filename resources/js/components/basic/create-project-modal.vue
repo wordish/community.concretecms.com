@@ -44,7 +44,8 @@
 <script>
 import {Q_STARTING_POINTS_FULL} from "../../queries/starting-point";
 import {M_PROJECT_CREATE} from "../../queries/project";
-import {store} from "../../store/store";
+import store from "../../store/store";
+import {auth} from "../../auth/Authentication";
 
 export default {
     name: "create-project-modal",
@@ -90,7 +91,7 @@ export default {
                 variables: {
                     name: this.name,
                     startingPoint: this.startingPoint,
-                    adminIds: [store.state.userData.id],
+                    adminIds: [auth.token.id],
                 }
             })
 
