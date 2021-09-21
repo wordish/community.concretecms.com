@@ -48,11 +48,6 @@ export default class Token {
     isActive() {
         const now = (new Date()).getTime() / 1000
 
-        // First check nbf (not before) timestamp
-        if (this.data.nbf && now < this.data.nbf) {
-            return false
-        }
-
         // Next check expires
         return !(this.data.exp && now > this.data.exp);
     }

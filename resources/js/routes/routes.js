@@ -38,13 +38,13 @@ export const router = new VueRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
+    // Make sure we've restored state
+    await store.restored
+
     if (to.matched.some(record => record.meta.auth)) {
         // this route requires auth, check if logged in
         // if not, redirect to login page.
         if (!auth.isLoggedIn()) {
-            const foo = auth
-            const foostore = store
-            debugger
             store.commit('setPostLoginRedirect', to.fullPath)
             await auth.logout()
             next('/api-login')

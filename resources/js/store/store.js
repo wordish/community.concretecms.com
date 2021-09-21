@@ -1,18 +1,23 @@
 import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist'
-import {apolloClient} from '../http/apollo'
-import {router} from '../routes/routes'
 import Vue from 'vue';
-import config from "../config";
-import {addDevToast, addToast, inDev, io} from "../helpers";
+import {inDev, io} from "../helpers";
 import Token from "../auth/Token";
-import {auth} from "../auth/Authentication";
 
 Vue.use(Vuex)
 
-const vuexLocal = new VuexPersistence({
-    storage: window.localStorage
+const plugins = [
+    (new VuexPersistence({
+        key: "hosting.state",
+        storage: window.localStorage
+    })).plugin
+];
+
+// Add dev plugins
+inDev(() => {
+    plugins.push(Vuex.createLogger())
 })
+
 
 let lastEventId = null
 let toastId = (new Date()).getTime();
@@ -94,15 +99,7 @@ const store = new Vuex.Store({
             state.roles = [...roles];
         }
     },
-    plugins: process.env.NODE_ENV !== 'production' ?
-    [
-        vuexLocal.plugin,
-        Vuex.createLogger(),
-    ]
-        :
-    [
-        vuexLocal.plugin,
-    ],
+    plugins
 })
 
 // Prune any toasts

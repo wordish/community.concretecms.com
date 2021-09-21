@@ -27,49 +27,6 @@ import {dateFormat, addToast} from "../../helpers";
 
 export default {
     name: "deployment-row",
-    // apollo: {
-    //     deploy: {
-    //         query: Q_DEPLOY_FULL,
-    //         variables: function() {
-    //             return {
-    //                 deployId: this.deployId
-    //             }
-    //         },
-    //         skip: function() {
-    //             return this.status === 'fulfilled' || this.status === 'cancelled'
-    //         },
-    //         // pollInterval: 2000
-    //         subscribeToMore: {
-    //             document: gql`
-    //             ${F_DEPLOY_FULL}
-    //             subscription deployChanges($deployId: ID!) {
-    //                 updateDeploySubscribe(input: {
-    //                     id: $deployId
-    //                 }) {
-    //                     deploy {
-    //                         ...DeployFields
-    //                     }
-    //                     mercureUrl
-    //                 }
-    //             }
-    //             `,
-    //             variables: function() {
-    //                 return {
-    //                     deployId: this.deployId
-    //                 }
-    //             },
-    //
-    //             updateQuery: function(previousResult, {subscriptionData: {data: {updateDeploySubscribe: {deploy, mercureUrl}}}}) {
-    //                 this.name = deploy.deployName
-    //                 this.created = deploy.dateCreated
-    //                 this.started = deploy.dateStarted
-    //                 this.ended = deploy.dateEnded
-    //                 this.mercureUrl = mercureUrl.replace('http://mercure:8126', 'http://api.concretecms.test:8126')
-    //                 this.startMonitoring()
-    //             },
-    //         }
-    //     },
-    // },
     props: {
         name: {type: String, required: false},
         created: {type: String, required: true},
@@ -127,33 +84,6 @@ export default {
                     }
                 }, 1000)
             }
-        },
-        startMonitoring() {
-            if (!this.mercureUrl) {
-                return;
-            }
-
-            if (this.eventSource) {
-                this.eventSource.close()
-                this.eventSource = null
-            }
-
-            if (this.status === 'fulfilled' || this.status === 'cancelled') {
-                return
-            }
-
-            this.eventSource = new EventSource(this.mercureUrl, {
-                headers: {
-                    Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJtZXJjdXJlIjp7InN1YnNjcmliZSI6WyJkZXBsb3kiXX19.zRDc_96jM-z3s07PFYsUW-3LXXPLzn9pM8f-LKuHrnM"
-                }
-            })
-            this.eventSource.onmessage = function (e) {
-                this.handleEventMessage(e)
-            }
-        },
-        handleEventMessage(e) {
-            alert('GOT MESSAGE')
-            debugger
         },
         updateDuration() {
             if (this.normalStatus !== 'running' && !this.ended) {

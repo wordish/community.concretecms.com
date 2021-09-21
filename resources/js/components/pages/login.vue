@@ -70,7 +70,11 @@ export default {
             const redirect = store.state.postLoginRedirect
             store.commit('setPostLoginRedirect', '/')
 
-            this.$router.replace(redirect && redirect !== '/api-login' ? redirect : '/')
+            try {
+                await this.$router.replace(redirect && redirect !== '/api-login' ? redirect : '/')
+            } catch (e) {
+                // Ignore error
+            }
         },
 
     },

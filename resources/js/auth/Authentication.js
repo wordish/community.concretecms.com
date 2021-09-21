@@ -159,7 +159,12 @@ class Authentication {
         store.commit('updateToken', null)
         store.commit('setRoles', [])
         await apolloClient.resetStore();
-        await router.replace('/api-login')
+
+        try {
+            await router.replace('/api-login')
+        } catch (e) {
+            // Ignore errors, we might already be on this page.
+        }
     }
 }
 
