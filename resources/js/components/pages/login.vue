@@ -1,80 +1,89 @@
 <template>
-    <div class="login-form w-50 m-auto">
-        <form @submit.prevent.stop="attemptLogin()" method="post">
-            <h2 class="text-center">Log in</h2>
-            <div class="alert alert-danger" v-if="error">{{ error }}</div>
-            <div class="form-group">
-                <input name="email" v-model="username" type="email" class="form-control" placeholder="Email" required="required" autocomplete="off">
+    <div>
+        <Header :showBreadcrumbs="false" :showUser="false" title='Login'>
+
+        </Header>
+        <Card>
+            <div class="card-body">
+                <form @submit.prevent.stop="attemptLogin()" method="post" class="text-center" v-if="!$route.query.code && !authenticating && !error">
+                    <h3 class="text-center">Log in</h3>
+                    <p>You don't have permission to view this page. Please log in to continue.</p>
+                    <div class="form-group">
+                        <button :disabled="authenticating" type="submit" class="btn btn-primary btn-sm">Log In</button>
+                    </div>
+                </form>
+                <form @submit.prevent.stop="() => null" method="post" class="text-center" v-else-if="!error">
+                    <h3 class="text-center">Log in</h3>
+                    <p>You don't have permission to view this page. Please log in to continue.</p>
+                    <div class="form-group">
+                        <button disabled type="submit" class="btn btn-primary btn-sm">
+                            <i class="fas fa-spinner fa-spin"></i>
+                        </button>
+                    </div>
+                </form>
+                <template v-else>
+                    <h3>Error during login</h3>
+                    <p>{{error.message}}</p>
+                    <button class="mx-auto btn btn-sm btn-primary" @click="() => error = null">Try again</button>
+                </template>
             </div>
-            <div class="form-group">
-                <input name="password" v-model="password" type="password" class="form-control" placeholder="Password" required="required" autocomplete="off">
-            </div>
-            <div class="form-group">
-                <button :disabled="authenticating" type="submit" class="btn btn-primary btn-block">Verify Login</button>
-            </div>
-        </form>
+        </Card>
     </div>
 </template>
 
 <script>
-import {store} from '../../store/store'
+import Header from '../basic/header'
+import Card from '../basic/card'
+import store from '../../store/store'
 import {router} from '../../routes/routes'
+import {auth} from '../../auth/Authentication'
 import config from '../../config'
+import { createChallenge, createVerifier } from "../../auth/PKCE";
+
+const OAUTH_URL_AUTHORIZE = config.apiBaseUrl + '/oauth/authorize'
+const OAUTH_URL_TOKEN = config.apiBaseUrl + '/oauth/token'
 
 export default {
-    name: "list",
+    components: {Card, Header},
+    name: "Login",
     data: () => ({
         username: '',
         password: '',
         authenticating: false,
-        error: '',
+        error: null,
     }),
     methods: {
         async attemptLogin() {
+            this.authenticating = true
+            if (!this.$route.query.code || !this.$route.query.state) {
+                return window.location.replace(auth.authorizeUrl())
+            }
+
             const self = this
-            self.authenticating = true
+            await auth.requestToken(this.$route.query.code, this.$route.query.state).catch(function (error) {
+                self.error = error
+            }).finally(() => {
+                self.$router.replace({'query': null, 'state': null})
+                self.authenticating = false
+            })
 
-            let caught = null
-            const response = await fetch(`${config.apiBaseUrl}/login`, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        email: this.username,
-                        password: this.password,
-                    })
-                })
-                .then((response) => response.json())
-                .catch((error) => {
-                    caught = error
-                });
+            const redirect = store.state.postLoginRedirect
+            store.commit('setPostLoginRedirect', '/')
 
-            if (caught) {
-                this.error('Unknown error occurred.');
-                this.authenticating = false
-                return
+            try {
+                await this.$router.replace(redirect && redirect !== '/api-login' ? redirect : '/')
+            } catch (e) {
+                // Ignore error
             }
+        },
 
-            // Start validating
-            const errorMessage = response.detail || response.message
-            if (errorMessage) {
-                this.error = errorMessage
-                this.authenticating = false
-                return
-            }
-
-            if (!response.jwt) {
-                this.error = 'Invalid login response, please try again later.'
-                this.authenticating = false
-                return
-            }
-
-            store.commit('login', response.jwt)
-
-            self.authenticating = false
-            await router.replace('/');
+    },
+    mounted() {
+        const self = this
+        if (this.$route.query.code && this.$route.query.state) {
+            setTimeout(async function () {
+                await self.attemptLogin()
+            })
         }
     }
 }

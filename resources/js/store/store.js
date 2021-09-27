@@ -1,50 +1,108 @@
 import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist'
-import {apolloClient} from '../http/apollo'
-import {router} from '../routes/routes'
 import Vue from 'vue';
+import {inDev, io} from "../helpers";
+import Token from "../auth/Token";
 
 Vue.use(Vuex)
 
-const vuexLocal = new VuexPersistence({
-    storage: window.localStorage
+const plugins = [
+    (new VuexPersistence({
+        key: "hosting.state",
+        storage: window.localStorage
+    })).plugin
+];
+
+// Add dev plugins
+inDev(() => {
+    plugins.push(Vuex.createLogger())
 })
 
-export const store = new Vuex.Store({
+
+let lastEventId = null
+let toastId = (new Date()).getTime();
+const store = new Vuex.Store({
     state: {
-        count: 0,
-        jwt: '',
-        selectedProject: null,
-        addedProject: null,
+        postLoginRedirect: null,
+        eventSource: null,
+        eventSourceListeners: {},
+        toasts: {},
+        roles: [],
+        token: null,
+        authRequest: null
     },
     getters: {
-        isLoggedIn: (state) => !!state.jwt,
-        jwtData: (state) => {
-            const base64 = state.jwt.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
-            return JSON.parse(decodeURIComponent(atob(base64).split('').map(function(c) {
-                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-            }).join('')));
+        isAdmin(state) {
+            return state.roles.indexOf('ROLE_ADMIN') !== -1
+        },
+        token(state) {
+            return state.token ? Token.inflate(state.token) : null
         }
     },
     mutations: {
-        async selectProject(state, project) {
-            console.log('CHANGING STATE')
-            state.selectedProject = project
+        updateToken(state, token) {
+            state.token = token ? token.deflate() : null
         },
-        async login(state, jwt) {
-            console.log('CHANGING STATE')
-            state.jwt = jwt
-            await apolloClient.resetStore();
+        updateAuthRequest(state, request) {
+            state.authRequest = request
         },
-        async logout(state) {
-            console.log('CHANGING STATE')
-            state.jwt = ''
-            await apolloClient.resetStore();
-            await router.replace('/api-login')
+        addToast(state, {title, message, canDismiss, timeout, type, id}) {
+            const expires = timeout ? (new Date).getTime() + (timeout * 1000) : 0
+            id = id ? id : (new Date).getTime()
+            const currentToast = id
+
+            Vue.set(state.toasts, 'toast' + currentToast, {
+                title,
+                message,
+                canDismiss,
+                expires: expires,
+                id: currentToast,
+                type
+            })
+
+            if (timeout) {
+                io.log('Setting toast timeout: ' + timeout)
+                setTimeout(() => store.commit('hideToast', currentToast), timeout * 1000)
+            }
         },
-        createProject(state, project) {
-            state.addedProject = project
+        hideToast(state, toastId) {
+            io.log('Hiding Toast ' + toastId)
+            if (typeof state.toasts['toast' + toastId] !== "undefined") {
+                io.log('Found it')
+                Vue.delete(state.toasts, 'toast' + toastId)
+            }
         },
+        pruneToasts(state) {
+            const now = (new Date()).getTime()
+            for (const toast in state.toasts) {
+                if (!state.toasts.hasOwnProperty(toast) || state.toasts[toast].expires === 0) {
+                    continue
+                }
+
+                if (state.toasts[toast].expires <= now) {
+                    Vue.delete(state.toasts, toast)
+                }
+            }
+        },
+
+        setEventSourceListener(state, {key, listener}) {
+            state.eventSourceListeners[key] = listener
+        },
+
+        connectToMercure(state, backoff) {
+            return state.eventSource
+        },
+        setPostLoginRedirect(state, redirect) {
+            state.postLoginRedirect = redirect
+        },
+        setRoles(state, roles) {
+            state.roles = [...roles];
+        }
     },
-    plugins: [vuexLocal.plugin]
+    plugins
 })
+
+// Prune any toasts
+store.commit('pruneToasts')
+
+export default store

@@ -1,32 +1,39 @@
 <template>
-    <tr :class="normalStatus === 'running' && 'active-row'">
+    <tr :class="rowStatusClass">
         <td>
             {{formattedCreationDate}}
         </td>
-        <td>
-            {{name}}
+        <td v-if="name" class="text-center">
+            <a
+                href="#"
+                class="badge badge-light-gray border pointer"
+                @click.prevent="$copyText(name) && addCopyToast(name)">
+                {{name}} <i class="ml-2 far fa-copy"></i>
+            </a>
         </td>
-        <td>
+        <td class="text-center">
             <span :class="statusClass">{{this.normalStatus}}</span>
         </td>
         <td>
             {{duration}}
         </td>
+        <slot name="actions"></slot>
     </tr>
 </template>
 
 <script>
 import moment from "moment-timezone";
-import {dateFormat} from "../../helpers";
+import {dateFormat, addToast} from "../../helpers";
 
 export default {
     name: "deployment-row",
     props: {
-        name: {type: String, required: true},
+        name: {type: String, required: false},
         created: {type: String, required: true},
         status: {type: String, required: true},
-        started: {type: String, required: true},
+        started: {type: String, default: null},
         ended: String,
+        deployId: String,
     },
     mounted() {
         this.startInterval()
@@ -38,15 +45,28 @@ export default {
     },
     computed: {
         normalStatus() {
-            return this.status === 'active' ? 'running' : this.status
+            const status = {
+                fulfilled: 'succeeded',
+                started: 'running',
+                unfulfilled: 'pending',
+            }[this.status]
+
+            return status ? status : this.status
+
         },
         statusClass() {
-            const map = {
-                'complete': 'text-info',
-                'succeeded': 'text-info',
-                'failed': 'text-danger',
-            }
-            return map[this.status] ? map[this.status] : ''
+            const statusClass = {
+                'pending': 'badge badge-info',
+                'running': 'badge badge-info blink',
+                'succeeded': 'badge badge-success',
+                'failed': 'badge badge-danger',
+                'cancelled': 'badge badge-warning',
+            }[this.normalStatus]
+
+            return statusClass ? statusClass : ''
+        },
+        rowStatusClass() {
+            return this.normalStatus
         },
         formattedCreationDate() {
             return dateFormat(this.created)
@@ -85,26 +105,36 @@ export default {
             }
 
             this.duration = [
-                hours ? `${hours}m` : '',
+                hours ? `${hours}h` : '',
                 minutes ? `${minutes}m` : '',
                 `${seconds}s`
             ].join('')
+        },
+        addCopyToast(name) {
+            addToast('Copied <code>"' + name + '"</code> to clipboard.', 5)
         }
     },
     data: () => ({
         interval: null,
         duration: '',
-    })
+        eventSource: null,
+        mercureUrl: null,
+    }),
 }
 </script>
 
 <style lang="scss" scoped>
 @keyframes blink {
-    100% { color: dodgerblue; }
-    50% { color: #333; }
-    0% { color: dodgerblue; }
+    100% { color: white; }
+    50% { color: #17a2b8; }
+    0% { color: white; }
 }
-.active-row > td{
+.blink {
     animation: blink 1s infinite;
+}
+.badge {
+    text-transform: uppercase;
+    font-size: .5rem;
+    padding: .25rem;
 }
 </style>

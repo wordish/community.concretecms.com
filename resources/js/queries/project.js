@@ -1,46 +1,111 @@
 import gql from "graphql-tag";
 
-export const Q_PROJECT_FULL = gql`
-    query($projectId: ID!) {
-        project: hostingProject(id: $projectId) {
-            gitUrl
-            _id
+export const F_PROJECT_FULL = gql`
+    fragment HostingProjectFields on HostingProject {
+        gitUrl
+        gitPath
+        _id
+        id
+        name
+        lagoonName
+        lagoonId
+        developmentEnvironmentsLimit
+        productionBranch
+        fulfillmentStatus
+        authorizedAdmins
+        authorizedUsers
+        startingPoint {
             id
             name
-            productionBranch
-            stageBranches
-            lagoonProject {
-                environments
+        }
+    }
+`
+
+export const Q_PROJECT_BRANCHES = gql`
+    query projectBranches($projectId: ID!) {
+        hostingProject(id: $projectId) {
+            id
+            branches
+        }
+    },
+`
+
+export const Q_PROJECT_LIST = gql`
+    ${F_PROJECT_FULL}
+    query projectList($after: String, $before: String, $perPage: Int!) {
+        projects: hostingProjects(after: $after, before: $before, first: $perPage) {
+            totalCount
+            edges {
+                cursor
+                node {
+                    ...HostingProjectFields
+                }
             }
-            startingPoint {
+            pageInfo {
+                hasNextPage
+                hasPreviousPage
+                endCursor
+                startCursor
+            }
+        }
+    }
+`;
+
+export const Q_PROJECT_LIST_LIGHT = gql`
+query projectListLight($after: String, $before: String, $perPage: Int!) {
+    projects: hostingProjects(after: $after, before: $before, first: $perPage) {
+        totalCount
+        edges {
+            cursor
+            node {
                 id
+                _id
                 name
+                lagoonName
+                startingPoint {
+                    id
+                    name
+                }
             }
+        }
+        pageInfo {
+            hasNextPage
+            hasPreviousPage
+            endCursor
+            startCursor
+        }
+    }
+}
+`;
+
+export const Q_PROJECT_FULL = gql`
+    ${F_PROJECT_FULL}
+    query project($projectId: ID!) {
+        project: hostingProject(id: $projectId) {
+            ...HostingProjectFields
         }
     },
 `
 
 export const M_PROJECT_CREATE = gql`
-    mutation($name: String!, $startingPoint: String!, $adminIds: Iterable!) {
+    ${F_PROJECT_FULL}
+    mutation projectCreate($name: String!, $startingPoint: String!, $adminIds: Iterable!) {
         createProject: createHostingProject(input: {
             name: $name,
             startingPoint: $startingPoint,
             productionBranch: "main",
-            stageBranches: ["develop"],
             # TODO Remove authorized* fields when we switch to teams
             authorizedAdmins: $adminIds,
             authorizedUsers: ["-10"],
         }) {
             project: hostingProject {
-                id
-                _id
-                name
+                ...HostingProjectFields
             }
         }
     }
 `
 export const Q_PROJECT_BACKUPS = gql`
-    query($projectId: ID!, $after: String, $before: String, $perPage: Int!) {
+    query projectBackups($projectId: ID!, $after: String, $before: String, $perPage: Int!) {
         hostingProject(id: $projectId) {
             id
             _id

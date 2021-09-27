@@ -1,34 +1,52 @@
 import projects from "../components/pages/projects";
 import login from "../components/pages/login";
 import VueRouter from 'vue-router'
-import { store } from '../store/store'
+import store from '../store/store'
 import environments from "../components/pages/project/environments";
 import code from "../components/pages/project/code";
-import deployments from "../components/pages/project/deployments";
-import backups from "../components/pages/project/backups";
+import deploys from "../components/pages/project/environments/deploys";
+import backups from "../components/pages/project/environments/backups";
+import installs from "../components/pages/project/environments/installs";
+import permissions from "../components/pages/project/permissions";
+import {auth} from "../auth/Authentication";
+import {inDev} from "../helpers";
+import dev from "../components/pages/dev";
 
 export const routes = [
     { name: 'login', path: '/api-login', component: login },
-    { path: '/', component: projects, meta: { auth: true } },
-    { path: '/hosting_projects/:id', redirect: '/hosting_projects/:id/environments', meta: { auth: true } },
-    { path: '/hosting_projects/:id/environments', component: environments, meta: { auth: true } },
-    { path: '/hosting_projects/:id/code', component: code, meta: { auth: true } },
-    { path: '/hosting_projects/:id/deployments', component: deployments, meta: { auth: true } },
-    { path: '/hosting_projects/:id/backups', component: backups, meta: { auth: true } },
+    { name: 'projects', path: '/', component: projects, meta: { auth: true } },
+    { name: 'project', path: '/:id', redirect: '/:id/environments', meta: { auth: true } },
+    { path: '/:id/environments', component: environments, meta: { auth: true } },
+    { path: '/:id/code', component: code, meta: { auth: true } },
+    { path: '/:id/permissions', component: permissions, meta: { auth: true } },
+    { path: '/:id/env/:environment+/deploys',  component: deploys, meta: { auth: true } },
+    { path: '/:id/env/:environment+/backups', component: backups, meta: { auth: true } },
+    { path: '/:id/env/:environment+/installs', component: installs, meta: { auth: true } },
 
     // Redirect everything else to home
     {path: '*', redirect: '/'},
 ]
 
+inDev(() => routes.unshift({
+    name: "dev", path: "/dev", component: dev
+}))
+
 export const router = new VueRouter({
+    mode: 'history',
+    base: '/account/projects',
     routes
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
+    // Make sure we've restored state
+    await store.restored
+
     if (to.matched.some(record => record.meta.auth)) {
         // this route requires auth, check if logged in
         // if not, redirect to login page.
-        if (!store.getters.isLoggedIn) {
+        if (!auth.isLoggedIn()) {
+            store.commit('setPostLoginRedirect', to.fullPath)
+            await auth.logout()
             next('/api-login')
         } else {
             next() // go to wherever I'm going
