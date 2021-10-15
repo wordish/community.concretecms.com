@@ -93,8 +93,14 @@
 .members-search form .search-control {
   height: 46px;
   margin-right: 10px;
-  width: 320px;
+  width: 280px;
   display: inline-block;
+}
+
+@media (max-width: 576px) {
+  .members-search form .search-control {
+    width: calc(100% - 69px) !important;
+  }
 }
 
 .members-search form .ccm-search-input {

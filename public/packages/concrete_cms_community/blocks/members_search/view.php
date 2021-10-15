@@ -62,7 +62,8 @@ $profileFormRenderer = new Renderer(
                             <div class="col-md-6 align-self-center">
                                 <?php echo $form->text("q", $q, ["placeholder" => t("Search Members"), "class" => "search-control"]); ?>
                                 <button type="button" class="btn btn-secondary toggle-dropdown" id="toggleFilters">
-                                    <?php echo t("Filters"); ?>
+                                    <span class="d-none d-sm-inline-block"><?php echo t("Filters"); ?></span>
+
                                     <i class="fas fa-filter"></i>
                                 </button>
                             </div>
@@ -184,7 +185,11 @@ $profileFormRenderer = new Renderer(
                         $pages = $pagination->getCurrentPageResults();
                         if ($pagination->haveToPaginate()) {
                             $showPagination = true;
-                            echo $pagination->renderView('application');
+                            echo $pagination->renderView('application',[
+                                'prev_message' => tc('Pagination', '&larr;'),
+                                'next_message' => tc('Pagination', '&rarr;'),
+                                'proximity' => 1
+                            ]);
                         }
                         ?>
                     </div>
