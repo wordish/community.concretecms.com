@@ -100,6 +100,7 @@ View::getInstance()->addFooterItem(
                                             }
 
                                             $imageElement = new Image($badgeUrl, $grantedAwardEntry->getAward()->getName());
+                                            $imageElement->setAttribute("title", $grantedAwardEntry->getAward()->getName());
 
                                             if ($grantedAward["count"] > 1) {
                                                 $imageWrapper = new Element("div");
