@@ -87,6 +87,7 @@ $user = new User();
                                         }
 
                                         $imageElement = new Image($badgeUrl, $userBadge->getBadge()->getName());
+                                        $imageElement->setAttribute("title", $userBadge->getBadge()->getName());
 
                                         if ($badge["count"] > 1) {
                                             $imageWrapper = new Element("div");
