@@ -1,7 +1,7 @@
 <template>
     <div v-if="visible">
-        <div class="modal show d-block" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
+        <div class="modal show d-block mt-5" tabindex="-1" role="dialog">
+            <div class="modal-dialog shadow" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Create a Hosting Project</h5>
@@ -44,7 +44,8 @@
 <script>
 import {Q_STARTING_POINTS_FULL} from "../../queries/starting-point";
 import {M_PROJECT_CREATE} from "../../queries/project";
-import {store} from "../../store/store";
+import store from "../../store/store";
+import {auth} from "../../auth/Authentication";
 
 export default {
     name: "create-project-modal",
@@ -56,7 +57,7 @@ export default {
         startingPoints: {
             query: Q_STARTING_POINTS_FULL,
             result(result) {
-                if (!this.startingPoint && result.data.startingPoints.length) {
+                if (!this.startingPoint && result.data?.startingPoints?.length) {
                     this.defaultStartingPoint = result.data.startingPoints[0].id
                     this.startingPoint = this.defaultStartingPoint
                 }
@@ -90,17 +91,12 @@ export default {
                 variables: {
                     name: this.name,
                     startingPoint: this.startingPoint,
-                    adminIds: [store.getters.jwtData.id],
+                    adminIds: [auth.token.id],
                 }
             })
 
             if (result.data.createProject && result.data.createProject.project && result.data.createProject.project.id) {
-                this.$emit('create', {
-                    name: this.name,
-                    startingPoint: this.startingPoint,
-                    id: result.data.createProject.project.id,
-                    _id: result.data.createProject.project._id,
-                })
+                this.$emit('create', result.data.createProject.project)
             } else {
                 alert('Unable to create project.')
             }

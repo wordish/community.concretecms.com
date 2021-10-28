@@ -103,7 +103,10 @@ $userDisplayName = h(trim($profileData['first_name'] . " " . $profileData['last_
         if ($headerImage instanceof File) {
             $fileVersion = $headerImage->getApprovedVersion();
             if ($fileVersion instanceof Version) {
-                echo '<img src="' . $fileVersion->getURL() . '" alt="' . t("Header Image of %s", h($profile->getUserName())) . '">';
+                echo (string) new Element("div", null,[
+                    "class" => "image-container",
+                    "style" => "background-image: url('" . h($fileVersion->getURL()) . "');"
+                ]);
             }
         }
         ?>

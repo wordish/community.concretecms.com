@@ -46,8 +46,9 @@ class UserTransformer extends TransformerAbstract
             'locale_force_update' => 'false',
             'logout' => 'false',
             'bio' => '',
-            'admin' => 'false',
-            'moderator' => 'false',
+            'custom.community_id' => $user->getUserID(),
+            //'admin' => $user->inGroup($this->repository->getGroupById(ADMIN_GROUP_ID)),
+            //'moderator' => 'false',
         ];
     }
 

@@ -1,124 +1,82 @@
 <template>
     <div class="container">
-        <div class="row">
-            <div class="col">
-                <div class="d-flex">
-                    <h1 class="highlight mb-3 w-100"><span @click="goHome">Hosting</span></h1>
-                    <div class="d-flex flex-column justify-content-center">
-                        <select v-if="activeProject" v-model="selectedProject">
-                            <option :value="node._id" :key="node.id" v-for="{node} in projects.edges">{{ node.name }}</option>
-                        </select>
-                        <button v-else-if="isLoggedIn" @click="showModal=true" class="btn btn-primary text-nowrap">
-                            New Project
-                        </button>
-                    </div>
-                </div>
-                <div v-if="this.$route.params.id && selectedProject">
-                    <ul class="nav nav-tabs">
-                        <li class="nav-item">
-                            <router-link :to="`/hosting_projects/${selectedProject}/environments`" class="nav-link" exact-active-class="active">Environments</router-link>
-                        </li>
-                        <li class="nav-item">
-                            <router-link :to="`/hosting_projects/${selectedProject}/code`" class="nav-link" active-class="active">Code</router-link>
-                        </li>
-                        <li class="nav-item">
-                            <router-link :to="`/hosting_projects/${selectedProject}/deployments`" class="nav-link" active-class="active">Deployments</router-link>
-                        </li>
-                        <li class="nav-item">
-                            <router-link :to="`/hosting_projects/${selectedProject}/backups`" class="nav-link" active-class="active">Backups</router-link>
-                        </li>
-                    </ul>
-                    <hr class="mt-0">
-                </div>
-            </div>
-        </div>
         <router-view></router-view>
-        <modal v-model="showModal" @create="onCreate"></modal>
+        <div class="toasts" name="toast">
+            <transition-group tag="div" name="toast" class="d-flex flex-column">
+                <div
+                    class="mb-1 align-self-end"
+                    v-for="toast of toasts"
+                    :key="toast.id">
+                    <toast
+                        :title="toast.title"
+                        :message="toast.message"
+                        :type="toast.type"
+                        :can-dismiss="toast.canDismiss"
+                        @close="() => dismissToast(toast.id)"
+                    ></toast>
+                </div>
+
+            </transition-group>
+        </div>
     </div>
 </template>
 
 <script>
-import gql from "graphql-tag"
-import {store} from "../store/store"
-import Modal from "./basic/create-project-modal";
+import store from "../store/store"
+import {Q_PROJECT_FULL, Q_PROJECT_LIST} from "../queries/project";
+import {hostingProjectId} from "../helpers";
+import Toast from "./basic/toast";
+import gql from "graphql-tag";
 
 export default {
-    components: {Modal},
-    apollo: {
-        projects: {
-            query: gql`
-                query {
-                    projects {
-                        edges {
-                            node {
-                                name
-                                id
-                                _id
-                            }
-                        }
-                    }
-                }
-            `
-        }
-    },
+    components: {Toast},
     computed: {
-        isLoggedIn() {
-            return store.getters.isLoggedIn
-        },
-        selectedProject: {
-            get () {
-                return Number(store.state.selectedProject)
-            },
-            set (value) {
-                store.commit('selectProject', value)
-                if (value && this.$route.params.id !== value) {
-                    this.$router.push(`/projects/${value}/`)
-                }
-            }
-        },
-        activeProject() {
-            if (!this.$route) {
-                return null
-            }
-            return parseInt(this.$route.params.id) > 0
-        }
+        toasts: () => store.state.toasts
     },
-    watch: {
-        $route(to, from) {
-            if (to.params.id && to.params.id !== this.selectedProject) {
-                this.selectedProject = to.params.id
-            }
-
-            if (!to.params.id) {
-                this.selectedProject = null
-            }
-        }
-    },
-    mounted() {
-        if (!this.$route.params.id && this.selectedProject) {
-            store.commit('selectProject', '')
-        } else if (this.$route.params.id !== this.selectedProject) {
-            store.commit('selectProject', this.$route.params.id)
-        }
-    },
-    data: () => ({
-        showModal: false,
-        projects: [],
-        pendingProject: null,
-    }),
     methods: {
-        goHome() {
-            if (this.$route.fullPath !== '/') {
-                this.$router.replace('/')
-            }
-        },
-        async onCreate(project) {
-            this.projects.edges = [
-                { node: project },
-                ...this.projects.edges
-            ]
-            store.commit('createProject', project)
+        dismissToast(toastId) {
+            store.commit('hideToast', toastId)
         }
     }
 }
 </script>
+<style scoped>
+    .toasts {
+        position: fixed;
+        bottom: 1rem;
+        right: 1rem;
+    }
+    .toasts > div > .toast {
+        width: auto;
+    }
+    .toast {
+        opacity: 1;
+    }
+
+    .toast-move {
+        transition: transform .125s;
+    }
+
+    .toast-enter-active {
+        transition: opacity .5s;
+    }
+
+    .toast-leave-active {
+        transition: opacity .5s, height .5s;
+    }
+
+    .toast-enter {
+        opacity: 0 !important;
+    }
+    .toast-leave {
+        opacity: 1;
+        overflow: hidden;
+        height: 100%;
+    }
+    .toast-leave-to {
+        opacity: 0;
+        overflow: hidden;
+        height: 0;
+    }
+
+ </style>

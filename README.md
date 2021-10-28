@@ -2,6 +2,28 @@
 
 This repo contains the code for all account management aspects of community.concretecms.com.
 
+## Local development
+This repository uses [Lando](https://lando.dev/) to manage local development environments. Once running your site should be available at
+[community-concretecms-com.lndo.site](community-concretecms-com.lndo.sit)
+
+```bash
+# Start the lando environment 
+lando start
+
+# Install concrete
+lando install
+
+# Run concrete's cli tool
+lando concrete c5:info
+lando concrete c5:cache
+
+# Backup the DB
+lando db-export
+
+# Reimport the backed up db
+lando db-import the-file.tar.gz
+```
+
 ## Installation Instructions.
 
 1. Clone this repo.
