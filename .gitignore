@@ -8,7 +8,7 @@
 # Ignore composer packages
 /public/packages/concrete_cms_theme
 /public/packages/community_badges
-
+/public/packages/akismet
 # Ignore build files
 /public/application/css/main.css
 /public/application/js/hosting.js.LICENSE.txt
