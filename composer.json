@@ -37,6 +37,12 @@
     "preferred-install": "dist",
     "platform": {
       "php": "7.4"
+    },
+    "allow-plugins": {
+      "composer/package-versions-deprecated": true,
+      "kylekatarnls/update-helper": true,
+      "mlocati/composer-patcher": true,
+      "composer/installers": true
     }
   },
   "extra": {
