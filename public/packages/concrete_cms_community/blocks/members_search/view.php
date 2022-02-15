@@ -58,7 +58,7 @@ $profileFormRenderer = new Renderer(
                     <div class="">
                         <div class="row">
                             <div class="col-md-6 align-self-center">
-                                <input type="text" value="<?= isset($_REQUEST['q']) ? h($_REQUEST['q']) : ''?>" placeholder="<?=t('Search Members')?>" class="form-control search-control">
+                                <input type="text" name="q" value="<?= isset($_REQUEST['q']) ? h($_REQUEST['q']) : ''?>" placeholder="<?=t('Search Members')?>" class="form-control search-control">
                                 <button type="button" class="btn btn-secondary toggle-dropdown" id="toggleFilters">
                                     <span class="d-none d-sm-inline-block"><?php echo t("Filters"); ?></span>
 
