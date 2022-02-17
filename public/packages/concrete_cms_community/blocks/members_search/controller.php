@@ -34,6 +34,7 @@ class Controller extends BlockController
     const SORT_BY_MOST_RECENT = "most_recent";
     const SORT_BY_EARLIEST_JOINED = "earliest_joined";
     const SORT_BY_COMMUNITY_LEADERS = "community_leaders";
+    const SORT_BY_ACHIEVEMENTS = "achievements";
 
     public function getBlockTypeDescription()
     {
@@ -111,11 +112,12 @@ class Controller extends BlockController
         }
 
         $q = $this->request->query->get("q", "");
-        $defaultSortByOption = self::SORT_BY_COMMUNITY_LEADERS;
+        $defaultSortByOption = self::SORT_BY_ACHIEVEMENTS;
         $sortBy = $this->request->query->get("sortBy", $defaultSortByOption);
 
         $sortByOptions = [
-            self::SORT_BY_COMMUNITY_LEADERS => t("Community Leaders"),
+//            self::SORT_BY_COMMUNITY_LEADERS => t("Community Leaders"),
+            self::SORT_BY_ACHIEVEMENTS => t("Achievements"),
             self::SORT_BY_MOST_RECENT => t("Most Recent"),
             self::SORT_BY_EARLIEST_JOINED => t("Earliest Joined")
         ];
@@ -203,10 +205,18 @@ class Controller extends BlockController
         $this->setDefaults();
 
         $userList = new UserList();
-        $userList->filterByKeywords($this->get("q"));
+        if ($this->get('q')) {
+            $userList->filterByKeywords($this->get("q"));
+        }
 
         switch ($this->get("sortBy")) {
+            case self::SORT_BY_ACHIEVEMENTS:
+                $userList->getQueryObject()->leftJoin("u", "UserBadge", "userBadges", "u.uID = userBadges.uID");
+                $userList->getQueryObject()->addSelect("COUNT(userBadges.id) AS totalBadges");
+                $userList->sortBy("totalBadges", "DESC");
+                break;
             case self::SORT_BY_COMMUNITY_LEADERS:
+                // @todo - change this use a user attribute in the index table.
                 $userList->getQueryObject()->leftJoin("u", "UserPointHistory", "userPoints", "u.uID = userPoints.upuID");
                 $userList->getQueryObject()->addSelect("SUM(userPoints.upPoints) AS totalPoints");
                 $userList->sortBy("totalPoints", "DESC");

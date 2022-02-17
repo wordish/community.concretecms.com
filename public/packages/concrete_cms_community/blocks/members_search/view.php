@@ -33,8 +33,6 @@ use Concrete\Core\Utility\Service\Text;
 /** @var string $q */
 
 $app = Application::getFacadeApplication();
-/** @var Form $form */
-$form = $app->make(Form::class);
 /** @var Text $text */
 $text = $app->make(Text::class);
 /** @var Date $date */
@@ -60,7 +58,7 @@ $profileFormRenderer = new Renderer(
                     <div class="">
                         <div class="row">
                             <div class="col-md-6 align-self-center">
-                                <?php echo $form->text("q", $q, ["placeholder" => t("Search Members"), "class" => "search-control"]); ?>
+                                <input type="text" name="q" value="<?= isset($_REQUEST['q']) ? h($_REQUEST['q']) : ''?>" placeholder="<?=t('Search Members')?>" class="form-control search-control">
                                 <button type="button" class="btn btn-secondary toggle-dropdown" id="toggleFilters">
                                     <span class="d-none d-sm-inline-block"><?php echo t("Filters"); ?></span>
 
@@ -71,9 +69,13 @@ $profileFormRenderer = new Renderer(
                             <div class="col-md-6 align-self-center">
                                 <div class="float-md-right float-lg-right float-xl-right float-sm-right float-xs-none">
                                     <div class="form-inline sort-by">
-                                        <?php echo $form->label("sortBy", t("Sort By")); ?>
+                                        <label class="control-label"><?=t('Sort By')?></label>
 
-                                            <?php echo $form->select("sortBy", $sortByOptions, $sortBy); ?>
+                                        <select name="sortBy" class="form-control">
+                                            <?php foreach ($sortByOptions as $sortByKey => $sortByOption) { ?>
+                                                <option value="<?=$sortByKey?>" <?php if ($sortByKey == $sortBy) { ?>selected<?php } ?>><?=$sortByOption?></option>
+                                            <?php } ?>
+                                        </select>
 
                                             <button type="submit" class="btn btn-primary">
                                                 <?php echo t("Search"); ?>
