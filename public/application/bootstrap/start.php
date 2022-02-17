@@ -5,10 +5,6 @@ use Concrete\Core\Application\Application;
 // Override the user class completely
 require_once __DIR__ . '/../src/User/User.php';
 
-// Override the BlockView class completely. Remove once we upgrade to 9.0.2
-require_once __DIR__ . '/../src/Block/View/BlockView.php';
-
-
 /*
  * ----------------------------------------------------------------------------
  * Instantiate concrete5
