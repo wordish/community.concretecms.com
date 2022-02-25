@@ -377,12 +377,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/concrete5/concrete_cms_theme.git",
-                "reference": "585b96a2a5cf60e89a68bfda40c3f8e9fcd46b8f"
+                "reference": "479ca2e1dd45f8af06c1192f344242498064a939"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/concrete5/concrete_cms_theme/zipball/585b96a2a5cf60e89a68bfda40c3f8e9fcd46b8f",
-                "reference": "585b96a2a5cf60e89a68bfda40c3f8e9fcd46b8f",
+                "url": "https://api.github.com/repos/concrete5/concrete_cms_theme/zipball/479ca2e1dd45f8af06c1192f344242498064a939",
+                "reference": "479ca2e1dd45f8af06c1192f344242498064a939",
                 "shasum": ""
             },
             "default-branch": true,
