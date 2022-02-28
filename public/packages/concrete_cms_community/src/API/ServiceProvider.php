@@ -44,11 +44,11 @@ class ServiceProvider extends Provider
 
                     // If user isn't found send to user search
                     if (!$userInfo || !$userInfo->getUserID()) {
-                        return new RedirectResponse('/members/directory?q=' . $user);
+                        return new RedirectResponse('/members/directory?q=' . urlencode($user));
                     }
 
                     // Otherwise redirect to user profile
-                    return new RedirectResponse('/members/profile/' . $userInfo->getUserID());
+                    return new RedirectResponse('/members/profile/' . (int) $userInfo->getUserID());
                 });
             });
 
