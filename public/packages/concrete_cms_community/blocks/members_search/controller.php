@@ -112,6 +112,7 @@ class Controller extends BlockController
         }
 
         $q = $this->request->query->get("q", "");
+        $certifiedOnly = $this->request->query->get('c', '1') !== '0';
         $defaultSortByOption = self::SORT_BY_ACHIEVEMENTS;
         $sortBy = $this->request->query->get("sortBy", $defaultSortByOption);
 
@@ -127,6 +128,7 @@ class Controller extends BlockController
         }
 
         $this->set("q", $q);
+        $this->set("certifiedOnly", $certifiedOnly);
         $this->set("sortBy", $sortBy);
         $this->set("sortByOptions", $sortByOptions);
         $this->set("displayCertificationFilter", $displayCertificationFilter);
@@ -203,13 +205,15 @@ class Controller extends BlockController
     public function view()
     {
         $this->setDefaults();
+        $sets = $this->getSets();
+        $certifiedOnly = $sets['certifiedOnly'] ?? true;
 
         $userList = new UserList();
-        if ($this->get('q')) {
-            $userList->filterByKeywords($this->get("q"));
+        if ($sets['q'] ?? false) {
+            $userList->filterByKeywords($sets['q']);
         }
 
-        switch ($this->get("sortBy")) {
+        switch ($sets["sortBy"] ?? '') {
             case self::SORT_BY_ACHIEVEMENTS:
                 $userList->getQueryObject()->leftJoin("u", "UserBadge", "userBadges", "u.uID = userBadges.uID");
                 $userList->getQueryObject()->addSelect("COUNT(userBadges.id) AS totalBadges");
@@ -231,8 +235,8 @@ class Controller extends BlockController
                 break;
         }
 
-        if ($this->get("displayCertificationFilter")) {
-            $selectedTests = $this->get("selectedCertificationsTests");
+        if ($sets["displayCertificationFilter"]) {
+            $selectedTests = $sets["selectedCertificationsTests"];
 
             if (count($selectedTests) > 0) {
                 foreach ($selectedTests as $testId) {
@@ -252,24 +256,12 @@ class Controller extends BlockController
             }
         }
 
-        /** @var CategoryService $categoryService */
-        $categoryService = $this->app->make(CategoryService::class);
-        $userCategoryEntity = $categoryService->getByHandle("user");
-        $userCategory = $userCategoryEntity->getAttributeKeyCategory();
-
-        foreach ($this->request->query->get("akID", []) as $akID => $selectedData) {
-            $attributeKey = $userCategory->getAttributeKeyByID($akID);
-
-            /** @var SelectAttributeController $attributeKeyController */
-            $attributeKeyController = $attributeKey->getController();
-            $attributeKeyController->setRequestArray($this->request->query->all());
-            $validateResponse = $attributeKeyController->validateForm($attributeKeyController->post());
-
-            if ($validateResponse) {
-                /** @var SelectValue $selectedValue */
-                $selectedValue = $attributeKeyController->createAttributeValueFromRequest();
-                $userList->filterByAttribute($attributeKey->getAttributeKeyHandle(), $selectedValue);
-            }
+        if ($certifiedOnly) {
+            $q = $userList->getQueryObject();
+            $badges = collect($q->getConnection()->fetchAllNumeric('select id from Badge where handle like "certification_test_pass_%"'))
+                ->flatten();
+            $q->innerJoin('u', 'UserBadge', 'bdg', 'bdg.id in (:badges) AND bdg.uID=u.uID');
+            $q->setParameter('badges', $badges->toArray(), $q->getConnection()::PARAM_INT_ARRAY);
         }
 
         /** @noinspection PhpDeprecationInspection */
