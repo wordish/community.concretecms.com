@@ -500,14 +500,15 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/concrete5/community_badges.git",
-                "reference": "b06b522272a4cf65d0e91f3c38ed34b10eacca8a"
+                "reference": "21cc631412b51ad661b8fcc1b919bf0b5b2409dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/concrete5/community_badges/zipball/b06b522272a4cf65d0e91f3c38ed34b10eacca8a",
-                "reference": "b06b522272a4cf65d0e91f3c38ed34b10eacca8a",
+                "url": "https://api.github.com/repos/concrete5/community_badges/zipball/21cc631412b51ad661b8fcc1b919bf0b5b2409dd",
+                "reference": "21cc631412b51ad661b8fcc1b919bf0b5b2409dd",
                 "shasum": ""
             },
+            "default-branch": true,
             "type": "concrete5-package",
             "autoload": {
                 "psr-4": {
@@ -523,7 +524,7 @@
                 "issues": "https://github.com/concrete5/community_badges/issues",
                 "source": "https://github.com/concrete5/community_badges/tree/main"
             },
-            "time": "2021-06-14T16:53:40+00:00"
+            "time": "2022-03-07T21:19:18+00:00"
         },
         {
             "name": "concrete5/concrete_cms_theme",
