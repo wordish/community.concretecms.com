@@ -241,15 +241,13 @@ $userDisplayName = h(trim($profileData['first_name'] . " " . $profileData['last_
                     <div class="profile-description">
                         <?php if ($profile->getAttribute('website') != "") { ?>
                             <div class="profile-website">
-                                <a href="<?php echo h($profileData['website']) ?>">
+                                <a rel="nofollow" href="<?php echo h($profileData['website']) ?>">
                                     <?= parse_url((string) $profileData['website'], PHP_URL_HOST); ?>
                                 </a>
                             </div>
                         <?php } ?>
 
-                        <?php if (!trim($profileData['description'])) { ?>
-                            <?php echo t("None entered."); ?>
-                        <?php } else { ?>
+                        <?php if (trim($profileData['description'])) { ?>
                             <?php echo nl2br(h($profileData['description'])); ?>
                         <?php } ?>
                     </div>
