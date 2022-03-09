@@ -260,7 +260,7 @@ class Controller extends BlockController
             $q = $userList->getQueryObject();
             $badges = collect($q->getConnection()->fetchAllNumeric('select id from Badge where handle like "certification_test_pass_%"'))
                 ->flatten();
-            $q->innerJoin('u', 'UserBadge', 'bdg', 'bdg.id in (:badges) AND bdg.uID=u.uID');
+            $q->innerJoin('u', 'UserBadge', 'bdg', 'bdg.badgeId in (:badges) AND bdg.uID=u.uID');
             $q->setParameter('badges', $badges->toArray(), $q->getConnection()::PARAM_INT_ARRAY);
         }
 
