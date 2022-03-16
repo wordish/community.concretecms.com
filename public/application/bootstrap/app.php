@@ -75,3 +75,5 @@ $app->extend(\Concrete\Core\Http\ServerInterface::class, fn($server) => $server-
         }
     }
 ));
+
+$app->bind(\Concrete\Core\Encryption\PasswordHasher::class, \ConcreteComposer\Encryption\PasswordHasher::class);
