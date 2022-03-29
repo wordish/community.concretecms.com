@@ -42,7 +42,7 @@ $config = $app->make(Repository::class);
                     <div class="card-header d-flex">
                         <?=$karmaDescriptionText?>
                         <div class="dropdown">
-                            <a href="javascript:void(0)" data-toggle="dropdown" class="text-gray font-size-lg"><i class="fa fa-filter"></i></a>
+                            <a data-bs-toggle="dropdown" data-bs-auto-close="outside" data-toggle="dropdown" class="text-gray font-size-lg"><i class="fa fa-filter"></i></a>
 
                             <div class="dropdown-menu dropdown-menu-right">
                                 <form class="px-2">
