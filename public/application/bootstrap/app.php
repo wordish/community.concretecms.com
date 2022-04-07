@@ -63,3 +63,17 @@
  *
  * ----------------------------------------------------------------------------
  */
+
+# See https://github.com/concrete5/concrete5/issues/10121
+$app->extend(\Concrete\Core\Http\ServerInterface::class, fn($server) => $server->addMiddleware(
+    new Class implements \Concrete\Core\Http\Middleware\MiddlewareInterface {
+        public function process(
+            \Symfony\Component\HttpFoundation\Request $request,
+            \Concrete\Core\Http\Middleware\DelegateInterface $frame
+        ) {
+            return $frame->next($request);
+        }
+    }
+));
+
+$app->bind(\Concrete\Core\Encryption\PasswordHasher::class, \ConcreteComposer\Encryption\PasswordHasher::class);

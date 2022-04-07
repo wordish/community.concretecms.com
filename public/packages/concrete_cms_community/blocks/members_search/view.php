@@ -31,9 +31,6 @@ use Concrete\Core\Utility\Service\Text;
 /** @var array $sortByOptions */
 /** @var string $sortBy */
 /** @var string $q */
-/**
- * @var bool $certifiedOnly
- */
 
 $app = Application::getFacadeApplication();
 /** @var Text $text */
@@ -61,15 +58,12 @@ $profileFormRenderer = new Renderer(
                     <div class="">
                         <div class="row">
                             <div class="col-md-6 align-self-center">
-                                <input type="text" name="q" value="<?= h($q ?: '') ?>" placeholder="<?=t('Search Members')?>" class="form-control search-control">
-                                <label class="form-check d-inline-block">
-                                    <input type="checkbox"
-                                           class="show-certified"
-                                           onchange="document.querySelector('input[name=c]').value = this.checked ? 1 : 0"
-                                           <?= $certifiedOnly ? 'checked' : '' ?> />
-                                    <input type='hidden' name="c" value="<?= $certifiedOnly ? '1' : '0' ?>"  />
-                                    <?= t('Certified') ?>
-                                </label>
+                                <input type="text" name="q" value="<?= isset($_REQUEST['q']) ? h($_REQUEST['q']) : ''?>" placeholder="<?=t('Search Members')?>" class="form-control search-control">
+                                <button type="button" class="btn btn-secondary toggle-dropdown" id="toggleFilters">
+                                    <span class="d-none d-sm-inline-block"><?php echo t("Filters"); ?></span>
+
+                                    <i class="fas fa-filter"></i>
+                                </button>
                             </div>
 
                             <div class="col-md-6 align-self-center">

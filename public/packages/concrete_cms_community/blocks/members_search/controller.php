@@ -33,7 +33,7 @@ class Controller extends BlockController
 
     const SORT_BY_MOST_RECENT = "most_recent";
     const SORT_BY_EARLIEST_JOINED = "earliest_joined";
-    const SORT_BY_COMMUNITY_LEADERS = "community_leaders";
+    const SORT_BY_COMMUNITY_POINTS = "community_points";
     const SORT_BY_ACHIEVEMENTS = "achievements";
 
     public function getBlockTypeDescription()
@@ -112,14 +112,13 @@ class Controller extends BlockController
         }
 
         $q = $this->request->query->get("q", "");
-        $certifiedOnly = $this->request->query->get('c', '1') !== '0';
-        $defaultSortByOption = self::SORT_BY_ACHIEVEMENTS;
+        $defaultSortByOption = self::SORT_BY_MOST_RECENT;
         $sortBy = $this->request->query->get("sortBy", $defaultSortByOption);
 
         $sortByOptions = [
-//            self::SORT_BY_COMMUNITY_LEADERS => t("Community Leaders"),
-            self::SORT_BY_ACHIEVEMENTS => t("Achievements"),
             self::SORT_BY_MOST_RECENT => t("Most Recent"),
+            self::SORT_BY_ACHIEVEMENTS => t("Achievements"),
+            self::SORT_BY_COMMUNITY_POINTS => t("Karma Points"),
             self::SORT_BY_EARLIEST_JOINED => t("Earliest Joined")
         ];
 
@@ -128,7 +127,6 @@ class Controller extends BlockController
         }
 
         $this->set("q", $q);
-        $this->set("certifiedOnly", $certifiedOnly);
         $this->set("sortBy", $sortBy);
         $this->set("sortByOptions", $sortByOptions);
         $this->set("displayCertificationFilter", $displayCertificationFilter);
@@ -205,23 +203,21 @@ class Controller extends BlockController
     public function view()
     {
         $this->setDefaults();
-        $sets = $this->getSets();
-        $certifiedOnly = $sets['certifiedOnly'] ?? true;
-
         $userList = new UserList();
-        if ($sets['q'] ?? false) {
-            $userList->filterByKeywords($sets['q']);
+        if ($this->get('q')) {
+            $userList->filterByKeywords($this->get("q"));
         }
-
-        switch ($sets["sortBy"] ?? '') {
+        $userList->ignorePermissions();
+        switch ($this->get("sortBy")) {
             case self::SORT_BY_ACHIEVEMENTS:
-                $userList->getQueryObject()->leftJoin("u", "UserBadge", "userBadges", "u.uID = userBadges.uID");
+                // @todo - change this to use a user attribute in the index table. aggregate total achievements earned into the attribute.
+                $userList->getQueryObject()->innerJoin("u", "UserBadge", "userBadges", "u.uID = userBadges.uID");
                 $userList->getQueryObject()->addSelect("COUNT(userBadges.id) AS totalBadges");
                 $userList->sortBy("totalBadges", "DESC");
                 break;
-            case self::SORT_BY_COMMUNITY_LEADERS:
-                // @todo - change this use a user attribute in the index table.
-                $userList->getQueryObject()->leftJoin("u", "UserPointHistory", "userPoints", "u.uID = userPoints.upuID");
+            case self::SORT_BY_COMMUNITY_POINTS:
+                // @todo - change this to use a user attribute in the index table. aggregate total community points into the attribute.
+                $userList->getQueryObject()->innerJoin("u", "UserPointHistory", "userPoints", "u.uID = userPoints.upuID");
                 $userList->getQueryObject()->addSelect("SUM(userPoints.upPoints) AS totalPoints");
                 $userList->sortBy("totalPoints", "DESC");
                 break;
@@ -235,8 +231,8 @@ class Controller extends BlockController
                 break;
         }
 
-        if ($sets["displayCertificationFilter"]) {
-            $selectedTests = $sets["selectedCertificationsTests"];
+        if ($this->get("displayCertificationFilter")) {
+            $selectedTests = $this->get("selectedCertificationsTests");
 
             if (count($selectedTests) > 0) {
                 foreach ($selectedTests as $testId) {
@@ -256,12 +252,24 @@ class Controller extends BlockController
             }
         }
 
-        if ($certifiedOnly) {
-            $q = $userList->getQueryObject();
-            $badges = collect($q->getConnection()->fetchAllNumeric('select id from Badge where handle like "certification_test_pass_%"'))
-                ->flatten();
-            $q->innerJoin('u', 'UserBadge', 'bdg', 'bdg.badgeId in (:badges) AND bdg.uID=u.uID');
-            $q->setParameter('badges', $badges->toArray(), $q->getConnection()::PARAM_INT_ARRAY);
+        /** @var CategoryService $categoryService */
+        $categoryService = $this->app->make(CategoryService::class);
+        $userCategoryEntity = $categoryService->getByHandle("user");
+        $userCategory = $userCategoryEntity->getAttributeKeyCategory();
+
+        foreach ($this->request->query->get("akID", []) as $akID => $selectedData) {
+            $attributeKey = $userCategory->getAttributeKeyByID($akID);
+
+            /** @var SelectAttributeController $attributeKeyController */
+            $attributeKeyController = $attributeKey->getController();
+            $attributeKeyController->setRequestArray($this->request->query->all());
+            $validateResponse = $attributeKeyController->validateForm($attributeKeyController->post());
+
+            if ($validateResponse) {
+                /** @var SelectValue $selectedValue */
+                $selectedValue = $attributeKeyController->createAttributeValueFromRequest();
+                $userList->filterByAttribute($attributeKey->getAttributeKeyHandle(), $selectedValue);
+            }
         }
 
         /** @noinspection PhpDeprecationInspection */
