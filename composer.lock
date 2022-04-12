@@ -345,12 +345,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/concrete5/community_badges.git",
-                "reference": "eef40cb206db9a21c75d35fd8a9af92a0fbaae08"
+                "reference": "6f360f5d7a08df9d1b1b9467c6ff66b46107a8af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/concrete5/community_badges/zipball/eef40cb206db9a21c75d35fd8a9af92a0fbaae08",
-                "reference": "eef40cb206db9a21c75d35fd8a9af92a0fbaae08",
+                "url": "https://api.github.com/repos/concrete5/community_badges/zipball/6f360f5d7a08df9d1b1b9467c6ff66b46107a8af",
+                "reference": "6f360f5d7a08df9d1b1b9467c6ff66b46107a8af",
                 "shasum": ""
             },
             "default-branch": true,
@@ -369,7 +369,7 @@
                 "issues": "https://github.com/concrete5/community_badges/issues",
                 "source": "https://github.com/concrete5/community_badges/tree/main"
             },
-            "time": "2022-03-10T00:02:29+00:00"
+            "time": "2022-04-12T20:33:08+00:00"
         },
         {
             "name": "concrete5/concrete_cms_theme",
@@ -13132,5 +13132,5 @@
     "platform-overrides": {
         "php": "7.4"
     },
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.1.0"
 }
