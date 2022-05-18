@@ -376,13 +376,13 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/concrete5/concrete_cms_theme.git",
-                "reference": "6ddd1fe2cc8707403c4537bee472d15ad325c9bd"
+                "url": "https://github.com/concretecms/concrete_cms_theme.git",
+                "reference": "f3b913b84a73588ebb74e5799d5dc4b32e82e426"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/concrete5/concrete_cms_theme/zipball/6ddd1fe2cc8707403c4537bee472d15ad325c9bd",
-                "reference": "6ddd1fe2cc8707403c4537bee472d15ad325c9bd",
+                "url": "https://api.github.com/repos/concretecms/concrete_cms_theme/zipball/f3b913b84a73588ebb74e5799d5dc4b32e82e426",
+                "reference": "f3b913b84a73588ebb74e5799d5dc4b32e82e426",
                 "shasum": ""
             },
             "default-branch": true,
@@ -393,10 +393,10 @@
             ],
             "description": "Package that contains the official ConcreteCMS Theme.",
             "support": {
-                "issues": "https://github.com/concrete5/concrete_cms_theme/issues",
-                "source": "https://github.com/concrete5/concrete_cms_theme/tree/master"
+                "issues": "https://github.com/concretecms/concrete_cms_theme/issues",
+                "source": "https://github.com/concretecms/concrete_cms_theme/tree/master"
             },
-            "time": "2022-05-04T13:34:33+00:00"
+            "time": "2022-05-18T18:52:51+00:00"
         },
         {
             "name": "concrete5/core",
