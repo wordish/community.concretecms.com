@@ -186,7 +186,7 @@ class Discourse
                                                         } else if (isset($data[$eventType]["user_id"])) {
                                                             $userId = $data[$eventType]["user_id"];
 
-                                                            $this->logger->info(t("Event %s raised for discourse user with ID #%s.", $eventName, $userId));
+                                                            $this->logger->info(t("Event %1$s raised for discourse user with ID #%2$s.", $eventName, $userId));
 
                                                             /*
                                                              * Resolve mail address through discourse API

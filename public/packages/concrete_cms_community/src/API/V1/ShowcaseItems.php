@@ -98,7 +98,7 @@ class ShowcaseItems
 
         if ($file instanceof UploadedFile) {
             if ($file->getSize() > $maxFileSize) {
-                throw new Exception(t("The file size is to big."));
+                throw new Exception(t("The file size is too big."));
             } else {
                 $pathParts = pathinfo($file->getClientOriginalName());
                 $fileExtension = $pathParts['extension'];
