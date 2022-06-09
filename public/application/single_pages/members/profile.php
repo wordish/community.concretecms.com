@@ -131,7 +131,7 @@ $userDisplayName = h(trim($profileData['first_name'] . " " . $profileData['last_
                             $communityPoints = Entry::getTotal($profile);
                             /** @noinspection PhpUnhandledExceptionInspection */
                             echo t(
-                                '%s has posted %s, been awarded %s and has accumulated %s since joining the community on %s.',
+                                '%1$s has posted %2$s, been awarded %3$s and has accumulated %4$s since joining the community on %5$s.',
                                 h($profile->getUserName()),
                                 sprintf("<b>%s</b>", t2("%s message", "%s messages", number_format($totalMessages))),
                                 sprintf("<a href=\"%s\"><strong>%s</strong></a>", (string)Url::to("/account/karma", $profile->getUserID()), t2("%s achievement", "%s achievements", number_format($totalAchievements))),

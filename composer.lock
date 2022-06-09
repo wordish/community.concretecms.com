@@ -376,13 +376,13 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/concrete5/concrete_cms_theme.git",
-                "reference": "6ddd1fe2cc8707403c4537bee472d15ad325c9bd"
+                "url": "https://github.com/concretecms/concrete_cms_theme.git",
+                "reference": "a1b9d42543bf70af9ef73985e4e008b9973cab1c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/concrete5/concrete_cms_theme/zipball/6ddd1fe2cc8707403c4537bee472d15ad325c9bd",
-                "reference": "6ddd1fe2cc8707403c4537bee472d15ad325c9bd",
+                "url": "https://api.github.com/repos/concretecms/concrete_cms_theme/zipball/a1b9d42543bf70af9ef73985e4e008b9973cab1c",
+                "reference": "a1b9d42543bf70af9ef73985e4e008b9973cab1c",
                 "shasum": ""
             },
             "default-branch": true,
@@ -393,10 +393,10 @@
             ],
             "description": "Package that contains the official ConcreteCMS Theme.",
             "support": {
-                "issues": "https://github.com/concrete5/concrete_cms_theme/issues",
-                "source": "https://github.com/concrete5/concrete_cms_theme/tree/master"
+                "issues": "https://github.com/concretecms/concrete_cms_theme/issues",
+                "source": "https://github.com/concretecms/concrete_cms_theme/tree/master"
             },
-            "time": "2022-05-04T13:34:33+00:00"
+            "time": "2022-06-09T17:19:17+00:00"
         },
         {
             "name": "concrete5/core",
@@ -2668,16 +2668,16 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "1.8.3",
+            "version": "1.8.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "1afdd860a2566ed3c2b0b4a3de6e23434a79ec85"
+                "reference": "337e3ad8e5716c15f9657bd214d16cc5e69df268"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/1afdd860a2566ed3c2b0b4a3de6e23434a79ec85",
-                "reference": "1afdd860a2566ed3c2b0b4a3de6e23434a79ec85",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/337e3ad8e5716c15f9657bd214d16cc5e69df268",
+                "reference": "337e3ad8e5716c15f9657bd214d16cc5e69df268",
                 "shasum": ""
             },
             "require": {
@@ -2758,7 +2758,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/psr7/issues",
-                "source": "https://github.com/guzzle/psr7/tree/1.8.3"
+                "source": "https://github.com/guzzle/psr7/tree/1.8.5"
             },
             "funding": [
                 {
@@ -2774,7 +2774,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-10-05T13:56:00+00:00"
+            "time": "2022-03-20T21:51:18+00:00"
         },
         {
             "name": "htmlawed/htmlawed",
