@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<concrete5-cif version="1.0">
+    <blocktypes>
+        <blocktype handle="new_skyline_site_wizard" package="skyline_client"/>
+    </blocktypes>
+    <singlepages>
+        <page name="Skyline" path="/dashboard/skyline" filename="/dashboard/skyline/view.php" pagetype=""
+              description=""
+              package="skyline_client"/>
+
+        <page name="Sites" path="/dashboard/skyline/sites" filename="/dashboard/skyline/sites.php"
+              pagetype=""
+              description=""
+              package="skyline_client"/>
+    </singlepages>
+    <attributekeys>
+        <attributekey handle="stripe_customer_id" name="Stripe Customer ID" package="skyline_client" searchable="1"
+                      indexed="0" type="text" category="user"/>
+    </attributekeys>
+    <expressentities>
+        <entity id="88c4eb1a-136c-11ec-9fc5-8aa7a7509c1c" handle="skyline_hosting_site"
+                plural_handle="skyline_hosting_sites"
+                name="Hosting Site" supports_custom_display_order="" include_in_public_list=""
+                use_separate_site_result_buckets=""
+                description=""
+                package="skyline_client"
+                default_view_form="88c4ef3e-136c-11ec-9fc5-8aa7a7509c1c"
+                default_edit_form="88c4ef3e-136c-11ec-9fc5-8aa7a7509c1c" results-folder="/">
+            <attributekeys>
+                <attributekey handle="hosting_site_name" name="Site Name" package="" searchable="1" indexed="1"
+                              type="text" category="">
+                    <type placeholder=""/>
+                </attributekey>
+            </attributekeys>
+            <forms>
+                <form id="88c4ef3e-136c-11ec-9fc5-8aa7a7509c1c" name="Form">
+                    <fieldsets>
+                        <fieldset title="Basics" description="">
+                            <controls>
+                                <control id="1c666202-136d-11ec-9fc5-8aa7a7509c1e" type="attribute_key" required=""
+                                         custom-label="">
+                                    <attributekey handle="hosting_site_name"/>
+                                </control>
+                            </controls>
+                        </fieldset>
+                    </fieldsets>
+                </form>
+            </forms>
+        </entity>
+    </expressentities>
+</concrete5-cif>
