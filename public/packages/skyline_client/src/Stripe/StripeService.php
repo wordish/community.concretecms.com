@@ -5,7 +5,9 @@ namespace PortlandLabs\Skyline\Stripe;
 use Concrete\Core\Foundation\Service\Provider;
 use Concrete\Core\User\UserInfo;
 use Stripe\Customer;
+use Stripe\Price;
 use Stripe\StripeClient;
+use Stripe\Subscription;
 
 class StripeService
 {
@@ -43,6 +45,27 @@ class StripeService
         return $customer;
     }
 
+    public function getProductPrice(string $priceId): ?Price
+    {
+        return $this->stripe->prices->retrieve($priceId);
+    }
+
+    public function createSubscription(Customer $customer, Price $price): ?Subscription
+    {
+        $subscription = $this->stripe->subscriptions->create(
+            [
+                'customer' => $customer->id,
+                'items' => [
+                    [
+                        'price' => $price->id,
+                    ]
+                ],
+                'payment_behavior' => 'default_incomplete',
+                'expand' => ['latest_invoice.payment_intent'],
+            ]
+        );
+        return $subscription;
+    }
 
 
 }

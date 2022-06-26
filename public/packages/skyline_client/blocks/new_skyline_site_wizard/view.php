@@ -15,7 +15,7 @@ defined('C5_EXECUTE') or die('Access denied');
         <div class="form-group">
             <p><?=t('Give this project a name so you can find it in your profile later.')?></p>
             <div class="d-md-flex align-items-center text-center">
-                <input type="text" class="form-control-lg form-control" placeholder="www.mysite.com">
+                <input type="text" name="hosting_site_name" class="form-control-lg form-control" required placeholder="www.mysite.com">
                 <button class="ml-md-3 mt-md-0 mt-3 btn btn-xs-block btn-primary text-nowrap" type="submit"><?=t('Create Site')?></button>
             </div>
         </div>
