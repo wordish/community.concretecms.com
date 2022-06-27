@@ -7,6 +7,7 @@ use Concrete\Core\Html\Service\Navigation;
 use Concrete\Core\Routing\Redirect;
 use Concrete\Core\User\User;
 use PortlandLabs\Skyline\Command\CreateHostingSiteCommand;
+use PortlandLabs\Skyline\Command\CreateSiteInSkylineCommand;
 use PortlandLabs\Skyline\Stripe\StripeService;
 
 class Controller extends BlockController
@@ -40,7 +41,8 @@ class Controller extends BlockController
                 $customer = $service->getCustomer($userinfo);
                 $price = $service->getProductPrice($_ENV['SKYLINE_DEFAULT_PRODUCT_PRICE_ID']);
                 $subscription = $service->createSubscription($customer, $price);
-                $command = new CreateHostingSiteCommand($subscription->id, $name);
+                $subscriptionId = $subscription->id;
+                $command = new CreateHostingSiteCommand($subscriptionId, $name);
                 $hostingEntry = $this->app->executeCommand($command);
                 return Redirect::to('/account/sites', 'view_site', $hostingEntry->getPublicIdentifier());
             }
