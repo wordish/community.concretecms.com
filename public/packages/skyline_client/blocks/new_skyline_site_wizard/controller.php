@@ -7,7 +7,6 @@ use Concrete\Core\Html\Service\Navigation;
 use Concrete\Core\Routing\Redirect;
 use Concrete\Core\User\User;
 use PortlandLabs\Skyline\Command\CreateHostingSiteCommand;
-use PortlandLabs\Skyline\Command\CreateSiteInSkylineCommand;
 use PortlandLabs\Skyline\Stripe\StripeService;
 
 class Controller extends BlockController

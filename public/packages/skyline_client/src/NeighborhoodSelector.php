@@ -1,6 +1,6 @@
 <?php
 
-namespace PortlandLabs\Skyline\Neighborhood;
+namespace PortlandLabs\Skyline;
 
 class NeighborhoodSelector
 {

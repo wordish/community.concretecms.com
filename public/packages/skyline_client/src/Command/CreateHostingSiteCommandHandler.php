@@ -4,11 +4,12 @@ namespace PortlandLabs\Skyline\Command;
 
 use Concrete\Core\Entity\Express\Entry;
 use Concrete\Core\Express\ObjectManager;
-use PortlandLabs\Skyline\Neighborhood\NeighborhoodSelector;
+use PortlandLabs\Skyline\NeighborhoodSelector;
 use PortlandLabs\Skyline\Site\SiteHandleGenerator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\Bridge\Amqp\Transport\AmqpStamp;
 use Symfony\Component\Messenger\MessageBusInterface;
+use PortlandLabs\Skyline\Neighborhood\Command\CreateSiteInSkylineCommand;
 
 class CreateHostingSiteCommandHandler
 {

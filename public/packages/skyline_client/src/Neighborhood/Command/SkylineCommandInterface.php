@@ -1,6 +1,6 @@
 <?php
 
-namespace PortlandLabs\Skyline\Command;
+namespace PortlandLabs\Skyline\Neighborhood\Command;
 
 use Concrete\Core\Foundation\Command\Command;
 

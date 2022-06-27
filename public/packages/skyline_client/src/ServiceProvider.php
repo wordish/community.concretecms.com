@@ -2,7 +2,6 @@
 
 namespace PortlandLabs\Skyline;
 
-use Concrete\Core\Application\Application;
 use Concrete\Core\Foundation\Service\Provider;
 use Concrete\Core\Messenger\HandlersLocator;
 use Concrete\Core\Messenger\MessageBusManager;
@@ -10,8 +9,8 @@ use Concrete\Core\Messenger\Transport\Sender\DefinedTransportSendersLocator;
 use Concrete\Core\Messenger\Transport\TransportManager;
 use PortlandLabs\Skyline\Command\CreateHostingSiteCommandHandler;
 use PortlandLabs\Skyline\Messenger\Middleware\RouteMessageToSkylineNeighborhoodMiddleware;
+use PortlandLabs\Skyline\Messenger\Transport\SkylineAmqpTransport;
 use Stripe\StripeClient;
-use PortlandLabs\Skyline\Messenger\Transport\AmqpTransport;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Middleware\AddBusNameStampMiddleware;
@@ -42,7 +41,7 @@ class ServiceProvider extends Provider
         /**
          * @var $transportManager TransportManager
          */
-        $transportManager->addTransport($this->app->make(AmqpTransport::class));
+        $transportManager->addTransport($this->app->make(SkylineAmqpTransport::class));
 
         /**
          * @var $messageBusManager MessageBusManager

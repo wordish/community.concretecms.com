@@ -2,7 +2,7 @@
 
 namespace PortlandLabs\Skyline\Messenger\Middleware;
 
-use PortlandLabs\Skyline\Command\NeighborhoodAwareInterface;
+use PortlandLabs\Skyline\Neighborhood\Command\NeighborhoodAwareInterface;
 use Symfony\Component\Messenger\Bridge\Amqp\Transport\AmqpStamp;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;

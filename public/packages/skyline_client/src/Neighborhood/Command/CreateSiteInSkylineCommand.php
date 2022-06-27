@@ -1,8 +1,6 @@
 <?php
 
-namespace PortlandLabs\Skyline\Command;
-
-use Concrete\Core\Foundation\Command\Command;
+namespace PortlandLabs\Skyline\Neighborhood\Command;
 
 class CreateSiteInSkylineCommand implements NeighborhoodAwareInterface
 {
