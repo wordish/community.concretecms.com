@@ -1,5 +1,6 @@
 {
     "require": {
-        "stripe/stripe-php": "^8.8"
+        "stripe/stripe-php": "^8.8",
+        "badcow/phrase-generator": "dev-master"
     }
 }

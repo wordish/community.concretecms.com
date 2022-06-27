@@ -9,6 +9,7 @@ use Concrete\Core\Messenger\MessageBusManager;
 use Concrete\Core\Messenger\Transport\Sender\DefinedTransportSendersLocator;
 use Concrete\Core\Messenger\Transport\TransportManager;
 use PortlandLabs\Skyline\Command\CreateHostingSiteCommandHandler;
+use PortlandLabs\Skyline\Messenger\Middleware\RouteMessageToSkylineNeighborhoodMiddleware;
 use Stripe\StripeClient;
 use PortlandLabs\Skyline\Messenger\Transport\AmqpTransport;
 use Symfony\Component\Messenger\MessageBus;
@@ -53,6 +54,7 @@ class ServiceProvider extends Provider
                 new RejectRedeliveredMessageMiddleware(),
                 new DispatchAfterCurrentBusMiddleware(),
                 new FailedMessageProcessingMiddleware(),
+                new RouteMessageToSkylineNeighborhoodMiddleware(),
                 new SendMessageMiddleware($this->app->make(DefinedTransportSendersLocator::class, ['transportHandle' => 'amqp'])),
                 new HandleMessageMiddleware($this->app->make(HandlersLocator::class)),
             ];

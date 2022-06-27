@@ -31,7 +31,15 @@
                               type="text" category="">
                     <type placeholder=""/>
                 </attributekey>
+                <attributekey handle="hosting_site_handle" name="Site Handle" package="" searchable="1" indexed="1"
+                              type="text" category="">
+                    <type placeholder=""/>
+                </attributekey>
                 <attributekey handle="hosting_site_subscription_id" name="Subscription ID" package="" searchable="1" indexed="0"
+                              type="text" category="">
+                    <type placeholder=""/>
+                </attributekey>
+                <attributekey handle="hosting_site_neighborhood" name="Neighborhood" package="" searchable="1" indexed="1"
                               type="text" category="">
                     <type placeholder=""/>
                 </attributekey>
@@ -47,7 +55,15 @@
                                 </control>
                                 <control id="1c666202-136d-11ec-9fc5-8aa7a7509c1f" type="attribute_key" required=""
                                          custom-label="">
+                                    <attributekey handle="hosting_site_handle"/>
+                                </control>
+                                <control id="1c666202-136d-11ec-9fc5-8aa7a7509c1g" type="attribute_key" required=""
+                                         custom-label="">
                                     <attributekey handle="hosting_site_subscription_id"/>
+                                </control>
+                                <control id="1c666202-136d-11ec-9fc5-8aa7a7509c1h" type="attribute_key" required=""
+                                         custom-label="">
+                                    <attributekey handle="hosting_site_neighborhood"/>
                                 </control>
                             </controls>
                         </fieldset>
