@@ -1,6 +1,6 @@
 <?php
 
-namespace Concrete\Package\SkylineClient\Controller\SinglePage\Dashboard\Skyline;
+namespace Concrete\Package\SkylineHub\Controller\SinglePage\Dashboard\Skyline;
 
 use Concrete\Core\Controller\Traits\DashboardExpressEntityTrait;
 use Concrete\Core\Entity\Express\Entity;

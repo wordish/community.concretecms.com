@@ -1,6 +1,6 @@
 <?php
 
-namespace Concrete\Package\SkylineClient;
+namespace Concrete\Package\SkylineHub;
 
 use Concrete\Core\Package\Package;
 use PortlandLabs\Skyline\ServiceProvider;
@@ -8,7 +8,7 @@ use PortlandLabs\Skyline\ServiceProvider;
 class Controller extends Package
 {
 
-    protected $pkgHandle = 'skyline_client';
+    protected $pkgHandle = 'skyline_hub';
     protected $appVersionRequired = '9.0.2';
     protected $pkgVersion = '0.2.3';
     protected $pkgAutoloaderMapCoreExtensions = true;
@@ -18,12 +18,12 @@ class Controller extends Package
 
     public function getPackageDescription()
     {
-        return t("Skyline Hosting Platform Client Extensions.");
+        return t("Skyline Hosting Platform Hub.");
     }
 
     public function getPackageName()
     {
-        return t("Skyline Client");
+        return t("Skyline Hub");
     }
 
     public function install()

@@ -1,6 +1,6 @@
 # Ignore composer stuff
 /vendor/
-/public/packages/skyline_client/vendor
+/public/packages/skyline_hub/vendor
 
 # Ignore concrete5 stuff
 /public/concrete

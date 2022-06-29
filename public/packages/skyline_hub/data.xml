@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <concrete5-cif version="1.0">
     <blocktypes>
-        <blocktype handle="new_skyline_site_wizard" package="skyline_client"/>
+        <blocktype handle="new_skyline_site_wizard" package="skyline_hub"/>
     </blocktypes>
     <singlepages>
         <page name="Skyline" path="/dashboard/skyline" filename="/dashboard/skyline/view.php" pagetype=""
               description=""
-              package="skyline_client"/>
+              package="skyline_hub"/>
 
         <page name="Sites" path="/dashboard/skyline/sites" filename="/dashboard/skyline/sites.php"
               pagetype=""
               description=""
-              package="skyline_client"/>
+              package="skyline_hub"/>
     </singlepages>
     <attributekeys>
-        <attributekey handle="stripe_customer_id" name="Stripe Customer ID" package="skyline_client" searchable="1"
+        <attributekey handle="stripe_customer_id" name="Stripe Customer ID" package="skyline_hub" searchable="1"
                       indexed="0" type="text" category="user"/>
     </attributekeys>
     <expressentities>
@@ -23,7 +23,7 @@
                 name="Hosting Site" supports_custom_display_order="" include_in_public_list=""
                 use_separate_site_result_buckets=""
                 description=""
-                package="skyline_client"
+                package="skyline_hub"
                 default_view_form="88c4ef3e-136c-11ec-9fc5-8aa7a7509c1c"
                 default_edit_form="88c4ef3e-136c-11ec-9fc5-8aa7a7509c1c" results-folder="/">
             <attributekeys>

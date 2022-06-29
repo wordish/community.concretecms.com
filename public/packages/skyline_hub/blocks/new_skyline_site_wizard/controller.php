@@ -1,6 +1,6 @@
 <?php
 
-namespace Concrete\Package\SkylineClient\Block\NewSkylineSiteWizard;
+namespace Concrete\Package\SkylineHub\Block\NewSkylineSiteWizard;
 
 use Concrete\Core\Block\BlockController;
 use Concrete\Core\Html\Service\Navigation;

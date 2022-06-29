@@ -1,6 +1,6 @@
 <?php
 
-namespace Concrete\Package\SkylineClient\Controller\SinglePage\Dashboard;
+namespace Concrete\Package\SkylineHub\Controller\SinglePage\Dashboard;
 
 use Concrete\Core\Page\Controller\DashboardPageController;
 
