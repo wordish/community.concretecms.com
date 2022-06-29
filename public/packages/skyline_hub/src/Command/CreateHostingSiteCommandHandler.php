@@ -60,6 +60,9 @@ class CreateHostingSiteCommandHandler
         $entity = $this->objectManager->getObjectByHandle('skyline_hosting_site');
         $controller = $this->objectManager->getEntityController($entity);
         $entryManager = $controller->getEntryManager($this->request);
+        /**
+         * @var $hostingEntry Entry
+         */
         $hostingEntry = $entryManager->addEntry($entity);
         $hostingEntry->setAttribute('hosting_site_subscription_id', $command->getSubscriptionId());
         $hostingEntry->setAttribute('hosting_site_name', $siteName);
@@ -68,6 +71,7 @@ class CreateHostingSiteCommandHandler
 
         $command = new CreateSiteInSkylineCommand();
         $command->setNeighborhood($neighborhood);
+        $command->setEmail($hostingEntry->getAuthor()->getUserEmail());
         $command->setSiteHandle($siteHandle);
 
         $this->messageBus->dispatch($command);
