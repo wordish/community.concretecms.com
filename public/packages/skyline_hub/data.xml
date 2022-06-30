@@ -50,6 +50,10 @@
                               type="text" category="">
                     <type placeholder=""/>
                 </attributekey>
+                <attributekey handle="hosting_site_status" name="Status" package="" searchable="1" indexed="0"
+                              type="number" category="">
+                    <type placeholder=""/>
+                </attributekey>
             </attributekeys>
             <forms>
                 <form id="88c4ef3e-136c-11ec-9fc5-8aa7a7509c1c" name="Form">

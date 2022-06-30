@@ -5,6 +5,7 @@ namespace PortlandLabs\Skyline\Command;
 use Concrete\Core\Entity\Express\Entry;
 use Concrete\Core\Express\ObjectManager;
 use PortlandLabs\Skyline\NeighborhoodSelector;
+use PortlandLabs\Skyline\Site\Site;
 use PortlandLabs\Skyline\Site\SiteHandleGenerator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\Bridge\Amqp\Transport\AmqpStamp;
@@ -71,6 +72,7 @@ class CreateHostingSiteCommandHandler
         $hostingEntry->setAttribute('hosting_site_handle', $siteHandle);
         $hostingEntry->setAttribute('hosting_site_neighborhood', $neighborhood);
         $hostingEntry->setAttribute('hosting_site_password', $generatedAdminPassword);
+        $hostingEntry->setAttribute('hosting_site_status', Site::STATUS_INSTALLING);
 
         $command = new CreateSiteInSkylineCommand();
         $command->setNeighborhood($neighborhood);

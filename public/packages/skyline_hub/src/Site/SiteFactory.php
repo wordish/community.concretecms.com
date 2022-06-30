@@ -24,6 +24,7 @@ class SiteFactory
         $site = new Site();
         $site->setId($entry->getPublicIdentifier());
         $site->setHandle($entry->getAttribute('hosting_site_handle'));
+        $site->setStatus($entry->getAttribute('hosting_site_status'));
         $site->setConcreteAdminPassword($entry->getAttribute('hosting_site_password'));
         $neighborhood = $this->neighborhoodList->getByHandle($entry->getAttribute('hosting_site_neighborhood'));
         if ($neighborhood) {
