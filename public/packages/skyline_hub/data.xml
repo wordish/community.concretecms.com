@@ -12,6 +12,9 @@
               pagetype=""
               description=""
               package="skyline_hub"/>
+        <page name="Hosting" path="/account/hosting" filename="/account/hosting/view.php" pagetype="" description=""
+              package="skyline_hub">
+        </page>
     </singlepages>
     <attributekeys>
         <attributekey handle="stripe_customer_id" name="Stripe Customer ID" package="skyline_hub" searchable="1"
@@ -40,6 +43,10 @@
                     <type placeholder=""/>
                 </attributekey>
                 <attributekey handle="hosting_site_neighborhood" name="Neighborhood" package="" searchable="1" indexed="1"
+                              type="text" category="">
+                    <type placeholder=""/>
+                </attributekey>
+                <attributekey handle="hosting_site_password" name="Admin Password" package="" searchable="0" indexed="0"
                               type="text" category="">
                     <type placeholder=""/>
                 </attributekey>

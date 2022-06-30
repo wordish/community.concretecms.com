@@ -55,11 +55,13 @@ class CreateHostingSiteCommandHandler
     public function __invoke(CreateHostingSiteCommand $command)
     {
         $siteName = $command->getSiteName();
-        $neighborhood = $this->neighborhoodSelector->chooseNeighborhoodForNewSite();
+        $neighborhood = $this->neighborhoodSelector->chooseNeighborhoodForNewSite()->getHandle();
         $siteHandle = $this->siteHandleGenerator->createSiteHandle($command);
         $entity = $this->objectManager->getObjectByHandle('skyline_hosting_site');
         $controller = $this->objectManager->getEntityController($entity);
         $entryManager = $controller->getEntryManager($this->request);
+        $generatedAdminPassword = bin2hex(random_bytes(8));
+
         /**
          * @var $hostingEntry Entry
          */
@@ -68,11 +70,13 @@ class CreateHostingSiteCommandHandler
         $hostingEntry->setAttribute('hosting_site_name', $siteName);
         $hostingEntry->setAttribute('hosting_site_handle', $siteHandle);
         $hostingEntry->setAttribute('hosting_site_neighborhood', $neighborhood);
+        $hostingEntry->setAttribute('hosting_site_password', $generatedAdminPassword);
 
         $command = new CreateSiteInSkylineCommand();
         $command->setNeighborhood($neighborhood);
         $command->setEmail($hostingEntry->getAuthor()->getUserEmail());
         $command->setSiteHandle($siteHandle);
+        $command->setConcreteAdminPassword($generatedAdminPassword);
 
         $this->messageBus->dispatch($command);
 

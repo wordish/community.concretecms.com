@@ -22,3 +22,5 @@
 /build
 /.phpunit.*
 .DS_Store
+
+/public/packages/skyline_hub/build/node_modules

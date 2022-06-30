@@ -25,6 +25,7 @@ class ServiceProvider extends Provider
 
     public function register()
     {
+        $this->app->singleton(NeighborhoodListFactory::class);
         $this->app->singleton(
             StripeClient::class,
             function () {

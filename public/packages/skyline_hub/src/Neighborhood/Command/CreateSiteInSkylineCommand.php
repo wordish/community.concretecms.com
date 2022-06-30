@@ -21,6 +21,11 @@ class CreateSiteInSkylineCommand implements NeighborhoodAwareInterface
     protected $email;
 
     /**
+     * @var string
+     */
+    protected $concreteAdminPassword;
+
+    /**
      * @return string
      */
     public function getNeighborhood(): string
@@ -67,5 +72,24 @@ class CreateSiteInSkylineCommand implements NeighborhoodAwareInterface
     {
         $this->email = $email;
     }
+
+    /**
+     * @return string
+     */
+    public function getConcreteAdminPassword(): string
+    {
+        return $this->concreteAdminPassword;
+    }
+
+    /**
+     * @param string $concreteAdminPassword
+     */
+    public function setConcreteAdminPassword(string $concreteAdminPassword): void
+    {
+        $this->concreteAdminPassword = $concreteAdminPassword;
+    }
+
+
+
 
 }

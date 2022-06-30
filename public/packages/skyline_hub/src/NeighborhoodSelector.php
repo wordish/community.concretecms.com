@@ -2,19 +2,29 @@
 
 namespace PortlandLabs\Skyline;
 
+use PortlandLabs\Skyline\Neighborhood\Neighborhood;
+
 class NeighborhoodSelector
 {
 
-    protected $neighborhoods = ['irvington'];
+    /**
+     * @var NeighborhoodListFactory
+     */
+    protected $neighborhoodListFactory;
+
+    public function __construct(NeighborhoodListFactory $neighborhoodListFactory)
+    {
+        $this->neighborhoodListFactory = $neighborhoodListFactory;
+    }
 
     /**
      * Selects a neighborhood for a new site entry.
-     * @TODO - make this have some kind of logic, add new neighborhoods, add new arguments to this function
-     * that help determine which neighborhood to use.
      */
-    public function chooseNeighborhoodForNewSite(): string
+    public function chooseNeighborhoodForNewSite(): Neighborhood
     {
-        return $this->neighborhoods[array_rand($this->neighborhoods)];
+        $neighborhoods = $this->neighborhoodListFactory->createList()->getNeighborhoods();
+        shuffle($neighborhoods);
+        return $neighborhoods[0];
     }
 
 
