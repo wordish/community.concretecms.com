@@ -48,9 +48,9 @@ class ServiceProvider extends Provider
          * @var $messageBusManager MessageBusManager
          */
         $messageBusManager = $this->app->make(MessageBusManager::class);
-        $messageBusManager->registerBus('skyline', function() {
+        $messageBusManager->registerBus('skyline_neighborhood', function() {
             $middleware = [
-                new AddBusNameStampMiddleware('skyline'),
+                new AddBusNameStampMiddleware('skyline_neighborhood'),
                 new RejectRedeliveredMessageMiddleware(),
                 new DispatchAfterCurrentBusMiddleware(),
                 new FailedMessageProcessingMiddleware(),
@@ -60,11 +60,21 @@ class ServiceProvider extends Provider
             ];
             return new MessageBus($middleware);
         });
+        $messageBusManager->registerBus('skyline_hub', function() {
+            $middleware = [
+                new AddBusNameStampMiddleware('skyline_hub'),
+                new RejectRedeliveredMessageMiddleware(),
+                new DispatchAfterCurrentBusMiddleware(),
+                new FailedMessageProcessingMiddleware(),
+                new HandleMessageMiddleware($this->app->make(HandlersLocator::class)),
+            ];
+            return new MessageBus($middleware);
+        });
 
         $this->app->when(CreateHostingSiteCommandHandler::class)
             ->needs(MessageBusInterface::class)
             ->give(function() use ($messageBusManager) {
-                return $messageBusManager->getBus('skyline');
+                return $messageBusManager->getBus('skyline_neighborhood');
             });
     }
 }

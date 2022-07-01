@@ -9,6 +9,7 @@ class Site implements \JsonSerializable
 
     const STATUS_INSTALLING = 10;
     const STATUS_INSTALLED = 50;
+    const STATUS_TERMINATED = 999;
 
     /**
      * Site UUID; derived from the Express public identifier.

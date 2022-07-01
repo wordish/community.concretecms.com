@@ -27,11 +27,24 @@ class SkylineAmqpTransport implements TransportInterface
         $this->app = $app;
     }
 
-    protected function getConnection(): Connection
+    protected function getSenderConnection(): Connection
     {
         return Connection::fromDsn(
             $_ENV['SKYLINE_QUEUE_DSN'],
             ['auto_setup' => false, 'exchange' => ['name' => 'skyline', 'type' => 'direct']]
+        );
+    }
+
+    protected function getReceiverConnection(): Connection
+    {
+        return Connection::fromDsn(
+            $_ENV['SKYLINE_QUEUE_DSN'],
+            [
+                'auto_setup' => false,
+                'queues' => [
+                    'hub' => ['hub'],
+                ],
+            ]
         );
     }
 
@@ -43,7 +56,7 @@ class SkylineAmqpTransport implements TransportInterface
                 return $app->make(
                     AmqpSender::class,
                     [
-                        'connection' => $this->getConnection()
+                        'connection' => $this->getSenderConnection()
                     ]
                 );
             }
@@ -54,11 +67,11 @@ class SkylineAmqpTransport implements TransportInterface
     {
         $app = $this->app;
         return [
-            'amqp' => function () use ($app) {
+            'skyline_hub' => function () use ($app) {
                 return $app->make(
                     AmqpReceiver::class,
                     [
-                        'connection' => $this->getConnection()
+                        'connection' => $this->getReceiverConnection()
                     ]
                 );
             }
