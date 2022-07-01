@@ -18,7 +18,7 @@ class Hosting extends AccountPageController
         $this->requireAsset('skyline/frontend');
     }
 
-    public function view_site($uuid  = null)
+    public function install($uuid  = null)
     {
         /**
          * @var $objectManager ObjectManager
@@ -34,6 +34,7 @@ class Hosting extends AccountPageController
         }
         $siteFactory = $this->app->make(SiteFactory::class);
         $this->set('hostingSite', $siteFactory->createFromEntry($hostingSite));
+        $this->render('/account/hosting/install');
     }
 
 }

@@ -1,10 +1,8 @@
 <?php
 
-namespace PortlandLabs\Skyline\Neighborhood\Command;
+namespace PortlandLabs\Skyline\Neighborhood\Command\Traits;
 
-use Concrete\Core\Foundation\Command\Command;
-
-class CompleteAccountDeletionInNeighborhoodCommand extends Command
+trait NeighborhoodAccountTrait
 {
 
     /**
@@ -48,10 +46,6 @@ class CompleteAccountDeletionInNeighborhoodCommand extends Command
     {
         $this->siteHandle = $siteHandle;
     }
-
-
-
-
 
 
 }

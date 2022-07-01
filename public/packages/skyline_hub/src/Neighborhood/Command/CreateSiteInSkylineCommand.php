@@ -2,18 +2,12 @@
 
 namespace PortlandLabs\Skyline\Neighborhood\Command;
 
+use PortlandLabs\Skyline\Neighborhood\Command\Traits\NeighborhoodAccountTrait;
+
 class CreateSiteInSkylineCommand implements NeighborhoodAwareInterface
 {
 
-    /**
-     * @var string
-     */
-    protected $neighborhood;
-
-    /**
-     * @var string
-     */
-    protected $siteHandle;
+    use NeighborhoodAccountTrait;
 
     /**
      * @var string
@@ -25,37 +19,6 @@ class CreateSiteInSkylineCommand implements NeighborhoodAwareInterface
      */
     protected $concreteAdminPassword;
 
-    /**
-     * @return string
-     */
-    public function getNeighborhood(): string
-    {
-        return $this->neighborhood;
-    }
-
-    /**
-     * @param string $neighborhood
-     */
-    public function setNeighborhood(string $neighborhood): void
-    {
-        $this->neighborhood = $neighborhood;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSiteHandle(): string
-    {
-        return $this->siteHandle;
-    }
-
-    /**
-     * @param string $siteHandle
-     */
-    public function setSiteHandle(string $siteHandle): void
-    {
-        $this->siteHandle = $siteHandle;
-    }
 
     /**
      * @return string
