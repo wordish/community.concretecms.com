@@ -2,57 +2,40 @@
 
 namespace Concrete\Package\SkylineHub\Controller\SinglePage\Account;
 
-use Concrete\Core\Asset\AssetList;
-use Concrete\Core\Express\ObjectManager;
 use Concrete\Core\Page\Controller\AccountPageController;
-use Concrete\Core\Page\Controller\PageController;
-use PortlandLabs\Skyline\Site\Site;
-use PortlandLabs\Skyline\Site\SiteFactory;
+use PortlandLabs\Skyline\Site\SiteList;
 
 class Hosting extends AccountPageController
 {
 
-    public function on_start()
+    public function view()
     {
-        parent::on_start();
-        $this->requireAsset('skyline/frontend');
+        $list = $this->getList();
+        $this->sendListResults($list);
     }
 
-    protected function protect($uuid = null): Site
+    public function search()
     {
-        /**
-         * @var $objectManager ObjectManager
-         */
-        $objectManager = $this->app->make(ObjectManager::class);
-        $entry = $objectManager->getEntryByPublicIdentifier($uuid);
-        if (!$entry) {
-            throw new \Exception(t('Invalid site.'));
-        }
+        $query = h($this->request->query->get('query'));
+        $list = $this->getList();
+        $list->filterByKeywords($query);
+        $this->sendListResults($list);
+        $this->set('query', $query);
+    }
+
+    protected function getList()
+    {
         $profile = $this->get('profile');
-        if ($entry->getAuthor()->getUserID() !== $profile->getUserID()) {
-            throw new \Exception(t('You do not have access to edit this site.'));
-        }
-        $siteFactory = $this->app->make(SiteFactory::class);
-        $hostingSite = $siteFactory->createFromEntry($entry);
-        $this->set('hostingSite', $hostingSite);
-        return $hostingSite;
+        $list = $this->app->make(SiteList::class);
+        $list->filterByAuthorUserID($profile->getUserID());
+        $list->sortByDateAddedDescending();
+        return $list;
     }
 
-    public function install($uuid  = null)
+    protected function sendListResults($list)
     {
-        $hostingSite = $this->protect($uuid);
-        if ($hostingSite->getStatus() != Site::STATUS_INSTALLING) {
-            return $this->buildRedirect(['/account/hosting/', 'view_details', $uuid]);
-        }
-
-        $this->render('/account/hosting/install');
+        $hostingSites = $list->getResults();
+        $this->set('hostingSites', $hostingSites);
     }
 
-    public function view_details($uuid = null)
-    {
-        $hostingSite = $this->protect($uuid);
-        $subscription = $hostingSite->getSubscription();
-        $this->set('subscription', $subscription);
-        $this->render('/account/hosting/details');
-    }
 }

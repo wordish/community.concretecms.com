@@ -2,7 +2,8 @@
 
 defined('C5_EXECUTE') or die('Access denied');
 
-?>
+if ($u->isRegistered()) { ?>
+
 
 <form method="post" action="<?=$view->action('create_site')?>">
     <?=$token->output('create_site')?>
@@ -23,3 +24,9 @@ defined('C5_EXECUTE') or die('Access denied');
     </div>
 
 </form>
+
+<?php } else { ?>
+
+    <p class="text-center mb-5"><big><?=t("You must <a href='%s'>sign in</a> to create a site.", URL::to('/login'))?></big></p>
+
+<?php } ?>

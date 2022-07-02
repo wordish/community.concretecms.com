@@ -40,10 +40,9 @@ class Controller extends BlockController
                 $customer = $service->getCustomer($userinfo);
                 $price = $service->getProductPrice($_ENV['SKYLINE_DEFAULT_PRODUCT_PRICE_ID']);
                 $subscription = $service->createSubscription($customer, $price);
-                $subscriptionId = $subscription->id;
-                $command = new CreateHostingSiteCommand($subscriptionId, $name);
+                $command = new CreateHostingSiteCommand($subscription->id, $subscription->status, $name);
                 $hostingEntry = $this->app->executeCommand($command);
-                return Redirect::to('/account/hosting', 'install', $hostingEntry->getPublicIdentifier());
+                return Redirect::to('/account/hosting/project', $hostingEntry->getPublicIdentifier());
             }
         }
     }

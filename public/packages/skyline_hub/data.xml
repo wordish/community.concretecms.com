@@ -12,7 +12,10 @@
               pagetype=""
               description=""
               package="skyline_hub"/>
-        <page name="Hosting" path="/account/hosting" filename="/account/hosting/view.php" pagetype="" description=""
+        <page name="Hosting Sites" path="/account/hosting" filename="/account/hosting/view.php" pagetype="" description=""
+              package="skyline_hub">
+        </page>
+        <page name="View Site" path="/account/hosting/project" filename="/account/hosting/project/view.php" pagetype="" description=""
               package="skyline_hub">
         </page>
     </singlepages>
@@ -39,6 +42,10 @@
                     <type placeholder=""/>
                 </attributekey>
                 <attributekey handle="hosting_site_subscription_id" name="Subscription ID" package="" searchable="1" indexed="0"
+                              type="text" category="">
+                    <type placeholder=""/>
+                </attributekey>
+                <attributekey handle="hosting_site_subscription_status" name="Subscription Status" package="" searchable="1" indexed="0"
                               type="text" category="">
                     <type placeholder=""/>
                 </attributekey>
@@ -73,6 +80,10 @@
                                     <attributekey handle="hosting_site_subscription_id"/>
                                 </control>
                                 <control id="1c666202-136d-11ec-9fc5-8aa7a7509c1h" type="attribute_key" required=""
+                                         custom-label="">
+                                    <attributekey handle="hosting_site_subscription_status"/>
+                                </control>
+                                <control id="1c666202-136d-11ec-9fc5-8aa7a7509c1i" type="attribute_key" required=""
                                          custom-label="">
                                     <attributekey handle="hosting_site_neighborhood"/>
                                 </control>

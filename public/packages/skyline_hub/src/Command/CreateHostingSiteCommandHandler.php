@@ -68,6 +68,7 @@ class CreateHostingSiteCommandHandler
          */
         $hostingEntry = $entryManager->addEntry($entity);
         $hostingEntry->setAttribute('hosting_site_subscription_id', $command->getSubscriptionId());
+        $hostingEntry->setAttribute('hosting_site_subscription_status', $command->getSubscriptionStatus());
         $hostingEntry->setAttribute('hosting_site_name', $siteName);
         $hostingEntry->setAttribute('hosting_site_handle', $siteHandle);
         $hostingEntry->setAttribute('hosting_site_neighborhood', $neighborhood);
