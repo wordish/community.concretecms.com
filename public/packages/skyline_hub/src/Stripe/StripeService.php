@@ -60,8 +60,7 @@ class StripeService
                         'price' => $price->id,
                     ]
                 ],
-                'payment_behavior' => 'default_incomplete',
-                'expand' => ['latest_invoice.payment_intent'],
+                'trial_period_days' => $_ENV['SKYLINE_SRIPE_TRIAL_PERIOD_DAYS'],
             ]
         );
         return $subscription;

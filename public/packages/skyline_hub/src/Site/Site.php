@@ -2,7 +2,9 @@
 
 namespace PortlandLabs\Skyline\Site;
 
-use Concrete\Core\Entity\Express\Entry;
+use Stripe\Stripe;
+use Stripe\StripeClient;
+use Stripe\Subscription;
 
 class Site implements \JsonSerializable
 {
@@ -37,10 +39,27 @@ class Site implements \JsonSerializable
     protected $publicUrl;
 
     /**
+     * The URL on community.concretecms.com where the billing can be modified, other functions accessed
+     * @var string
+     */
+    protected $controlPanelUrl;
+
+    /**
+     * @var string
+     */
+    protected $name;
+
+    /**
      * Domain to display on the site details page.
      * @var string
      */
     protected $publicDomain;
+
+    /**
+     * Stripe subscription ID
+     * @var string
+     */
+    protected $subscriptionId;
 
     /**
      * Auto-generated password, temporarily available on the Site object during installation. Is cleared when
@@ -85,6 +104,23 @@ class Site implements \JsonSerializable
     /**
      * @return string
      */
+    public function getControlPanelUrl(): string
+    {
+        return $this->controlPanelUrl;
+    }
+
+    /**
+     * @param string $controlPanelUrl
+     */
+    public function setControlPanelUrl(string $controlPanelUrl): void
+    {
+        $this->controlPanelUrl = $controlPanelUrl;
+    }
+
+
+    /**
+     * @return string
+     */
     public function getPublicDomain(): string
     {
         return $this->publicDomain;
@@ -96,6 +132,22 @@ class Site implements \JsonSerializable
     public function setPublicDomain(string $publicDomain): void
     {
         $this->publicDomain = $publicDomain;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSubscriptionId(): string
+    {
+        return $this->subscriptionId;
+    }
+
+    /**
+     * @param string $subscriptionId
+     */
+    public function setSubscriptionId(string $subscriptionId): void
+    {
+        $this->subscriptionId = $subscriptionId;
     }
 
     /**
@@ -146,14 +198,44 @@ class Site implements \JsonSerializable
         $this->status = $status;
     }
 
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    public function getSubscription(): ?Subscription
+    {
+        /**
+         * @var $stripe Stripe
+         */
+        if ($this->subscriptionId) {
+            $stripe = app(StripeClient::class);
+            return $stripe->subscriptions->retrieve($this->subscriptionId);
+        }
+        return null;
+    }
+
     public function jsonSerialize()
     {
         return [
             'id' => $this->id,
             'handle' => $this->handle,
+            'name' => $this->name,
             'status' => $this->status,
             'publicDomain' => $this->publicDomain,
             'publicUrl' => $this->publicUrl,
+            'controlPanelUrl' => $this->controlPanelUrl,
             'password' => $this->concreteAdminPassword,
         ];
     }

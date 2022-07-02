@@ -1,20 +1,43 @@
 <template>
-    <div class="container">
+    <div class="container" v-cloak>
         <div class="row">
             <div class="col-md-6 d-flex">
                 <div class="align-self-center ml-auto mr-auto">
                     <vue-ellipse-progress
                         :loading="currentProgress === null"
                         :progress="currentProgress"
+                        color="#017ddd"
+                        empty-color="#f7f7f7"
+                        :thickness="4"
+                        animation="loop 700 1000"
+                        fontSize="1.5rem"
                         :size="300"
-                    />
+                    >
+                        <span slot="legend-value" v-if="currentProgress !== null">
+                            <span></span>%
+                      </span>
+
+                        <span slot="legend-caption"  v-if="currentProgress !== null"> COMPLETE </span>
+                    </vue-ellipse-progress>
                 </div>
             </div>
             <div class="col-md-6 d-flex">
                 <div class="w-100 align-self-center align-items-center">
-                    <div class="mb-2">
-                        <h3>View/Edit Your Site</h3>
-                        <div class="bg-light text-center p-3"><b><a target="_blank" :href="site.publicUrl">{{site.publicDomain}}</a></b></div>
+                    <div class="mb-4">
+                        <h4>URL</h4>
+                        <div class="bg-light text-center p-3 mb-1">
+                            <b><span v-if="!isComplete" style="cursor: not-allowed">{{site.publicDomain}}</span>
+                            <a v-else :href="site.publicUrl" target="_blank">{{site.publicDomain}}</a></b>
+                        </div>
+                        <div class="text-muted mb-3" v-if="!isComplete">
+                            Your site is not quite ready. Please wait for installation to complete before visiting this URL.
+                        </div>
+                        <div v-else class="mb-3 mt-3 text-center">
+                            <div class="btn-group">
+                                <a :href="site.controlPanelUrl" class="btn btn-secondary">Control Panel & Billing</a>
+                                <a :href="site.publicUrl" class="btn btn-primary">View/Edit Site</a>
+                            </div>
+                        </div>
                     </div>
                     <div class="mb-4">
                         <h4>Username</h4>
@@ -83,6 +106,10 @@ export default {
     computed: {
         sitePassword() {
             return this.isPasswordShown ? this.site.password : '(Hidden)'
+        },
+
+        isComplete() {
+            return this.currentProgress == 100
         }
     }
 }

@@ -340,6 +340,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     site: {
@@ -387,6 +410,9 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     sitePassword: function sitePassword() {
       return this.isPasswordShown ? this.site.password : '(Hidden)';
+    },
+    isComplete: function isComplete() {
+      return this.currentProgress == 100;
     }
   }
 });
@@ -426,13 +452,41 @@ var render = function () {
           "div",
           { staticClass: "align-self-center ml-auto mr-auto" },
           [
-            _c("vue-ellipse-progress", {
-              attrs: {
-                loading: _vm.currentProgress === null,
-                progress: _vm.currentProgress,
-                size: 300,
+            _c(
+              "vue-ellipse-progress",
+              {
+                attrs: {
+                  loading: _vm.currentProgress === null,
+                  progress: _vm.currentProgress,
+                  color: "#017ddd",
+                  "empty-color": "#f7f7f7",
+                  thickness: 4,
+                  animation: "loop 700 1000",
+                  fontSize: "1.5rem",
+                  size: 300,
+                },
               },
-            }),
+              [
+                _vm.currentProgress !== null
+                  ? _c(
+                      "span",
+                      { attrs: { slot: "legend-value" }, slot: "legend-value" },
+                      [_c("span"), _vm._v("%\n                  ")]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.currentProgress !== null
+                  ? _c(
+                      "span",
+                      {
+                        attrs: { slot: "legend-caption" },
+                        slot: "legend-caption",
+                      },
+                      [_vm._v(" COMPLETE ")]
+                    )
+                  : _vm._e(),
+              ]
+            ),
           ],
           1
         ),
@@ -443,18 +497,52 @@ var render = function () {
           "div",
           { staticClass: "w-100 align-self-center align-items-center" },
           [
-            _c("div", { staticClass: "mb-2" }, [
-              _c("h3", [_vm._v("View/Edit Your Site")]),
+            _c("div", { staticClass: "mb-4" }, [
+              _c("h4", [_vm._v("URL")]),
               _vm._v(" "),
-              _c("div", { staticClass: "bg-light text-center p-3" }, [
+              _c("div", { staticClass: "bg-light text-center p-3 mb-1" }, [
                 _c("b", [
-                  _c(
-                    "a",
-                    { attrs: { target: "_blank", href: _vm.site.publicUrl } },
-                    [_vm._v(_vm._s(_vm.site.publicDomain))]
-                  ),
+                  !_vm.isComplete
+                    ? _c("span", { staticStyle: { cursor: "not-allowed" } }, [
+                        _vm._v(_vm._s(_vm.site.publicDomain)),
+                      ])
+                    : _c(
+                        "a",
+                        {
+                          attrs: { href: _vm.site.publicUrl, target: "_blank" },
+                        },
+                        [_vm._v(_vm._s(_vm.site.publicDomain))]
+                      ),
                 ]),
               ]),
+              _vm._v(" "),
+              !_vm.isComplete
+                ? _c("div", { staticClass: "text-muted mb-3" }, [
+                    _vm._v(
+                      "\n                        Your site is not quite ready. Please wait for installation to complete before visiting this URL.\n                    "
+                    ),
+                  ])
+                : _c("div", { staticClass: "mb-3 mt-3 text-center" }, [
+                    _c("div", { staticClass: "btn-group" }, [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "btn btn-secondary",
+                          attrs: { href: _vm.site.controlPanelUrl },
+                        },
+                        [_vm._v("Control Panel & Billing")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "a",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: { href: _vm.site.publicUrl },
+                        },
+                        [_vm._v("View/Edit Site")]
+                      ),
+                    ]),
+                  ]),
             ]),
             _vm._v(" "),
             _vm._m(0),

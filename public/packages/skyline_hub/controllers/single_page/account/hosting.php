@@ -18,23 +18,41 @@ class Hosting extends AccountPageController
         $this->requireAsset('skyline/frontend');
     }
 
-    public function install($uuid  = null)
+    protected function protect($uuid = null): Site
     {
         /**
          * @var $objectManager ObjectManager
          */
         $objectManager = $this->app->make(ObjectManager::class);
-        $hostingSite = $objectManager->getEntryByPublicIdentifier($uuid);
-        if (!$hostingSite) {
+        $entry = $objectManager->getEntryByPublicIdentifier($uuid);
+        if (!$entry) {
             throw new \Exception(t('Invalid site.'));
         }
         $profile = $this->get('profile');
-        if ($hostingSite->getAuthor()->getUserID() !== $profile->getUserID()) {
+        if ($entry->getAuthor()->getUserID() !== $profile->getUserID()) {
             throw new \Exception(t('You do not have access to edit this site.'));
         }
         $siteFactory = $this->app->make(SiteFactory::class);
-        $this->set('hostingSite', $siteFactory->createFromEntry($hostingSite));
+        $hostingSite = $siteFactory->createFromEntry($entry);
+        $this->set('hostingSite', $hostingSite);
+        return $hostingSite;
+    }
+
+    public function install($uuid  = null)
+    {
+        $hostingSite = $this->protect($uuid);
+        if ($hostingSite->getStatus() != Site::STATUS_INSTALLING) {
+            return $this->buildRedirect(['/account/hosting/', 'view_details', $uuid]);
+        }
+
         $this->render('/account/hosting/install');
     }
 
+    public function view_details($uuid = null)
+    {
+        $hostingSite = $this->protect($uuid);
+        $subscription = $hostingSite->getSubscription();
+        $this->set('subscription', $subscription);
+        $this->render('/account/hosting/details');
+    }
 }
