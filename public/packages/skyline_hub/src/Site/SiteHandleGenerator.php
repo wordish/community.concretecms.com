@@ -25,6 +25,7 @@ class SiteHandleGenerator
         if (strpos($siteName, 'www.') === 0) {
             $siteName = substr($siteName, 4);
         }
+        $siteName = strtolower($siteName);
         $siteName = $this->textService->alphanum($siteName);
         $handle = $this->textService->shorten($siteName, 6, '');
         $handle .= '-' . strtolower(str_random(4)) . '-' . strtolower(str_random(4));

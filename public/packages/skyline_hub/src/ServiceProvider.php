@@ -7,7 +7,9 @@ use Concrete\Core\Messenger\HandlersLocator;
 use Concrete\Core\Messenger\MessageBusManager;
 use Concrete\Core\Messenger\Transport\Sender\DefinedTransportSendersLocator;
 use Concrete\Core\Messenger\Transport\TransportManager;
+use Concrete\Core\Routing\Router;
 use PortlandLabs\Skyline\Command\CreateHostingSiteCommandHandler;
+use PortlandLabs\Skyline\Controller\Stripe\Webhook;
 use PortlandLabs\Skyline\Messenger\Middleware\RouteMessageToSkylineNeighborhoodMiddleware;
 use PortlandLabs\Skyline\Messenger\Transport\SkylineAmqpTransport;
 use Stripe\StripeClient;
@@ -76,5 +78,12 @@ class ServiceProvider extends Provider
             ->give(function() use ($messageBusManager) {
                 return $messageBusManager->getBus('skyline_neighborhood');
             });
+
+        $router = $this->app->make('router');
+
+        /**
+         * @var $router Router
+         */
+        $router->all('/skyline/stripe/webhook', [Webhook::class, 'receive']);
     }
 }

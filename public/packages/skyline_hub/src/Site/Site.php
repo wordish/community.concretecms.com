@@ -3,6 +3,7 @@
 namespace PortlandLabs\Skyline\Site;
 
 use HtmlObject\Element;
+use Stripe\Invoice;
 use Stripe\Stripe;
 use Stripe\StripeClient;
 use Stripe\Subscription;
@@ -269,10 +270,28 @@ class Site implements \JsonSerializable
          */
         if ($this->subscriptionId) {
             $stripe = app(StripeClient::class);
-            return $stripe->subscriptions->retrieve($this->subscriptionId);
+            return $stripe->subscriptions->retrieve(
+                $this->subscriptionId,
+                ['expand' => ['customer','latest_invoice']]
+            );
         }
         return null;
     }
+
+    public function getUpcomingInvoice(): ?Invoice
+    {
+        /**
+         * @var $stripe Stripe
+         */
+        if ($this->subscriptionId) {
+            $stripe = app(StripeClient::class);
+            return $stripe->invoices->upcoming(
+                ['subscription' => $this->subscriptionId]
+            );
+        }
+        return null;
+    }
+
 
     /**
      * Returns a nicely formatted badge representing the site's status in the system. This is fuzzy - it might
@@ -286,11 +305,12 @@ class Site implements \JsonSerializable
         $badge = new Element('span', '', ['class' => 'badge badge-info']);
         if ($this->getStatus() === self::STATUS_INSTALLING) {
             $badge->setValue('Installing...');
-        } else if ($this->getStatus() === self::STATUS_INSTALLED) {
-
-            if ($this->getSubscriptionStatus() == self::SUBSCRIPTION_STATUS_TRIALING) {
-                $badge->class('badge badge-warning');
-                $badge->setValue('Trial');
+        } else {
+            if ($this->getStatus() === self::STATUS_INSTALLED) {
+                if ($this->getSubscriptionStatus() == self::SUBSCRIPTION_STATUS_TRIALING) {
+                    $badge->class('badge badge-warning');
+                    $badge->setValue('Trial');
+                }
             }
         }
         return $badge;

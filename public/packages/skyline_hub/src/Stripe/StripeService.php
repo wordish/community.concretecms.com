@@ -55,6 +55,8 @@ class StripeService
         $subscription = $this->stripe->subscriptions->create(
             [
                 'customer' => $customer->id,
+                'collection_method' => 'send_invoice',
+                'days_until_due' => $_ENV['SKYLINE_STRIPE_SUBSCRIPTION_DAYS_UNTIL_DUE'],
                 'items' => [
                     [
                         'price' => $price->id,
