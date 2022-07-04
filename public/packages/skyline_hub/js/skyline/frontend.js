@@ -187,86 +187,17 @@ class Manager {
 
 /***/ }),
 
-/***/ "./assets/frontend/components/SkylineInstallationProgress.vue":
-/*!********************************************************************!*\
-  !*** ./assets/frontend/components/SkylineInstallationProgress.vue ***!
-  \********************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _SkylineInstallationProgress_vue_vue_type_template_id_ca67b77c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SkylineInstallationProgress.vue?vue&type=template&id=ca67b77c& */ "./assets/frontend/components/SkylineInstallationProgress.vue?vue&type=template&id=ca67b77c&");
-/* harmony import */ var _SkylineInstallationProgress_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SkylineInstallationProgress.vue?vue&type=script&lang=js& */ "./assets/frontend/components/SkylineInstallationProgress.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _SkylineInstallationProgress_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _SkylineInstallationProgress_vue_vue_type_template_id_ca67b77c___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _SkylineInstallationProgress_vue_vue_type_template_id_ca67b77c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "assets/frontend/components/SkylineInstallationProgress.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./assets/frontend/components/SkylineInstallationProgress.vue?vue&type=script&lang=js&":
-/*!*********************************************************************************************!*\
-  !*** ./assets/frontend/components/SkylineInstallationProgress.vue?vue&type=script&lang=js& ***!
-  \*********************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SkylineInstallationProgress_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./SkylineInstallationProgress.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./assets/frontend/components/SkylineInstallationProgress.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SkylineInstallationProgress_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./assets/frontend/components/SkylineInstallationProgress.vue?vue&type=template&id=ca67b77c&":
-/*!***************************************************************************************************!*\
-  !*** ./assets/frontend/components/SkylineInstallationProgress.vue?vue&type=template&id=ca67b77c& ***!
-  \***************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SkylineInstallationProgress_vue_vue_type_template_id_ca67b77c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./SkylineInstallationProgress.vue?vue&type=template&id=ca67b77c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./assets/frontend/components/SkylineInstallationProgress.vue?vue&type=template&id=ca67b77c&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SkylineInstallationProgress_vue_vue_type_template_id_ca67b77c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SkylineInstallationProgress_vue_vue_type_template_id_ca67b77c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
-/***/ "./assets/frontend/skyline.js":
-/*!************************************!*\
-  !*** ./assets/frontend/skyline.js ***!
-  \************************************/
+/***/ "./assets/js/frontend.js":
+/*!*******************************!*\
+  !*** ./assets/js/frontend.js ***!
+  \*******************************/
 /*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _concrete_cms_hosting_build_node_modules_concretecms_bedrock_assets_cms_js_vue_Manager__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../concrete_cms_hosting/build/node_modules/@concretecms/bedrock/assets/cms/js/vue/Manager */ "../../concrete_cms_hosting/build/node_modules/@concretecms/bedrock/assets/cms/js/vue/Manager.js");
-/* harmony import */ var _components_SkylineInstallationProgress__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/SkylineInstallationProgress */ "./assets/frontend/components/SkylineInstallationProgress.vue");
+/* harmony import */ var _frontend_components_SkylineInstallationProgress__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./frontend/components/SkylineInstallationProgress */ "./assets/js/frontend/components/SkylineInstallationProgress.vue");
 /* harmony import */ var vue_ellipse_progress__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-ellipse-progress */ "./node_modules/vue-ellipse-progress/dist/vue-ellipse-progress.umd.min.js");
 /* harmony import */ var vue_ellipse_progress__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_ellipse_progress__WEBPACK_IMPORTED_MODULE_2__);
 // I know this is terrible, but I don't want to have double the bedrock dependencies so I'm linking to this here.
@@ -277,7 +208,7 @@ _concrete_cms_hosting_build_node_modules_concretecms_bedrock_assets_cms_js_vue_M
 
 
 window.Concrete.Vue.createContext('frontend', {
-  SkylineInstallationProgress: _components_SkylineInstallationProgress__WEBPACK_IMPORTED_MODULE_1__["default"],
+  SkylineInstallationProgress: _frontend_components_SkylineInstallationProgress__WEBPACK_IMPORTED_MODULE_1__["default"],
   VueEllipseProgress: vue_ellipse_progress__WEBPACK_IMPORTED_MODULE_2___default.a
 }, 'frontend');
 window.Concrete.Vue.activateContext('frontend', function (Vue, config) {
@@ -289,10 +220,90 @@ window.Concrete.Vue.activateContext('frontend', function (Vue, config) {
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./assets/frontend/components/SkylineInstallationProgress.vue?vue&type=script&lang=js&":
-/*!*****************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./assets/frontend/components/SkylineInstallationProgress.vue?vue&type=script&lang=js& ***!
-  \*****************************************************************************************************************************************************************************************/
+/***/ "./assets/js/frontend/components/SkylineInstallationProgress.vue":
+/*!***********************************************************************!*\
+  !*** ./assets/js/frontend/components/SkylineInstallationProgress.vue ***!
+  \***********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _SkylineInstallationProgress_vue_vue_type_template_id_6ed7ce68___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SkylineInstallationProgress.vue?vue&type=template&id=6ed7ce68& */ "./assets/js/frontend/components/SkylineInstallationProgress.vue?vue&type=template&id=6ed7ce68&");
+/* harmony import */ var _SkylineInstallationProgress_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SkylineInstallationProgress.vue?vue&type=script&lang=js& */ "./assets/js/frontend/components/SkylineInstallationProgress.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _SkylineInstallationProgress_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _SkylineInstallationProgress_vue_vue_type_template_id_6ed7ce68___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _SkylineInstallationProgress_vue_vue_type_template_id_6ed7ce68___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "assets/js/frontend/components/SkylineInstallationProgress.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./assets/js/frontend/components/SkylineInstallationProgress.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************!*\
+  !*** ./assets/js/frontend/components/SkylineInstallationProgress.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SkylineInstallationProgress_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./SkylineInstallationProgress.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./assets/js/frontend/components/SkylineInstallationProgress.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SkylineInstallationProgress_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./assets/js/frontend/components/SkylineInstallationProgress.vue?vue&type=template&id=6ed7ce68&":
+/*!******************************************************************************************************!*\
+  !*** ./assets/js/frontend/components/SkylineInstallationProgress.vue?vue&type=template&id=6ed7ce68& ***!
+  \******************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SkylineInstallationProgress_vue_vue_type_template_id_6ed7ce68___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./SkylineInstallationProgress.vue?vue&type=template&id=6ed7ce68& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./assets/js/frontend/components/SkylineInstallationProgress.vue?vue&type=template&id=6ed7ce68&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SkylineInstallationProgress_vue_vue_type_template_id_6ed7ce68___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SkylineInstallationProgress_vue_vue_type_template_id_6ed7ce68___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./assets/scss/frontend.scss":
+/*!***********************************!*\
+  !*** ./assets/scss/frontend.scss ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./assets/js/frontend/components/SkylineInstallationProgress.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./assets/js/frontend/components/SkylineInstallationProgress.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -430,10 +441,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./assets/frontend/components/SkylineInstallationProgress.vue?vue&type=template&id=ca67b77c&":
-/*!*********************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./assets/frontend/components/SkylineInstallationProgress.vue?vue&type=template&id=ca67b77c& ***!
-  \*********************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./assets/js/frontend/components/SkylineInstallationProgress.vue?vue&type=template&id=6ed7ce68&":
+/*!************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./assets/js/frontend/components/SkylineInstallationProgress.vue?vue&type=template&id=6ed7ce68& ***!
+  \************************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -730,13 +741,14 @@ function normalizeComponent (
 /***/ }),
 
 /***/ 0:
-/*!******************************************!*\
-  !*** multi ./assets/frontend/skyline.js ***!
-  \******************************************/
+/*!*****************************************************************!*\
+  !*** multi ./assets/js/frontend.js ./assets/scss/frontend.scss ***!
+  \*****************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/andrewembler/projects/community.concretecms.com/public/packages/skyline_hub/build/assets/frontend/skyline.js */"./assets/frontend/skyline.js");
+__webpack_require__(/*! /Users/andrewembler/projects/community.concretecms.com/public/packages/skyline_hub/build/assets/js/frontend.js */"./assets/js/frontend.js");
+module.exports = __webpack_require__(/*! /Users/andrewembler/projects/community.concretecms.com/public/packages/skyline_hub/build/assets/scss/frontend.scss */"./assets/scss/frontend.scss");
 
 
 /***/ }),

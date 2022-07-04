@@ -16,4 +16,6 @@ mix.webpackConfig({
 mix.setResourceRoot('../');
 mix.setPublicPath('../');
 
-mix.js('assets/frontend/skyline.js', 'js/frontend/skyline.js')
+mix.js('assets/js/frontend.js', 'js/skyline/frontend.js')
+mix.sass('assets/scss/frontend.scss', 'css/skyline/frontend.css')
+

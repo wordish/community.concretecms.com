@@ -8,6 +8,12 @@ use PortlandLabs\Skyline\Site\SiteList;
 class Hosting extends AccountPageController
 {
 
+    public function on_start()
+    {
+        parent::on_start();
+        $this->requireAsset('skyline/frontend');
+    }
+
     public function view()
     {
         $list = $this->getList();

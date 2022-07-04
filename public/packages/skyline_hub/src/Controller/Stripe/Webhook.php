@@ -32,7 +32,7 @@ class Webhook
             // Invalid payload
             return new Response($e->getMessage(), 400);
         }
-        
+
         return new Response(t("Event Received"), 200);
     }
 }

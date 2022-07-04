@@ -9,6 +9,7 @@ use Concrete\Core\Messenger\Transport\Sender\DefinedTransportSendersLocator;
 use Concrete\Core\Messenger\Transport\TransportManager;
 use Concrete\Core\Routing\Router;
 use PortlandLabs\Skyline\Command\CreateHostingSiteCommandHandler;
+use PortlandLabs\Skyline\Command\TerminateHostingTrialSiteCommandHandler;
 use PortlandLabs\Skyline\Controller\Stripe\Webhook;
 use PortlandLabs\Skyline\Messenger\Middleware\RouteMessageToSkylineNeighborhoodMiddleware;
 use PortlandLabs\Skyline\Messenger\Transport\SkylineAmqpTransport;
@@ -50,34 +51,49 @@ class ServiceProvider extends Provider
          * @var $messageBusManager MessageBusManager
          */
         $messageBusManager = $this->app->make(MessageBusManager::class);
-        $messageBusManager->registerBus('skyline_neighborhood', function() {
-            $middleware = [
-                new AddBusNameStampMiddleware('skyline_neighborhood'),
-                new RejectRedeliveredMessageMiddleware(),
-                new DispatchAfterCurrentBusMiddleware(),
-                new FailedMessageProcessingMiddleware(),
-                new RouteMessageToSkylineNeighborhoodMiddleware(),
-                new SendMessageMiddleware($this->app->make(DefinedTransportSendersLocator::class, ['transportHandle' => 'amqp'])),
-                new HandleMessageMiddleware($this->app->make(HandlersLocator::class)),
-            ];
-            return new MessageBus($middleware);
-        });
-        $messageBusManager->registerBus('skyline_hub', function() {
-            $middleware = [
-                new AddBusNameStampMiddleware('skyline_hub'),
-                new RejectRedeliveredMessageMiddleware(),
-                new DispatchAfterCurrentBusMiddleware(),
-                new FailedMessageProcessingMiddleware(),
-                new HandleMessageMiddleware($this->app->make(HandlersLocator::class)),
-            ];
-            return new MessageBus($middleware);
-        });
+        $messageBusManager->registerBus(
+            'skyline_neighborhood',
+            function () {
+                $middleware = [
+                    new AddBusNameStampMiddleware('skyline_neighborhood'),
+                    new RejectRedeliveredMessageMiddleware(),
+                    new DispatchAfterCurrentBusMiddleware(),
+                    new FailedMessageProcessingMiddleware(),
+                    new RouteMessageToSkylineNeighborhoodMiddleware(),
+                    new SendMessageMiddleware(
+                        $this->app->make(DefinedTransportSendersLocator::class, ['transportHandle' => 'amqp'])
+                    ),
+                    new HandleMessageMiddleware($this->app->make(HandlersLocator::class)),
+                ];
+                return new MessageBus($middleware);
+            }
+        );
+        $messageBusManager->registerBus(
+            'skyline_hub',
+            function () {
+                $middleware = [
+                    new AddBusNameStampMiddleware('skyline_hub'),
+                    new RejectRedeliveredMessageMiddleware(),
+                    new DispatchAfterCurrentBusMiddleware(),
+                    new FailedMessageProcessingMiddleware(),
+                    new HandleMessageMiddleware($this->app->make(HandlersLocator::class)),
+                ];
+                return new MessageBus($middleware);
+            }
+        );
 
-        $this->app->when(CreateHostingSiteCommandHandler::class)
+        $this->app->when(
+            [
+                CreateHostingSiteCommandHandler::class,
+                TerminateHostingTrialSiteCommandHandler::class
+            ]
+        )
             ->needs(MessageBusInterface::class)
-            ->give(function() use ($messageBusManager) {
-                return $messageBusManager->getBus('skyline_neighborhood');
-            });
+            ->give(
+                function () use ($messageBusManager) {
+                    return $messageBusManager->getBus('skyline_neighborhood');
+                }
+            );
 
         $router = $this->app->make('router');
 

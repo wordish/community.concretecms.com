@@ -2,8 +2,8 @@
 
 namespace PortlandLabs\Skyline\Neighborhood\Command;
 
+use Concrete\Core\Express\ObjectManager;
 use PortlandLabs\Skyline\Neighborhood\Command\Traits\UpdateAccountTrait;
-use PortlandLabs\Skyline\Site\Site;
 
 class CompleteAccountDeletionInSkylineCommandHandler
 {
@@ -12,13 +12,11 @@ class CompleteAccountDeletionInSkylineCommandHandler
 
     public function __invoke(CompleteAccountDeletionInSkylineCommand $command)
     {
-        $this->setStatus(
-            $command->getNeighborhood(),
-            $command->getSiteHandle(),
-            [
-                'hosting_site_status' => Site::STATUS_TERMINATED
-            ]
-        );
+        $sites = $this->getSites($command->getNeighborhood(), $command->getSiteHandle());
+        $objectManager = app(ObjectManager::class);
+        foreach ($sites as $site) {
+            $objectManager->deleteEntry($site);
+        }
     }
 
 

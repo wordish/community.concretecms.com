@@ -6,7 +6,7 @@ import VueManager from '../../../../concrete_cms_hosting/build/node_modules/@con
 
 VueManager.bindToWindow(window)
 
-import SkylineInstallationProgress from './components/SkylineInstallationProgress'
+import SkylineInstallationProgress from './frontend/components/SkylineInstallationProgress'
 import VueEllipseProgress from 'vue-ellipse-progress';
 
 window.Concrete.Vue.createContext('frontend', {

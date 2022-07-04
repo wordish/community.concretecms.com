@@ -15,7 +15,7 @@ class CompleteInstallationInSkylineCommandHandler
         $this->setStatus(
             $command->getNeighborhood(),
             $command->getSiteHandle(),
-            ['hosting_site_status' => Site::STATUS_INSTALLED, 'hosting_site_password' => null]
+            ['hosting_site_status' => Site::STATUS_ACTIVE, 'hosting_site_password' => null]
         );
     }
 

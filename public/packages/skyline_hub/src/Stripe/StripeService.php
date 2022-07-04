@@ -68,5 +68,9 @@ class StripeService
         return $subscription;
     }
 
+    public function cancelSubscription(string $subscriptionId): void
+    {
+        $this->stripe->subscriptions->cancel($subscriptionId);
+    }
 
 }

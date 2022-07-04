@@ -50,9 +50,11 @@ class Controller extends Package
         $provider->register();
 
         $al = AssetList::getInstance();
-        $al->register("javascript", "skyline/frontend", "js/frontend/skyline.js", ["position" => Asset::ASSET_POSITION_FOOTER], "skyline_hub");
+        $al->register("css", "skyline/frontend", "css/skyline/frontend.css", [], "skyline_hub");
+        $al->register("javascript", "skyline/frontend", "js/skyline/frontend.js", ["position" => Asset::ASSET_POSITION_FOOTER], "skyline_hub");
         $al->registerGroup('skyline/frontend', [
             ['javascript', 'vue'],
+            ['css', 'skyline/frontend'],
             ['javascript', 'skyline/frontend'],
         ]);
 
