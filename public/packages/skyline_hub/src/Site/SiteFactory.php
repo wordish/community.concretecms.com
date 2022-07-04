@@ -28,7 +28,7 @@ class SiteFactory
         $site->setName($entry->getAttribute('hosting_site_name'));
         $site->setNeighborhood($entry->getAttribute('hosting_site_neighborhood'));
         $site->setStatus((int) $entry->getAttribute('hosting_site_status'));
-        $site->setCancelledTimestamp((int) $entry->getAttribute('hosting_site_cancelled_timestamp'));
+        $site->setSuspendedTimestamp((int) $entry->getAttribute('hosting_site_suspended_timestamp'));
         $site->setSubscriptionId((string) $entry->getAttribute('hosting_site_subscription_id'));
         $site->setSubscriptionStatus((string) $entry->getAttribute('hosting_site_subscription_status'));
         $site->setConcreteAdminPassword((string) $entry->getAttribute('hosting_site_password'));

@@ -124,8 +124,8 @@ $subscription = $hostingSite->getSubscription();
             if (in_array(
                 $hostingSite->getStatus(),
                 [
-                    \PortlandLabs\Skyline\Site\Site::STATUS_USER_TERMINATED,
-                    \PortlandLabs\Skyline\Site\Site::STATUS_TRIAL_TERMINATED
+                    \PortlandLabs\Skyline\Site\Site::STATUS_USER_SUSPENDED,
+                    \PortlandLabs\Skyline\Site\Site::STATUS_TRIAL_SUSPENDED
                 ]
             )) { ?>
 
@@ -136,7 +136,7 @@ $subscription = $hostingSite->getSubscription();
                     <div class="card-body">
                         <?= t(
                             'This site was been taken offline on <b>%s</b>. After %s days its data will be removed. If you need data from this site or have questions about this process please <a href="%s">contact us</a>.',
-                            (new DateTime())->setTimestamp($hostingSite->getCancelledTimestamp())->format(
+                            (new DateTime())->setTimestamp($hostingSite->getSuspendedTimestamp())->format(
                                 'F d Y \a\t g:i a'
                             ),
                             $_ENV['SKYLINE_DAYS_AFTER_CANCELLING_TO_KEEP_SITE'],

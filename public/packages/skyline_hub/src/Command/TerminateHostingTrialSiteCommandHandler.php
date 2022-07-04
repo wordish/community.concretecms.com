@@ -45,8 +45,8 @@ class TerminateHostingTrialSiteCommandHandler
     {
 
         $hostingEntry = $this->objectManager->getEntryByPublicIdentifier($command->getId());
-        $hostingEntry->setAttribute('hosting_site_status', Site::STATUS_TRIAL_TERMINATED);
-        $hostingEntry->setAttribute('hosting_site_cancelled_timestamp', (new \DateTime())->getTimestamp());
+        $hostingEntry->setAttribute('hosting_site_status', Site::STATUS_TRIAL_SUSPENDED);
+        $hostingEntry->setAttribute('hosting_site_suspended_timestamp', (new \DateTime())->getTimestamp());
 
         $site = $this->siteFactory->createFromEntry($hostingEntry);
 

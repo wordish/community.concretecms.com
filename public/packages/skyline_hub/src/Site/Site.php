@@ -13,8 +13,8 @@ class Site implements \JsonSerializable
 
     const STATUS_INSTALLING = 10;
     const STATUS_ACTIVE = 50;
-    const STATUS_TRIAL_TERMINATED = 80;
-    const STATUS_USER_TERMINATED = 90;
+    const STATUS_TRIAL_SUSPENDED = 80;
+    const STATUS_USER_SUSPENDED = 90;
 
     const SUBSCRIPTION_STATUS_TRIALING = 'trialing';
 
@@ -45,7 +45,7 @@ class Site implements \JsonSerializable
     /**
      * @var int
      */
-    protected $cancelledTimestamp;
+    protected $suspendedTimestamp;
 
     /**
      * @var string
@@ -113,22 +113,6 @@ class Site implements \JsonSerializable
         $this->id = $id;
     }
 
-    /**
-     * @return int
-     */
-    public function getCancelledTimestamp(): int
-    {
-        return $this->cancelledTimestamp;
-    }
-
-    /**
-     * @param int $cancelledTimestamp
-     */
-    public function setCancelledTimestamp(int $cancelledTimestamp): void
-    {
-        $this->cancelledTimestamp = $cancelledTimestamp;
-    }
-
 
     /**
      * @return string
@@ -145,6 +129,23 @@ class Site implements \JsonSerializable
     {
         $this->publicUrl = $publicUrl;
     }
+
+    /**
+     * @return int
+     */
+    public function getSuspendedTimestamp(): int
+    {
+        return $this->suspendedTimestamp;
+    }
+
+    /**
+     * @param int $suspendedTimestamp
+     */
+    public function setSuspendedTimestamp(int $suspendedTimestamp): void
+    {
+        $this->suspendedTimestamp = $suspendedTimestamp;
+    }
+
 
     /**
      * @return \DateTime
@@ -350,7 +351,7 @@ class Site implements \JsonSerializable
         $badge = new Element('span', '', ['class' => 'badge badge-info']);
         if ($this->getStatus() === self::STATUS_INSTALLING) {
             $badge->setValue('Installing...');
-        } else if ($this->getStatus() === self::STATUS_TRIAL_TERMINATED) {
+        } else if ($this->getStatus() === self::STATUS_TRIAL_SUSPENDED) {
             $badge->class('badge badge-danger')->setValue('Cancelled');
         } else {
             if ($this->getStatus() === self::STATUS_ACTIVE) {

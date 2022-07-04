@@ -61,7 +61,7 @@
                               type="number" category="">
                     <type placeholder=""/>
                 </attributekey>
-                <attributekey handle="hosting_site_cancelled_timestamp" name="Cancelled Timestamp" package="" searchable="1" indexed="0"
+                <attributekey handle="hosting_site_suspended_timestamp" name="Suspended Timestamp" package="" searchable="1" indexed="0"
                               type="number" category="">
                     <type placeholder=""/>
                 </attributekey>
