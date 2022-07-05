@@ -2,10 +2,9 @@
 
 namespace PortlandLabs\Skyline\Command;
 
-use Concrete\Core\Express\ObjectManager;
+use Doctrine\ORM\EntityManager;
 use PortlandLabs\Skyline\Neighborhood\Command\TerminateTrialSiteInSkylineCommand;
-use PortlandLabs\Skyline\Site\Site;
-use PortlandLabs\Skyline\Site\SiteFactory;
+use PortlandLabs\Skyline\Entity\Site;
 use PortlandLabs\Skyline\Stripe\StripeService;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -13,9 +12,9 @@ class TerminateHostingTrialSiteCommandHandler
 {
 
     /**
-     * @var SiteFactory
+     * @var EntityManager
      */
-    protected $siteFactory;
+    protected $entityManager;
 
     /**
      * @var StripeService
@@ -23,39 +22,35 @@ class TerminateHostingTrialSiteCommandHandler
     protected $stripeService;
 
     /**
-     * @var ObjectManager
-     */
-    protected $objectManager;
-
-    /**
      * @var MessageBusInterface
      */
     protected $messageBus;
 
-    public function __construct(SiteFactory $siteFactory, StripeService $stripeService, ObjectManager $objectManager, MessageBusInterface $messageBus)
+    public function __construct(EntityManager $entityManager, StripeService $stripeService, MessageBusInterface $messageBus)
     {
-        $this->siteFactory = $siteFactory;
+        $this->entityManager = $entityManager;
         $this->stripeService = $stripeService;
-        $this->objectManager = $objectManager;
         $this->messageBus = $messageBus;
     }
 
 
     public function __invoke(TerminateHostingTrialSiteCommand $command)
     {
+        /**
+         * @var $hostingEntry Site
+         */
+        $hostingEntry = $this->entityManager->find(Site::class, $command->getId());
+        $hostingEntry->setStatus(Site::STATUS_TRIAL_SUSPENDED);
+        $hostingEntry->setSuspendedTimestamp((new \DateTime())->getTimestamp());
+        $this->entityManager->persist($hostingEntry);
+        $this->entityManager->flush();
 
-        $hostingEntry = $this->objectManager->getEntryByPublicIdentifier($command->getId());
-        $hostingEntry->setAttribute('hosting_site_status', Site::STATUS_TRIAL_SUSPENDED);
-        $hostingEntry->setAttribute('hosting_site_suspended_timestamp', (new \DateTime())->getTimestamp());
-
-        $site = $this->siteFactory->createFromEntry($hostingEntry);
-
-        $subscriptionId = $site->getSubscriptionId();
+        $subscriptionId = $hostingEntry->getSubscriptionId();
         $this->stripeService->cancelSubscription($subscriptionId);
 
         $command = new TerminateTrialSiteInSkylineCommand();
-        $command->setNeighborhood($site->getNeighborhood());
-        $command->setSiteHandle($site->getHandle());
+        $command->setNeighborhood($hostingEntry->getNeighborhood());
+        $command->setSiteHandle($hostingEntry->getHandle());
 
         $this->messageBus->dispatch($command);
 

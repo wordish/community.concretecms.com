@@ -28,7 +28,7 @@ defined('C5_EXECUTE') or die('Access Denied.');
 
                         <?php
                         /**
-                         * @var $hostingSites \PortlandLabs\Skyline\Site\Site[]
+                         * @var $hostingSites \PortlandLabs\Skyline\Entity\Site[]
                          */
                         if (count($hostingSites)) {
 

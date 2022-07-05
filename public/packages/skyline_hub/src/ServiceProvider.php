@@ -28,6 +28,11 @@ class ServiceProvider extends Provider
 
     public function register()
     {
+
+        $this->app['manager/search_field/skyline_site'] = function ($app) {
+            return $app->make('PortlandLabs\Skyline\Search\Site\Field\Manager');
+        };
+
         $this->app->singleton(NeighborhoodListFactory::class);
         $this->app->singleton(
             StripeClient::class,
@@ -98,8 +103,24 @@ class ServiceProvider extends Provider
         $router = $this->app->make('router');
 
         /**
+         * Routes
          * @var $router Router
+         *
+         * Stripe webhook routes
          */
         $router->all('/skyline/stripe/webhook', [Webhook::class, 'receive']);
+
+        /**
+         * Search routes for Site
+         */
+        $router->buildGroup()->setNamespace('Concrete\Package\SkylineHub\Controller\Dialog\Site')
+            ->setPrefix('/ccm/system/dialogs/skyline_site')
+            ->routes('dialogs/site.php', 'skyline_hub');
+
+        $router->buildGroup()->setNamespace('Concrete\Package\SkylineHub\Controller\Search\Site')
+            ->setPrefix('/ccm/system/search/skyline_site')
+            ->routes('search/site.php', 'skyline_hub');
+
+
     }
 }

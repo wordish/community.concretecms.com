@@ -23,79 +23,27 @@
         <attributekey handle="stripe_customer_id" name="Stripe Customer ID" package="skyline_hub" searchable="1"
                       indexed="0" type="text" category="user"/>
     </attributekeys>
-    <expressentities>
-        <entity id="88c4eb1a-136c-11ec-9fc5-8aa7a7509c1c" handle="skyline_hosting_site"
-                plural_handle="skyline_hosting_sites"
-                name="Hosting Site" supports_custom_display_order="" include_in_public_list=""
-                use_separate_site_result_buckets=""
-                description=""
-                package="skyline_hub"
-                default_view_form="88c4ef3e-136c-11ec-9fc5-8aa7a7509c1c"
-                default_edit_form="88c4ef3e-136c-11ec-9fc5-8aa7a7509c1c" results-folder="/">
-            <attributekeys>
-                <attributekey handle="hosting_site_name" name="Site Name" package="" searchable="1" indexed="1"
-                              type="text" category="">
-                    <type placeholder=""/>
-                </attributekey>
-                <attributekey handle="hosting_site_handle" name="Site Handle" package="" searchable="1" indexed="1"
-                              type="text" category="">
-                    <type placeholder=""/>
-                </attributekey>
-                <attributekey handle="hosting_site_subscription_id" name="Subscription ID" package="" searchable="1" indexed="0"
-                              type="text" category="">
-                    <type placeholder=""/>
-                </attributekey>
-                <attributekey handle="hosting_site_subscription_status" name="Subscription Status" package="" searchable="1" indexed="0"
-                              type="text" category="">
-                    <type placeholder=""/>
-                </attributekey>
-                <attributekey handle="hosting_site_neighborhood" name="Neighborhood" package="" searchable="1" indexed="1"
-                              type="text" category="">
-                    <type placeholder=""/>
-                </attributekey>
-                <attributekey handle="hosting_site_password" name="Admin Password" package="" searchable="0" indexed="0"
-                              type="text" category="">
-                    <type placeholder=""/>
-                </attributekey>
-                <attributekey handle="hosting_site_status" name="Status" package="" searchable="1" indexed="0"
-                              type="number" category="">
-                    <type placeholder=""/>
-                </attributekey>
-                <attributekey handle="hosting_site_suspended_timestamp" name="Suspended Timestamp" package="" searchable="1" indexed="0"
-                              type="number" category="">
-                    <type placeholder=""/>
-                </attributekey>
-            </attributekeys>
-            <forms>
-                <form id="88c4ef3e-136c-11ec-9fc5-8aa7a7509c1c" name="Form">
-                    <fieldsets>
-                        <fieldset title="Basics" description="">
-                            <controls>
-                                <control id="1c666202-136d-11ec-9fc5-8aa7a7509c1e" type="attribute_key" required=""
-                                         custom-label="">
-                                    <attributekey handle="hosting_site_name"/>
-                                </control>
-                                <control id="1c666202-136d-11ec-9fc5-8aa7a7509c1f" type="attribute_key" required=""
-                                         custom-label="">
-                                    <attributekey handle="hosting_site_handle"/>
-                                </control>
-                                <control id="1c666202-136d-11ec-9fc5-8aa7a7509c1g" type="attribute_key" required=""
-                                         custom-label="">
-                                    <attributekey handle="hosting_site_subscription_id"/>
-                                </control>
-                                <control id="1c666202-136d-11ec-9fc5-8aa7a7509c1h" type="attribute_key" required=""
-                                         custom-label="">
-                                    <attributekey handle="hosting_site_subscription_status"/>
-                                </control>
-                                <control id="1c666202-136d-11ec-9fc5-8aa7a7509c1i" type="attribute_key" required=""
-                                         custom-label="">
-                                    <attributekey handle="hosting_site_neighborhood"/>
-                                </control>
-                            </controls>
-                        </fieldset>
-                    </fieldsets>
-                </form>
-            </forms>
-        </entity>
-    </expressentities>
+    <permissionkeys>
+        <permissionkey handle="create_skyline_site_entries" name="Create Skyline Site Entries" package="skyline_hub" category="admin">
+            <access>
+                <group name="Administrators" description=""/>
+            </access>
+        </permissionkey>
+        <permissionkey handle="read_skyline_site_entries" name="Read Skyline Site Entries" package="skyline_hub" category="admin">
+            <access>
+                <group name="Administrators" description=""/>
+            </access>
+        </permissionkey>
+        <permissionkey handle="update_skyline_site_entries" name="Update Skyline Site Entries" package="skyline_hub" category="admin">
+            <access>
+                <group name="Administrators" description=""/>
+            </access>
+        </permissionkey>
+        <permissionkey handle="delete_skyline_site_entries" name="Delete Skyline Site Entries" package="skyline_hub" category="admin">
+            <access>
+                <group name="Administrators" description=""/>
+            </access>
+        </permissionkey>
+
+    </permissionkeys>
 </concrete5-cif>

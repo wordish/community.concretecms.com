@@ -2,7 +2,7 @@
 
 namespace PortlandLabs\Skyline\Neighborhood;
 
-use PortlandLabs\Skyline\Site\Site;
+use PortlandLabs\Skyline\Entity\Site;
 
 class Neighborhood
 {

@@ -6,7 +6,7 @@ defined('C5_EXECUTE') or die('Access Denied.');
 View::element('account/breadcrumb', [], 'skyline_hub');
 
 /**
- * @var $hostingSite \PortlandLabs\Skyline\Site\Site
+ * @var $hostingSite \PortlandLabs\Skyline\Entity\Site
  */
 $subscription = $hostingSite->getSubscription();
 
@@ -124,8 +124,8 @@ $subscription = $hostingSite->getSubscription();
             if (in_array(
                 $hostingSite->getStatus(),
                 [
-                    \PortlandLabs\Skyline\Site\Site::STATUS_USER_SUSPENDED,
-                    \PortlandLabs\Skyline\Site\Site::STATUS_TRIAL_SUSPENDED
+                    \PortlandLabs\Skyline\Entity\Site::STATUS_USER_SUSPENDED,
+                    \PortlandLabs\Skyline\Entity\Site::STATUS_TRIAL_SUSPENDED
                 ]
             )) { ?>
 

@@ -2,7 +2,7 @@
 
 namespace PortlandLabs\Skyline\Neighborhood\Command;
 
-use Concrete\Core\Express\ObjectManager;
+use Doctrine\ORM\EntityManager;
 use PortlandLabs\Skyline\Neighborhood\Command\Traits\UpdateAccountTrait;
 
 class CompleteAccountDeletionInSkylineCommandHandler
@@ -12,10 +12,11 @@ class CompleteAccountDeletionInSkylineCommandHandler
 
     public function __invoke(CompleteAccountDeletionInSkylineCommand $command)
     {
-        $sites = $this->getSites($command->getNeighborhood(), $command->getSiteHandle());
-        $objectManager = app(ObjectManager::class);
-        foreach ($sites as $site) {
-            $objectManager->deleteEntry($site);
+        $site = $this->getSite($command->getNeighborhood(), $command->getSiteHandle());
+        $entityManager = app(EntityManager::class);
+        if ($site) {
+            $entityManager->remove($site);
+            $entityManager->flush();
         }
     }
 

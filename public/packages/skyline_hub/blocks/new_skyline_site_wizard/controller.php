@@ -42,7 +42,7 @@ class Controller extends BlockController
                 $subscription = $service->createSubscription($customer, $price);
                 $command = new CreateHostingSiteCommand($subscription->id, $subscription->status, $name);
                 $hostingEntry = $this->app->executeCommand($command);
-                return Redirect::to('/account/hosting/project', $hostingEntry->getPublicIdentifier());
+                return Redirect::to('/account/hosting/project', $hostingEntry->getID());
             }
         }
     }

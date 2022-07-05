@@ -2,11 +2,10 @@
 
 namespace Concrete\Package\SkylineHub\Controller\SinglePage\Account\Hosting;
 
-use Concrete\Core\Express\ObjectManager;
 use Concrete\Core\Page\Controller\AccountPageController;
+use Doctrine\ORM\EntityManager;
 use PortlandLabs\Skyline\Command\TerminateHostingTrialSiteCommand;
-use PortlandLabs\Skyline\Site\Site;
-use PortlandLabs\Skyline\Site\SiteFactory;
+use PortlandLabs\Skyline\Entity\Site;
 
 class Project extends AccountPageController
 {
@@ -18,13 +17,10 @@ class Project extends AccountPageController
         $this->set('token', $this->app->make('token'));
     }
 
-    protected function protect($uuid = null): Site
+    protected function protect($id = null): Site
     {
-        /**
-         * @var $objectManager ObjectManager
-         */
-        $objectManager = $this->app->make(ObjectManager::class);
-        $entry = $objectManager->getEntryByPublicIdentifier($uuid);
+        $entityManager = $this->app->make(EntityManager::class);
+        $entry = $entityManager->find(Site::class, $id);
         if (!$entry) {
             throw new \Exception(t('Invalid site.'));
         }
@@ -32,10 +28,8 @@ class Project extends AccountPageController
         if ($entry->getAuthor()->getUserID() !== $profile->getUserID()) {
             throw new \Exception(t('You do not have access to edit this site.'));
         }
-        $siteFactory = $this->app->make(SiteFactory::class);
-        $hostingSite = $siteFactory->createFromEntry($entry);
-        $this->set('hostingSite', $hostingSite);
-        return $hostingSite;
+        $this->set('hostingSite', $entry);
+        return $entry;
     }
 
     public function view($uuid = null)

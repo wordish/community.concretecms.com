@@ -1,5 +1,6 @@
 <?php
 
+
 namespace Concrete\Package\SkylineHub\Controller\SinglePage\Dashboard;
 
 use Concrete\Core\Page\Controller\DashboardPageController;
@@ -11,5 +12,5 @@ class Skyline extends DashboardPageController
     {
         return $this->buildRedirectToFirstAccessibleChildPage();
     }
-
+    
 }

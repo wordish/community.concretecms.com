@@ -4,18 +4,23 @@ namespace Concrete\Package\SkylineHub;
 
 use Concrete\Core\Asset\Asset;
 use Concrete\Core\Asset\AssetList;
+use Concrete\Core\Database\Connection\Connection;
+use Concrete\Core\Database\EntityManager\Provider\ProviderAggregateInterface;
+use Concrete\Core\Database\EntityManager\Provider\ProviderInterface;
+use Concrete\Core\Database\EntityManager\Provider\StandardPackageProvider;
 use Concrete\Core\Package\Package;
 use PortlandLabs\Skyline\ServiceProvider;
 
-class Controller extends Package
+class Controller extends Package implements ProviderAggregateInterface
 {
 
     protected $pkgHandle = 'skyline_hub';
     protected $appVersionRequired = '9.0.2';
-    protected $pkgVersion = '0.2.4';
+    protected $pkgVersion = '0.4.0';
     protected $pkgAutoloaderMapCoreExtensions = true;
     protected $pkgAutoloaderRegistries = array(
-        'src' => '\PortlandLabs\Skyline'
+        'src' => '\PortlandLabs\Skyline',
+
     );
 
     public function getPackageDescription()
@@ -32,6 +37,14 @@ class Controller extends Package
     {
         parent::install();
         $this->installContentFile('data.xml');
+    }
+
+    public function uninstall()
+    {
+        parent::uninstall();
+        $db = $this->app->make(Connection::class);
+        $db->executeUpdate('drop table if exists SkylineSites');
+        $db->executeUpdate('drop table if exists SavedSkylineSiteSearchQueries');
     }
 
     public function upgrade()
@@ -57,7 +70,17 @@ class Controller extends Package
             ['css', 'skyline/frontend'],
             ['javascript', 'skyline/frontend'],
         ]);
-
     }
+
+    /**
+     * @return ProviderInterface
+     */
+    public function getEntityManagerProvider()
+    {
+        return new StandardPackageProvider($this->app, $this, [
+            'src/Entity' => "\PortlandLabs\Skyline\Entity"
+        ]);
+    }
+
 
 }

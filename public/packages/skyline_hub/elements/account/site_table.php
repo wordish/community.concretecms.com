@@ -3,7 +3,7 @@
 defined('C5_EXECUTE') or die('Access Denied.');
 
 /**
- * @var $hostingSite \PortlandLabs\Skyline\Site\Site[]
+ * @var $hostingSites \PortlandLabs\Skyline\Entity\Site[]
  */
 ?>
 
@@ -21,7 +21,7 @@ defined('C5_EXECUTE') or die('Access Denied.');
         <tr>
             <td><a href="<?=$hostingSite->getControlPanelUrl()?>"><?=$hostingSite->getName()?></a></td>
             <td><a href="<?=$hostingSite->getPublicUrl()?>" target="_blank"><?=$hostingSite->getPublicUrl()?></a></td>
-            <td><?=$hostingSite->getDateAdded()->format('F d, Y')?></td>
+            <td><?=$hostingSite->getDateCreated('F d, Y')?></td>
             <td class="text-center"><?=$hostingSite->getStatusBadge()?></td>
         </tr>
     <?php } ?>

@@ -2,28 +2,21 @@
 
 namespace PortlandLabs\Skyline\Command;
 
-use Concrete\Core\Entity\Express\Entry;
-use Concrete\Core\Express\ObjectManager;
-use PortlandLabs\Skyline\NeighborhoodSelector;
-use PortlandLabs\Skyline\Site\Site;
-use PortlandLabs\Skyline\Site\SiteHandleGenerator;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Messenger\Bridge\Amqp\Transport\AmqpStamp;
-use Symfony\Component\Messenger\MessageBusInterface;
+use Concrete\Core\User\User;
+use Doctrine\ORM\EntityManager;
+use PortlandLabs\Skyline\Entity\Site;
 use PortlandLabs\Skyline\Neighborhood\Command\CreateSiteInSkylineCommand;
+use PortlandLabs\Skyline\NeighborhoodSelector;
+use PortlandLabs\Skyline\Site\SiteHandleGenerator;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class CreateHostingSiteCommandHandler
 {
 
     /**
-     * @var ObjectManager
+     * @var EntityManager
      */
-    protected $objectManager;
-
-    /**
-     * @var Request
-     */
-    protected $request;
+    protected $entityManager;
 
     /**
      * @var MessageBusInterface
@@ -41,13 +34,14 @@ class CreateHostingSiteCommandHandler
     protected $siteHandleGenerator;
 
     /**
-     * CreateHostingSiteCommandHandler constructor.
-     * @param ObjectManager $objectManager
+     * @var User
      */
-    public function __construct(ObjectManager $objectManager, Request $request, MessageBusInterface $messageBus, NeighborhoodSelector $neighborhoodSelector, SiteHandleGenerator $siteHandleGenerator)
+    protected $user;
+
+    public function __construct(User $user, EntityManager $entityManager, MessageBusInterface $messageBus, NeighborhoodSelector $neighborhoodSelector, SiteHandleGenerator $siteHandleGenerator)
     {
-        $this->objectManager = $objectManager;
-        $this->request = $request;
+        $this->user = $user;
+        $this->entityManager = $entityManager;
         $this->messageBus = $messageBus;
         $this->neighborhoodSelector = $neighborhoodSelector;
         $this->siteHandleGenerator = $siteHandleGenerator;
@@ -58,26 +52,25 @@ class CreateHostingSiteCommandHandler
         $siteName = $command->getSiteName();
         $neighborhood = $this->neighborhoodSelector->chooseNeighborhoodForNewSite()->getHandle();
         $siteHandle = $this->siteHandleGenerator->createSiteHandle($command);
-        $entity = $this->objectManager->getObjectByHandle('skyline_hosting_site');
-        $controller = $this->objectManager->getEntityController($entity);
-        $entryManager = $controller->getEntryManager($this->request);
         $generatedAdminPassword = bin2hex(random_bytes(8));
+        $author = $this->user->getUserInfoObject()->getEntityObject();
 
-        /**
-         * @var $hostingEntry Entry
-         */
-        $hostingEntry = $entryManager->addEntry($entity);
-        $hostingEntry->setAttribute('hosting_site_subscription_id', $command->getSubscriptionId());
-        $hostingEntry->setAttribute('hosting_site_subscription_status', $command->getSubscriptionStatus());
-        $hostingEntry->setAttribute('hosting_site_name', $siteName);
-        $hostingEntry->setAttribute('hosting_site_handle', $siteHandle);
-        $hostingEntry->setAttribute('hosting_site_neighborhood', $neighborhood);
-        $hostingEntry->setAttribute('hosting_site_password', $generatedAdminPassword);
-        $hostingEntry->setAttribute('hosting_site_status', Site::STATUS_INSTALLING);
+        $hostingEntry = new Site();
+        $hostingEntry->setNeighborhood($neighborhood);
+        $hostingEntry->setName($siteName);
+        $hostingEntry->setHandle($siteHandle);
+        $hostingEntry->setAuthor($author);
+        $hostingEntry->setAdminPassword($generatedAdminPassword);
+        $hostingEntry->setStatus(Site::STATUS_INSTALLING);
+        $hostingEntry->setSubscriptionStatus($command->getSubscriptionStatus());
+        $hostingEntry->setSubscriptionId($command->getSubscriptionId());
+
+        $this->entityManager->persist($hostingEntry);
+        $this->entityManager->flush();
 
         $command = new CreateSiteInSkylineCommand();
         $command->setNeighborhood($neighborhood);
-        $command->setEmail($hostingEntry->getAuthor()->getUserEmail());
+        $command->setEmail($author->getUserEmail());
         $command->setSiteHandle($siteHandle);
         $command->setConcreteAdminPassword($generatedAdminPassword);
 
