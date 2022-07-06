@@ -18,7 +18,7 @@ trait RetrieveAndValidateSiteTrait
             throw new \Exception(t('Invalid site.'));
         }
         if ($u) {
-            if ($entry->getAuthor()->getUserID() !== $u->getUserID()) {
+            if ($entry->getAuthor()->getUserID() != $u->getUserID()) {
                 throw new \Exception(t('You do not have access to edit this site.'));
             }
         } else {

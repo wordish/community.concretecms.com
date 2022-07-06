@@ -8,6 +8,7 @@ use Stripe\Customer;
 use Stripe\Price;
 use Stripe\StripeClient;
 use Stripe\Subscription;
+use Stripe\TestHelpers\TestClock;
 
 class StripeService
 {
@@ -24,6 +25,16 @@ class StripeService
     public function __construct(StripeClient $stripe)
     {
         $this->stripe = $stripe;
+    }
+
+    public function createTestCustomer(string $email, TestClock $testClock)
+    {
+        return $this->stripe->customers->create(
+            [
+                'email' => $email,
+                'test_clock' => $testClock->id,
+            ]
+        );
     }
 
     public function getCustomer(UserInfo $user): ?Customer
@@ -48,6 +59,11 @@ class StripeService
     public function getProductPrice(string $priceId): ?Price
     {
         return $this->stripe->prices->retrieve($priceId);
+    }
+
+    public function createTestClock(int $time)
+    {
+        return $this->stripe->testHelpers->testClocks->create(['frozen_time' => $time]);
     }
 
     public function createSubscription(Customer $customer, Price $price): ?Subscription

@@ -51,6 +51,24 @@ use Concrete\Core\Validation\CSRF\Token;
 
     </fieldset>
 
+    <?php if ($_ENV['SKYLINE_ENABLE_TESTING_TOOLS']) { ?>
+
+    <fieldset>
+        <legend><?=t('Testing')?></legend>
+        <div class="mb-3">
+            <div class="form-check">
+                <?php echo $form->checkbox('attachToTestClock', 1); ?>
+                <?php echo $form->label('attachToTestClock', t('Attach subscription and customer to Test Clock'), ['class' => 'form-check-label']); ?>
+                (<a href="https://stripe.com/docs/billing/testing/test-clocks" target="_blank"><?=t('More Information')?></a>)
+            </div>
+
+        </div>
+
+        <div class="help-block">Note: testing tools are only available on environments with the environment variable <code>SKYLINE_ENABLE_TESTING_TOOLS</code> set to true.</div>
+
+    </fieldset>
+    <?php } ?>
+
 
 
     <div class="ccm-dashboard-form-actions-wrapper">

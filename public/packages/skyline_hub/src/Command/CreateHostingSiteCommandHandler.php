@@ -63,7 +63,12 @@ class CreateHostingSiteCommandHandler
     public function __invoke(CreateHostingSiteCommand $command)
     {
         $userinfo = $this->userInfoRepository->getByID($command->getAuthor());
-        $customer = $this->stripeService->getCustomer($userinfo);
+        if ($command->useTestClock()) {
+            $testClock = $this->stripeService->createTestClock(time());
+            $customer = $this->stripeService->createTestCustomer($userinfo->getUserEmail(), $testClock);
+        } else {
+            $customer = $this->stripeService->getCustomer($userinfo);
+        }
         $price = $this->stripeService->getProductPrice($_ENV['SKYLINE_DEFAULT_PRODUCT_PRICE_ID']);
         $subscription = $this->stripeService->createSubscription($customer, $price);
 
@@ -86,13 +91,15 @@ class CreateHostingSiteCommandHandler
         $this->entityManager->persist($hostingEntry);
         $this->entityManager->flush();
 
-        $command = new CreateSiteInSkylineCommand();
-        $command->setNeighborhood($neighborhood);
-        $command->setEmail($author->getUserEmail());
-        $command->setSiteHandle($siteHandle);
-        $command->setConcreteAdminPassword($generatedAdminPassword);
+        if ($command->provisionAccount()) {
+            $command = new CreateSiteInSkylineCommand();
+            $command->setNeighborhood($neighborhood);
+            $command->setEmail($author->getUserEmail());
+            $command->setSiteHandle($siteHandle);
+            $command->setConcreteAdminPassword($generatedAdminPassword);
 
-        $this->messageBus->dispatch($command);
+            $this->messageBus->dispatch($command);
+        }
 
         return $hostingEntry;
 

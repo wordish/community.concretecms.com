@@ -39,6 +39,12 @@ class Add extends DashboardPageController
         $command->setSiteName($this->request->request->get('name'));
         $command->setNeighborhood($this->request->request->get('neighborhood'));
 
+        if ($this->request->request->get('provisionAccount')) {
+            $command->setProvisionAccount(true);
+        } else {
+            $command->setProvisionAccount(false);
+        }
+
         if (!$this->token->validate('submit')) {
             $this->error->add($this->token->getErrorMessage());
         }
@@ -49,6 +55,11 @@ class Add extends DashboardPageController
         }
 
         if (!$this->error->has()) {
+            if ($_ENV['SKYLINE_ENABLE_TESTING_TOOLS']) {
+                if ($this->request->request->get('attachToTestClock')) {
+                    $command->setAttachToTestClock(true);
+                }
+            }
             $site = $this->app->executeCommand($command);
             return $this->buildRedirect(['/dashboard/skyline/sites/details', $site->getId()]);
         }

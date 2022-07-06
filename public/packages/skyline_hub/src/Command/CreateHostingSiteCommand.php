@@ -13,6 +13,11 @@ class CreateHostingSiteCommand extends Command
     protected $siteName;
 
     /**
+     * @var bool
+     */
+    protected $provisionAccount = true;
+
+    /**
      * @var int
      */
     protected $author;
@@ -21,6 +26,11 @@ class CreateHostingSiteCommand extends Command
      * @var string
      */
     protected $neighborhood;
+
+    /**
+     * @var bool
+     */
+    protected $attachToTestClock = false;
 
     /**
      * @return string
@@ -71,6 +81,41 @@ class CreateHostingSiteCommand extends Command
     {
         $this->neighborhood = $neighborhood;
     }
+
+    /**
+     * @return bool
+     */
+    public function useTestClock(): bool
+    {
+        return $this->attachToTestClock;
+    }
+
+    /**
+     * @param bool $attachToTestClock
+     */
+    public function setAttachToTestClock(bool $attachToTestClock): void
+    {
+        $this->attachToTestClock = $attachToTestClock;
+    }
+
+    /**
+     * @return bool
+     */
+    public function provisionAccount(): bool
+    {
+        return $this->provisionAccount;
+    }
+
+    /**
+     * @param bool $provisionAccount
+     */
+    public function setProvisionAccount(bool $provisionAccount): void
+    {
+        $this->provisionAccount = $provisionAccount;
+    }
+
+
+
 
 
 

@@ -125,8 +125,8 @@ $subscription = $hostingSite->getSubscription();
             if (in_array(
                 $hostingSite->getStatus(),
                 [
-                    \PortlandLabs\Skyline\Entity\Site::STATUS_USER_SUSPENDED,
-                    \PortlandLabs\Skyline\Entity\Site::STATUS_TRIAL_SUSPENDED
+                    \PortlandLabs\Skyline\Entity\Site::STATUS_SUSPENDED_UNPAID,
+                    \PortlandLabs\Skyline\Entity\Site::STATUS_SUSPENDED_TRIAL_CANCELLED
                 ]
             )) { ?>
 

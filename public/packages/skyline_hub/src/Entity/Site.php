@@ -32,12 +32,14 @@ class Site implements \JsonSerializable
 
     const STATUS_INSTALLING = 10;
     const STATUS_ACTIVE = 50;
-    const STATUS_TRIAL_SUSPENDED = 80;
-    const STATUS_USER_SUSPENDED = 90;
+    const STATUS_SUSPENDED_TRIAL_CANCELLED = 80;
+    const STATUS_SUSPENDED_UNPAID = 90;
     const STATUS_DELETED_REMOVAL_IMMINENT = 99;
 
     const SUBSCRIPTION_STATUS_TRIALING = 'trialing';
     const SUBSCRIPTION_STATUS_ACTIVE = 'active';
+    const SUBSCRIPTION_STATUS_PAST_DUE = 'past_due';
+    const SUBSCRIPTION_STATUS_UNPAID = 'unpaid';
 
     /**
      * @ORM\Id @ORM\Column(type="guid")
@@ -406,12 +408,20 @@ class Site implements \JsonSerializable
         $badge = new Element('span', '', ['class' => 'badge badge-info']);
         if ($this->getStatus() === self::STATUS_INSTALLING) {
             $badge->setValue('Installing...');
-        } else if ($this->getStatus() === self::STATUS_TRIAL_SUSPENDED) {
+        } else if ($this->getStatus() === self::STATUS_SUSPENDED_TRIAL_CANCELLED || $this->getStatus() === self::STATUS_SUSPENDED_UNPAID) {
             $badge->class('badge bg-danger badge-danger')->setValue('Cancelled');
         } else if ($this->getStatus() === self::STATUS_DELETED_REMOVAL_IMMINENT) {
             $badge->class('badge bg-danger badge-danger')->setValue('Deleting');
         } else {
             if ($this->getStatus() === self::STATUS_ACTIVE) {
+                if ($this->getSubscriptionStatus() == self::SUBSCRIPTION_STATUS_UNPAID) {
+                    $badge->class('badge bg-danger badge-danger');
+                    $badge->setValue('Suspended');
+                }
+                if ($this->getSubscriptionStatus() == self::SUBSCRIPTION_STATUS_PAST_DUE) {
+                    $badge->class('badge bg-warning badge-warning');
+                    $badge->setValue('Past Due');
+                }
                 if ($this->getSubscriptionStatus() == self::SUBSCRIPTION_STATUS_TRIALING) {
                     $badge->class('badge bg-warning badge-warning');
                     $badge->setValue('Trial');
