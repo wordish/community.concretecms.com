@@ -15,6 +15,11 @@ class Neighborhood
     /**
      * @var string
      */
+    protected $name;
+
+    /**
+     * @var string
+     */
     protected $domain;
 
     /**
@@ -22,9 +27,10 @@ class Neighborhood
      */
     protected $useSsl;
 
-    public function __construct(string $handle, $domain, $useSsl = true)
+    public function __construct(string $handle, string $name, $domain, $useSsl = true)
     {
         $this->handle = $handle;
+        $this->name = $name;
         $this->domain = $domain;
         $this->useSsl = $useSsl;
     }
@@ -43,6 +49,14 @@ class Neighborhood
     public function getDomain()
     {
         return $this->domain;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
     }
 
     public function getSitePublicUrl(Site $site)

@@ -31,6 +31,7 @@ use PortlandLabs\Skyline\Menu\SiteMenu;
     <table class="ccm-search-results-table" data-search-results="hosting_sites">
         <thead>
         <tr>
+            <th style="width: 1px"></th>
 
             <?php
             foreach ($result->getColumns() as $column): ?>
@@ -68,6 +69,7 @@ use PortlandLabs\Skyline\Menu\SiteMenu;
             $site = $item->getItem();
             ?>
             <tr data-details-url="<?= $item->getDetailsUrl() ?>">
+                <td><?=$site->getStatusBadge()?></td>
                 <?php
                 foreach ($item->getColumns() as $column) {
                     $class = $column->getColumn(

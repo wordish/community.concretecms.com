@@ -16,11 +16,20 @@ class NeighborhoodList
     }
 
     /**
-     * return Neighborhood[]
+     * @return Neighborhood[]
      */
     public function getNeighborhoods()
     {
         return $this->neighborhoods;
+    }
+
+    public function asAssociativeArray(): array
+    {
+        $return = [];
+        foreach ($this->getNeighborhoods() as $neighborhood) {
+            $return[$neighborhood->getHandle()] = $neighborhood->getName();
+        }
+        return $return;
     }
 
     public function getByHandle(string $neighborhoodHandle): ?Neighborhood

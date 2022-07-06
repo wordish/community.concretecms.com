@@ -12,26 +12,20 @@
 
 namespace Concrete\Package\SkylineHub\Controller\SinglePage\Dashboard\Skyline;
 
-use Concrete\Core\Page\Controller\DashboardPageController;
 use Concrete\Core\Entity\Search\Query;
 use Concrete\Core\Filesystem\Element;
 use Concrete\Core\Filesystem\ElementManager;
-use Concrete\Core\Http\Response;
-use Concrete\Core\Http\ResponseFactory;
 use Concrete\Core\Http\Request;
+use Concrete\Core\Http\ResponseFactory;
+use Concrete\Core\Page\Controller\DashboardPageController;
 use Concrete\Core\Page\Page;
-use Concrete\Core\Permission\Checker;
 use Concrete\Core\Search\Field\Field\KeywordsField;
 use Concrete\Core\Search\Query\Modifier\AutoSortColumnRequestModifier;
 use Concrete\Core\Search\Query\Modifier\ItemsPerPageRequestModifier;
+use Concrete\Core\Search\Query\QueryFactory;
 use Concrete\Core\Search\Query\QueryModifier;
 use Concrete\Core\Search\Result\Result;
 use Concrete\Core\Search\Result\ResultFactory;
-use Concrete\Core\Support\Facade\Url;
-use Concrete\Core\Search\Query\QueryFactory;
-use Concrete\Core\User\UserInfo;
-use Concrete\Core\User\UserInfoRepository;
-use PortlandLabs\Skyline\Entity\Site as HostingSiteEntity;
 use PortlandLabs\Skyline\Entity\Search\SavedSiteSearch;
 use PortlandLabs\Skyline\Search\Site\SearchProvider;
 
@@ -49,6 +43,7 @@ class Sites extends DashboardPageController
 
     /** @var ResponseFactory */
     protected $responseFactory;
+
     /** @var Request */
     protected $request;
 
@@ -58,150 +53,6 @@ class Sites extends DashboardPageController
 
         $this->responseFactory = $this->app->make(ResponseFactory::class);
         $this->request = $this->app->make(Request::class);
-    }
-
-    /**
-     * @noinspection PhpInconsistentReturnPointsInspection
-     * @param HostingSiteEntity $entry
-     * @return Response
-     */
-    private function save($entry)
-    {
-        $data = $this->request->request->all();
-        if ($this->validate($data)) {
-            $author = null;
-            if ($this->request->request->has('author')) {
-                $userInfo = $this->app->make(UserInfoRepository::class)->getByID($this->request->request->get('author'));
-                if ($userInfo instanceof UserInfo) {
-                    $author = $userInfo->getEntityObject();
-                }
-            }
-            $entry->setName($data["name"]);
-            $entry->setAuthor($author);
-            $entry->setHandle($data["handle"]);
-            $entry->setSubscriptionId($data["subscriptionId"]);
-            $entry->setSubscriptionStatus($data["subscriptionStatus"]);
-            $entry->setNeighborhood($data["neighborhood"]);
-            $entry->setAdminPassword($data["adminPassword"]);
-            $entry->setStatus($data["status"]);
-            $entry->setSuspendedTimestamp($data["suspendedTimestamp"]);
-
-            $this->entityManager->persist($entry);
-            $this->entityManager->flush();
-
-            $this->flash('success', t('Entry saved.'));
-
-            return $this->buildRedirect(['/dashboard/skyline/sites', 'view_details', $entry->getId()]);
-        }
-    }
-
-    private function setDefaults($entry = null)
-    {
-        $this->set("entry", $entry);
-        $this->render("/dashboard/skyline/sites/edit");
-    }
-
-    /**
-     * @noinspection PhpUnusedParameterInspection
-     * @param array $data
-     * @return bool
-     */
-    public function validate($data = null)
-    {
-        return !$this->error->has();
-    }
-
-    /**
-     * @noinspection PhpInconsistentReturnPointsInspection
-     */
-    public function add()
-    {
-        $this->setDefaults(new HostingSiteEntity());
-    }
-
-    public function submit()
-    {
-        $entry = new HostingSiteEntity();
-
-        if ($this->token->validate("save_skyline_site_entity")) {
-            return $this->save($entry);
-        }
-
-        $this->setDefaults($entry);
-    }
-
-    /**
-     * @noinspection PhpInconsistentReturnPointsInspection
-     */
-    public function edit($id = null)
-    {
-        /** @var HostingSiteEntity $entry */
-        $entry = $this->entityManager->getRepository(HostingSiteEntity::class)->findOneBy(
-            [
-                "id" => $id
-            ]
-        );
-
-        if ($entry instanceof HostingSiteEntity) {
-            if ($this->token->validate("save_skyline_site_entity")) {
-                return $this->save($entry);
-            }
-
-            $this->setDefaults($entry);
-        } else {
-            $this->responseFactory->notFound(null)->send();
-            $this->app->shutdown();
-        }
-    }
-
-    public function view_details($id = null)
-    {
-        /** @var HostingSiteEntity $entry */
-        $entry = $this->entityManager->getRepository(HostingSiteEntity::class)->findOneBy(
-            [
-                "id" => $id
-            ]
-        );
-
-        if ($entry instanceof HostingSiteEntity) {
-            $this->set('entry', $entry);
-            $this->set('allowDelete', (new Checker())->canUpdateSkylineSiteEntries());
-            $this->set('backURL', \URL::to('/dashboard/skyline/sites'));
-            $this->set('editURL', \URL::to('/dashboard/skyline/sites', 'edit', $entry->getID()));
-            $this->render('/dashboard/skyline/sites/details');
-        } else {
-            throw new \Exception(t('Invalid id.'));
-        }
-    }
-
-    /**
-     * @noinspection PhpInconsistentReturnPointsInspection
-     */
-    public function remove($id = null)
-    {
-        /** @var HostingSiteEntity $entry */
-        $entry = $this->entityManager->getRepository(HostingSiteEntity::class)->findOneBy(
-            [
-                "id" => $id
-            ]
-        );
-
-        if (!$this->token->validate("remove")) {
-            $this->error->add($this->token->getErrorMessage());
-        }
-
-        if (!$entry instanceof HostingSiteEntity) {
-            $this->error->add(t("Invalid hosting site."));
-        }
-
-        if (!$this->error->has()) {
-            $this->entityManager->remove($entry);
-            $this->entityManager->flush();
-
-            $this->flash('success', t('Site removed.'));
-            return $this->buildRedirect(['/dashboard/skyline/sites']);
-        }
-
     }
 
     public function view()

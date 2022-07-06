@@ -8,13 +8,13 @@ class NeighborhoodSelector
 {
 
     /**
-     * @var NeighborhoodListFactory
+     * @var NeighborhoodList
      */
-    protected $neighborhoodListFactory;
+    protected $neighborhoodList;
 
-    public function __construct(NeighborhoodListFactory $neighborhoodListFactory)
+    public function __construct(NeighborhoodList $neighborhoodList)
     {
-        $this->neighborhoodListFactory = $neighborhoodListFactory;
+        $this->neighborhoodList = $neighborhoodList;
     }
 
     /**
@@ -22,7 +22,7 @@ class NeighborhoodSelector
      */
     public function chooseNeighborhoodForNewSite(): Neighborhood
     {
-        $neighborhoods = $this->neighborhoodListFactory->createList()->getNeighborhoods();
+        $neighborhoods = $this->neighborhoodList->getNeighborhoods();
         shuffle($neighborhoods);
         return $neighborhoods[0];
     }

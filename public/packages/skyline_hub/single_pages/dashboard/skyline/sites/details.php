@@ -14,7 +14,7 @@ defined('C5_EXECUTE') or die('Access denied');
 
 use PortlandLabs\Skyline\Entity\Site;
 
-/** @var $entry Site */
+/** @var $hostingSite Site */
 
 ?>
 
@@ -33,10 +33,10 @@ use PortlandLabs\Skyline\Entity\Site;
 <?php if ($allowDelete) { ?>
     <div style="display: none">
         <div id="ccm-dialog-delete-skyline-site" data-dialog-wrapper="delete-site" class="ccm-ui">
-            <form method="post" action="<?=$view->action('remove', $entry->getID())?>">
-                <?=Core::make("token")->output('remove')?>
-                <input type="hidden" name="entry_id" value="<?=$entry->getID()?>">
-                <p><?=t('Are you sure you want to delete this hosting site record? This cannot be undone.')?></p>
+            <form method="post" action="<?=$view->action('delete', $hostingSite->getID())?>">
+                <?=Core::make("token")->output('delete')?>
+                <input type="hidden" name="id" value="<?=$hostingSite->getID()?>">
+                <p><?=t('Are you sure you want to delete this hosting site record? <b>This will remove the hosting site from its server</b>.')?></p>
                 <div class="dialog-buttons">
                     <button class="btn btn-secondary" onclick="jQuery.fn.dialog.closeTop()"><?=t('Cancel')?></button>
                     <button class="btn btn-danger ms-auto" onclick="$('#ccm-dialog-delete-skyline-site form').submit()"><?=t('Delete Site')?></button>
@@ -46,7 +46,15 @@ use PortlandLabs\Skyline\Entity\Site;
     </div>
 <?php } ?>
 
-<h2><?=$entry->getName()?></h2>
-<div class="text-secondary"><?=$entry->getHandle()?>@<?=$entry->getNeighborhood()?></div>
+<h2><?=$hostingSite->getName()?></h2>
+<div class="text-secondary"><?=$hostingSite->getHandle()?>@<?=$hostingSite->getNeighborhood()?></div>
 
 <hr>
+
+<?php if ($hostingSite->getStatus() == Site::STATUS_INSTALLING) { ?>
+    <div class="card">
+        <div class="card-body" vue-skyline>
+            <skyline-installation-progress :site='<?=json_encode($hostingSite)?>'></skyline-installation-progress>
+        </div>
+    </div>
+<?php } ?>

@@ -35,6 +35,7 @@ class Controller extends Package implements ProviderAggregateInterface
 
     public function install()
     {
+        $this->on_start();
         parent::install();
         $this->installContentFile('data.xml');
     }

@@ -2,6 +2,17 @@
 
 defined('C5_EXECUTE') or die('Access denied');
 
+if (isset($error) && $error->has()) { ?>
+    <div class="alert alert-danger mb-5">
+        <?php foreach ($error->getList() as $errorItem) { ?>
+            <div><?=$errorItem?></div>
+        <?php } ?>
+    </div>
+<?php
+}
+?>
+
+<?php
 if ($u->isRegistered()) { ?>
 
 

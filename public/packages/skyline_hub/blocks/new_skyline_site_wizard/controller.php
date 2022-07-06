@@ -7,6 +7,10 @@ use Concrete\Core\Html\Service\Navigation;
 use Concrete\Core\Routing\Redirect;
 use Concrete\Core\User\User;
 use PortlandLabs\Skyline\Command\CreateHostingSiteCommand;
+use PortlandLabs\Skyline\Command\CreateHostingSiteCommandValidator;
+use PortlandLabs\Skyline\NeighborhoodList;
+use PortlandLabs\Skyline\NeighborhoodListFactory;
+use PortlandLabs\Skyline\NeighborhoodSelector;
 use PortlandLabs\Skyline\Stripe\StripeService;
 
 class Controller extends BlockController
@@ -31,19 +35,21 @@ class Controller extends BlockController
     public function action_create_site()
     {
         $token = $this->app->make('token');
-        if ($token->validate('create_site')) {
-            $name = (string) $this->request->request->get('hosting_site_name');
-            if ($name) {
-                $user = $this->app->make(User::class);
-                $userinfo = $user->getUserInfoObject();
-                $service = $this->app->make(StripeService::class);
-                $customer = $service->getCustomer($userinfo);
-                $price = $service->getProductPrice($_ENV['SKYLINE_DEFAULT_PRODUCT_PRICE_ID']);
-                $subscription = $service->createSubscription($customer, $price);
-                $command = new CreateHostingSiteCommand($subscription->id, $subscription->status, $name);
-                $hostingEntry = $this->app->executeCommand($command);
-                return Redirect::to('/account/hosting/project', $hostingEntry->getID());
-            }
+        $error = $this->app->make('error');
+        if (!$token->validate('create_site')) {
+            $error->add($token->getErrorMessage());
         }
+        $command = new CreateHostingSiteCommand();
+        $command->setNeighborhood($this->app->make(NeighborhoodSelector::class)->chooseNeighborhoodForNewSite()->getHandle());
+        $command->setSiteName($this->request->request->get('hosting_site_name'));
+        $command->setAuthor($this->app->make(User::class)->getUserID());
+        $error->add($this->app->make(CreateHostingSiteCommandValidator::class)->validate($command));
+
+        if (!$error->has()) {
+            $hostingEntry = $this->app->executeCommand($command);
+            return Redirect::to('/account/hosting/project', $hostingEntry->getID());
+        }
+        $this->set('error', $error);
+        $this->view();
     }
 }

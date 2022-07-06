@@ -37,6 +37,6 @@ class Item extends SearchResultItem
 
     public function getDetailsURL()
     {
-        return \URL::to('/dashboard/skyline/sites', 'view_details', $this->item->getId());
+        return \URL::to('/dashboard/skyline/sites/details', $this->item->getId());
     }
 }

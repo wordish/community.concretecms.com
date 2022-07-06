@@ -2,7 +2,7 @@
     <div class="container" v-cloak>
         <div class="row">
             <div class="col-md-6 d-flex">
-                <div class="align-self-center ml-auto mr-auto">
+                <div class="align-self-center ms-auto me-auto ml-auto mr-auto">
                     <vue-ellipse-progress
                         :loading="currentProgress === null"
                         :progress="currentProgress"

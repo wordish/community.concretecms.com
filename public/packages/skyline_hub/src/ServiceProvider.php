@@ -9,6 +9,7 @@ use Concrete\Core\Messenger\Transport\Sender\DefinedTransportSendersLocator;
 use Concrete\Core\Messenger\Transport\TransportManager;
 use Concrete\Core\Routing\Router;
 use PortlandLabs\Skyline\Command\CreateHostingSiteCommandHandler;
+use PortlandLabs\Skyline\Command\DeleteHostingSiteCommandHandler;
 use PortlandLabs\Skyline\Command\TerminateHostingTrialSiteCommandHandler;
 use PortlandLabs\Skyline\Controller\Stripe\Webhook;
 use PortlandLabs\Skyline\Messenger\Middleware\RouteMessageToSkylineNeighborhoodMiddleware;
@@ -34,6 +35,11 @@ class ServiceProvider extends Provider
         };
 
         $this->app->singleton(NeighborhoodListFactory::class);
+        $this->app->bind(NeighborhoodList::class, function() {
+            $factory = $this->app->make(NeighborhoodListFactory::class);
+            return $factory->createList();
+        });
+
         $this->app->singleton(
             StripeClient::class,
             function () {
@@ -90,6 +96,7 @@ class ServiceProvider extends Provider
         $this->app->when(
             [
                 CreateHostingSiteCommandHandler::class,
+                DeleteHostingSiteCommandHandler::class,
                 TerminateHostingTrialSiteCommandHandler::class
             ]
         )

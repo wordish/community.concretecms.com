@@ -34,8 +34,10 @@ class Site implements \JsonSerializable
     const STATUS_ACTIVE = 50;
     const STATUS_TRIAL_SUSPENDED = 80;
     const STATUS_USER_SUSPENDED = 90;
+    const STATUS_DELETED_REMOVAL_IMMINENT = 99;
 
     const SUBSCRIPTION_STATUS_TRIALING = 'trialing';
+    const SUBSCRIPTION_STATUS_ACTIVE = 'active';
 
     /**
      * @ORM\Id @ORM\Column(type="guid")
@@ -338,7 +340,7 @@ class Site implements \JsonSerializable
     /**
      * @return string
      */
-    public function getBytesUsed(): string
+    public function getBytesUsed(): ?int
     {
         return $this->bytesUsed;
     }
@@ -346,9 +348,10 @@ class Site implements \JsonSerializable
     /**
      * @param string $bytesUsed
      */
-    public function setBytesUsed(string $bytesUsed): void
+    public function setBytesUsed(int $bytesUsed)
     {
         $this->bytesUsed = $bytesUsed;
+        return $this;
     }
 
     /**
@@ -404,12 +407,18 @@ class Site implements \JsonSerializable
         if ($this->getStatus() === self::STATUS_INSTALLING) {
             $badge->setValue('Installing...');
         } else if ($this->getStatus() === self::STATUS_TRIAL_SUSPENDED) {
-            $badge->class('badge badge-danger')->setValue('Cancelled');
+            $badge->class('badge bg-danger badge-danger')->setValue('Cancelled');
+        } else if ($this->getStatus() === self::STATUS_DELETED_REMOVAL_IMMINENT) {
+            $badge->class('badge bg-danger badge-danger')->setValue('Deleting');
         } else {
             if ($this->getStatus() === self::STATUS_ACTIVE) {
                 if ($this->getSubscriptionStatus() == self::SUBSCRIPTION_STATUS_TRIALING) {
-                    $badge->class('badge badge-warning');
+                    $badge->class('badge bg-warning badge-warning');
                     $badge->setValue('Trial');
+                }
+                if ($this->getSubscriptionStatus() == self::SUBSCRIPTION_STATUS_ACTIVE) {
+                    $badge->class('badge bg-success badge-success');
+                    $badge->setValue('Active');
                 }
             }
         }

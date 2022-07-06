@@ -10,44 +10,17 @@ class CreateHostingSiteCommand extends Command
     /**
      * @var string
      */
-    protected $subscriptionId;
-
-    /**
-     * Derived from the stripe object. We'll almost always be 'trialing' when the site is created but who knows
-     * what the future holds
-     *
-     * @var string
-     */
-    protected $subscriptionStatus;
-
-    /**
-     * @var string
-     */
     protected $siteName;
 
-
-    public function __construct(string $subscriptionId, string $subscriptionStatus, string $siteName)
-    {
-        $this->subscriptionId = $subscriptionId;
-        $this->subscriptionStatus = $subscriptionStatus;
-        $this->siteName = $siteName;
-    }
+    /**
+     * @var int
+     */
+    protected $author;
 
     /**
-     * @return string
+     * @var string
      */
-    public function getSubscriptionId(): string
-    {
-        return $this->subscriptionId;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSubscriptionStatus(): string
-    {
-        return $this->subscriptionStatus;
-    }
+    protected $neighborhood;
 
     /**
      * @return string
@@ -64,6 +37,41 @@ class CreateHostingSiteCommand extends Command
     {
         $this->siteName = $siteName;
     }
+
+    /**
+     * @return int
+     */
+    public function getAuthor(): int
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param int $author
+     */
+    public function setAuthor(int $author): void
+    {
+        $this->author = $author;
+    }
+
+
+
+    /**
+     * @return string
+     */
+    public function getNeighborhood(): string
+    {
+        return $this->neighborhood;
+    }
+
+    /**
+     * @param string $neighborhood
+     */
+    public function setNeighborhood(string $neighborhood): void
+    {
+        $this->neighborhood = $neighborhood;
+    }
+
 
 
 }

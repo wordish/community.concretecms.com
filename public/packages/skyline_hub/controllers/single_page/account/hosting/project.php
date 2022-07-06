@@ -4,12 +4,14 @@ namespace Concrete\Package\SkylineHub\Controller\SinglePage\Account\Hosting;
 
 use Concrete\Core\Page\Controller\AccountPageController;
 use Concrete\Core\Utility\Service\Number;
-use Doctrine\ORM\EntityManager;
 use PortlandLabs\Skyline\Command\TerminateHostingTrialSiteCommand;
+use PortlandLabs\Skyline\Controller\Traits\RetrieveAndValidateSiteTrait;
 use PortlandLabs\Skyline\Entity\Site;
 
 class Project extends AccountPageController
 {
+
+    use RetrieveAndValidateSiteTrait;
 
     public function on_start()
     {
@@ -18,25 +20,11 @@ class Project extends AccountPageController
         $this->set('token', $this->app->make('token'));
     }
 
-    protected function protect($id = null): Site
-    {
-        $entityManager = $this->app->make(EntityManager::class);
-        $entry = $entityManager->find(Site::class, $id);
-        if (!$entry) {
-            throw new \Exception(t('Invalid site.'));
-        }
-        $profile = $this->get('profile');
-        if ($entry->getAuthor()->getUserID() !== $profile->getUserID()) {
-            throw new \Exception(t('You do not have access to edit this site.'));
-        }
-        $this->set('hostingSite', $entry);
-        return $entry;
-    }
-
     public function view($uuid = null)
     {
-        $hostingSite = $this->protect($uuid);
+        $hostingSite = $this->retrieveAndValidateSite($uuid);
         $this->set('numberHelper', new Number());
+        $this->set('hostingSite', $hostingSite);
         if ($hostingSite->getStatus() == Site::STATUS_INSTALLING) {
             $this->render('/account/hosting/project/install');
         } else {
@@ -46,7 +34,7 @@ class Project extends AccountPageController
 
     public function cancel_trial($uuid = null)
     {
-        $hostingSite = $this->protect($uuid);
+        $hostingSite = $this->retrieveAndValidateSite($uuid);
         if ($hostingSite->getSubscriptionStatus() == Site::SUBSCRIPTION_STATUS_TRIALING) {
             if (!$this->get('token')->validate('cancel_trial')) {
                 throw new \Exception($this->get('token')->getErrorMessage());

@@ -23,11 +23,11 @@ class Invoice
         $badge = new Element('span', '', ['class' => 'badge badge-info']);
         $status = $this->invoice->status;
         if ($status == 'paid') {
-            $badge->class('badge badge-success')->setValue(t('Paid'));
+            $badge->class('badge bg-success badge-success')->setValue(t('Paid'));
         } else if ($status == 'open') {
             $badge->setValue(t('Due'));
         } else if ($status == 'draft') {
-            $badge->class('badge badge-light')->setValue(t('Pending'));
+            $badge->class('badge bg-light badge-light')->setValue(t('Pending'));
         }
         return $badge;
     }

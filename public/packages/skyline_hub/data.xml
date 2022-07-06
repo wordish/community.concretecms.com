@@ -12,6 +12,47 @@
               pagetype=""
               description=""
               package="skyline_hub"/>
+
+        <page name="Add Site" path="/dashboard/skyline/sites/add" filename="/dashboard/skyline/sites/add.php"
+              pagetype=""
+              description=""
+              package="skyline_hub">
+            <attributes>
+                <attributekey handle="exclude_nav">
+                    <value><![CDATA[1]]></value>
+                </attributekey>
+                <attributekey handle="exclude_search_index">
+                    <value><![CDATA[1]]></value>
+                </attributekey>
+            </attributes>
+        </page>
+        <page name="Edit Site" path="/dashboard/skyline/sites/edit" filename="/dashboard/skyline/edit.php"
+              pagetype=""
+              description=""
+              package="skyline_hub">
+        <attributes>
+            <attributekey handle="exclude_nav">
+                <value><![CDATA[1]]></value>
+            </attributekey>
+            <attributekey handle="exclude_search_index">
+                <value><![CDATA[1]]></value>
+            </attributekey>
+        </attributes>
+        </page>
+        <page name="View Site" path="/dashboard/skyline/sites/details" filename="/dashboard/skyline/sites/details.php"
+              pagetype=""
+              description=""
+              package="skyline_hub">
+        <attributes>
+            <attributekey handle="exclude_nav">
+                <value><![CDATA[1]]></value>
+            </attributekey>
+            <attributekey handle="exclude_search_index">
+                <value><![CDATA[1]]></value>
+            </attributekey>
+        </attributes>
+        </page>
+
         <page name="Hosting Sites" path="/account/hosting" filename="/account/hosting/view.php" pagetype="" description=""
               package="skyline_hub">
         </page>

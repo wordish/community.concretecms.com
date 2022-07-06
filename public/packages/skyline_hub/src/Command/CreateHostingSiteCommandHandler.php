@@ -2,16 +2,31 @@
 
 namespace PortlandLabs\Skyline\Command;
 
-use Concrete\Core\User\User;
+use Concrete\Core\User\UserInfoRepository;
 use Doctrine\ORM\EntityManager;
 use PortlandLabs\Skyline\Entity\Site;
 use PortlandLabs\Skyline\Neighborhood\Command\CreateSiteInSkylineCommand;
-use PortlandLabs\Skyline\NeighborhoodSelector;
 use PortlandLabs\Skyline\Site\SiteHandleGenerator;
+use PortlandLabs\Skyline\Stripe\StripeService;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 class CreateHostingSiteCommandHandler
 {
+
+    /**
+     * @var StripeService
+     */
+    protected $stripeService;
+
+    /**
+     * @var UserInfoRepository
+     */
+    protected $userInfoRepository;
+
+    /**
+     * @var SiteHandleGenerator
+     */
+    protected $siteHandleGenerator;
 
     /**
      * @var EntityManager
@@ -24,36 +39,39 @@ class CreateHostingSiteCommandHandler
     protected $messageBus;
 
     /**
-     * @var NeighborhoodSelector
+     * CreateHostingSiteCommandHandler constructor.
+     * @param StripeService $stripeService
+     * @param UserInfoRepository $userInfoRepository
+     * @param SiteHandleGenerator $siteHandleGenerator
+     * @param EntityManager $entityManager
+     * @param MessageBusInterface $messageBus
      */
-    protected $neighborhoodSelector;
-
-    /**
-     * @var SiteHandleGenerator
-     */
-    protected $siteHandleGenerator;
-
-    /**
-     * @var User
-     */
-    protected $user;
-
-    public function __construct(User $user, EntityManager $entityManager, MessageBusInterface $messageBus, NeighborhoodSelector $neighborhoodSelector, SiteHandleGenerator $siteHandleGenerator)
-    {
-        $this->user = $user;
+    public function __construct(
+        StripeService $stripeService,
+        UserInfoRepository $userInfoRepository,
+        SiteHandleGenerator $siteHandleGenerator,
+        EntityManager $entityManager,
+        MessageBusInterface $messageBus
+    ) {
+        $this->stripeService = $stripeService;
+        $this->userInfoRepository = $userInfoRepository;
+        $this->siteHandleGenerator = $siteHandleGenerator;
         $this->entityManager = $entityManager;
         $this->messageBus = $messageBus;
-        $this->neighborhoodSelector = $neighborhoodSelector;
-        $this->siteHandleGenerator = $siteHandleGenerator;
     }
 
     public function __invoke(CreateHostingSiteCommand $command)
     {
+        $userinfo = $this->userInfoRepository->getByID($command->getAuthor());
+        $customer = $this->stripeService->getCustomer($userinfo);
+        $price = $this->stripeService->getProductPrice($_ENV['SKYLINE_DEFAULT_PRODUCT_PRICE_ID']);
+        $subscription = $this->stripeService->createSubscription($customer, $price);
+
         $siteName = $command->getSiteName();
-        $neighborhood = $this->neighborhoodSelector->chooseNeighborhoodForNewSite()->getHandle();
+        $neighborhood = $command->getNeighborhood();
         $siteHandle = $this->siteHandleGenerator->createSiteHandle($command);
         $generatedAdminPassword = bin2hex(random_bytes(8));
-        $author = $this->user->getUserInfoObject()->getEntityObject();
+        $author = $userinfo->getEntityObject();
 
         $hostingEntry = new Site();
         $hostingEntry->setNeighborhood($neighborhood);
@@ -62,8 +80,8 @@ class CreateHostingSiteCommandHandler
         $hostingEntry->setAuthor($author);
         $hostingEntry->setAdminPassword($generatedAdminPassword);
         $hostingEntry->setStatus(Site::STATUS_INSTALLING);
-        $hostingEntry->setSubscriptionStatus($command->getSubscriptionStatus());
-        $hostingEntry->setSubscriptionId($command->getSubscriptionId());
+        $hostingEntry->setSubscriptionStatus($subscription->status);
+        $hostingEntry->setSubscriptionId($subscription->id);
 
         $this->entityManager->persist($hostingEntry);
         $this->entityManager->flush();
@@ -77,6 +95,8 @@ class CreateHostingSiteCommandHandler
         $this->messageBus->dispatch($command);
 
         return $hostingEntry;
+
+
     }
 
     

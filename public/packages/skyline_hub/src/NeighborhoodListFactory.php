@@ -11,7 +11,7 @@ class NeighborhoodListFactory
     {
         if ($_ENV['SKYLINE_NEIGHBORHOOD_LIST_ENVIRONMENT'] === 'dev') {
             return (new NeighborhoodList)
-                ->addNeighborhood(new Neighborhood('irvington', 'irvington.local:8080', false));
+                ->addNeighborhood(new Neighborhood('irvington', 'Irvington', 'irvington.local:8080', false));
 
         }
     }

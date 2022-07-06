@@ -461,7 +461,7 @@ var render = function () {
       _c("div", { staticClass: "col-md-6 d-flex" }, [
         _c(
           "div",
-          { staticClass: "align-self-center ml-auto mr-auto" },
+          { staticClass: "align-self-center ms-auto me-auto ml-auto mr-auto" },
           [
             _c(
               "vue-ellipse-progress",
