@@ -10,4 +10,27 @@ class CompleteInstallationInSkylineCommand extends Command
 
     use NeighborhoodAccountTrait;
 
+    /**
+     * @var int
+     */
+    protected $bytesUsed;
+
+    /**
+     * @return int
+     */
+    public function getBytesUsed(): int
+    {
+        return $this->bytesUsed;
+    }
+
+    /**
+     * @param int $bytesUsed
+     */
+    public function setBytesUsed(int $bytesUsed): void
+    {
+        $this->bytesUsed = $bytesUsed;
+    }
+
+
+
 }

@@ -32,8 +32,9 @@ defined('C5_EXECUTE') or die('Access Denied.');
             <td class="text-nowrap text-right">
                 <?php if (!in_array($invoice->status, ['draft'])) { ?>
                     <a href="<?=$invoice->invoice_pdf?>" class="btn btn-sm py-0 px-3 btn-secondary"><?=t('PDF')?></a>
+                <?php } ?>
+                <?php if (!in_array($invoice->status, ['draft', 'paid'])) { ?>
                     <a href="<?=$invoice->hosted_invoice_url?>" class="btn btn-primary py-0 px-3 btn-sm"><?=t('Pay')?></a>
-
                 <?php } ?>
             </td>
         </tr>

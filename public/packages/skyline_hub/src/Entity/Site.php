@@ -97,6 +97,12 @@ class Site implements \JsonSerializable
     protected $adminPassword = '';
 
     /**
+     * @var string
+     * @ORM\Column(name="`bytesUsed`", type="integer", nullable=true, options={"unsigned": true})
+     */
+    protected $bytesUsed;
+
+    /**
      * @var integer
      * @ORM\Column(name="`status`", type="integer", nullable=true)
      */
@@ -329,6 +335,31 @@ class Site implements \JsonSerializable
         return $this->getNeighborhoodObject()->getSitePublicDomain($this);
     }
 
+    /**
+     * @return string
+     */
+    public function getBytesUsed(): string
+    {
+        return $this->bytesUsed;
+    }
+
+    /**
+     * @param string $bytesUsed
+     */
+    public function setBytesUsed(string $bytesUsed): void
+    {
+        $this->bytesUsed = $bytesUsed;
+    }
+
+    /**
+     * Returns the size in bytes that the site allowed to use. Determines this from the site subscription type (trial, full),
+     * maybe the type of site provisioned, the hosting plan, etc... This is still @TODO.
+     * @return int
+     */
+    public function getBytesQuota(): int
+    {
+        return 1073741824; // 1gb should be enough for anybody
+    }
 
     public function getSubscription(): ?Subscription
     {

@@ -3,6 +3,7 @@
 namespace Concrete\Package\SkylineHub\Controller\SinglePage\Account\Hosting;
 
 use Concrete\Core\Page\Controller\AccountPageController;
+use Concrete\Core\Utility\Service\Number;
 use Doctrine\ORM\EntityManager;
 use PortlandLabs\Skyline\Command\TerminateHostingTrialSiteCommand;
 use PortlandLabs\Skyline\Entity\Site;
@@ -35,6 +36,7 @@ class Project extends AccountPageController
     public function view($uuid = null)
     {
         $hostingSite = $this->protect($uuid);
+        $this->set('numberHelper', new Number());
         if ($hostingSite->getStatus() == Site::STATUS_INSTALLING) {
             $this->render('/account/hosting/project/install');
         } else {

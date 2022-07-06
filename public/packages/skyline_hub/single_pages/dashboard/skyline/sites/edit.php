@@ -16,10 +16,14 @@ use PortlandLabs\Skyline\Entity\Site;
 use Concrete\Core\Form\Service\Form;
 use Concrete\Core\Support\Facade\Url;
 use Concrete\Core\Validation\CSRF\Token;
+use Concrete\Core\Form\Service\Widget\UserSelector;
 
+/** @var $userSelector UserSelector */
 /** @var $entry Site */
 /** @var $form Form */
 /** @var $token Token */
+
+$userSelector = app(UserSelector::class);
 
 ?>
 <form action="<?=$controller->action('submit')?>" method="post">
@@ -43,7 +47,19 @@ use Concrete\Core\Validation\CSRF\Token;
             ]
         ); ?>
     </div>
-    
+
+    <div class="form-group">
+        <?php echo $form->label(
+            "author",
+            t("User"),
+            [
+                "class" => "control-label"
+            ]
+        ); ?>
+
+        <?php echo $userSelector->selectUser('author', $entry->getAuthor())?>
+    </div>
+
     <div class="form-group">
         <?php echo $form->label(
             "handle",

@@ -22,22 +22,13 @@ class Invoice
     {
         $badge = new Element('span', '', ['class' => 'badge badge-info']);
         $status = $this->invoice->status;
-        if ($status == 'open') {
+        if ($status == 'paid') {
+            $badge->class('badge badge-success')->setValue(t('Paid'));
+        } else if ($status == 'open') {
             $badge->setValue(t('Due'));
         } else if ($status == 'draft') {
             $badge->class('badge badge-light')->setValue(t('Pending'));
         }
-
-        /*if ($this->getStatus() === self::STATUS_INSTALLING) {
-            $badge->setValue('Installing...');
-        } else {
-            if ($this->getStatus() === self::STATUS_INSTALLED) {
-                if ($this->getSubscriptionStatus() == self::SUBSCRIPTION_STATUS_TRIALING) {
-                    $badge->class('badge badge-warning');
-                    $badge->setValue('Trial');
-                }
-            }
-        }*/
         return $badge;
     }
 

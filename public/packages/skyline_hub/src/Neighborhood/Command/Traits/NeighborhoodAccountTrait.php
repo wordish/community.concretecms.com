@@ -5,31 +5,12 @@ namespace PortlandLabs\Skyline\Neighborhood\Command\Traits;
 trait NeighborhoodAccountTrait
 {
 
-    /**
-     * @var string
-     */
-    protected $neighborhood;
+    use NeighborhoodTrait;
 
     /**
      * @var string
      */
     protected $siteHandle;
-
-    /**
-     * @return string
-     */
-    public function getNeighborhood(): string
-    {
-        return $this->neighborhood;
-    }
-
-    /**
-     * @param string $neighborhood
-     */
-    public function setNeighborhood(string $neighborhood): void
-    {
-        $this->neighborhood = $neighborhood;
-    }
 
     /**
      * @return string

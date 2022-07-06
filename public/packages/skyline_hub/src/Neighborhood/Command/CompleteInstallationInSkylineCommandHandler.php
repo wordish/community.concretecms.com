@@ -15,9 +15,12 @@ class CompleteInstallationInSkylineCommandHandler
         $this->setStatus(
             $command->getNeighborhood(),
             $command->getSiteHandle(),
-            function(Site $site) {
+            function(Site $site) use ($command) {
                 $site->setStatus(Site::STATUS_ACTIVE);
                 $site->setAdminPassword(null);
+                if ($command->getBytesUsed() != null) {
+                    $site->setBytesUsed((int) $command->getBytesUsed());
+                }
                 return $site;
             }
         );

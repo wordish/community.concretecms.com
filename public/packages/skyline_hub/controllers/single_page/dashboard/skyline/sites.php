@@ -29,6 +29,8 @@ use Concrete\Core\Search\Result\Result;
 use Concrete\Core\Search\Result\ResultFactory;
 use Concrete\Core\Support\Facade\Url;
 use Concrete\Core\Search\Query\QueryFactory;
+use Concrete\Core\User\UserInfo;
+use Concrete\Core\User\UserInfoRepository;
 use PortlandLabs\Skyline\Entity\Site as HostingSiteEntity;
 use PortlandLabs\Skyline\Entity\Search\SavedSiteSearch;
 use PortlandLabs\Skyline\Search\Site\SearchProvider;
@@ -66,9 +68,16 @@ class Sites extends DashboardPageController
     private function save($entry)
     {
         $data = $this->request->request->all();
-
         if ($this->validate($data)) {
+            $author = null;
+            if ($this->request->request->has('author')) {
+                $userInfo = $this->app->make(UserInfoRepository::class)->getByID($this->request->request->get('author'));
+                if ($userInfo instanceof UserInfo) {
+                    $author = $userInfo->getEntityObject();
+                }
+            }
             $entry->setName($data["name"]);
+            $entry->setAuthor($author);
             $entry->setHandle($data["handle"]);
             $entry->setSubscriptionId($data["subscriptionId"]);
             $entry->setSubscriptionStatus($data["subscriptionStatus"]);
