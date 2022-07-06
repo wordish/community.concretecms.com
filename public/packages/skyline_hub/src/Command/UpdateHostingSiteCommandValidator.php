@@ -2,13 +2,16 @@
 
 namespace PortlandLabs\Skyline\Command;
 
-use Concrete\Core\Foundation\Command\Command;
 use Concrete\Core\Foundation\Command\ValidatorInterface;
 use Concrete\Core\User\UserInfoRepository;
 use Concrete\Core\Utility\Service\Validation\Strings;
+use Doctrine\ORM\EntityManager;
+use PortlandLabs\Skyline\Entity\Site;
 use PortlandLabs\Skyline\NeighborhoodList;
+use Stripe\Stripe;
+use Stripe\StripeClient;
 
-class CreateHostingSiteCommandValidator implements ValidatorInterface
+class UpdateHostingSiteCommandValidator implements ValidatorInterface
 {
 
     /**
@@ -22,24 +25,35 @@ class CreateHostingSiteCommandValidator implements ValidatorInterface
     protected $userInfoRepository;
 
     /**
-     * @var NeighborhoodList
+     * @var StripeClient
      */
-    protected $neighborhoodList;
+    protected $stripe;
 
-    public function __construct(NeighborhoodList $neighborhoodList, UserInfoRepository $userInfoRepository, Strings $strings)
+    /**
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    public function __construct(EntityManager $entityManager, StripeClient $stripe, NeighborhoodList $neighborhoodList, UserInfoRepository $userInfoRepository, Strings $strings)
     {
-        $this->neighborhoodList = $neighborhoodList;
+        $this->entityManager = $entityManager;
+        $this->stripe = $stripe;
         $this->userInfoRepository = $userInfoRepository;
         $this->strings = $strings;
     }
 
     /**
-     * @param CreateHostingSiteCommand $command
+     * @param UpdateHostingSiteCommand $command
      * @return \Concrete\Core\Error\ErrorList\ErrorList|void
      */
     public function validate($command)
     {
         $error = app('error');
+
+        $hostingSite = $this->entityManager->find(Site::class, $command->getId());
+        if (!$hostingSite) {
+            $error->add(t('Invalid hosting site ID.'));
+        }
 
         $author = null;
         $user = $this->userInfoRepository->getByID($command->getAuthor());
@@ -57,9 +71,12 @@ class CreateHostingSiteCommandValidator implements ValidatorInterface
             $error->add(t("Your site name must be a minimum of 4 characters long."));
         }
 
-        $neighborhood = $this->neighborhoodList->getByHandle($command->getNeighborhood());
-        if (!$neighborhood) {
-            $error->add(t('You must choose a valid neighborhood (hosting server) for this account.'));
+        if ($command->getSubscriptionId()) {
+            try {
+                $subscription = $this->stripe->subscriptions->retrieve($command->getSubscriptionId());
+            } catch (\Exception $e) {
+                $error->add(t('Invalid subscription ID.'));
+            }
         }
 
         return $error;

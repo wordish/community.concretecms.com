@@ -15,16 +15,16 @@ class Details extends DashboardPageController
     public function view($id = null)
     {
         $this->requireAsset('skyline/frontend');
-        $hostingSite = $this->retrieveAndValidateSite($id);
+        $hostingSite = $this->retrieveAndValidateSiteForViewing($id);
         $this->set('hostingSite', $hostingSite);
         $this->set('allowDelete', (new Checker())->canDeleteSkylineSiteEntries());
         $this->set('backURL', \URL::to('/dashboard/skyline/sites'));
-        $this->set('editURL', \URL::to('/dashboard/skyline/sites', 'edit', $hostingSite->getID()));
+        $this->set('editURL', \URL::to('/dashboard/skyline/sites/edit', $hostingSite->getID()));
     }
 
     public function delete($id = null)
     {
-        $hostingSite = $this->retrieveAndValidateSite($id);
+        $hostingSite = $this->retrieveAndValidateSiteForDeleting($id);
         if (!$this->token->validate("delete")) {
             $this->error->add($this->token->getErrorMessage());
         }

@@ -199,6 +199,22 @@ class Site implements \JsonSerializable
         return $this->status;
     }
 
+    public function getStatusText()
+    {
+        switch ($this->status) {
+            case self::STATUS_INSTALLING:
+                return t('Installation in Progress.');
+            case self::STATUS_ACTIVE:
+                return t('Site installed and running.');
+            case self::STATUS_SUSPENDED_TRIAL_CANCELLED:
+                return t('Site suspended (trial cancelled.');
+            case self::STATUS_SUSPENDED_UNPAID:
+                return t('Site suspended (past due/unpaid)');
+            case self::STATUS_DELETED_REMOVAL_IMMINENT:
+                return t('Site deleted – removal imminent.');
+        }
+    }
+
     /**
      * @return integer
      */

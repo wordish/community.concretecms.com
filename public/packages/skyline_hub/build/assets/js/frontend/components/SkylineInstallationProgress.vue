@@ -44,7 +44,7 @@
                         <input type="text" class="form-control bg-white" readonly onclick="this.select()" value="admin">
                     </div>
                     <div class="mb-4" v-if="site.password !== null">
-                        <h4>Temporary Password</h4>
+                        <h4>Password</h4>
                         <div class="input-group">
                             <input type="text" @click="handlePasswordClick" class="form-control bg-white" readonly :value="sitePassword">
                             <div class="input-group-append">

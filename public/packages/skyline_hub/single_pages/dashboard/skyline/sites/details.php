@@ -46,10 +46,57 @@ use PortlandLabs\Skyline\Entity\Site;
     </div>
 <?php } ?>
 
-<h2><?=$hostingSite->getName()?></h2>
-<div class="text-secondary"><?=$hostingSite->getHandle()?>@<?=$hostingSite->getNeighborhood()?></div>
+<div>
+    <h2><?=$hostingSite->getName()?></h2>
+    <div>
+        <span class="text-secondary"><?=$hostingSite->getHandle()?>@<?=$hostingSite->getNeighborhood()?></span>
+        <?=$hostingSite->getStatusBadge()?>
+    </div>
+</div>
+<hr>
+
+<fieldset class="mb-5">
+    <legend><?=t('Skyline Account')?></legend>
+    <div class="row mb-3">
+        <div class="col-md-3 text-end"><b><?=t('Status')?></b></div>
+        <div class="col-md-9"><?=$hostingSite->getStatusText()?></div>
+    </div>
+    <div class="row mb-3 d-flex align-items-center">
+        <div class="col-md-3 text-end"><b><?=t('Public URL')?></b></div>
+        <div class="col-md-9">
+            <div class="input-group">
+                <input type="text" class="form-control bg-white" readonly value="<?=$hostingSite->getPublicUrl()?>" onclick="this.select()">
+                <a target="_blank" href="<?=$hostingSite->getPublicUrl()?>" class="px-2 btn btn-secondary"><i class="fa fa-external-link-alt"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-3 d-flex align-items-center">
+        <div class="col-md-3 text-end"><b><?=t('Control Panel URL')?></b></div>
+        <div class="col-md-9">
+            <div class="input-group">
+                <input type="text" class="form-control bg-white" readonly value="<?=$hostingSite->getControlPanelUrl()?>" onclick="this.select()">
+                <a target="_blank" href="<?=$hostingSite->getControlPanelUrl()?>" class="px-2 btn btn-secondary"><i class="fa fa-external-link-alt"></i></a>
+            </div>
+        </div>
+    </div>
+</fieldset>
 
 <hr>
+
+<fieldset class="mt-5">
+<legend><?=t('Stripe')?></legend>
+    <div class="row mb-3">
+        <div class="col-md-3 text-end"><b><?=t('Subscription Status')?></b></div>
+        <div class="col-md-9"><?=$hostingSite->getSubscriptionStatus()?> (<a href="https://stripe.com/docs/api/subscriptions/object#subscription_object-status" target="_blank">Stripe Docs <i class="fa fa-external-link-alt"></i></a>) </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-3 text-end"><b><?=t('Subscription ID')?></b></div>
+        <div class="col-md-9"><a target="_blank"href="https://dashboard.stripe.com/subscriptions/<?=$hostingSite->getSubscriptionId()?>"><?=$hostingSite->getSubscriptionId()?></div>
+    </div>
+
+</fieldset>
+
+
 
 <?php if ($hostingSite->getStatus() == Site::STATUS_INSTALLING) { ?>
     <div class="card">

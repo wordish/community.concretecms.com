@@ -560,7 +560,7 @@ var render = function () {
             _vm._v(" "),
             _vm.site.password !== null
               ? _c("div", { staticClass: "mb-4" }, [
-                  _c("h4", [_vm._v("Temporary Password")]),
+                  _c("h4", [_vm._v("Password")]),
                   _vm._v(" "),
                   _c("div", { staticClass: "input-group" }, [
                     _c("input", {

@@ -10,18 +10,21 @@ use PortlandLabs\Skyline\Entity\Site;
 trait RetrieveAndValidateSiteTrait
 {
 
-    protected function retrieveAndValidateSite($id = null, User $u = null): Site
+    private function getHostingSite($id): Site
     {
         $entityManager = app(EntityManager::class);
         $entry = $entityManager->find(Site::class, $id);
         if (!$entry) {
             throw new \Exception(t('Invalid site.'));
         }
-        if ($u) {
-            if ($entry->getAuthor()->getUserID() != $u->getUserID()) {
-                throw new \Exception(t('You do not have access to edit this site.'));
-            }
-        } else {
+        return $entry;
+    }
+
+    protected function retrieveAndValidateSiteForViewing($id = null): Site
+    {
+        $entry = $this->getHostingSite($id);
+        $u = new User();
+        if ($entry->getAuthor()->getUserID() != $u->getUserID()) {
             $checker = new Checker();
             if (!$checker->canReadSkylineSiteEntries()) {
                 throw new \Exception(t('You do not have access to edit this site.'));
@@ -29,5 +32,27 @@ trait RetrieveAndValidateSiteTrait
         }
         return $entry;
     }
+
+    protected function retrieveAndValidateSiteForEditing($id = null): Site
+    {
+        $entry = $this->getHostingSite($id);
+        $checker = new Checker();
+        if (!$checker->canUpdateSkylineSiteEntries()) {
+            throw new \Exception(t('You do not have access to edit this site.'));
+        }
+        return $entry;
+    }
+
+    protected function retrieveAndValidateSiteForDeleting($id = null): Site
+    {
+        $entry = $this->getHostingSite($id);
+        $checker = new Checker();
+        if (!$checker->canDeleteSkylineSiteEntries()) {
+            throw new \Exception(t('You do not have access to edit this site.'));
+        }
+        return $entry;
+    }
+
+
 
 }

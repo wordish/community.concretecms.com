@@ -22,7 +22,7 @@ class Project extends AccountPageController
 
     public function view($uuid = null)
     {
-        $hostingSite = $this->retrieveAndValidateSite($uuid, $this->get('profile')->getUserObject());
+        $hostingSite = $this->retrieveAndValidateSiteForViewing($uuid);
         $this->set('numberHelper', new Number());
         $this->set('hostingSite', $hostingSite);
         if ($hostingSite->getStatus() == Site::STATUS_INSTALLING) {
@@ -34,7 +34,7 @@ class Project extends AccountPageController
 
     public function cancel_trial($uuid = null)
     {
-        $hostingSite = $this->retrieveAndValidateSite($uuid, $this->get('profile')->getUserObject());
+        $hostingSite = $this->retrieveAndValidateSiteForViewing($uuid, $this->get('profile')->getUserObject());
         if ($hostingSite->getSubscriptionStatus() == Site::SUBSCRIPTION_STATUS_TRIALING) {
             if (!$this->get('token')->validate('cancel_trial')) {
                 throw new \Exception($this->get('token')->getErrorMessage());

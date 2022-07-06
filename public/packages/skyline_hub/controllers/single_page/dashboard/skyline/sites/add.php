@@ -33,7 +33,6 @@ class Add extends DashboardPageController
 
     public function submit()
     {
-
         $command = new CreateHostingSiteCommand();
         $command->setAuthor((int) $this->request->request->get('author'));
         $command->setSiteName($this->request->request->get('name'));
