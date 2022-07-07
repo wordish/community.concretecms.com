@@ -17,6 +17,7 @@ use Concrete\Core\Search\Field\AbstractField;
 use Concrete\Core\Search\ItemList\ItemList;
 use Concrete\Core\Support\Facade\Application;
 use PortlandLabs\Skyline\Site\SiteList;
+use PortlandLabs\Skyline\Site\StatusMap;
 
 class StatusField extends AbstractField
 {
@@ -40,7 +41,9 @@ class StatusField extends AbstractField
      */
     public function filterList(ItemList $list)
     {
-        $list->filterByStatus($this->data['status']);
+        if ($this->data['status'] != '') {
+            $list->filterByStatus($this->data['status']);
+        }
     }
     
     public function renderSearchField()
@@ -48,6 +51,7 @@ class StatusField extends AbstractField
         $app = Application::getFacadeApplication();
         /** @var Form $form */
         $form = $app->make(Form::class);
-        return $form->number('status', $this->data['status']);
+        $statusMap = StatusMap::getMap();
+        return $form->select('status', ['' => t('** All')] + $statusMap, $this->data['status']);
     }
 }

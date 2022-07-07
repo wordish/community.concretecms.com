@@ -4,7 +4,7 @@ namespace Concrete\Package\SkylineHub\Controller\SinglePage\Account\Hosting;
 
 use Concrete\Core\Page\Controller\AccountPageController;
 use Concrete\Core\Utility\Service\Number;
-use PortlandLabs\Skyline\Command\TerminateHostingTrialSiteCommand;
+use PortlandLabs\Skyline\Command\CancelHostingTrialSiteCommand;
 use PortlandLabs\Skyline\Controller\Traits\RetrieveAndValidateSiteTrait;
 use PortlandLabs\Skyline\Entity\Site;
 use PortlandLabs\Skyline\Stripe\StripeService;
@@ -42,7 +42,7 @@ class Project extends AccountPageController
             if (!$this->get('token')->validate('cancel_trial')) {
                 throw new \Exception($this->get('token')->getErrorMessage());
             } else {
-                $command = new TerminateHostingTrialSiteCommand($hostingSite->getId());
+                $command = new CancelHostingTrialSiteCommand($hostingSite->getId());
                 $this->executeCommand($command);
                 $this->flash('success', t('Trial cancelled.'));
                 return $this->buildRedirect(['/account/hosting/']);

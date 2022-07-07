@@ -29,7 +29,7 @@ use Closure;
 class SiteList extends ItemList implements PagerProviderInterface, PaginationProviderInterface
 {
     protected $isFulltextSearch = false;
-    protected $autoSortColumns = ['t0.Name', 't0.Handle', 't0.SubscriptionId', 't0.SubscriptionStatus', 't0.Neighborhood', 't0.AdminPassword', 't0.Status', 't0.SuspendedTimestamp'];
+    protected $autoSortColumns = ['t0.name', 't0.handle', 't0.dateCreated', 't0.neighborhood', 't0.status', 't0.suspendedTimestamp'];
     protected $permissionsChecker = -1;
 
     public function createQuery()
@@ -84,8 +84,8 @@ class SiteList extends ItemList implements PagerProviderInterface, PaginationPro
      */
     public function filterBySubscriptionId($subscriptionId)
     {
-        $this->query->andWhere('t0.`subscriptionId` LIKE :subscriptionId');
-        $this->query->setParameter('subscriptionId', '%' . $subscriptionId . '%');
+        $this->query->andWhere('t0.`subscriptionId` = :subscriptionId');
+        $this->query->setParameter('subscriptionId', $subscriptionId);
     }
 
     /**
@@ -93,8 +93,8 @@ class SiteList extends ItemList implements PagerProviderInterface, PaginationPro
      */
     public function filterBySubscriptionStatus($subscriptionStatus)
     {
-        $this->query->andWhere('t0.`subscriptionStatus` LIKE :subscriptionStatus');
-        $this->query->setParameter('subscriptionStatus', '%' . $subscriptionStatus . '%');
+        $this->query->andWhere('t0.`subscriptionStatus` = :subscriptionStatus');
+        $this->query->setParameter('subscriptionStatus', $subscriptionStatus);
     }
 
     /**
@@ -102,8 +102,8 @@ class SiteList extends ItemList implements PagerProviderInterface, PaginationPro
      */
     public function filterByNeighborhood($neighborhood)
     {
-        $this->query->andWhere('t0.`neighborhood` LIKE :neighborhood');
-        $this->query->setParameter('neighborhood', '%' . $neighborhood . '%');
+        $this->query->andWhere('t0.`neighborhood` = :neighborhood');
+        $this->query->setParameter('neighborhood', $neighborhood);
     }
 
     public function sortByDateAddedDescending()

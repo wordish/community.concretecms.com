@@ -4,11 +4,11 @@ namespace PortlandLabs\Skyline\Command;
 
 use Doctrine\ORM\EntityManager;
 use PortlandLabs\Skyline\Entity\Site;
-use PortlandLabs\Skyline\Neighborhood\Command\SuspendTrialSiteInNeighborhoodCommand;
+use PortlandLabs\Skyline\Neighborhood\Command\SuspendSiteInNeighborhoodCommand;
 use PortlandLabs\Skyline\Stripe\StripeService;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class TerminateHostingTrialSiteCommandHandler
+class SuspendHostingSiteCommandHandler
 {
 
     /**
@@ -33,27 +33,46 @@ class TerminateHostingTrialSiteCommandHandler
         $this->messageBus = $messageBus;
     }
 
-
-    public function __invoke(TerminateHostingTrialSiteCommand $command)
+    protected function getEntryFromCommand(SuspendHostingSiteCommand $command): Site
     {
         /**
          * @var $hostingEntry Site
          */
         $hostingEntry = $this->entityManager->find(Site::class, $command->getId());
-        $hostingEntry->setStatus(Site::STATUS_SUSPENDED_TRIAL_CANCELLED);
+        return $hostingEntry;
+    }
+
+    protected function cancelHostingSubscriptionIfExists(Site $hostingEntry)
+    {
+        try {
+            $subscriptionId = $hostingEntry->getSubscriptionId();
+            $this->stripeService->cancelSubscription($subscriptionId);
+        } catch (\Exception $e) {}
+    }
+
+    protected function setSuspendedStatus(Site $hostingEntry, int $status)
+    {
+        $hostingEntry->setStatus($status);
         $hostingEntry->setSuspendedTimestamp((new \DateTime())->getTimestamp());
         $this->entityManager->persist($hostingEntry);
         $this->entityManager->flush();
+    }
 
-        $subscriptionId = $hostingEntry->getSubscriptionId();
-        $this->stripeService->cancelSubscription($subscriptionId);
-
-        $command = new SuspendTrialSiteInNeighborhoodCommand();
+    protected function dispatchNeighborhoodCommand($command, Site $hostingEntry)
+    {
         $command->setNeighborhood($hostingEntry->getNeighborhood());
         $command->setSiteHandle($hostingEntry->getHandle());
-
         $this->messageBus->dispatch($command);
+    }
 
+    /**
+     * @param SuspendHostingSiteCommand $command
+     */
+    public function __invoke($command)
+    {
+        $hostingEntry = $this->getEntryFromCommand($command);
+        $this->setSuspendedStatus($hostingEntry, Site::STATUS_SUSPENDED_ADMIN_SUSPENDED);
+        $this->dispatchNeighborhoodCommand(new SuspendSiteInNeighborhoodCommand(), $hostingEntry);
         return $hostingEntry;
     }
 

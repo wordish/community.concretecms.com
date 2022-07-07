@@ -2,7 +2,7 @@
 
 namespace PortlandLabs\Skyline\Command;
 
-class SuspendUnpaidHostingSiteCommand extends DeleteHostingSiteCommand
+class SuspendUnpaidHostingSiteCommand extends SuspendHostingSiteCommand
 {
 
 

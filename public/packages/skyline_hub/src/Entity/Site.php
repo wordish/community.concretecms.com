@@ -18,6 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
 use HtmlObject\Element;
 use PortlandLabs\Skyline\Neighborhood\Neighborhood;
 use PortlandLabs\Skyline\NeighborhoodListFactory;
+use PortlandLabs\Skyline\Site\StatusMap;
 use Stripe\Invoice;
 use Stripe\Stripe;
 use Stripe\StripeClient;
@@ -32,8 +33,10 @@ class Site implements \JsonSerializable
 
     const STATUS_INSTALLING = 10;
     const STATUS_ACTIVE = 50;
+    const STATUS_REINSTATING = 75;
     const STATUS_SUSPENDED_TRIAL_CANCELLED = 80;
     const STATUS_SUSPENDED_UNPAID = 90;
+    const STATUS_SUSPENDED_ADMIN_SUSPENDED = 95;
     const STATUS_DELETED_REMOVAL_IMMINENT = 99;
 
     const SUBSCRIPTION_STATUS_TRIALING = 'trialing';
@@ -201,18 +204,7 @@ class Site implements \JsonSerializable
 
     public function getStatusText()
     {
-        switch ($this->status) {
-            case self::STATUS_INSTALLING:
-                return t('Installation in Progress.');
-            case self::STATUS_ACTIVE:
-                return t('Site installed and running.');
-            case self::STATUS_SUSPENDED_TRIAL_CANCELLED:
-                return t('Site suspended (trial cancelled.');
-            case self::STATUS_SUSPENDED_UNPAID:
-                return t('Site suspended (past due/unpaid)');
-            case self::STATUS_DELETED_REMOVAL_IMMINENT:
-                return t('Site deleted – removal imminent.');
-        }
+        return StatusMap::getMap()[$this->status];
     }
 
     /**
@@ -411,6 +403,13 @@ class Site implements \JsonSerializable
         return null;
     }
 
+    public function isSuspended(): bool
+    {
+        if (in_array($this->getStatus(), [self::STATUS_SUSPENDED_ADMIN_SUSPENDED, self::STATUS_SUSPENDED_UNPAID, self::STATUS_SUSPENDED_TRIAL_CANCELLED])) {
+            return true;
+        }
+        return false;
+    }
 
     /**
      * Returns a nicely formatted badge representing the site's status in the system. This is fuzzy - it might
@@ -424,8 +423,12 @@ class Site implements \JsonSerializable
         $badge = new Element('span', '', ['class' => 'bg-info badge badge-info']);
         if ($this->getStatus() === self::STATUS_INSTALLING) {
             $badge->setValue('Installing...');
-        } else if ($this->getStatus() === self::STATUS_SUSPENDED_TRIAL_CANCELLED || $this->getStatus() === self::STATUS_SUSPENDED_UNPAID) {
+        } else if ($this->getStatus() === self::STATUS_REINSTATING) {
+            $badge->setValue('Reinstating...');
+        } else if ($this->getStatus() === self::STATUS_SUSPENDED_TRIAL_CANCELLED) {
             $badge->class('badge bg-danger badge-danger')->setValue('Cancelled');
+        } else if ($this->getStatus() === self::STATUS_SUSPENDED_UNPAID || $this->getStatus() === self::STATUS_SUSPENDED_ADMIN_SUSPENDED) {
+            $badge->class('badge bg-danger badge-danger')->setValue('Suspended');
         } else if ($this->getStatus() === self::STATUS_DELETED_REMOVAL_IMMINENT) {
             $badge->class('badge bg-danger badge-danger')->setValue('Deleting');
         } else {

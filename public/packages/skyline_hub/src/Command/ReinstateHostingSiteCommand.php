@@ -4,9 +4,7 @@ namespace PortlandLabs\Skyline\Command;
 
 use Concrete\Core\Foundation\Command\Command;
 
-class DeleteHostingSiteCommand extends SuspendHostingSiteCommand
+class ReinstateHostingSiteCommand extends SuspendHostingSiteCommand
 {
-
-
 
 }

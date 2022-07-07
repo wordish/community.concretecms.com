@@ -43,6 +43,7 @@ class PruneSuspendedSitesCommandHandler
         $qb = $this->entityManager->getRepository(Site::class)->createQueryBuilder('s');
         $sites = $qb->select('s')
             ->where($qb->expr()->lt('s.suspendedTimestamp', ':threshold'))
+            // Note: Admin suspensions are NOT included in this list, intentionally.
             ->andWhere($qb->expr()->in('s.status', [Site::STATUS_SUSPENDED_TRIAL_CANCELLED, Site::STATUS_SUSPENDED_UNPAID]))
             ->getQuery()->execute([':threshold' => $threshold]);
 

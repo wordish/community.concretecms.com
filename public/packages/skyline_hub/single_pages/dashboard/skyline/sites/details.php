@@ -24,6 +24,12 @@ use PortlandLabs\Skyline\Entity\Site;
         <?php if (isset($editURL) && $editURL) { ?>
             <a href="<?=$editURL?>" class="btn btn-secondary"><?=t("Edit")?></a>
         <?php } ?>
+        <?php if ($allowSuspend) { ?>
+            <button type="button" class="btn btn-secondary text-danger" data-dialog="suspend-site"><?= t('Suspend') ?></button>
+        <?php } ?>
+        <?php if ($allowReinstate) { ?>
+            <button type="button" class="btn btn-secondary text-success" data-dialog="reinstate-site"><?= t('Reinstate') ?></button>
+        <?php } ?>
         <?php if ($allowDelete) { ?>
             <button type="button" class="btn btn-danger" data-dialog="delete-site"><?= t('Delete') ?></button>
         <?php } ?>
@@ -46,6 +52,39 @@ use PortlandLabs\Skyline\Entity\Site;
     </div>
 <?php } ?>
 
+<?php if ($allowDelete) { ?>
+    <div style="display: none">
+        <div id="ccm-dialog-reinstate-skyline-site" data-dialog-wrapper="reinstate-site" class="ccm-ui">
+            <form method="post" action="<?=$view->action('reinstate', $hostingSite->getID())?>">
+                <?=Core::make("token")->output('reinstate')?>
+                <input type="hidden" name="id" value="<?=$hostingSite->getID()?>">
+                <p><?=t('Are you sure you want to reinstate this hosting site record? The site will be brought back online.')?></p>
+                <div class="dialog-buttons">
+                    <button class="btn btn-secondary" onclick="jQuery.fn.dialog.closeTop()"><?=t('Cancel')?></button>
+                    <button class="btn btn-success ms-auto" onclick="$('#ccm-dialog-reinstate-skyline-site form').submit()"><?=t('Reinstate Site')?></button>
+                </div>
+            </form>
+        </div>
+    </div>
+<?php } ?>
+
+<?php if ($allowSuspend) { ?>
+    <div style="display: none">
+        <div id="ccm-dialog-suspend-skyline-site" data-dialog-wrapper="suspend-site" class="ccm-ui">
+            <form method="post" action="<?=$view->action('suspend', $hostingSite->getID())?>">
+                <?=Core::make("token")->output('suspend')?>
+                <input type="hidden" name="id" value="<?=$hostingSite->getID()?>">
+                <p><?=t('Are you sure you want to suspend this hosting site record? The site will be inaccessible, but the data and files will remain. The site may be reinstated at a future point, but suspended sites are automatically removed after %s days', $_ENV['SKYLINE_DAYS_AFTER_SUSPENDING_TO_KEEP_SITE'])?></p>
+                <div class="dialog-buttons">
+                    <button class="btn btn-secondary" onclick="jQuery.fn.dialog.closeTop()"><?=t('Cancel')?></button>
+                    <button class="btn btn-danger ms-auto" onclick="$('#ccm-dialog-suspend-skyline-site form').submit()"><?=t('Suspend Site')?></button>
+                </div>
+            </form>
+        </div>
+    </div>
+<?php } ?>
+
+
 <div>
     <h2><?=$hostingSite->getName()?></h2>
     <div>
@@ -60,6 +99,12 @@ use PortlandLabs\Skyline\Entity\Site;
     <div class="row mb-3">
         <div class="col-md-3 text-end"><b><?=t('Status')?></b></div>
         <div class="col-md-9"><?=$hostingSite->getStatusText()?></div>
+    </div>
+    <div class="row mb-3 d-flex align-items-center">
+        <div class="col-md-3 text-end"><b><?=t('Account Handle')?></b></div>
+        <div class="col-md-9">
+            <input type="text" class="form-control bg-white" readonly value="<?=$hostingSite->getHandle()?>" onclick="this.select()">
+        </div>
     </div>
     <div class="row mb-3 d-flex align-items-center">
         <div class="col-md-3 text-end"><b><?=t('Public URL')?></b></div>

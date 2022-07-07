@@ -40,7 +40,9 @@ class SubscriptionStatusField extends AbstractField
      */
     public function filterList(ItemList $list)
     {
-        $list->filterBySubscriptionStatus($this->data['subscriptionStatus']);
+        if ($this->data['subscriptionStatus'] !== '') {
+            $list->filterBySubscriptionStatus($this->data['subscriptionStatus']);
+        }
     }
     
     public function renderSearchField()
@@ -48,6 +50,15 @@ class SubscriptionStatusField extends AbstractField
         $app = Application::getFacadeApplication();
         /** @var Form $form */
         $form = $app->make(Form::class);
-        return $form->text('subscriptionStatus', $this->data['subscriptionStatus']);
+        return $form->select('subscriptionStatus', [
+            '' => t('** All'),
+            'incomplete' => t('Incomplete'),
+            'incomplete_expired' => t('Incomplete Expired'),
+            'trialing' => t('Trialing'),
+            'active' => t('Active'),
+            'past_due' => t('Past Due'),
+            'canceled' => t('Canceled'),
+            'unpaid' => t('Unpaid'),
+        ], $this->data['subscriptionStatus']);
     }
 }

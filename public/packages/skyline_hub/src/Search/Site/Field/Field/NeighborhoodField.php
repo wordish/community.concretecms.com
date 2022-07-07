@@ -16,6 +16,7 @@ use Concrete\Core\Form\Service\Form;
 use Concrete\Core\Search\Field\AbstractField;
 use Concrete\Core\Search\ItemList\ItemList;
 use Concrete\Core\Support\Facade\Application;
+use PortlandLabs\Skyline\NeighborhoodList;
 use PortlandLabs\Skyline\Site\SiteList;
 
 class NeighborhoodField extends AbstractField
@@ -46,8 +47,11 @@ class NeighborhoodField extends AbstractField
     public function renderSearchField()
     {
         $app = Application::getFacadeApplication();
+        $neighborhoodList = $app->make(NeighborhoodList::class);
+
         /** @var Form $form */
+        /** @var NeighborhoodList $neighborhoodList */
         $form = $app->make(Form::class);
-        return $form->text('neighborhood', $this->data['neighborhood']);
+        return $form->select('neighborhood', ['' => t('** Select Neighborhood')] + $neighborhoodList->asAssociativeArray(), $this->data['neighborhood']);
     }
 }

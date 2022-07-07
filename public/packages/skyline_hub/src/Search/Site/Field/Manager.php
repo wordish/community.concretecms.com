@@ -18,9 +18,7 @@ use PortlandLabs\Skyline\Search\Site\Field\Field\HandleField;
 use PortlandLabs\Skyline\Search\Site\Field\Field\SubscriptionIdField;
 use PortlandLabs\Skyline\Search\Site\Field\Field\SubscriptionStatusField;
 use PortlandLabs\Skyline\Search\Site\Field\Field\NeighborhoodField;
-use PortlandLabs\Skyline\Search\Site\Field\Field\AdminPasswordField;
 use PortlandLabs\Skyline\Search\Site\Field\Field\StatusField;
-use PortlandLabs\Skyline\Search\Site\Field\Field\SuspendedTimestampField;
 
 class Manager extends FieldManager
 {
@@ -33,10 +31,8 @@ class Manager extends FieldManager
             new SubscriptionIdField(),
             new SubscriptionStatusField(),
             new NeighborhoodField(),
-            new AdminPasswordField(),
-            new StatusField(),
-            new SuspendedTimestampField(),
+            new StatusField()
         ];
-        $this->addGroup(t('Core Properties'), $properties);
+        $this->addGroup(t('Properties'), $properties);
     }
 }

@@ -130,6 +130,7 @@ $subscription = $hostingSite->getSubscription();
                 $hostingSite->getStatus(),
                 [
                     \PortlandLabs\Skyline\Entity\Site::STATUS_SUSPENDED_UNPAID,
+                    \PortlandLabs\Skyline\Entity\Site::STATUS_SUSPENDED_ADMIN_SUSPENDED,
                     \PortlandLabs\Skyline\Entity\Site::STATUS_SUSPENDED_TRIAL_CANCELLED
                 ]
             )) { ?>

@@ -2,59 +2,21 @@
 
 namespace PortlandLabs\Skyline\Command;
 
-use Doctrine\ORM\EntityManager;
-use PortlandLabs\Skyline\Neighborhood\Command\DeleteSiteInNeighborhoodCommand;
 use PortlandLabs\Skyline\Entity\Site;
-use PortlandLabs\Skyline\Stripe\StripeService;
-use Symfony\Component\Messenger\MessageBusInterface;
+use PortlandLabs\Skyline\Neighborhood\Command\DeleteSiteInNeighborhoodCommand;
 
-class DeleteHostingSiteCommandHandler
+class DeleteHostingSiteCommandHandler extends SuspendHostingSiteCommandHandler
 {
 
     /**
-     * @var EntityManager
+     * @param DeleteHostingSiteCommand $command
      */
-    protected $entityManager;
-
-    /**
-     * @var StripeService
-     */
-    protected $stripeService;
-
-    /**
-     * @var MessageBusInterface
-     */
-    protected $messageBus;
-
-    public function __construct(EntityManager $entityManager, StripeService $stripeService, MessageBusInterface $messageBus)
+    public function __invoke($command)
     {
-        $this->entityManager = $entityManager;
-        $this->stripeService = $stripeService;
-        $this->messageBus = $messageBus;
-    }
-
-
-    public function __invoke(DeleteHostingSiteCommand $command)
-    {
-        /**
-         * @var $hostingEntry Site
-         */
-        $hostingEntry = $this->entityManager->find(Site::class, $command->getId());
-        $hostingEntry->setStatus(Site::STATUS_DELETED_REMOVAL_IMMINENT);
-        $this->entityManager->persist($hostingEntry);
-        $this->entityManager->flush();
-
-        try {
-            $subscriptionId = $hostingEntry->getSubscriptionId();
-            $this->stripeService->cancelSubscription($subscriptionId);
-        } catch (\Exception $e) {}
-
-        $command = new DeleteSiteInNeighborhoodCommand();
-        $command->setNeighborhood($hostingEntry->getNeighborhood());
-        $command->setSiteHandle($hostingEntry->getHandle());
-
-        $this->messageBus->dispatch($command);
-
+        $hostingEntry = $this->getEntryFromCommand($command);
+        $this->setSuspendedStatus($hostingEntry, Site::STATUS_DELETED_REMOVAL_IMMINENT);
+        $this->cancelHostingSubscriptionIfExists($hostingEntry);
+        $this->dispatchNeighborhoodCommand(new DeleteSiteInNeighborhoodCommand(), $hostingEntry);
         return $hostingEntry;
     }
 

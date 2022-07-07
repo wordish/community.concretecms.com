@@ -26,12 +26,12 @@ class SearchProvider extends AbstractSearchProvider
 {
     public function getFieldManager()
     {
-        return ManagerFactory::get('hosting_site');
+        return ManagerFactory::get('skyline_site');
     }
     
     public function getSessionNamespace()
     {
-        return 'hosting_site';
+        return 'skyline_site';
     }
     
     public function getCustomAttributeKeys()

@@ -9,10 +9,12 @@ use Concrete\Core\Messenger\MessageBusManager;
 use Concrete\Core\Messenger\Transport\Sender\DefinedTransportSendersLocator;
 use Concrete\Core\Messenger\Transport\TransportManager;
 use Concrete\Core\Routing\Router;
+use PortlandLabs\Skyline\Command\CancelHostingTrialSiteCommandHandler;
 use PortlandLabs\Skyline\Command\CreateHostingSiteCommandHandler;
 use PortlandLabs\Skyline\Command\DeleteHostingSiteCommandHandler;
+use PortlandLabs\Skyline\Command\ReinstateHostingSiteCommandHandler;
+use PortlandLabs\Skyline\Command\SuspendHostingSiteCommandHandler;
 use PortlandLabs\Skyline\Command\SuspendUnpaidHostingSiteCommandHandler;
-use PortlandLabs\Skyline\Command\TerminateHostingTrialSiteCommandHandler;
 use PortlandLabs\Skyline\Controller\Stripe\Webhook;
 use PortlandLabs\Skyline\Messenger\Middleware\RouteMessageToSkylineNeighborhoodMiddleware;
 use PortlandLabs\Skyline\Messenger\Transport\SkylineAmqpTransport;
@@ -100,8 +102,10 @@ class ServiceProvider extends Provider
             [
                 CreateHostingSiteCommandHandler::class,
                 DeleteHostingSiteCommandHandler::class,
-                TerminateHostingTrialSiteCommandHandler::class,
-                SuspendUnpaidHostingSiteCommandHandler::class
+                CancelHostingTrialSiteCommandHandler::class,
+                SuspendUnpaidHostingSiteCommandHandler::class,
+                SuspendHostingSiteCommandHandler::class,
+                ReinstateHostingSiteCommandHandler::class,
             ]
         )
             ->needs(MessageBusInterface::class)
