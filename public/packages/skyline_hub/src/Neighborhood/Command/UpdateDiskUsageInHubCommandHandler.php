@@ -5,7 +5,7 @@ namespace PortlandLabs\Skyline\Neighborhood\Command;
 use Doctrine\DBAL\Connection;
 use PortlandLabs\Skyline\Entity\Site;
 
-class UpdateDiskUsageInSkylineCommandHandler
+class UpdateDiskUsageInHubCommandHandler
 {
 
     protected $db;
@@ -15,7 +15,7 @@ class UpdateDiskUsageInSkylineCommandHandler
         $this->db = $db;
     }
 
-    public function __invoke(UpdateDiskUsageInSkylineCommand $command)
+    public function __invoke(UpdateDiskUsageInHubCommand $command)
     {
         $this->db->beginTransaction();
         foreach ($command->getSizes() as $accountHandle => $bytesUsed) {

@@ -7,6 +7,7 @@ use Concrete\Core\Utility\Service\Number;
 use PortlandLabs\Skyline\Command\TerminateHostingTrialSiteCommand;
 use PortlandLabs\Skyline\Controller\Traits\RetrieveAndValidateSiteTrait;
 use PortlandLabs\Skyline\Entity\Site;
+use PortlandLabs\Skyline\Stripe\StripeService;
 
 class Project extends AccountPageController
 {
@@ -28,6 +29,8 @@ class Project extends AccountPageController
         if ($hostingSite->getStatus() == Site::STATUS_INSTALLING) {
             $this->render('/account/hosting/project/install');
         } else {
+            $invoices = $this->app->make(StripeService::class)->getOpenInvoices($hostingSite);
+            $this->set('invoices', $invoices);
             $this->render('/account/hosting/project/details');
         }
     }

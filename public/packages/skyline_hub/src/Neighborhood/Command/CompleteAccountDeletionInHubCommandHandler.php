@@ -5,12 +5,12 @@ namespace PortlandLabs\Skyline\Neighborhood\Command;
 use Doctrine\ORM\EntityManager;
 use PortlandLabs\Skyline\Neighborhood\Command\Traits\UpdateAccountTrait;
 
-class CompleteAccountDeletionInSkylineCommandHandler
+class CompleteAccountDeletionInHubCommandHandler
 {
 
     use UpdateAccountTrait;
 
-    public function __invoke(CompleteAccountDeletionInSkylineCommand $command)
+    public function __invoke(CompleteAccountDeletionInHubCommand $command)
     {
         $site = $this->getSite($command->getNeighborhood(), $command->getSiteHandle());
         $entityManager = app(EntityManager::class);

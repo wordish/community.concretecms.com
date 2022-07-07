@@ -99,24 +99,28 @@ $subscription = $hostingSite->getSubscription();
                     </div>
 
                 <?php
-                } else {
-                    if (isset($subscription->latest_invoice) && $subscription->latest_invoice->amount_due > 0) { ?>
-                        <div class="card mb-3">
-                            <div class="card-header">
-                                <?= t('Latest Invoice') ?>
-                            </div>
-                            <div class="card-body">
-                                <?php
+                } else { ?>
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <?= t('Open Invoices') ?>
+                        </div>
+                        <div class="card-body">
+                            <?php
+                            if (count($invoices)) {
                                 View::element(
                                     'account/invoice_table',
-                                    ['invoices' => [$subscription->latest_invoice]],
+                                    ['invoices' => $invoices],
                                     'skyline_hub'
                                 );
-                                ?>
-                            </div>
+                            } else { ?>
+
+                                <p><?=t('You have no open invoices.')?></p>
+
+                            <?php }
+                            ?>
                         </div>
+                    </div>
                     <?php
-                    }
                 } ?>
                 <?php
             } ?>
@@ -140,7 +144,7 @@ $subscription = $hostingSite->getSubscription();
                             (new DateTime())->setTimestamp($hostingSite->getSuspendedTimestamp())->format(
                                 'F d Y \a\t g:i a'
                             ),
-                            $_ENV['SKYLINE_DAYS_AFTER_CANCELLING_TO_KEEP_SITE'],
+                            $_ENV['SKYLINE_DAYS_AFTER_SUSPENDING_TO_KEEP_SITE'],
                             $_ENV['SKYLINE_CANCELLATION_QUESTIONS_URL']
                         ) ?>
                     </div>

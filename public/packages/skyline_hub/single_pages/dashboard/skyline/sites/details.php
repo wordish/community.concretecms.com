@@ -91,7 +91,7 @@ use PortlandLabs\Skyline\Entity\Site;
     </div>
     <div class="row mb-3">
         <div class="col-md-3 text-end"><b><?=t('Subscription ID')?></b></div>
-        <div class="col-md-9"><a target="_blank"href="https://dashboard.stripe.com/subscriptions/<?=$hostingSite->getSubscriptionId()?>"><?=$hostingSite->getSubscriptionId()?></div>
+        <div class="col-md-9"><a target="_blank" href="https://dashboard.stripe.com/subscriptions/<?=$hostingSite->getSubscriptionId()?>"><?=$hostingSite->getSubscriptionId()?></a></div>
     </div>
 
 </fieldset>
@@ -99,9 +99,13 @@ use PortlandLabs\Skyline\Entity\Site;
 
 
 <?php if ($hostingSite->getStatus() == Site::STATUS_INSTALLING) { ?>
+    <hr>
+    <fieldset class="mt-5">
+    <legend><?=t('Installation Progress')?></legend>
     <div class="card">
         <div class="card-body" vue-skyline>
             <skyline-installation-progress :site='<?=json_encode($hostingSite)?>'></skyline-installation-progress>
         </div>
     </div>
+    </fieldset>
 <?php } ?>

@@ -4,7 +4,7 @@ namespace PortlandLabs\Skyline\Neighborhood\Command;
 
 use PortlandLabs\Skyline\Neighborhood\Command\Traits\NeighborhoodAccountTrait;
 
-class SuspendUnpaidSiteCommand implements NeighborhoodAwareInterface
+class SuspendUnpaidSiteInNeighborhoodCommand implements NeighborhoodAwareInterface
 {
 
     use NeighborhoodAccountTrait;

@@ -2,6 +2,7 @@
 
 namespace PortlandLabs\Skyline;
 
+use Concrete\Core\Command\Task\Manager as TaskManager;
 use Concrete\Core\Foundation\Service\Provider;
 use Concrete\Core\Messenger\HandlersLocator;
 use Concrete\Core\Messenger\MessageBusManager;
@@ -15,6 +16,7 @@ use PortlandLabs\Skyline\Command\TerminateHostingTrialSiteCommandHandler;
 use PortlandLabs\Skyline\Controller\Stripe\Webhook;
 use PortlandLabs\Skyline\Messenger\Middleware\RouteMessageToSkylineNeighborhoodMiddleware;
 use PortlandLabs\Skyline\Messenger\Transport\SkylineAmqpTransport;
+use PortlandLabs\Skyline\Task\Controller\PruneSuspendedSitesController;
 use Stripe\StripeClient;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -129,6 +131,11 @@ class ServiceProvider extends Provider
         $router->buildGroup()->setNamespace('Concrete\Package\SkylineHub\Controller\Search\Site')
             ->setPrefix('/ccm/system/search/skyline_site')
             ->routes('search/site.php', 'skyline_hub');
+
+        $manager = $this->app->make(TaskManager::class);
+        $manager->extend('prune_suspended_sites', function () {
+            return new PruneSuspendedSitesController();
+        });
 
 
     }

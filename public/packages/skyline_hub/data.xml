@@ -85,6 +85,15 @@
                 <group name="Administrators" description=""/>
             </access>
         </permissionkey>
-
     </permissionkeys>
+
+    <tasks>
+        <task handle="prune_suspended_sites" package="skyline_hub"/>
+    </tasks>
+    <tasksets>
+        <taskset handle="skyline_hub" name="Skyline" package="skyline_hub">
+            <task handle="prune_suspended_sites"/>
+        </taskset>
+    </tasksets>
+
 </concrete5-cif>

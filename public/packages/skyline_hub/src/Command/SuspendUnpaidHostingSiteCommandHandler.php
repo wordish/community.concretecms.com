@@ -4,7 +4,7 @@ namespace PortlandLabs\Skyline\Command;
 
 use Doctrine\ORM\EntityManager;
 use PortlandLabs\Skyline\Entity\Site;
-use PortlandLabs\Skyline\Neighborhood\Command\SuspendUnpaidSiteCommand;
+use PortlandLabs\Skyline\Neighborhood\Command\SuspendUnpaidSiteInNeighborhoodCommand;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 class SuspendUnpaidHostingSiteCommandHandler
@@ -38,7 +38,7 @@ class SuspendUnpaidHostingSiteCommandHandler
         $this->entityManager->persist($hostingEntry);
         $this->entityManager->flush();
 
-        $command = new SuspendUnpaidSiteCommand();
+        $command = new SuspendUnpaidSiteInNeighborhoodCommand();
         $command->setNeighborhood($hostingEntry->getNeighborhood());
         $command->setSiteHandle($hostingEntry->getHandle());
 

@@ -16,7 +16,7 @@ class Controller extends Package implements ProviderAggregateInterface
 
     protected $pkgHandle = 'skyline_hub';
     protected $appVersionRequired = '9.0.2';
-    protected $pkgVersion = '0.4.0';
+    protected $pkgVersion = '0.4.5';
     protected $pkgAutoloaderMapCoreExtensions = true;
     protected $pkgAutoloaderRegistries = array(
         'src' => '\PortlandLabs\Skyline',

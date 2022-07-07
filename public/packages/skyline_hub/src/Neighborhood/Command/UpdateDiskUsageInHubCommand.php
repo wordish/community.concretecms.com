@@ -5,7 +5,7 @@ namespace PortlandLabs\Skyline\Neighborhood\Command;
 use Concrete\Core\Foundation\Command\Command;
 use PortlandLabs\Skyline\Neighborhood\Command\Traits\NeighborhoodTrait;
 
-class UpdateDiskUsageInSkylineCommand extends Command
+class UpdateDiskUsageInHubCommand extends Command
 {
 
     use NeighborhoodTrait;

@@ -5,7 +5,7 @@ namespace PortlandLabs\Skyline\Command;
 use Concrete\Core\User\UserInfoRepository;
 use Doctrine\ORM\EntityManager;
 use PortlandLabs\Skyline\Entity\Site;
-use PortlandLabs\Skyline\Neighborhood\Command\CreateSiteInSkylineCommand;
+use PortlandLabs\Skyline\Neighborhood\Command\CreateSiteInNeighborhoodCommand;
 use PortlandLabs\Skyline\Site\SiteHandleGenerator;
 use PortlandLabs\Skyline\Stripe\StripeService;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -92,7 +92,7 @@ class CreateHostingSiteCommandHandler
         $this->entityManager->flush();
 
         if ($command->provisionAccount()) {
-            $command = new CreateSiteInSkylineCommand();
+            $command = new CreateSiteInNeighborhoodCommand();
             $command->setNeighborhood($neighborhood);
             $command->setEmail($author->getUserEmail());
             $command->setSiteHandle($siteHandle);

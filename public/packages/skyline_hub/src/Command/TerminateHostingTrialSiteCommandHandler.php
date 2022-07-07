@@ -3,8 +3,8 @@
 namespace PortlandLabs\Skyline\Command;
 
 use Doctrine\ORM\EntityManager;
-use PortlandLabs\Skyline\Neighborhood\Command\TerminateTrialSiteInSkylineCommand;
 use PortlandLabs\Skyline\Entity\Site;
+use PortlandLabs\Skyline\Neighborhood\Command\SuspendTrialSiteInNeighborhoodCommand;
 use PortlandLabs\Skyline\Stripe\StripeService;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -48,7 +48,7 @@ class TerminateHostingTrialSiteCommandHandler
         $subscriptionId = $hostingEntry->getSubscriptionId();
         $this->stripeService->cancelSubscription($subscriptionId);
 
-        $command = new TerminateTrialSiteInSkylineCommand();
+        $command = new SuspendTrialSiteInNeighborhoodCommand();
         $command->setNeighborhood($hostingEntry->getNeighborhood());
         $command->setSiteHandle($hostingEntry->getHandle());
 

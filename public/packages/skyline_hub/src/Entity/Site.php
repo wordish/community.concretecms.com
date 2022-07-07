@@ -421,7 +421,7 @@ class Site implements \JsonSerializable
      */
     public function getStatusBadge(): Element
     {
-        $badge = new Element('span', '', ['class' => 'badge badge-info']);
+        $badge = new Element('span', '', ['class' => 'bg-info badge badge-info']);
         if ($this->getStatus() === self::STATUS_INSTALLING) {
             $badge->setValue('Installing...');
         } else if ($this->getStatus() === self::STATUS_SUSPENDED_TRIAL_CANCELLED || $this->getStatus() === self::STATUS_SUSPENDED_UNPAID) {

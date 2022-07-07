@@ -9,8 +9,6 @@ use Doctrine\ORM\EntityManager;
 use PortlandLabs\Skyline\Command\SuspendUnpaidHostingSiteCommand;
 use PortlandLabs\Skyline\Entity\Site;
 use PortlandLabs\Skyline\Logging\Channels;
-use PortlandLabs\Skyline\Neighborhood\Command\SuspendUnpaidSiteCommand;
-use Stripe\Subscription;
 
 class WebhookService implements LoggerAwareInterface
 {

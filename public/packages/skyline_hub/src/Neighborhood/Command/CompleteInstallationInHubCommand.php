@@ -5,7 +5,7 @@ namespace PortlandLabs\Skyline\Neighborhood\Command;
 use Concrete\Core\Foundation\Command\Command;
 use PortlandLabs\Skyline\Neighborhood\Command\Traits\NeighborhoodAccountTrait;
 
-class CompleteInstallationInSkylineCommand extends Command
+class CompleteInstallationInHubCommand extends Command
 {
 
     use NeighborhoodAccountTrait;

@@ -3,7 +3,7 @@
 namespace PortlandLabs\Skyline\Command;
 
 use Doctrine\ORM\EntityManager;
-use PortlandLabs\Skyline\Neighborhood\Command\DeleteSiteInSkylineCommand;
+use PortlandLabs\Skyline\Neighborhood\Command\DeleteSiteInNeighborhoodCommand;
 use PortlandLabs\Skyline\Entity\Site;
 use PortlandLabs\Skyline\Stripe\StripeService;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -49,7 +49,7 @@ class DeleteHostingSiteCommandHandler
             $this->stripeService->cancelSubscription($subscriptionId);
         } catch (\Exception $e) {}
 
-        $command = new DeleteSiteInSkylineCommand();
+        $command = new DeleteSiteInNeighborhoodCommand();
         $command->setNeighborhood($hostingEntry->getNeighborhood());
         $command->setSiteHandle($hostingEntry->getHandle());
 

@@ -4,6 +4,7 @@ namespace PortlandLabs\Skyline\Stripe;
 
 use Concrete\Core\Foundation\Service\Provider;
 use Concrete\Core\User\UserInfo;
+use PortlandLabs\Skyline\Entity\Site;
 use Stripe\Customer;
 use Stripe\Price;
 use Stripe\StripeClient;
@@ -33,6 +34,16 @@ class StripeService
             [
                 'email' => $email,
                 'test_clock' => $testClock->id,
+            ]
+        );
+    }
+
+    public function getOpenInvoices(Site $site)
+    {
+        return $this->stripe->invoices->all(
+            [
+                'subscription' => $site->getSubscriptionId(),
+                'status' => 'open',
             ]
         );
     }
