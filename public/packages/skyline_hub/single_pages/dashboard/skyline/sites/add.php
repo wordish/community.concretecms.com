@@ -18,7 +18,7 @@ use Concrete\Core\Validation\CSRF\Token;
     <fieldset>
         <legend><?=t('Basics')?></legend>
         <div class="mb-3">
-            <?php echo $form->label('name', t('Name'))?>
+            <?php echo $form->label('name', t('Site Name'))?>
             <?php echo $form->text('name', ['required' => 'required'])?>
         </div>
 

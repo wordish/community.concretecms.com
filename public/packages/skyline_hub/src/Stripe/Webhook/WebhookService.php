@@ -47,7 +47,7 @@ class WebhookService implements LoggerAwareInterface
         $sites = $this->entityManager->getRepository(Site::class)->findBySubscriptionId($subscriptionId);
         foreach ($sites as $site) {
             $existingStatus = $site->getSubscriptionStatus();
-            $this->logger->debug(t('Webhook :: Updating subscription %s, existing status % - new status set to %s', $subscriptionId, $existingStatus, $newStatus));
+            $this->logger->debug(t('Webhook :: Updating site %s (subscription %s), existing status %s - new status set to %s', $site->getId(), $subscriptionId, $existingStatus, $newStatus));
             $site->setSubscriptionStatus($newStatus);
             $this->entityManager->persist($site);
             if ($newStatus === 'unpaid') {
@@ -60,6 +60,7 @@ class WebhookService implements LoggerAwareInterface
                 $this->app->executeCommand(new ReinstateHostingSiteCommand($site->getId()));
             }
         }
+        $this->entityManager->flush();
     }
 
 }

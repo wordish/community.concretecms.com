@@ -16,7 +16,7 @@ View::element('account/breadcrumb', [], 'skyline_hub');
                 </div>
                 <div class="card">
                     <div class="card-body" vue-skyline>
-                        <skyline-installation-progress :site='<?=json_encode($hostingSite)?>'></skyline-installation-progress>
+                        <skyline-installation-progress :site='<?=h(json_encode($hostingSite))?>'></skyline-installation-progress>
                     </div>
                 </div>
             </div>

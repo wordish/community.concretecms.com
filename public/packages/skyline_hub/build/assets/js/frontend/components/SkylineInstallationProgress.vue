@@ -34,8 +34,8 @@
                         </div>
                         <div v-else class="mb-3 mt-3 text-center">
                             <div class="btn-group">
-                                <a :href="site.controlPanelUrl" class="btn btn-secondary">Control Panel & Billing</a>
-                                <a :href="site.publicUrl" class="btn btn-primary">View/Edit Site</a>
+                                <a :href="site.controlPanelUrl" class="btn btn-secondary" target="_blank">Control Panel & Billing</a>
+                                <a :href="site.publicUrl" class="btn btn-primary" target="_blank">View/Edit Site</a>
                             </div>
                         </div>
                     </div>

@@ -18,7 +18,7 @@ if ($hostingSite->getAuthor()) {
     <fieldset>
         <legend><?=t('Basics')?></legend>
         <div class="mb-3">
-            <?php echo $form->label('name', t('Name'))?>
+            <?php echo $form->label('name', t('Site Name'))?>
             <?php echo $form->text('name', $hostingSite->getName(), ['required' => 'required'])?>
         </div>
         <div class="mb-3">

@@ -149,7 +149,7 @@ use PortlandLabs\Skyline\Entity\Site;
     <legend><?=t('Installation Progress')?></legend>
     <div class="card">
         <div class="card-body" vue-skyline>
-            <skyline-installation-progress :site='<?=json_encode($hostingSite)?>'></skyline-installation-progress>
+            <skyline-installation-progress :site='<?=h(json_encode($hostingSite))?>'></skyline-installation-progress>
         </div>
     </div>
     </fieldset>

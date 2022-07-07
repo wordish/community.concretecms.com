@@ -539,7 +539,10 @@ var render = function () {
                         "a",
                         {
                           staticClass: "btn btn-secondary",
-                          attrs: { href: _vm.site.controlPanelUrl },
+                          attrs: {
+                            href: _vm.site.controlPanelUrl,
+                            target: "_blank",
+                          },
                         },
                         [_vm._v("Control Panel & Billing")]
                       ),
@@ -548,7 +551,7 @@ var render = function () {
                         "a",
                         {
                           staticClass: "btn btn-primary",
-                          attrs: { href: _vm.site.publicUrl },
+                          attrs: { href: _vm.site.publicUrl, target: "_blank" },
                         },
                         [_vm._v("View/Edit Site")]
                       ),
