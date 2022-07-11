@@ -8,6 +8,11 @@ use PortlandLabs\Skyline\Entity\Site;
 trait UpdateAccountTrait
 {
 
+    public function getEntityManager()
+    {
+        return app(EntityManager::class);
+    }
+
     /**
      * @param string $neighborhood
      * @param string $siteHandle
@@ -15,8 +20,7 @@ trait UpdateAccountTrait
      */
     public function getSite(string $neighborhood, string $siteHandle): ?Site
     {
-        $entityManager = app(EntityManager::class);
-        $site = $entityManager->getRepository(Site::class)
+        $site = $this->getEntityManager()->getRepository(Site::class)
             ->findOneBy(['neighborhood' => $neighborhood, 'handle' => $siteHandle]);
         return $site;
     }
@@ -26,7 +30,7 @@ trait UpdateAccountTrait
         $site = $this->getSite($neighborhood, $siteHandle);
         if ($site) {
             $site = $callback($site);
-            $entityManager = app(EntityManager::class);
+            $entityManager = $this->getEntityManager();
             $entityManager->persist($site);
             $entityManager->flush();
         }

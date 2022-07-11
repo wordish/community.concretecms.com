@@ -14,6 +14,7 @@
 
 namespace PortlandLabs\Skyline\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use HtmlObject\Element;
 use PortlandLabs\Skyline\Neighborhood\Neighborhood;
@@ -65,6 +66,7 @@ class Site implements \JsonSerializable
     public function __construct()
     {
         $this->dateCreated = time();
+        $this->backups = new ArrayCollection();
     }
 
     /**
@@ -120,6 +122,11 @@ class Site implements \JsonSerializable
      * @ORM\Column(name="`suspendedTimestamp`", type="integer", nullable=true)
      */
     protected $suspendedTimestamp;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Backup", mappedBy="site", cascade={"remove"})
+     */
+    protected $backups;
 
     /**
      * @return string
@@ -318,6 +325,15 @@ class Site implements \JsonSerializable
         $this->suspendedTimestamp = $suspendedTimestamp;
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getBackups()
+    {
+        return $this->backups;
+    }
+
 
     public function getDisplayValue()
     {

@@ -141,6 +141,59 @@ use PortlandLabs\Skyline\Entity\Site;
 
 </fieldset>
 
+<hr>
+
+    <fieldset class="mb-5">
+        <legend><?=t('Backups')?></legend>
+
+        <?php
+        $backups = $hostingSite->getBackups();
+        if (count($backups)) { ?>
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th class="w-100"><?=t('Date Created')?></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($backups as $backup) { ?>
+
+                    <tr>
+                        <td class="w-100"><?php
+                            echo (new DateTime)->setTimestamp($backup->getDateCreated())->format('F d Y \a\t g:i a');
+                        ?></td>
+                        <td><a href="#" class="ccm-hover-icon"><i class="fa fa-download"></i></a></td>
+                        <td><a href="#" class="ccm-hover-icon"><i class="fa fa-trash"></i></a></td>
+                    </tr>
+
+                <?php } ?>
+                </tbody>
+            </table>
+
+        <?php } else { ?>
+
+        <p><?=t('No backups have been created.')?></p>
+
+        <?php }
+        ?>
+
+    </fieldset>
+
+<hr>
+
+
+    <fieldset class="mb-5">
+        <legend><?=t('Storage Space &amp; Quota')?></legend>
+
+        <?php
+        View::element('account/quota', ['hostingSite' => $hostingSite], 'skyline_hub');
+        ?>
+
+    </fieldset>
+
 
 
 <?php if ($hostingSite->getStatus() == Site::STATUS_INSTALLING) { ?>

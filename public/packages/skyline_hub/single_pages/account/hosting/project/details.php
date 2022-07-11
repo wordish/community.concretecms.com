@@ -154,35 +154,21 @@ $subscription = $hostingSite->getSubscription();
             <?php
             } ?>
 
-            <?php if ($hostingSite->getBytesUsed() !== null) {
+            <?php if ($hostingSite->getBytesUsed()) { ?>
 
-                $progressBarClass = 'bg-info';
-                $maxBytes = $hostingSite->getBytesQuota();
-                $currentBytes = $hostingSite->getBytesUsed();
-                if ($currentBytes > $maxBytes) {
-                    $progressBarClass = 'bg-danger';
-                    $width = '100%';
-                } else {
-                    $width = round($currentBytes / $maxBytes, 2) * 100 . '%';
-                }
-
-                ?>
                 <div class="card mb-3">
                     <div class="card-header">
                         <?= t('Storage Space & Quota') ?>
                     </div>
                     <div class="card-body">
-                        <div class="progress">
-                            <div class="progress-bar <?=$progressBarClass?>" role="progressbar"
-                                 style="width: <?=$width?>"></div>
-                        </div>
-                        <div class="text-muted mt-3"><?=t('Currently using <b>%s</b> of <b>%s</b>',
-                    $numberHelper->formatSize($currentBytes), $numberHelper->formatSize($maxBytes)
-                    )?></div>
+                        <?php
+                        View::element('account/quota', ['hostingSite' => $hostingSite], 'skyline_hub');
+                        ?>
                     </div>
                 </div>
 
             <?php } ?>
+
         </div>
     </div>
 </div>
