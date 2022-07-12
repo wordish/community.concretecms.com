@@ -13,6 +13,11 @@ trait UpdateAccountTrait
         return app(EntityManager::class);
     }
 
+    public function clearEntityManager()
+    {
+        return $this->getEntityManager()->clear();
+    }
+
     /**
      * @param string $neighborhood
      * @param string $siteHandle

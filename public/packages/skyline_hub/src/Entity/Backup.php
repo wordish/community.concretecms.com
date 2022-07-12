@@ -2,13 +2,14 @@
 
 namespace PortlandLabs\Skyline\Entity;
 
+use Concrete\Core\Utility\Service\Number;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="SkylineSiteBackups")
  */
-class Backup
+class Backup implements \JsonSerializable
 {
 
     /**
@@ -57,7 +58,7 @@ class Backup
 
 
     /**
-     * @return mixed
+     * @return Site
      */
     public function getSite()
     {
@@ -91,9 +92,13 @@ class Backup
     /**
      * @return int
      */
-    public function getDateCreated(): int
+    public function getDateCreated(string $format = null)
     {
-        return $this->dateCreated;
+        if ($format) {
+            return (new \DateTime())->setTimestamp($this->getDateCreated())->format($format);
+        } else {
+            return $this->dateCreated;
+        }
     }
 
     /**
@@ -141,9 +146,23 @@ class Backup
         return $this->size === null && $this->backupFileID === null && $this->filename === null;
     }
 
-
-
-
+    public function jsonSerialize()
+    {
+        $numberHelper = new Number();
+        $dashboardDownloadUrl = (string) \URL::to('/dashboard/skyline/sites/details', 'download_backup', $this->getId());
+        return [
+            'id' => $this->getId(),
+            'size' => $this->getSize(),
+            'isLoading' => $this->isLoading(),
+            'dateCreated' => $this->getDateCreated(),
+            'dateCreatedString' => $this->getDateCreated('F d Y \a\t g:i a'),
+            'sizeString' => $numberHelper->formatSize($this->getSize()),
+            'filename' => $this->getFilename(),
+            'backupFileId' => $this->getBackupFileID(),
+            'site' => $this->getSite(),
+            'dashboardDownloadUrl' => $dashboardDownloadUrl,
+        ];
+    }
 
 
 }
