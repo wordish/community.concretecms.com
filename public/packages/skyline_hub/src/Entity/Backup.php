@@ -23,9 +23,19 @@ class Backup
     protected $site;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $filename;
+
+    /**
+     * @ORM\Column(type="integer", options={"unsigned": true}, nullable=true)
+     */
+    protected $size;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $backupFileID;
 
     /**
      * @ORM\Column(type="integer", options={"unsigned": true})
@@ -38,12 +48,13 @@ class Backup
     }
 
     /**
-     * @param mixed $id
+     * @return mixed
      */
-    public function setId($id): void
+    public function getId()
     {
-        $this->id = $id;
+        return $this->id;
     }
+
 
     /**
      * @return mixed
@@ -93,6 +104,42 @@ class Backup
         $this->dateCreated = $dateCreated;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getBackupFileID()
+    {
+        return $this->backupFileID;
+    }
+
+    /**
+     * @param mixed $backupFileID
+     */
+    public function setBackupFileID($backupFileID): void
+    {
+        $this->backupFileID = $backupFileID;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSize()
+    {
+        return $this->size;
+    }
+
+    /**
+     * @param mixed $size
+     */
+    public function setSize($size): void
+    {
+        $this->size = $size;
+    }
+
+    public function isLoading()
+    {
+        return $this->size === null && $this->backupFileID === null && $this->filename === null;
+    }
 
 
 

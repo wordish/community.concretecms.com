@@ -12,6 +12,9 @@ trait RetrieveAndValidateSiteTrait
 
     private function getHostingSite($id): Site
     {
+        if ($id instanceof Site) {
+            return $id;
+        }
         $entityManager = app(EntityManager::class);
         $entry = $entityManager->find(Site::class, $id);
         if (!$entry) {

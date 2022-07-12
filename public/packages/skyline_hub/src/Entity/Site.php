@@ -125,6 +125,7 @@ class Site implements \JsonSerializable
 
     /**
      * @ORM\OneToMany(targetEntity="Backup", mappedBy="site", cascade={"remove"})
+     * @ORM\OrderBy({"dateCreated" = "ASC"})
      */
     protected $backups;
 

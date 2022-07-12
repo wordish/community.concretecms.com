@@ -16,6 +16,16 @@ class CreateAccountBackupRecordInHubCommand extends Command
     protected $file;
 
     /**
+     * @var string
+     */
+    protected $backupFileID;
+
+    /**
+     * @var integer
+     */
+    protected $size;
+
+    /**
      * @return string
      */
     public function getFile(): string
@@ -30,6 +40,40 @@ class CreateAccountBackupRecordInHubCommand extends Command
     {
         $this->file = $file;
     }
+
+    /**
+     * @return string
+     */
+    public function getBackupFileID(): string
+    {
+        return $this->backupFileID;
+    }
+
+    /**
+     * @param string $backupFileID
+     */
+    public function setBackupFileID(string $backupFileID): void
+    {
+        $this->backupFileID = $backupFileID;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSize(): int
+    {
+        return $this->size;
+    }
+
+    /**
+     * @param int $size
+     */
+    public function setSize(int $size): void
+    {
+        $this->size = $size;
+    }
+
+
 
 
 }

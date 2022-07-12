@@ -4,67 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7a895363ca8a5efecce4cffb92a24584",
+    "content-hash": "d821de26e93ada5a0efc3e49823b2a8a",
     "packages": [
         {
-            "name": "badcow/phrase-generator",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/samuelwilliams/PhraseGenerator.git",
-                "reference": "d05bddcf9e206707dca52230bda121c09f88ed28"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/samuelwilliams/PhraseGenerator/zipball/d05bddcf9e206707dca52230bda121c09f88ed28",
-                "reference": "d05bddcf9e206707dca52230bda121c09f88ed28",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.3 || ^8.0"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.16",
-                "php-coveralls/php-coveralls": "~2.1",
-                "phpstan/phpstan": "^0.12",
-                "phpunit/phpunit": "^9.0"
-            },
-            "default-branch": true,
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Badcow\\PhraseGenerator\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Samuel Williams",
-                    "email": "sam@badcow.co"
-                }
-            ],
-            "description": "Generate an English adjective-noun pair as a phrase (e.g. SubmissiveMonkey).",
-            "support": {
-                "issues": "https://github.com/samuelwilliams/PhraseGenerator/issues",
-                "source": "https://github.com/samuelwilliams/PhraseGenerator/tree/master"
-            },
-            "time": "2021-02-07T22:41:34+00:00"
-        },
-        {
             "name": "stripe/stripe-php",
-            "version": "v8.8.0",
+            "version": "v8.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "06bfb65639cfecae7c2b57d340f740599c548753"
+                "reference": "ae44989a37e0785f325d696719afa46e3503dc7d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/06bfb65639cfecae7c2b57d340f740599c548753",
-                "reference": "06bfb65639cfecae7c2b57d340f740599c548753",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/ae44989a37e0785f325d696719afa46e3503dc7d",
+                "reference": "ae44989a37e0785f325d696719afa46e3503dc7d",
                 "shasum": ""
             },
             "require": {
@@ -109,17 +62,15 @@
             ],
             "support": {
                 "issues": "https://github.com/stripe/stripe-php/issues",
-                "source": "https://github.com/stripe/stripe-php/tree/v8.8.0"
+                "source": "https://github.com/stripe/stripe-php/tree/v8.10.0"
             },
-            "time": "2022-06-23T16:42:38+00:00"
+            "time": "2022-07-07T17:46:57+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "badcow/phrase-generator": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

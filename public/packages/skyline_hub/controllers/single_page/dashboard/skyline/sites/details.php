@@ -4,10 +4,15 @@ namespace Concrete\Package\SkylineHub\Controller\SinglePage\Dashboard\Skyline\Si
 
 use Concrete\Core\Page\Controller\DashboardPageController;
 use Concrete\Core\Permission\Checker;
+use Concrete\Core\Routing\Redirect;
+use PortlandLabs\Skyline\Command\CreateHostingSiteBackupCommand;
+use PortlandLabs\Skyline\Command\DeleteHostingSiteBackupCommand;
 use PortlandLabs\Skyline\Command\DeleteHostingSiteCommand;
 use PortlandLabs\Skyline\Command\ReinstateHostingSiteCommand;
 use PortlandLabs\Skyline\Command\SuspendHostingSiteCommand;
 use PortlandLabs\Skyline\Controller\Traits\RetrieveAndValidateSiteTrait;
+use PortlandLabs\Skyline\Entity\Backup;
+use Aws\S3\S3Client;
 
 class Details extends DashboardPageController
 {
@@ -87,6 +92,49 @@ class Details extends DashboardPageController
         }
         $this->view($id);
     }
+
+    public function download_backup($backupId = null)
+    {
+        $backup = $this->entityManager->find(Backup::class, $backupId);
+        if (!$backup) {
+            throw new \Exception(t('Invalid backup ID.'));
+        }
+        $site = $backup->getSite();
+        $this->retrieveAndValidateSiteForViewing($site);
+
+        $client = $this->app->make(S3Client::class);
+        $cmd = $client->GetCommand('GetObject', [
+            'Bucket' => $_ENV['AWS_BUCKET_BACKUPS'],
+            'Key' => $backup->getBackupFileID(),
+        ]);
+        $request = $client->createPresignedRequest($cmd, '+20 minutes');
+        return Redirect::to((string) $request->getUri());
+    }
+
+    public function delete_backup($backupId = null)
+    {
+        $backup = $this->entityManager->find(Backup::class, $backupId);
+        if (!$backup) {
+            throw new \Exception(t('Invalid backup ID.'));
+        }
+        $site = $backup->getSite();
+        $this->retrieveAndValidateSiteForEditing($site);
+
+        $command = new DeleteHostingSiteBackupCommand($backup->getId());
+        $this->executeCommand($command);
+        $this->flash('success', t('Backup deleted successfully.'));
+        return $this->buildRedirect(['/dashboard/skyline/sites', 'details', $site->getID()]);
+    }
+
+    public function create_backup($id = null)
+    {
+        $site = $this->retrieveAndValidateSiteForViewing($id);
+        $command = new CreateHostingSiteBackupCommand($site->getId());
+        $this->executeCommand($command);
+        $this->flash('success', t('Backup started...'));
+        return $this->buildRedirect(['/dashboard/skyline/sites', 'details', $site->getID()]);
+    }
+
 
 
 }

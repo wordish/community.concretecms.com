@@ -16,6 +16,9 @@ use PortlandLabs\Skyline\Entity\Site;
 
 /** @var $hostingSite Site */
 
+$numberHelper = new \Concrete\Core\Utility\Service\Number();
+
+
 ?>
 
 <div class="ccm-dashboard-header-buttons">
@@ -128,8 +131,8 @@ use PortlandLabs\Skyline\Entity\Site;
 
 <hr>
 
-<fieldset class="mt-5">
-<legend><?=t('Stripe')?></legend>
+<fieldset class="mt-5 mb-5">
+    <legend><?=t('Stripe')?></legend>
     <div class="row mb-3">
         <div class="col-md-3 text-end"><b><?=t('Subscription Status')?></b></div>
         <div class="col-md-9"><?=$hostingSite->getSubscriptionStatus()?> (<a href="https://stripe.com/docs/api/subscriptions/object#subscription_object-status" target="_blank">Stripe Docs <i class="fa fa-external-link-alt"></i></a>) </div>
@@ -143,49 +146,81 @@ use PortlandLabs\Skyline\Entity\Site;
 
 <hr>
 
-    <fieldset class="mb-5">
+<fieldset class="mt-5 mb-5">
+    <div class="d-flex">
         <legend><?=t('Backups')?></legend>
+        <div class="ml-auto">
+            <form method="post" action="<?=$view->action('create_backup', $hostingSite->getID())?>">
+                <?=$token->output('create_backup')?>
+                <button type="submit" class="btn btn-secondary btn-sm text-nowrap"><?=t('Create Backup')?>
+            </form>
+        </div>
+    </div>
 
-        <?php
-        $backups = $hostingSite->getBackups();
-        if (count($backups)) { ?>
 
-            <table class="table">
-                <thead>
+    <?php
+    $backups = $hostingSite->getBackups();
+    if (count($backups)) { ?>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="w-50"><?=t('Date Created')?></th>
+                <th class="w-50"><?=t('Size')?></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($backups as $backup) { ?>
+
                 <tr>
-                    <th class="w-100"><?=t('Date Created')?></th>
-                    <th></th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php foreach ($backups as $backup) { ?>
-
-                    <tr>
-                        <td class="w-100"><?php
-                            echo (new DateTime)->setTimestamp($backup->getDateCreated())->format('F d Y \a\t g:i a');
+                    <td class="w-50"><?php
+                        echo (new DateTime)->setTimestamp($backup->getDateCreated())->format('F d Y \a\t g:i a');
                         ?></td>
-                        <td><a href="#" class="ccm-hover-icon"><i class="fa fa-download"></i></a></td>
-                        <td><a href="#" class="ccm-hover-icon"><i class="fa fa-trash"></i></a></td>
-                    </tr>
+                    <?php if ($backup->isLoading()) { ?>
+                        <td><span class="text-muted"><?=t('Pending...')?></span></td>
+                        <td colspan="2" class="align-middle"><div class="d-flex"><i class="ms-auto fa fa-spinner fa-spin"></i></div></td>
+                    <?php } else { ?>
+                        <td class="w-25"><?=$numberHelper->formatSize($backup->getSize())?></td>
+                        <td><a href="<?=$view->action('download_backup', $backup->getID())?>" class="ccm-hover-icon"><i class="fa fa-download"></i></a></td>
+                        <td><a href="javascript:void(0)" data-dialog-title="<?=t('Delete Backup')?>" data-dialog="delete-backup-<?=$backup->getID()?>" class="ccm-hover-icon"><i class="fa fa-trash"></i></a></td>
+                    <?php } ?>
+                </tr>
 
-                <?php } ?>
-                </tbody>
-            </table>
+            <?php } ?>
+            </tbody>
+        </table>
 
-        <?php } else { ?>
+        <?php foreach ($backups as $backup) { ?>
+            <div style="display: none">
+                <div data-dialog-wrapper="delete-backup-<?=$backup->getID()?>" class="ccm-ui">
+                    <form method="post" action="<?=$view->action('delete_backup', $backup->getID())?>">
+                        <?=Core::make("token")->output('delete_backup')?>
+                        <input type="hidden" name="id" value="<?=$hostingSite->getID()?>">
+                        <p><?=t('Are you sure you want to delete this hosting site backup?')?></p>
+                        <div class="dialog-buttons">
+                            <button class="btn btn-secondary" onclick="jQuery.fn.dialog.closeTop()"><?=t('Cancel')?></button>
+                            <button class="btn btn-danger ms-auto" onclick="$('div[data-dialog-wrapper=delete-backup-<?=$backup->getID()?>] form').submit()"><?=t('Delete Backup')?></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
-        <p><?=t('No backups have been created.')?></p>
+        <?php } ?>
+    <?php } else { ?>
 
-        <?php }
-        ?>
+    <p><?=t('No backups have been created.')?></p>
 
-    </fieldset>
+    <?php }
+    ?>
+
+</fieldset>
 
 <hr>
 
 
-    <fieldset class="mb-5">
+    <fieldset class="mt-5">
         <legend><?=t('Storage Space &amp; Quota')?></legend>
 
         <?php

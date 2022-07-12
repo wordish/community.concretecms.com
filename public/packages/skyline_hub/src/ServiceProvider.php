@@ -2,6 +2,7 @@
 
 namespace PortlandLabs\Skyline;
 
+use Aws\S3\S3Client;
 use Concrete\Core\Command\Task\Manager as TaskManager;
 use Concrete\Core\Foundation\Service\Provider;
 use Concrete\Core\Messenger\HandlersLocator;
@@ -10,6 +11,7 @@ use Concrete\Core\Messenger\Transport\Sender\DefinedTransportSendersLocator;
 use Concrete\Core\Messenger\Transport\TransportManager;
 use Concrete\Core\Routing\Router;
 use PortlandLabs\Skyline\Command\CancelHostingTrialSiteCommandHandler;
+use PortlandLabs\Skyline\Command\CreateHostingSiteBackupCommandHandler;
 use PortlandLabs\Skyline\Command\CreateHostingSiteCommandHandler;
 use PortlandLabs\Skyline\Command\DeleteHostingSiteCommandHandler;
 use PortlandLabs\Skyline\Command\ReinstateHostingSiteCommandHandler;
@@ -38,6 +40,23 @@ class ServiceProvider extends Provider
         $this->app['manager/search_field/skyline_site'] = function ($app) {
             return $app->make('PortlandLabs\Skyline\Search\Site\Field\Manager');
         };
+
+        $this->app->singleton(
+            S3Client::class,
+            function () {
+                $client = new S3Client(
+                    [
+                        'version' => 'latest',
+                        'region' => 'us-west-2',
+                        'credentials' => [
+                            'key' => $_ENV['AWS_ACCESS_KEY_ID'],
+                            'secret' => $_ENV['AWS_ACCESS_SECRET_KEY'],
+                        ]
+                    ]
+                );
+                return $client;
+            }
+        );
 
         $this->app->singleton(NeighborhoodListFactory::class);
         $this->app->bind(NeighborhoodList::class, function() {
@@ -105,6 +124,7 @@ class ServiceProvider extends Provider
                 CancelHostingTrialSiteCommandHandler::class,
                 SuspendUnpaidHostingSiteCommandHandler::class,
                 SuspendHostingSiteCommandHandler::class,
+                CreateHostingSiteBackupCommandHandler::class,
                 ReinstateHostingSiteCommandHandler::class,
             ]
         )
