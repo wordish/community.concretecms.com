@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d22a4820f80717ef5811a47361868a0a",
+    "content-hash": "2201910347f64fe91c9a75d1a7d24597",
     "packages": [
         {
             "name": "anahkiasen/html-object",
@@ -104,16 +104,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.231.3",
+            "version": "3.231.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "f52b74060063d6545ee8324f1d161f37fcb87c8c"
+                "reference": "4ea642d1c7f8002037ef46e5f17c9fc1273a6021"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/f52b74060063d6545ee8324f1d161f37fcb87c8c",
-                "reference": "f52b74060063d6545ee8324f1d161f37fcb87c8c",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/4ea642d1c7f8002037ef46e5f17c9fc1273a6021",
+                "reference": "4ea642d1c7f8002037ef46e5f17c9fc1273a6021",
                 "shasum": ""
             },
             "require": {
@@ -190,9 +190,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.231.3"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.231.5"
             },
-            "time": "2022-07-11T18:20:19+00:00"
+            "time": "2022-07-13T18:36:03+00:00"
         },
         {
             "name": "commerceguys/addressing",
@@ -3003,7 +3003,7 @@
         },
         {
             "name": "illuminate/collections",
-            "version": "v8.83.18",
+            "version": "v8.83.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/collections.git",
@@ -3057,7 +3057,7 @@
         },
         {
             "name": "illuminate/config",
-            "version": "v8.83.18",
+            "version": "v8.83.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/config.git",
@@ -3105,7 +3105,7 @@
         },
         {
             "name": "illuminate/container",
-            "version": "v8.83.18",
+            "version": "v8.83.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/container.git",
@@ -3156,7 +3156,7 @@
         },
         {
             "name": "illuminate/contracts",
-            "version": "v8.83.18",
+            "version": "v8.83.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/contracts.git",
@@ -3204,7 +3204,7 @@
         },
         {
             "name": "illuminate/filesystem",
-            "version": "v8.83.18",
+            "version": "v8.83.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/filesystem.git",
@@ -3266,7 +3266,7 @@
         },
         {
             "name": "illuminate/macroable",
-            "version": "v8.83.18",
+            "version": "v8.83.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/macroable.git",
@@ -3312,7 +3312,7 @@
         },
         {
             "name": "illuminate/support",
-            "version": "v8.83.18",
+            "version": "v8.83.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
@@ -4070,20 +4070,21 @@
         },
         {
             "name": "laminas/laminas-i18n",
-            "version": "2.15.0",
+            "version": "2.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-i18n.git",
-                "reference": "1654fcd6cd27c01a902b47fe71fa583ad227268c"
+                "reference": "e77c04c050b7744125d26e213b2639c86d4514ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-i18n/zipball/1654fcd6cd27c01a902b47fe71fa583ad227268c",
-                "reference": "1654fcd6cd27c01a902b47fe71fa583ad227268c",
+                "url": "https://api.github.com/repos/laminas/laminas-i18n/zipball/e77c04c050b7744125d26e213b2639c86d4514ad",
+                "reference": "e77c04c050b7744125d26e213b2639c86d4514ad",
                 "shasum": ""
             },
             "require": {
                 "ext-intl": "*",
+                "laminas/laminas-servicemanager": "^3.14.0",
                 "laminas/laminas-stdlib": "^2.7 || ^3.0",
                 "php": "^7.4 || ~8.0.0 || ~8.1.0"
             },
@@ -4098,15 +4099,14 @@
                 "laminas/laminas-cache-storage-deprecated-factory": "^1.0.0",
                 "laminas/laminas-coding-standard": "~2.3.0",
                 "laminas/laminas-config": "^3.4.0",
-                "laminas/laminas-eventmanager": "^3.4.0",
-                "laminas/laminas-filter": "^2.10.0",
-                "laminas/laminas-servicemanager": "^3.7.0",
-                "laminas/laminas-validator": "^2.14.0",
-                "laminas/laminas-view": "^2.20.0",
+                "laminas/laminas-eventmanager": "^3.5.0",
+                "laminas/laminas-filter": "^2.16.0",
+                "laminas/laminas-validator": "^2.17.0",
+                "laminas/laminas-view": "^2.21.0",
                 "phpspec/prophecy-phpunit": "^2.0",
-                "phpunit/phpunit": "^9.3",
-                "psalm/plugin-phpunit": "^0.16.1",
-                "vimeo/psalm": "^4.21"
+                "phpunit/phpunit": "^9.5.21",
+                "psalm/plugin-phpunit": "^0.17.0",
+                "vimeo/psalm": "^4.24.0"
             },
             "suggest": {
                 "laminas/laminas-cache": "You should install this package to cache the translations",
@@ -4154,7 +4154,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2022-04-01T10:47:19+00:00"
+            "time": "2022-07-12T22:15:49+00:00"
         },
         {
             "name": "laminas/laminas-loader",
@@ -6784,12 +6784,12 @@
             "version": "1.0.2",
             "source": {
                 "type": "git",
-                "url": "git@github.com:portlandlabs/newrelic.git",
+                "url": "https://github.com/PortlandLabs/newrelic.git",
                 "reference": "402debf0b787db6f53ab56e37f5c95c6c0567029"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/portlandlabs/newrelic/zipball/402debf0b787db6f53ab56e37f5c95c6c0567029",
+                "url": "https://api.github.com/repos/PortlandLabs/newrelic/zipball/402debf0b787db6f53ab56e37f5c95c6c0567029",
                 "reference": "402debf0b787db6f53ab56e37f5c95c6c0567029",
                 "shasum": ""
             },
@@ -6809,7 +6809,45 @@
                 }
             ],
             "description": "Apply standard newrelic transaction stuff automatically",
+            "support": {
+                "source": "https://github.com/PortlandLabs/newrelic/tree/1.0.2",
+                "issues": "https://github.com/PortlandLabs/newrelic/issues"
+            },
             "time": "2021-06-30T05:03:02+00:00"
+        },
+        {
+            "name": "portlandlabs/skyline_hub",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://bitbucket.org/portlandlabs/skyline_hub.git",
+                "reference": "78349d7783b41d23bbd6fe4844e7b20c17585ab7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://bitbucket.org/portlandlabs/skyline_hub/get/78349d7783b41d23bbd6fe4844e7b20c17585ab7.zip",
+                "reference": "78349d7783b41d23bbd6fe4844e7b20c17585ab7",
+                "shasum": ""
+            },
+            "require": {
+                "aws/aws-sdk-php": "^3.231",
+                "stripe/stripe-php": "^8.8"
+            },
+            "type": "concrete5-package",
+            "autoload": {
+                "psr-4": {
+                    "PortlandLabs\\Skyline\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Installs the Skyline Hub Hosting Control Panel into a Concrete site.",
+            "homepage": "https://bitbucket.org/portlandlabs/skyline_hub",
+            "support": {
+                "source": "https://bitbucket.org/portlandlabs/skyline_hub/src/78349d7783b41d23bbd6fe4844e7b20c17585ab7/?at=master"
+            },
+            "time": "2022-07-13T18:52:30+00:00"
         },
         {
             "name": "predis/predis",
@@ -7718,6 +7756,66 @@
                 }
             ],
             "time": "2022-01-24T20:12:20+00:00"
+        },
+        {
+            "name": "stripe/stripe-php",
+            "version": "v8.10.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stripe/stripe-php.git",
+                "reference": "ae44989a37e0785f325d696719afa46e3503dc7d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/ae44989a37e0785f325d696719afa46e3503dc7d",
+                "reference": "ae44989a37e0785f325d696719afa46e3503dc7d",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "3.5.0",
+                "phpstan/phpstan": "^1.2",
+                "phpunit/phpunit": "^5.7 || ^9.0",
+                "squizlabs/php_codesniffer": "^3.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Stripe\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stripe and contributors",
+                    "homepage": "https://github.com/stripe/stripe-php/contributors"
+                }
+            ],
+            "description": "Stripe PHP Library",
+            "homepage": "https://stripe.com/",
+            "keywords": [
+                "api",
+                "payment processing",
+                "stripe"
+            ],
+            "support": {
+                "issues": "https://github.com/stripe/stripe-php/issues",
+                "source": "https://github.com/stripe/stripe-php/tree/v8.10.0"
+            },
+            "time": "2022-07-07T17:46:57+00:00"
         },
         {
             "name": "sunra/php-simple-html-dom-parser",
@@ -13530,7 +13628,8 @@
     "stability-flags": {
         "concrete5/core": 20,
         "concrete5/concrete_cms_theme": 20,
-        "concrete5/community_badges": 20
+        "concrete5/community_badges": 20,
+        "portlandlabs/skyline_hub": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

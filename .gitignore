@@ -10,6 +10,7 @@
 /public/packages/concrete_cms_theme
 /public/packages/community_badges
 /public/packages/akismet
+/public/packages/skyline_hub
 # Ignore build files
 /public/application/css/main.css
 /public/application/js/hosting.js.LICENSE.txt
