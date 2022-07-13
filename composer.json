@@ -29,7 +29,7 @@
     "portlandlabs/newrelic": "^1.0",
     "portlandlabs/akismet": "^1.0",
     "laminas/laminas-http": "^2.15",
-    "aws/aws-sdk-php": "^3.231"
+    "portlandlabs/skyline_hub": "dev-master"
   },
   "require-dev": {
     "phpunit/phpunit": "^8.0",
