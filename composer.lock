@@ -549,12 +549,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/concretecms/concretecms-core.git",
-                "reference": "6a12ec9710938261568e564efd35208b130634b0"
+                "reference": "30994ceb33adaab15aa8245bd96014b6e1f38f4b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/concretecms/concretecms-core/zipball/6a12ec9710938261568e564efd35208b130634b0",
-                "reference": "6a12ec9710938261568e564efd35208b130634b0",
+                "url": "https://api.github.com/repos/concretecms/concretecms-core/zipball/30994ceb33adaab15aa8245bd96014b6e1f38f4b",
+                "reference": "30994ceb33adaab15aa8245bd96014b6e1f38f4b",
                 "shasum": ""
             },
             "require": {
@@ -695,7 +695,7 @@
                 "forum": "https://forums.concretecms.org/",
                 "source": "http://documentation.concretecms.org/api/"
             },
-            "time": "2022-07-08T21:49:36+00:00"
+            "time": "2022-07-19T22:16:17+00:00"
         },
         {
             "name": "concrete5/dependency-patches",
@@ -6821,12 +6821,12 @@
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/portlandlabs/skyline_hub.git",
-                "reference": "78349d7783b41d23bbd6fe4844e7b20c17585ab7"
+                "reference": "73d06e58a8c142d10ef4c1425672bd456baea809"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/portlandlabs/skyline_hub/get/78349d7783b41d23bbd6fe4844e7b20c17585ab7.zip",
-                "reference": "78349d7783b41d23bbd6fe4844e7b20c17585ab7",
+                "url": "https://bitbucket.org/portlandlabs/skyline_hub/get/73d06e58a8c142d10ef4c1425672bd456baea809.zip",
+                "reference": "73d06e58a8c142d10ef4c1425672bd456baea809",
                 "shasum": ""
             },
             "require": {
@@ -6845,9 +6845,9 @@
             "description": "Installs the Skyline Hub Hosting Control Panel into a Concrete site.",
             "homepage": "https://bitbucket.org/portlandlabs/skyline_hub",
             "support": {
-                "source": "https://bitbucket.org/portlandlabs/skyline_hub/src/78349d7783b41d23bbd6fe4844e7b20c17585ab7/?at=master"
+                "source": "https://bitbucket.org/portlandlabs/skyline_hub/src/73d06e58a8c142d10ef4c1425672bd456baea809/?at=master"
             },
-            "time": "2022-07-13T18:52:30+00:00"
+            "time": "2022-07-19T22:08:53+00:00"
         },
         {
             "name": "predis/predis",
