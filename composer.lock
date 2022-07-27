@@ -6873,12 +6873,12 @@
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/portlandlabs/skyline_hub.git",
-                "reference": "3f78c30bd0eb9328a23ed1e958b703f14205abe0"
+                "reference": "e2059d8056711188427b67fbe7e2cc895315e81c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/portlandlabs/skyline_hub/get/3f78c30bd0eb9328a23ed1e958b703f14205abe0.zip",
-                "reference": "3f78c30bd0eb9328a23ed1e958b703f14205abe0",
+                "url": "https://bitbucket.org/portlandlabs/skyline_hub/get/e2059d8056711188427b67fbe7e2cc895315e81c.zip",
+                "reference": "e2059d8056711188427b67fbe7e2cc895315e81c",
                 "shasum": ""
             },
             "require": {
@@ -6904,9 +6904,9 @@
             "description": "Installs the Skyline Hub Hosting Control Panel into a Concrete site.",
             "homepage": "https://bitbucket.org/portlandlabs/skyline_hub",
             "support": {
-                "source": "https://bitbucket.org/portlandlabs/skyline_hub/src/3f78c30bd0eb9328a23ed1e958b703f14205abe0/?at=master"
+                "source": "https://bitbucket.org/portlandlabs/skyline_hub/src/e2059d8056711188427b67fbe7e2cc895315e81c/?at=master"
             },
-            "time": "2022-07-26T19:20:12+00:00"
+            "time": "2022-07-27T16:26:54+00:00"
         },
         {
             "name": "predis/predis",
