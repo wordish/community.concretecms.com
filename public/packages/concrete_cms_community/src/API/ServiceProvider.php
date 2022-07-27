@@ -4,7 +4,10 @@ namespace PortlandLabs\Community\API;
 
 use Concrete\Core\Foundation\Service\Provider;
 use Concrete\Core\Http\Middleware\OAuthAuthenticationMiddleware;
+use Concrete\Core\Routing\RedirectResponse;
 use Concrete\Core\Routing\Router;
+use Concrete\Core\User\UserInfo;
+use Concrete\Core\User\UserInfoRepository;
 use PortlandLabs\Community\API\V1\Achievements;
 use PortlandLabs\Community\API\V1\Middleware\FractalNegotiatorMiddleware;
 use PortlandLabs\Community\API\V1\Profile;
@@ -33,6 +36,20 @@ class ServiceProvider extends Provider
                 $groupRouter->all('/discourse/handle_webhook_event', [Discourse::class, 'handleWebhookEvent']);
                 $groupRouter->all('/discourse/edit_forum_info', [Discourse::class, 'editFormInfo']);
                 $groupRouter->all('/profile/lookup_email', [Profile::class, 'lookupEmail']);
+
+                // Handle simple redirect to profile
+                $groupRouter->get('/discourse/profile/{user}', function(string $user): RedirectResponse {
+                    /** @var UserInfo|null $userInfo */
+                    $userInfo = $this->app->make(UserInfoRepository::class)->getByName($user);
+
+                    // If user isn't found send to user search
+                    if (!$userInfo || !$userInfo->getUserID()) {
+                        return new RedirectResponse('/members/directory?q=' . urlencode($user));
+                    }
+
+                    // Otherwise redirect to user profile
+                    return new RedirectResponse('/members/profile/' . (int) $userInfo->getUserID());
+                });
             });
 
         $router->buildGroup()
