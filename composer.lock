@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5499574eb617eecf8199794550933713",
+    "content-hash": "66af5d434bfb59577457778b50e42b88",
     "packages": [
         {
             "name": "anahkiasen/html-object",
@@ -993,6 +993,47 @@
                 "source": "https://github.com/concrete5-forks/PHPoAuthUserData/tree/master"
             },
             "time": "2017-10-29T23:05:04+00:00"
+        },
+        {
+            "name": "concrete5/phpass-compat",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/concrete5/phpass-compat.git",
+                "reference": "754faee577f2595fa81dd1f9a932faee22f06279"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/concrete5/phpass-compat/zipball/754faee577f2595fa81dd1f9a932faee22f06279",
+                "reference": "754faee577f2595fa81dd1f9a932faee22f06279",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Hautelook\\Phpass\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Korvin Szanto",
+                    "email": "me@kor.vin"
+                }
+            ],
+            "description": "Hautlook/phpass shim",
+            "support": {
+                "issues": "https://github.com/concrete5/phpass-compat/issues",
+                "source": "https://github.com/concrete5/phpass-compat/tree/1.0"
+            },
+            "abandoned": "concretecms/phpass-compat",
+            "time": "2021-09-10T18:28:59+00:00"
         },
         {
             "name": "concretecms/concrete_cms_theme",
