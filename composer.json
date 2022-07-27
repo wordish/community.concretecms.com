@@ -24,7 +24,7 @@
     "concrete5/core": "dev-develop",
     "concrete5/dependency-patches": "^1.4.0",
     "vlucas/phpdotenv": "^2.4",
-    "concrete5/concrete_cms_theme": "dev-master",
+    "concretecms/concrete_cms_theme": "dev-master",
     "concrete5/community_badges": "dev-main",
     "portlandlabs/newrelic": "^1.0",
     "portlandlabs/akismet": "^1.0",
