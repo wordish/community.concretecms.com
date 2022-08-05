@@ -1,9 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
-source "/tmp/.cdvariables"
+source "/tmp/community/.cdvariables"
 
-mv /tmp/codedeployupload $deploydir
+mv /tmp/community/codedeployupload $deploydir
 
 ln -sfn $projectdir/.env $deploydir/.env
 ln -sfn $projectdir/shared/files $deploydir/public/application/files
