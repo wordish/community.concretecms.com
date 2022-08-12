@@ -6,6 +6,8 @@ tempdir=/tmp/community/codedeployupload
 [[ -d $tempdir ]] && rm -r $tempdir
 mkdir -p $tempdir
 
+mkdir /tmp/$DEPLOYMENT_ID
+
 echo "export tempdir=\"$tempdir\"" > "/tmp/$DEPLOYMENT_ID/.cdvariables";
 
 if [ "$APPLICATION_NAME" == "community.stage.concretecms.com" ]
