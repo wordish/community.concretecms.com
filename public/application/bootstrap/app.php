@@ -84,6 +84,7 @@ $app->bind(\Concrete\Core\Encryption\PasswordHasher::class, \ConcreteComposer\En
  */
 Events::addListener('on_user_login', function($event) {
     $db = \Database::connection();
+    $nRows = $db->fetchColumn('SELECT COUNT(*) FROM authTypeConcreteCookieMap');
     $maxTokens = 10;
     if ($nRows > $maxTokens) {
         $db->execute(<<<EOF
