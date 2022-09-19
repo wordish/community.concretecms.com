@@ -84,12 +84,15 @@ $app->bind(\Concrete\Core\Encryption\PasswordHasher::class, \ConcreteComposer\En
  */
 Events::addListener('on_user_login', function($event) {
     $db = \Database::connection();
-    $nRows = $db->fetchColumn('SELECT COUNT(*) FROM authTypeConcreteCookieMap');
+    $user = $event->getUserObject();
+    $userId = $user->getID();
+    $nRows = $db->fetchColumn('SELECT COUNT(*) FROM authTypeConcreteCookieMap WHERE uID = ?', $userId);
     $maxTokens = 10;
     if ($nRows > $maxTokens) {
         $db->execute(<<<EOF
             DELETE FROM `authTypeConcreteCookieMap`
-              WHERE ID <= (
+              WHERE uID = {$userId}
+              AND ID <= (
                 SELECT ID
                 FROM (
                   SELECT ID
