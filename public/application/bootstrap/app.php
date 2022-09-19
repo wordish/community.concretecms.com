@@ -77,3 +77,31 @@ $app->extend(\Concrete\Core\Http\ServerInterface::class, fn($server) => $server-
 ));
 
 $app->bind(\Concrete\Core\Encryption\PasswordHasher::class, \ConcreteComposer\Encryption\PasswordHasher::class);
+
+/**
+ * This event is a temporary fix for https://github.com/concretecms/concretecms/issues/10933
+ * Remove when fixed in the core
+ */
+Events::addListener('on_user_login', function($event) {
+    $db = \Database::connection();
+    $user = $event->getUserObject();
+    $userId = $user->getUserId();
+    $nRows = $db->fetchColumn('SELECT COUNT(*) FROM authTypeConcreteCookieMap WHERE uID = ?', [$userId]);
+    $maxTokens = 10;
+    if ($nRows > $maxTokens) {
+        $db->execute(<<<EOF
+            DELETE FROM `authTypeConcreteCookieMap`
+              WHERE uID = {$userId}
+              AND ID <= (
+                SELECT ID
+                FROM (
+                  SELECT ID
+                  FROM `authTypeConcreteCookieMap`
+                  ORDER BY ID DESC
+                  LIMIT 1 OFFSET {$maxTokens}
+                ) tmp
+              );
+            EOF
+        );
+    }
+});
