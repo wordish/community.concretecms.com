@@ -5,6 +5,6 @@ FROM amazeeio/nginx-drupal
 
 COPY --from=cli /app /app
 
-# Define where the Drupal Root is located
 ENV WEBROOT=public
 
+RUN apk update && apk upgrade --all

@@ -1,5 +1,7 @@
 FROM amazeeio/php:7.4-cli
 
+RUN apk update && apk upgrade --all && apk add icu-dev
+
 # Use composer v2
 RUN composer global remove hirak/prestissimo
 RUN composer self-update --2
@@ -29,5 +31,4 @@ RUN ln -sf /storage/files /app/public/application/files
 RUN ln -sf /storage/proxies /app/public/application/config/doctrine/proxies
 RUN ln -sf /storage/generated_overrides /app/public/application/config/generated_overrides
 
-# Define where the webroot is located
 ENV WEBROOT=public

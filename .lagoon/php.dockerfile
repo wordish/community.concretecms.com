@@ -8,5 +8,7 @@ ENV CONCRETE5_ENV=lagoon
 COPY --from=cli /app /app
 
 # Install required extensions
-ADD https://github.com/mlocati/docker-php-extension-installer/releases/download/1.2.45/install-php-extensions /usr/local/bin/
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/download/1.5.39/install-php-extensions /usr/local/bin/
+
+RUN apk update && apk upgrade --all
 RUN sh /app/.lagoon/setup.sh
