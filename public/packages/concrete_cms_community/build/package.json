@@ -24,7 +24,7 @@
     "@pnotify/bootstrap4": "^5.2.0",
     "@pnotify/core": "^5.2.0",
     "cross-env": "^7.0.2",
-    "laravel-mix": "^5.0.5",
+    "laravel-mix": "^6.0.49",
     "moment": "^2.29.2",
     "momentjs": "^2.0.0",
     "resolve-url-loader": "^3.1.0",
