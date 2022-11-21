@@ -574,17 +574,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/concretecms/concretecms-core.git",
-                "reference": "2f7469a3ac0e9edc09c885376c9b0266847c91ca"
+                "reference": "20e3ec5e628024d50b8092d45bc5b76d60d6fa9e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/concretecms/concretecms-core/zipball/2f7469a3ac0e9edc09c885376c9b0266847c91ca",
-                "reference": "2f7469a3ac0e9edc09c885376c9b0266847c91ca",
+                "url": "https://api.github.com/repos/concretecms/concretecms-core/zipball/20e3ec5e628024d50b8092d45bc5b76d60d6fa9e",
+                "reference": "20e3ec5e628024d50b8092d45bc5b76d60d6fa9e",
                 "shasum": ""
             },
             "require": {
                 "anahkiasen/html-object": "~1.4",
-                "commerceguys/addressing": "^1.2.0",
+                "commerceguys/addressing": "1.3.0",
                 "concrete5/dependency-patches": "^1.7.2",
                 "concrete5/doctrine-xml": "^1.2.0",
                 "concrete5/monolog-cascade": ">=0.6",
@@ -670,7 +670,8 @@
                 "symfony/yaml": "^4",
                 "tedivm/stash": "0.17.*",
                 "tubalmartin/cssmin": "^4.1",
-                "wikimedia/less.php": "^1.8.0"
+                "wikimedia/less.php": "^1.8.0",
+                "zircote/swagger-php": "^4.4"
             },
             "replace": {
                 "laminas/laminas-cache-storage-adapter-apc": "*",
@@ -720,7 +721,7 @@
                 "forum": "https://forums.concretecms.org/",
                 "source": "http://documentation.concretecms.org/api/"
             },
-            "time": "2022-07-21T03:46:37+00:00"
+            "time": "2022-11-21T14:39:39+00:00"
         },
         {
             "name": "concrete5/dependency-patches",
@@ -12233,6 +12234,84 @@
                 "source": "https://github.com/wikimedia/less.php/tree/1.8.2"
             },
             "time": "2019-11-06T18:30:11+00:00"
+        },
+        {
+            "name": "zircote/swagger-php",
+            "version": "4.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zircote/swagger-php.git",
+                "reference": "eb84fb4d65a327e604812fbddc6c27f69b9ed6e2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/eb84fb4d65a327e604812fbddc6c27f69b9ed6e2",
+                "reference": "eb84fb4d65a327e604812fbddc6c27f69b9ed6e2",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/annotations": "^1.7",
+                "ext-json": "*",
+                "php": ">=7.2",
+                "psr/log": "^1.1 || ^2.0 || ^3.0",
+                "symfony/deprecation-contracts": "^2 || ^3",
+                "symfony/finder": ">=2.2",
+                "symfony/yaml": ">=3.3"
+            },
+            "require-dev": {
+                "composer/package-versions-deprecated": "^1.11",
+                "friendsofphp/php-cs-fixer": "^2.17 || ^3.0",
+                "phpstan/phpstan": "^1.6",
+                "phpunit/phpunit": ">=8",
+                "vimeo/psalm": "^4.23"
+            },
+            "bin": [
+                "bin/openapi"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "OpenApi\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Robert Allen",
+                    "email": "zircote@gmail.com"
+                },
+                {
+                    "name": "Bob Fanger",
+                    "email": "bfanger@gmail.com",
+                    "homepage": "https://bfanger.nl"
+                },
+                {
+                    "name": "Martin Rademacher",
+                    "email": "mano@radebatz.net",
+                    "homepage": "https://radebatz.net"
+                }
+            ],
+            "description": "swagger-php - Generate interactive documentation for your RESTful API using phpdoc annotations",
+            "homepage": "https://github.com/zircote/swagger-php/",
+            "keywords": [
+                "api",
+                "json",
+                "rest",
+                "service discovery"
+            ],
+            "support": {
+                "issues": "https://github.com/zircote/swagger-php/issues",
+                "source": "https://github.com/zircote/swagger-php/tree/4.5.1"
+            },
+            "time": "2022-11-09T00:17:13+00:00"
         }
     ],
     "packages-dev": [
