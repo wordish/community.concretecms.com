@@ -1041,12 +1041,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/concretecms/concrete_cms_theme.git",
-                "reference": "e0b43ae9890afab531f5e1e6c850f75034a4f750"
+                "reference": "44fb82b16d4c9ad3abd658891acbcc5166f7dab4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/concretecms/concrete_cms_theme/zipball/e0b43ae9890afab531f5e1e6c850f75034a4f750",
-                "reference": "e0b43ae9890afab531f5e1e6c850f75034a4f750",
+                "url": "https://api.github.com/repos/concretecms/concrete_cms_theme/zipball/44fb82b16d4c9ad3abd658891acbcc5166f7dab4",
+                "reference": "44fb82b16d4c9ad3abd658891acbcc5166f7dab4",
                 "shasum": ""
             },
             "default-branch": true,
@@ -1060,7 +1060,7 @@
                 "issues": "https://github.com/concretecms/concrete_cms_theme/issues",
                 "source": "https://github.com/concretecms/concrete_cms_theme/tree/master"
             },
-            "time": "2022-07-21T22:29:13+00:00"
+            "time": "2022-10-24T21:52:31+00:00"
         },
         {
             "name": "dapphp/securimage",
@@ -6976,12 +6976,12 @@
             "source": {
                 "type": "git",
                 "url": "git@gitlab.com:portlandlabs/skyline_hub.git",
-                "reference": "528b6c9b8b432143d169b99e6c30c67080548d17"
+                "reference": "7816d7021f749046b455076bfc1297ef7213e016"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/portlandlabs%2Fskyline_hub/repository/archive.zip?sha=528b6c9b8b432143d169b99e6c30c67080548d17",
-                "reference": "528b6c9b8b432143d169b99e6c30c67080548d17",
+                "url": "https://gitlab.com/api/v4/projects/portlandlabs%2Fskyline_hub/repository/archive.zip?sha=7816d7021f749046b455076bfc1297ef7213e016",
+                "reference": "7816d7021f749046b455076bfc1297ef7213e016",
                 "shasum": ""
             },
             "require": {
@@ -7008,7 +7008,7 @@
             "support": {
                 "issues": "https://gitlab.com/api/v4/projects/38967274/issues"
             },
-            "time": "2022-09-21T00:42:18+00:00"
+            "time": "2022-09-22T12:11:43-07:00"
         },
         {
             "name": "predis/predis",
