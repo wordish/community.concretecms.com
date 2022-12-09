@@ -30,7 +30,7 @@
     "portlandlabs/newrelic": "^1.0",
     "portlandlabs/akismet": "^1.0",
     "laminas/laminas-http": "^2.15",
-    "portlandlabs/skyline_hub": "dev-master",
+    "portlandlabs/skyline_hub": "dev-marketplace-integration",
     "laminas/laminas-zendframework-bridge": "^1.6"
   },
   "require-dev": {
