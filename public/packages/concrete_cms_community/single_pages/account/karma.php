@@ -195,7 +195,7 @@ $config = $app->make(Repository::class);
                                             <?php echo $actionName; ?>
                                         </div>
 
-                                        <div class="karma-total-amount pl-0 col-5">
+                                        <div class="karma-total-amount ps-0 col-5">
                                             <?php echo number_format($totalPoints); ?>
                                         </div>
 
@@ -213,7 +213,7 @@ $config = $app->make(Repository::class);
                                         <b><?php echo t("Total:"); ?></b>
                                     </div>
 
-                                    <div class="col-5 pl-0 karma-total-all-amount mt-auto">
+                                    <div class="col-5 ps-0 karma-total-all-amount mt-auto">
                                         <?php echo number_format($totalSum); ?>
                                     </div>
                                     </div>
