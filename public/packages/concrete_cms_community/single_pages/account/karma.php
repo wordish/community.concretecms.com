@@ -155,7 +155,7 @@ $config = $app->make(Repository::class);
 
 
                                                 <div class="col col-2 points">
-                                                    <h3 class="float-right">
+                                                    <h3 class="float-end">
                                                         <?php echo number_format($entry->getUserPointEntryValue()); ?>
                                                     </h3>
                                                 </div>

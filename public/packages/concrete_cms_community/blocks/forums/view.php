@@ -22,7 +22,7 @@ defined('C5_EXECUTE') or die('Access denied');
 
             <?php if ($isOwnProfile) { ?>
                 <a href="<?php echo (string)Url::to("/api/v1/discourse/edit_forum_info"); ?>" target="_blank"
-                   class="ml-auto btn btn-sm btn-secondary float-right">
+                   class="ml-auto btn btn-sm btn-secondary float-end">
                     <?php echo t("Edit Forum Info"); ?>
                 </a>
             <?php } ?>

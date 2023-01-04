@@ -36,7 +36,7 @@ $pkg = $packageService->getByHandle("concrete_cms_community")->getController();
 
             <?php if ($isOwnProfile) { ?>
                 <a href="javascript:void(0);"
-                   class="ml-auto btn btn-sm btn-secondary float-right create-showcase-item">
+                   class="ml-auto btn btn-sm btn-secondary float-end create-showcase-item">
                     <?php echo t("Add Showcase Item"); ?>
                 </a>
             <?php } ?>

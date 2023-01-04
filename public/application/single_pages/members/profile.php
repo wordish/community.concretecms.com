@@ -148,7 +148,7 @@ $userDisplayName = h(trim($profileData['first_name'] . " " . $profileData['last_
                         </h1>
 
                         <div class="profile-user-actions">
-                            <div class="float-right">
+                            <div class="float-end">
                                 <?php if ($isCommunityAwardsModuleInstalled) { ?>
                                     <?php
                                     $activeUser = new User();
@@ -385,7 +385,7 @@ $userDisplayName = h(trim($profileData['first_name'] . " " . $profileData['last_
                                 <?php echo t("Information"); ?>
                                 <?php if ($isOwnProfile) { ?>
                                     <a href="<?= Url::to('/account/edit_profile') ?>"
-                                       class="ml-auto btn btn-sm btn-secondary float-right">
+                                       class="ml-auto btn btn-sm btn-secondary ms-auto">
                                         <?php echo t("Edit Profile"); ?>
                                     </a>
                                 <?php } ?>

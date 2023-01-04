@@ -54,7 +54,7 @@ $user = new User();
 
                 <?php if ($isOwnProfile) { ?>
                     <a href="https://training.concretecms.com/"
-                       class="ml-auto btn btn-sm btn-secondary float-right">
+                       class="ml-auto btn btn-sm btn-secondary float-end">
                         <?php echo t("Get Certified"); ?>
                     </a>
                 <?php } ?>
