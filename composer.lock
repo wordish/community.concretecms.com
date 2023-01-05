@@ -104,16 +104,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.255.8",
+            "version": "3.255.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "6cfc9c8b63105bafb537964dd94d1f4070be172c"
+                "reference": "5d598491cc62da506082aec8661475d40af24b16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/6cfc9c8b63105bafb537964dd94d1f4070be172c",
-                "reference": "6cfc9c8b63105bafb537964dd94d1f4070be172c",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/5d598491cc62da506082aec8661475d40af24b16",
+                "reference": "5d598491cc62da506082aec8661475d40af24b16",
                 "shasum": ""
             },
             "require": {
@@ -192,9 +192,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.255.8"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.255.10"
             },
-            "time": "2023-01-03T19:21:55+00:00"
+            "time": "2023-01-05T19:20:51+00:00"
         },
         {
             "name": "basecrm/basecrm-php",
@@ -1126,12 +1126,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/concretecms/concrete_cms_theme.git",
-                "reference": "a231dadeeefc243f36351028f70c9667cd45ade2"
+                "reference": "301f90ff4a71670577df4d4f06df69fbac97e783"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/concretecms/concrete_cms_theme/zipball/a231dadeeefc243f36351028f70c9667cd45ade2",
-                "reference": "a231dadeeefc243f36351028f70c9667cd45ade2",
+                "url": "https://api.github.com/repos/concretecms/concrete_cms_theme/zipball/301f90ff4a71670577df4d4f06df69fbac97e783",
+                "reference": "301f90ff4a71670577df4d4f06df69fbac97e783",
                 "shasum": ""
             },
             "type": "concrete5-package",
@@ -1144,7 +1144,7 @@
                 "issues": "https://github.com/concretecms/concrete_cms_theme/issues",
                 "source": "https://github.com/concretecms/concrete_cms_theme/tree/bedrock-1.4"
             },
-            "time": "2023-01-04T17:40:04+00:00"
+            "time": "2023-01-05T22:55:10+00:00"
         },
         {
             "name": "dapphp/securimage",
