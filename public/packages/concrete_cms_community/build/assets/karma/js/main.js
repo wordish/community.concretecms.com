@@ -6,6 +6,8 @@
  */
 
 // Custom assets
+import _ from 'underscore'
+window._ = _
 import fetchResults from './result_list';
 
 if ($(".karma-page").length > 0) {

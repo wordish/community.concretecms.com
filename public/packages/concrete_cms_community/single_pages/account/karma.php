@@ -121,7 +121,7 @@ $config = $app->make(Repository::class);
                                                         }
 
                                                         /** @noinspection HtmlUnknownTarget */
-                                                        echo t("Awarded to %1$s on %2$s",
+                                                        echo t("Awarded to %s on %s",
                                                             sprintf(
                                                                 "<a href=\"%s\">%s</a>",
                                                                 (string)Url::to("/members/profile", $entry->getUserPointEntryUserID()),
