@@ -104,16 +104,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.255.11",
+            "version": "3.256.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "e851af4d7d2d95b131db344430384ae7cc04758e"
+                "reference": "d993c3aa72233186375f3ceb5811a30982fbcad8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/e851af4d7d2d95b131db344430384ae7cc04758e",
-                "reference": "e851af4d7d2d95b131db344430384ae7cc04758e",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/d993c3aa72233186375f3ceb5811a30982fbcad8",
+                "reference": "d993c3aa72233186375f3ceb5811a30982fbcad8",
                 "shasum": ""
             },
             "require": {
@@ -192,9 +192,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.255.11"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.256.1"
             },
-            "time": "2023-01-06T19:22:07+00:00"
+            "time": "2023-01-10T19:20:06+00:00"
         },
         {
             "name": "basecrm/basecrm-php",
@@ -657,12 +657,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/concretecms/concretecms-core.git",
-                "reference": "7b93701b665b103431e48203f5e98a7d955b540f"
+                "reference": "615d24df0b9a6cd1ffb7250108effc4743955888"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/concretecms/concretecms-core/zipball/7b93701b665b103431e48203f5e98a7d955b540f",
-                "reference": "7b93701b665b103431e48203f5e98a7d955b540f",
+                "url": "https://api.github.com/repos/concretecms/concretecms-core/zipball/615d24df0b9a6cd1ffb7250108effc4743955888",
+                "reference": "615d24df0b9a6cd1ffb7250108effc4743955888",
                 "shasum": ""
             },
             "require": {
@@ -805,7 +805,7 @@
                 "forum": "https://forums.concretecms.org/",
                 "source": "http://documentation.concretecms.org/api/"
             },
-            "time": "2023-01-07T00:26:34+00:00"
+            "time": "2023-01-10T07:07:33+00:00"
         },
         {
             "name": "concrete5/dependency-patches",
@@ -1126,12 +1126,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/concretecms/concrete_cms_theme.git",
-                "reference": "a1d9e7ec35bd8f4fbcd32111a154ed56e4204a54"
+                "reference": "7431821e27bc3490d00eccc04d0b6a3b0fc83dba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/concretecms/concrete_cms_theme/zipball/a1d9e7ec35bd8f4fbcd32111a154ed56e4204a54",
-                "reference": "a1d9e7ec35bd8f4fbcd32111a154ed56e4204a54",
+                "url": "https://api.github.com/repos/concretecms/concrete_cms_theme/zipball/7431821e27bc3490d00eccc04d0b6a3b0fc83dba",
+                "reference": "7431821e27bc3490d00eccc04d0b6a3b0fc83dba",
                 "shasum": ""
             },
             "type": "concrete5-package",
@@ -1144,7 +1144,7 @@
                 "issues": "https://github.com/concretecms/concrete_cms_theme/issues",
                 "source": "https://github.com/concretecms/concrete_cms_theme/tree/bedrock-1.4"
             },
-            "time": "2023-01-07T20:06:08+00:00"
+            "time": "2023-01-11T17:01:38+00:00"
         },
         {
             "name": "dapphp/securimage",
@@ -4920,20 +4920,20 @@
         },
         {
             "name": "laravel/helpers",
-            "version": "v1.5.0",
+            "version": "v1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/helpers.git",
-                "reference": "c28b0ccd799d58564c41a62395ac9511a1e72931"
+                "reference": "4dd0f9436d3911611622a6ced8329a1710576f60"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/helpers/zipball/c28b0ccd799d58564c41a62395ac9511a1e72931",
-                "reference": "c28b0ccd799d58564c41a62395ac9511a1e72931",
+                "url": "https://api.github.com/repos/laravel/helpers/zipball/4dd0f9436d3911611622a6ced8329a1710576f60",
+                "reference": "4dd0f9436d3911611622a6ced8329a1710576f60",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "~5.8.0|^6.0|^7.0|^8.0|^9.0",
+                "illuminate/support": "~5.8.0|^6.0|^7.0|^8.0|^9.0|^10.0",
                 "php": "^7.1.3|^8.0"
             },
             "require-dev": {
@@ -4970,9 +4970,9 @@
                 "laravel"
             ],
             "support": {
-                "source": "https://github.com/laravel/helpers/tree/v1.5.0"
+                "source": "https://github.com/laravel/helpers/tree/v1.6.0"
             },
-            "time": "2022-01-12T15:58:51+00:00"
+            "time": "2023-01-09T14:48:11+00:00"
         },
         {
             "name": "lcobucci/clock",
@@ -7216,12 +7216,12 @@
             "source": {
                 "type": "git",
                 "url": "git@gitlab.com:portlandlabs/skyline_hub.git",
-                "reference": "408e5118d15908af6630579d260675ce48effd36"
+                "reference": "dea6db5b57590643712b2269c7f2cfcf1b93b0f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/portlandlabs%2Fskyline_hub/repository/archive.zip?sha=408e5118d15908af6630579d260675ce48effd36",
-                "reference": "408e5118d15908af6630579d260675ce48effd36",
+                "url": "https://gitlab.com/api/v4/projects/portlandlabs%2Fskyline_hub/repository/archive.zip?sha=dea6db5b57590643712b2269c7f2cfcf1b93b0f3",
+                "reference": "dea6db5b57590643712b2269c7f2cfcf1b93b0f3",
                 "shasum": ""
             },
             "require": {
@@ -7252,7 +7252,7 @@
             "support": {
                 "issues": "https://gitlab.com/api/v4/projects/38967274/issues"
             },
-            "time": "2023-01-04T09:38:10-08:00"
+            "time": "2023-01-11T08:03:39-08:00"
         },
         {
             "name": "predis/predis",
