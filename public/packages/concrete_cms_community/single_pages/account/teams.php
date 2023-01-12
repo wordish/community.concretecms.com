@@ -84,7 +84,7 @@ $user = new User();
                                             </td>
 
                                             <td>
-                                                <div class="float-right">
+                                                <div class="float-end">
                                                     <div class="dropdown">
                                                         <a href="<?php echo (string)Url::to("/account/teams", "edit", $myTeam->getGroupID()); ?>"
                                                            class="btn btn-secondary btn-sm">

@@ -57,12 +57,15 @@ class ServiceProvider extends Provider
         $al->register("javascript", "community/teams", "js/teams.js", ["position" => Asset::ASSET_POSITION_FOOTER], "concrete_cms_community");
         $al->register("javascript", "community/karma", "js/karma.js", ["position" => Asset::ASSET_POSITION_FOOTER], "concrete_cms_community");
 
+        /*
+         * No longer needed since CS-826 but lets keep it for the time being
         $this->app->make('director')->addListener('on_before_render', function ($event) {
             // must be done in an event because it must come AFTER the concrete cms package registers the
             // header navigation factory class as a singleton.
             $headerNavigationFactory = app(HeaderNavigationFactory::class);
             $headerNavigationFactory->setActiveSection(HeaderNavigationFactory::SECTION_COMMUNITY);
         });
+        */
 
         $this->app->make('director')->addListener('on_discourse_webhook_call', function ($event) {
             /** @var DiscourseWebhookCall $event */

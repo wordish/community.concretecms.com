@@ -156,10 +156,6 @@
               filename="/dashboard/concrete_cms_community/settings.php" pagetype="" description=""
               package="concrete_cms_community">
         </page>
-        <page name="Concrete Releases" path="/dashboard/concrete_cms_community/releases"
-              filename="/dashboard/concrete_cms_community/releases.php" pagetype="" description=""
-              package="concrete_cms_community">
-        </page>
     </singlepages>
     <attributekeys>
         <attributekey handle="forums_total_posts" name="Forums Total Posts" package="concrete_cms_theme" searchable="1" indexed="1"

@@ -67,7 +67,7 @@ if ($project) {
         <div class="ccm-dashboard-form-actions ">
             <a href="<?=$backURL?>"
                class="btn btn-secondary"><?=t('Cancel')?></a>
-            <button type="submit" class="btn btn-primary float-right"><?=$buttonText?></button>
+            <button type="submit" class="btn btn-primary float-end"><?=$buttonText?></button>
         </div>
     </div>
 

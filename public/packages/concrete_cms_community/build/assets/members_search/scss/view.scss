@@ -193,11 +193,19 @@
         }
       }
 
+      a {
+        text-decoration: none;
+        &:hover {
+          h2.username {
+            color: #017DDD;
+          }
+        }
+      }
+
       .username {
         font-size: 28px;
         line-height: 34px;
-        color: #19191A;
-        opacity: 0.6;
+        color: #777;
       }
 
       .description {

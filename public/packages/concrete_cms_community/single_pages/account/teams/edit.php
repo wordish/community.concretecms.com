@@ -67,7 +67,7 @@ $user = new \Concrete\Core\User\User();
                                             </div>
                                         </div>
 
-                                        <div class="float-right">
+                                        <div class="float-end">
                                             <button type="submit" class="btn btn-primary">
                                                 <?php echo t("Update Team"); ?>
                                             </button>
@@ -126,7 +126,7 @@ $user = new \Concrete\Core\User\User();
                                             </td>
 
                                             <td>
-                                                <div class="float-right">
+                                                <div class="float-end">
                                                     <?php if ($selectedTeam->hasUserManagerPermissions($user)) { ?>
                                                         <a href="<?php echo (string)Url::to(
                                                             "/account/teams/leave",
@@ -191,7 +191,7 @@ $user = new \Concrete\Core\User\User();
                                                 </td>
 
                                                 <td>
-                                                    <div class="float-right">
+                                                    <div class="float-end">
                                                         <a href="<?php echo (string)Url::to(
                                                             "/account/teams/decline_join_request",
                                                             $selectedTeam->getGroupID(),

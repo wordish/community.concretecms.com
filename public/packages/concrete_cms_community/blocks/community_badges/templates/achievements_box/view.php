@@ -54,7 +54,7 @@ $user = new User();
 
             <?php if ($isOwnProfile) { ?>
                 <a href="<?php echo (string)Url::to('/account/karma') ?>"
-                   class="ml-auto btn btn-sm btn-secondary float-right">
+                   class="ms-auto btn btn-sm btn-secondary float-end">
                     <?php echo t("Earn Achievements"); ?>
                 </a>
             <?php } ?>

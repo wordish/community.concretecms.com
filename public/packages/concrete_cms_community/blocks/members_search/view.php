@@ -60,33 +60,33 @@ $profileFormRenderer = new Renderer(
                 <form action="#" method="get">
                     <div class="">
                         <div class="row">
-                            <div class="col-md-6 align-self-center">
-                                <input type="text" name="q" value="<?= h($q ?: '') ?>" placeholder="<?=t('Search Members')?>" class="form-control search-control">
-                                <label class="form-check d-inline-block">
-                                    <input type="checkbox"
-                                           class="show-certified"
-                                           onchange="document.querySelector('input[name=c]').value = this.checked ? 1 : 0"
-                                        <?= $certifiedOnly ? 'checked' : '' ?> />
-                                    <input type='hidden' name="c" value="<?= $certifiedOnly ? '1' : '0' ?>"  />
-                                    <?= t('Certified') ?>
-                                </label>
+                            <div class="col-lg-5 align-self-center mb-3 mb-lg-0">
+                                <div class="hstack gap-3">
+                                    <input type="text" name="q" value="<?= h($q ?: '') ?>" placeholder="<?=t('Search Members')?>" class="form-control-lg form-control">
+                                    <label class="text-nowrap">
+                                        <input type="checkbox"
+                                               class="show-certified"
+                                               onchange="document.querySelector('input[name=c]').value = this.checked ? 1 : 0"
+                                            <?= $certifiedOnly ? 'checked' : '' ?> />
+                                        <input type='hidden' name="c" value="<?= $certifiedOnly ? '1' : '0' ?>"  />
+                                        <?= t('Certified') ?>
+                                    </label>
+                                </div>
                             </div>
 
-                            <div class="col-md-6 align-self-center">
-                                <div class="float-md-right float-lg-right float-xl-right float-sm-right float-xs-none">
-                                    <div class="form-inline sort-by">
-                                        <label class="control-label"><?=t('Sort By')?></label>
+                            <div class="col-lg-5 offset-lg-2 align-self-center">
+                                <div class="hstack gap-3">
+                                    <div class="fw-bold text-black-50 text-nowrap"><?=t('Sort By')?></div>
 
-                                        <select name="sortBy" class="form-control">
-                                            <?php foreach ($sortByOptions as $sortByKey => $sortByOption) { ?>
-                                                <option value="<?=$sortByKey?>" <?php if ($sortByKey == $sortBy) { ?>selected<?php } ?>><?=$sortByOption?></option>
-                                            <?php } ?>
-                                        </select>
+                                    <select name="sortBy" class="form-select form-select-lg">
+                                        <?php foreach ($sortByOptions as $sortByKey => $sortByOption) { ?>
+                                            <option value="<?=$sortByKey?>" <?php if ($sortByKey == $sortBy) { ?>selected<?php } ?>><?=$sortByOption?></option>
+                                        <?php } ?>
+                                    </select>
 
-                                        <button type="submit" class="btn btn-primary">
-                                            <?php echo t("Search"); ?>
-                                        </button>
-                                    </div>
+                                    <button type="submit" class="btn btn-primary">
+                                        <?php echo t("Search"); ?>
+                                    </button>
                                 </div>
                             </div>
                         </div>
