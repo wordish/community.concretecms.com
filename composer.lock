@@ -104,16 +104,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.256.1",
+            "version": "3.256.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "d993c3aa72233186375f3ceb5811a30982fbcad8"
+                "reference": "a72094f7d968bdc743839e309087d51f868ba26c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/d993c3aa72233186375f3ceb5811a30982fbcad8",
-                "reference": "d993c3aa72233186375f3ceb5811a30982fbcad8",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/a72094f7d968bdc743839e309087d51f868ba26c",
+                "reference": "a72094f7d968bdc743839e309087d51f868ba26c",
                 "shasum": ""
             },
             "require": {
@@ -192,9 +192,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.256.1"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.256.2"
             },
-            "time": "2023-01-10T19:20:06+00:00"
+            "time": "2023-01-11T20:12:50+00:00"
         },
         {
             "name": "basecrm/basecrm-php",
@@ -1126,12 +1126,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/concretecms/concrete_cms_theme.git",
-                "reference": "7431821e27bc3490d00eccc04d0b6a3b0fc83dba"
+                "reference": "7e7e6953e6083114a769dc06ec731fc28dd49712"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/concretecms/concrete_cms_theme/zipball/7431821e27bc3490d00eccc04d0b6a3b0fc83dba",
-                "reference": "7431821e27bc3490d00eccc04d0b6a3b0fc83dba",
+                "url": "https://api.github.com/repos/concretecms/concrete_cms_theme/zipball/7e7e6953e6083114a769dc06ec731fc28dd49712",
+                "reference": "7e7e6953e6083114a769dc06ec731fc28dd49712",
                 "shasum": ""
             },
             "type": "concrete5-package",
@@ -1144,7 +1144,7 @@
                 "issues": "https://github.com/concretecms/concrete_cms_theme/issues",
                 "source": "https://github.com/concretecms/concrete_cms_theme/tree/bedrock-1.4"
             },
-            "time": "2023-01-11T17:01:38+00:00"
+            "time": "2023-01-12T14:31:34+00:00"
         },
         {
             "name": "dapphp/securimage",
@@ -7216,12 +7216,12 @@
             "source": {
                 "type": "git",
                 "url": "git@gitlab.com:portlandlabs/skyline_hub.git",
-                "reference": "dea6db5b57590643712b2269c7f2cfcf1b93b0f3"
+                "reference": "1545fd3659689e73ed5d244ec920d4379b799195"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/portlandlabs%2Fskyline_hub/repository/archive.zip?sha=dea6db5b57590643712b2269c7f2cfcf1b93b0f3",
-                "reference": "dea6db5b57590643712b2269c7f2cfcf1b93b0f3",
+                "url": "https://gitlab.com/api/v4/projects/portlandlabs%2Fskyline_hub/repository/archive.zip?sha=1545fd3659689e73ed5d244ec920d4379b799195",
+                "reference": "1545fd3659689e73ed5d244ec920d4379b799195",
                 "shasum": ""
             },
             "require": {
@@ -7252,7 +7252,7 @@
             "support": {
                 "issues": "https://gitlab.com/api/v4/projects/38967274/issues"
             },
-            "time": "2023-01-11T08:03:39-08:00"
+            "time": "2023-01-11T16:46:27-08:00"
         },
         {
             "name": "predis/predis",
