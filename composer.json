@@ -24,13 +24,13 @@
     "concrete5/core": "dev-develop",
     "concrete5/dependency-patches": "^1.4.0",
     "vlucas/phpdotenv": "^2.4",
-    "concretecms/concrete_cms_theme": "dev-bedrock-1.4",
+    "concretecms/concrete_cms_theme": "dev-master",
     "concrete5/community_badges": "dev-main",
     "concrete5/phpass-compat": ">=1",
     "portlandlabs/newrelic": "^1.0",
     "portlandlabs/akismet": "^1.0",
     "laminas/laminas-http": "^2.15",
-    "portlandlabs/skyline_hub": "dev-marketplace-integration",
+    "portlandlabs/skyline_hub": "dev-master",
     "laminas/laminas-zendframework-bridge": "^1.6"
   },
   "require-dev": {
