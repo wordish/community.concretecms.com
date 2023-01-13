@@ -7217,12 +7217,12 @@
             "source": {
                 "type": "git",
                 "url": "git@gitlab.com:portlandlabs/skyline_hub.git",
-                "reference": "5253ae4c41377ace3033b8d14aa52b36478427e2"
+                "reference": "a6a886e959a5b55c983bf320a37fb901e43f30b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/portlandlabs%2Fskyline_hub/repository/archive.zip?sha=5253ae4c41377ace3033b8d14aa52b36478427e2",
-                "reference": "5253ae4c41377ace3033b8d14aa52b36478427e2",
+                "url": "https://gitlab.com/api/v4/projects/portlandlabs%2Fskyline_hub/repository/archive.zip?sha=a6a886e959a5b55c983bf320a37fb901e43f30b3",
+                "reference": "a6a886e959a5b55c983bf320a37fb901e43f30b3",
                 "shasum": ""
             },
             "require": {
@@ -7253,7 +7253,7 @@
             "support": {
                 "issues": "https://gitlab.com/api/v4/projects/38967274/issues"
             },
-            "time": "2023-01-12T20:57:27+00:00"
+            "time": "2023-01-13T09:39:06-08:00"
         },
         {
             "name": "predis/predis",
@@ -12786,16 +12786,16 @@
         },
         {
             "name": "zircote/swagger-php",
-            "version": "4.5.6",
+            "version": "4.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zircote/swagger-php.git",
-                "reference": "6fea22f00b2a0048e96f0a8f228356cbbfc1b930"
+                "reference": "ee8147745c92dd4404adb531751ce32676b888d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/6fea22f00b2a0048e96f0a8f228356cbbfc1b930",
-                "reference": "6fea22f00b2a0048e96f0a8f228356cbbfc1b930",
+                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/ee8147745c92dd4404adb531751ce32676b888d4",
+                "reference": "ee8147745c92dd4404adb531751ce32676b888d4",
                 "shasum": ""
             },
             "require": {
@@ -12858,9 +12858,9 @@
             ],
             "support": {
                 "issues": "https://github.com/zircote/swagger-php/issues",
-                "source": "https://github.com/zircote/swagger-php/tree/4.5.6"
+                "source": "https://github.com/zircote/swagger-php/tree/4.6.0"
             },
-            "time": "2023-01-12T19:58:53+00:00"
+            "time": "2023-01-13T00:51:01+00:00"
         }
     ],
     "packages-dev": [
