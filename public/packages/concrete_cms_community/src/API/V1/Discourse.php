@@ -248,7 +248,7 @@ class Discourse
                                                             $errorList->add(t("User id is missing.", $eventType));
                                                         }
 
-                                                        if ($userInfo instanceof UserInfo) {
+                                                        if (isset($userInfo) && $userInfo instanceof UserInfo) {
                                                             $user = $userInfo->getUserObject();
 
                                                             $event = new DiscourseWebhookCall();
