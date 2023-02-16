@@ -104,16 +104,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.258.11",
+            "version": "3.258.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "5e339f47f86db7ed5f5afcda345d30ac1713aed3"
+                "reference": "43ee875456822ee7772cfc51da57bfa558ccb30c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/5e339f47f86db7ed5f5afcda345d30ac1713aed3",
-                "reference": "5e339f47f86db7ed5f5afcda345d30ac1713aed3",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/43ee875456822ee7772cfc51da57bfa558ccb30c",
+                "reference": "43ee875456822ee7772cfc51da57bfa558ccb30c",
                 "shasum": ""
             },
             "require": {
@@ -192,9 +192,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.258.11"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.258.12"
             },
-            "time": "2023-02-15T20:08:42+00:00"
+            "time": "2023-02-16T19:21:12+00:00"
         },
         {
             "name": "commerceguys/addressing",
@@ -604,12 +604,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/concretecms/concretecms-core.git",
-                "reference": "81687ae6ffc53bf4c8edfff57f27a54394076a38"
+                "reference": "1a70c768e721995fbf8064c3bcb089f52b1e0cc5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/concretecms/concretecms-core/zipball/81687ae6ffc53bf4c8edfff57f27a54394076a38",
-                "reference": "81687ae6ffc53bf4c8edfff57f27a54394076a38",
+                "url": "https://api.github.com/repos/concretecms/concretecms-core/zipball/1a70c768e721995fbf8064c3bcb089f52b1e0cc5",
+                "reference": "1a70c768e721995fbf8064c3bcb089f52b1e0cc5",
                 "shasum": ""
             },
             "require": {
@@ -752,7 +752,7 @@
                 "forum": "https://forums.concretecms.org/",
                 "source": "https://documentation.concretecms.org/api/"
             },
-            "time": "2023-02-15T23:53:52+00:00"
+            "time": "2023-02-16T20:04:37+00:00"
         },
         {
             "name": "concrete5/dependency-patches",
@@ -1073,12 +1073,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/concretecms/concrete_cms_theme.git",
-                "reference": "573f2c527d97b9571879a46494561d0c5068764d"
+                "reference": "09f550eaa4a9dfe78d9fe76877137538f31fb160"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/concretecms/concrete_cms_theme/zipball/573f2c527d97b9571879a46494561d0c5068764d",
-                "reference": "573f2c527d97b9571879a46494561d0c5068764d",
+                "url": "https://api.github.com/repos/concretecms/concrete_cms_theme/zipball/09f550eaa4a9dfe78d9fe76877137538f31fb160",
+                "reference": "09f550eaa4a9dfe78d9fe76877137538f31fb160",
                 "shasum": ""
             },
             "require": {
@@ -1100,7 +1100,7 @@
                 "issues": "https://github.com/concretecms/concrete_cms_theme/issues",
                 "source": "https://github.com/concretecms/concrete_cms_theme/tree/master"
             },
-            "time": "2023-02-15T16:06:02+00:00"
+            "time": "2023-02-16T19:44:26+00:00"
         },
         {
             "name": "dapphp/securimage",
