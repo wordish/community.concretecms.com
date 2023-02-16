@@ -173,16 +173,11 @@ $profileFormRenderer = new Renderer(
                                     </div>
                                 </div>
 
-                                <div class="col">
+                                <div class="col-2">
                                     <div class="info">
                                         <?php /** @noinspection PhpUnhandledExceptionInspection */
                                         echo t("Joined %s", $date->formatDate($result->getUserDateAdded())); ?>
                                     </div>
-
-                                    <a href="javascript:void(0);" class="btn btn-secondary send-message"
-                                       data-receiver="<?php echo h($result->getUserID()); ?>">
-                                        <?php echo t("Contact User"); ?>
-                                    </a>
                                 </div>
                             </div>
                         <?php } ?>
