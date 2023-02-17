@@ -28,7 +28,7 @@
     "concrete5/community_badges": "dev-main",
     "concrete5/phpass-compat": ">=1",
     "portlandlabs/newrelic": "^1.0",
-    "portlandlabs/akismet": "^1.0",
+    "portlandlabs/akismet": "9.0.x-dev",
     "laminas/laminas-http": "^2.15",
     "portlandlabs/skyline_hub": "dev-master",
     "laminas/laminas-zendframework-bridge": "^1.6"

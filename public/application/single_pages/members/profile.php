@@ -148,7 +148,7 @@ $userDisplayName = h(trim($profileData['first_name'] . " " . $profileData['last_
                         </h1>
 
                         <div class="profile-user-actions">
-                            <div class="float-end">
+                            <div class="float-end" data-vue-app="send-message">
                                 <?php if ($isCommunityAwardsModuleInstalled) { ?>
                                     <?php
                                     $activeUser = new User();
@@ -226,11 +226,23 @@ $userDisplayName = h(trim($profileData['first_name'] . " " . $profileData['last_
                                     <?php echo t("Inbox"); ?>
                                 </a>
 
-                                <?php if (!$isOwnProfile && $user->isRegistered()) { ?>
-                                    <a href="javascript:void(0);" class="btn btn-primary send-message"
-                                       data-receiver="<?php echo (int) $profile->getUserID(); ?>">
-                                        <?php echo t("Send Message"); ?>
-                                    </a>
+                                <?php if (!$isOwnProfile && $user->isRegistered()) {
+
+                                    $userSelectInstanceFactory = app(\Concrete\Core\User\Component\UserSelectInstanceFactory::class);
+                                    $userSelectInstance = $userSelectInstanceFactory->createInstance('username', true);
+                                    $token = app('token');
+                                    $userSelectAccessToken = $userSelectInstance->getAccessToken();
+                                    ?>
+
+
+
+                                    <compose-private-message
+                                            send-message-token="<?=$token->generate("validate_send_message")?>"
+                                            :user-select-options='{labelFormat:"username", includeAvatar: true, accessToken:"<?=$userSelectAccessToken?>"}'
+                                            css-class="btn-send-message-from-marketplace btn btn-primary"
+                                            :send-message-to-user-id="<?php echo (int) $profile->getUserID(); ?>"
+                                    ></compose-private-message>
+
                                 <?php } ?>
                             </div>
                         </div>
@@ -249,19 +261,6 @@ $userDisplayName = h(trim($profileData['first_name'] . " " . $profileData['last_
 
                         <?php if (trim($profileData['description'])) { ?>
                             <?php echo nl2br(h($profileData['description'])); ?>
-                        <?php } ?>
-                    </div>
-
-                    <div class="profile-user-actions">
-                        <a href="<?= Url::to("account/messages"); ?>" class="btn btn-secondary">
-                            <?php echo t("Inbox"); ?>
-                        </a>
-
-                        <?php if (!$isOwnProfile && $user->isRegistered()) { ?>
-                            <a href="javascript:void(0);" class="btn btn-primary send-message"
-                               data-receiver="<?php echo (int) $profile->getUserID(); ?>">
-                                <?php echo t("Send Message"); ?>
-                            </a>
                         <?php } ?>
                     </div>
                 </div>
@@ -455,7 +454,24 @@ $userDisplayName = h(trim($profileData['first_name'] . " " . $profileData['last_
     ?>
     <script type="text/javascript">
         $(function() {
-            $('.send-message').trigger('click')
+            setTimeout(function() {
+                // Note- I don't think this works anymore. @TODO fix this.
+                $('.btn-send-message-from-marketplace').trigger('click')
+            }, 500)
         })
     </script>
 <?php } ?>
+
+
+<script>
+    $(function () {
+        Concrete.Vue.activateContext('frontend', function (Vue, config) {
+            $('div[data-vue-app=send-message]').each(function() {
+                new Vue({
+                    el: $(this).get(0),
+                    components: config.components
+                });
+            })
+        });
+    });
+</script>
