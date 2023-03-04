@@ -7119,12 +7119,12 @@
             "source": {
                 "type": "git",
                 "url": "git@gitlab.com:portlandlabs/skyline_hub.git",
-                "reference": "3d7eb64114f240b85560209124c79aa76ae2d9ae"
+                "reference": "004c543f7f6da54fc230404b9d4941c6926f6268"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/portlandlabs%2Fskyline_hub/repository/archive.zip?sha=3d7eb64114f240b85560209124c79aa76ae2d9ae",
-                "reference": "3d7eb64114f240b85560209124c79aa76ae2d9ae",
+                "url": "https://gitlab.com/api/v4/projects/portlandlabs%2Fskyline_hub/repository/archive.zip?sha=004c543f7f6da54fc230404b9d4941c6926f6268",
+                "reference": "004c543f7f6da54fc230404b9d4941c6926f6268",
                 "shasum": ""
             },
             "require": {
@@ -7153,7 +7153,7 @@
             "support": {
                 "issues": "https://gitlab.com/api/v4/projects/38967274/issues"
             },
-            "time": "2023-03-02T12:46:47-08:00"
+            "time": "2023-03-03T16:48:02-08:00"
         },
         {
             "name": "predis/predis",
