@@ -209,6 +209,7 @@ class Controller extends BlockController
         $certifiedOnly = $sets['certifiedOnly'] ?? true;
 
         $userList = new UserList();
+        $userList->setIncludeEmailInKeywordSearch(false);
         if ($sets['q'] ?? false) {
             $userList->filterByKeywords($sets['q']);
         }
