@@ -148,104 +148,109 @@ $userDisplayName = h(trim($profileData['first_name'] . " " . $profileData['last_
                         </h1>
 
                         <div class="profile-user-actions">
-                            <div class="float-end" data-vue-app="send-message">
-                                <?php if ($isCommunityAwardsModuleInstalled) { ?>
-                                    <?php
-                                    $activeUser = new User();
-                                    /** @var \PortlandLabs\CommunityBadges\AwardService $awardService */
-                                    $awardService = $app->make(\PortlandLabs\CommunityBadges\AwardService::class);
-                                    $totalAwards = count($awardService->getAllGrantedAwardsByUser($activeUser));
+                            <div data-vue-app="send-message">
+                            <?php if ($isCommunityAwardsModuleInstalled) { ?>
+                                <?php
+                                $activeUser = new User();
+                                /** @var \PortlandLabs\CommunityBadges\AwardService $awardService */
+                                $awardService = $app->make(\PortlandLabs\CommunityBadges\AwardService::class);
+                                $totalAwards = count($awardService->getAllGrantedAwardsByUser($activeUser));
 
-                                    $grantedAwardList = [];
+                                $grantedAwardList = [];
 
-                                    foreach ($awardService->getAllGrantedAwardsGroupedByUser($activeUser) as $awardItem) {
-                                        $grantedAward = $awardItem["grantedAward"];
-                                        if ($grantedAward instanceof \PortlandLabs\CommunityBadges\Entity\AwardGrant) {
-                                            $award = $grantedAward->getAward();
+                                foreach ($awardService->getAllGrantedAwardsGroupedByUser($activeUser) as $awardItem) {
+                                    $grantedAward = $awardItem["grantedAward"];
+                                    if ($grantedAward instanceof \PortlandLabs\CommunityBadges\Entity\AwardGrant) {
+                                        $award = $grantedAward->getAward();
 
-                                            if ($award instanceof Award) {
-                                                $grantedAwardList[$grantedAward->getId()] = $award->getName();
-                                            }
+                                        if ($award instanceof Award) {
+                                            $grantedAwardList[$grantedAward->getId()] = $award->getName();
                                         }
                                     }
-                                    ?>
+                                }
+                                ?>
 
-                                    <?php if (!$isOwnProfile && $totalAwards > 0) { ?>
-                                        <a href="javascript:void(0);"
-                                           data-toggle="modal" data-target="#giveAward"
-                                           class="give-award btn award-icon btn-success<?php echo $totalAwards > 1 ? " badge-container" : ""; ?>">
-                                            <?php echo t("Give Award"); ?>
+                                <?php if (!$isOwnProfile && $totalAwards > 0) { ?>
+                                    <a href="javascript:void(0);"
+                                       data-toggle="modal" data-target="#giveAward"
+                                       class="give-award btn award-icon btn-success<?php echo $totalAwards > 1 ? " badge-container" : ""; ?>">
+                                        <?php echo t("Give Award"); ?>
 
-                                            <?php if ($totalAwards > 1) { ?>
-                                                <div class="badge-counter">
-                                                    <?php echo $totalAwards; ?>
+                                        <?php if ($totalAwards > 1) { ?>
+                                            <div class="badge-counter">
+                                                <?php echo $totalAwards; ?>
+                                            </div>
+                                        <?php } ?>
+                                    </a>
+
+                                    <div class="modal community-award-modal" tabindex="-1" role="dialog"
+                                         id="giveAward">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">
+                                                        <?php echo t("Give Award"); ?>
+                                                    </h5>
                                                 </div>
-                                            <?php } ?>
-                                        </a>
 
-                                        <div class="modal community-award-modal" tabindex="-1" role="dialog"
-                                             id="giveAward">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title">
-                                                            <?php echo t("Give Award"); ?>
-                                                        </h5>
+                                                <div class="modal-body">
+                                                    <div class="form-group">
+                                                        <?php echo $form->label("grantedAwardId", t("Award")); ?>
+                                                        <?php echo $form->select("grantedAwardId", $grantedAwardList); ?>
                                                     </div>
 
-                                                    <div class="modal-body">
-                                                        <div class="form-group">
-                                                            <?php echo $form->label("grantedAwardId", t("Award")); ?>
-                                                            <?php echo $form->select("grantedAwardId", $grantedAwardList); ?>
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <?php echo $form->hidden("user", $profile->getUserID()); ?>
-                                                            <?php echo $form->label("userName", t("User")); ?>
-                                                            <?php echo $form->text("userName", h($profile->getUserName()), ["readonly" => "readonly"]); ?>
-                                                        </div>
+                                                    <div class="form-group">
+                                                        <?php echo $form->hidden("user", $profile->getUserID()); ?>
+                                                        <?php echo $form->label("userName", t("User")); ?>
+                                                        <?php echo $form->text("userName", h($profile->getUserName()), ["readonly" => "readonly"]); ?>
                                                     </div>
+                                                </div>
 
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                                data-dismiss="modal">
-                                                            <?php echo t("Cancel"); ?>
-                                                        </button>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">
+                                                        <?php echo t("Cancel"); ?>
+                                                    </button>
 
-                                                        <button type="button" class="btn btn-primary">
-                                                            <?php echo t("Give Award"); ?>
-                                                        </button>
-                                                    </div>
+                                                    <button type="button" class="btn btn-primary">
+                                                        <?php echo t("Give Award"); ?>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                <?php } ?>
+                            <?php } ?>
+
+                            <?php if (!$isOwnProfile && $user->isRegistered()) {
+
+                                $userSelectInstanceFactory = app(\Concrete\Core\User\Component\UserSelectInstanceFactory::class);
+                                $userSelectInstance = $userSelectInstanceFactory->createInstance('username', true);
+                                $token = app('token');
+                                $userSelectAccessToken = $userSelectInstance->getAccessToken();
+                                if ($profile->getAttribute('profile_private_messages_enabled')) {
+                                ?>
+
+
+
+                                <compose-private-message
+                                        send-message-token="<?=$token->generate("validate_send_message")?>"
+                                        :user-select-options='{labelFormat:"username", includeAvatar: true, accessToken:"<?=$userSelectAccessToken?>"}'
+                                        css-class="btn-send-message-from-marketplace btn btn-primary"
+                                        :send-message-to-user-id="<?php echo (int) $profile->getUserID(); ?>"
+                                    <?php if (!empty($_REQUEST['send_message']) && $_REQUEST['send_message'] == '1') {
+                                        // If we add a send_message=1 to the query string, we trigger the send message popup when the page is loaded
+                                        // This is useful for certain interactions coming from the marketplace.concretecms.com site.
+                                        ?>
+                                        :open-compose-window="true"
                                     <?php } ?>
-                                <?php } ?>
+                                ></compose-private-message>
 
-                                <a href="<?php echo (string)Url::to("account/messages"); ?>" class="btn btn-secondary">
-                                    <?php echo t("Inbox"); ?>
-                                </a>
-
-                                <?php if (!$isOwnProfile && $user->isRegistered()) {
-
-                                    $userSelectInstanceFactory = app(\Concrete\Core\User\Component\UserSelectInstanceFactory::class);
-                                    $userSelectInstance = $userSelectInstanceFactory->createInstance('username', true);
-                                    $token = app('token');
-                                    $userSelectAccessToken = $userSelectInstance->getAccessToken();
-                                    ?>
-
-
-
-                                    <compose-private-message
-                                            send-message-token="<?=$token->generate("validate_send_message")?>"
-                                            :user-select-options='{labelFormat:"username", includeAvatar: true, accessToken:"<?=$userSelectAccessToken?>"}'
-                                            css-class="btn-send-message-from-marketplace btn btn-primary"
-                                            :send-message-to-user-id="<?php echo (int) $profile->getUserID(); ?>"
-                                    ></compose-private-message>
-
-                                <?php } ?>
-                            </div>
+                            <?php }
+                            } ?>
                         </div>
+                        </div>
+
                     </div>
 
                     <div class="clearfix"></div>
@@ -447,21 +452,6 @@ $userDisplayName = h(trim($profileData['first_name'] . " " . $profileData['last_
         </div>
     </div>
 </div>
-
-<?php if (!empty($_REQUEST['send_message']) && $_REQUEST['send_message'] == '1') {
-    // If we add a send_message=1 to the query string, we trigger the send message popup when the page is laoded
-    // This is useful for certain interactions coming from the marketplace.concretecms.com site.
-    ?>
-    <script type="text/javascript">
-        $(function() {
-            setTimeout(function() {
-                // Note- I don't think this works anymore. @TODO fix this.
-                $('.btn-send-message-from-marketplace').trigger('click')
-            }, 500)
-        })
-    </script>
-<?php } ?>
-
 
 <script>
     $(function () {
