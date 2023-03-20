@@ -104,16 +104,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.261.13",
+            "version": "3.261.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "233b70c951707830dd205959375c98be35cbb36e"
+                "reference": "7d17f3187a4d5bebc41ca5d363570ed632b698c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/233b70c951707830dd205959375c98be35cbb36e",
-                "reference": "233b70c951707830dd205959375c98be35cbb36e",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/7d17f3187a4d5bebc41ca5d363570ed632b698c0",
+                "reference": "7d17f3187a4d5bebc41ca5d363570ed632b698c0",
                 "shasum": ""
             },
             "require": {
@@ -192,9 +192,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.261.13"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.261.15"
             },
-            "time": "2023-03-16T18:22:32+00:00"
+            "time": "2023-03-20T18:19:46+00:00"
         },
         {
             "name": "commerceguys/addressing",
@@ -1030,12 +1030,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/concretecms/concrete_cms_theme.git",
-                "reference": "8af3a94e0c546f630cf8a9387410043bbc220980"
+                "reference": "a9d2c4d2cb312aec3155195665c086035c5a271f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/concretecms/concrete_cms_theme/zipball/8af3a94e0c546f630cf8a9387410043bbc220980",
-                "reference": "8af3a94e0c546f630cf8a9387410043bbc220980",
+                "url": "https://api.github.com/repos/concretecms/concrete_cms_theme/zipball/a9d2c4d2cb312aec3155195665c086035c5a271f",
+                "reference": "a9d2c4d2cb312aec3155195665c086035c5a271f",
                 "shasum": ""
             },
             "require": {
@@ -1057,7 +1057,7 @@
                 "issues": "https://github.com/concretecms/concrete_cms_theme/issues",
                 "source": "https://github.com/concretecms/concrete_cms_theme/tree/master"
             },
-            "time": "2023-03-16T22:25:42+00:00"
+            "time": "2023-03-20T21:53:48+00:00"
         },
         {
             "name": "concretecms/dependency-patches",
@@ -12811,16 +12811,16 @@
         },
         {
             "name": "zircote/swagger-php",
-            "version": "4.7.3",
+            "version": "4.7.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zircote/swagger-php.git",
-                "reference": "0299edc47eb4813a2c598a0348eaf205704adc92"
+                "reference": "4a1d1272c2dd3afd8d96e92f02dc3565d5cc3c18"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/0299edc47eb4813a2c598a0348eaf205704adc92",
-                "reference": "0299edc47eb4813a2c598a0348eaf205704adc92",
+                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/4a1d1272c2dd3afd8d96e92f02dc3565d5cc3c18",
+                "reference": "4a1d1272c2dd3afd8d96e92f02dc3565d5cc3c18",
                 "shasum": ""
             },
             "require": {
@@ -12883,9 +12883,9 @@
             ],
             "support": {
                 "issues": "https://github.com/zircote/swagger-php/issues",
-                "source": "https://github.com/zircote/swagger-php/tree/4.7.3"
+                "source": "https://github.com/zircote/swagger-php/tree/4.7.8"
             },
-            "time": "2023-03-08T02:27:27+00:00"
+            "time": "2023-03-19T21:25:02+00:00"
         }
     ],
     "packages-dev": [
