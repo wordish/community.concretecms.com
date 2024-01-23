@@ -14,6 +14,7 @@ use PortlandLabs\Community\API\V1\Profile;
 use PortlandLabs\Community\API\V1\ShowcaseItems;
 use PortlandLabs\Community\API\V1\Teams;
 use PortlandLabs\Community\API\V1\Discourse;
+use PortlandLabs\Community\API\V1\Users;
 
 class ServiceProvider extends Provider
 {
@@ -58,6 +59,9 @@ class ServiceProvider extends Provider
             ->addMiddleware(OAuthAuthenticationMiddleware::class)
             ->routes(function ($groupRouter) {
                 $groupRouter->post('/achievements/assign', [Achievements::class, 'assign']);
+                $groupRouter->get('/users/{uID}', [Users::class, 'read'])
+                    ->setRequirement('uID', '[0-9]+')
+                    ->setScopes('users:read');
             });
     }
 }
