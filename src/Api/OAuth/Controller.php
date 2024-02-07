@@ -2,7 +2,10 @@
 
 namespace ConcreteComposer\Api\OAuth;
 
+use Concrete\Core\Application\ApplicationAwareInterface;
+use Concrete\Core\Application\ApplicationAwareTrait;
 use Concrete\Core\Config\Repository\Repository;
+use Concrete\Core\Cookie\CookieJar;
 use Concrete\Core\Entity\OAuth\AccessToken;
 use Concrete\Core\Entity\OAuth\AuthCode;
 use Concrete\Core\Entity\OAuth\Client;
@@ -14,6 +17,7 @@ use Concrete\Core\Logging\Channels;
 use Concrete\Core\Logging\LoggerAwareInterface;
 use Concrete\Core\Logging\LoggerAwareTrait;
 use Concrete\Core\Support\Facade\Application;
+use Concrete\Core\Support\Facade\Cookie;
 use Concrete\Core\User\User as UserObject;
 use Concrete\Core\Validation\CSRF\Token;
 use Concrete\Core\View\View;
@@ -26,7 +30,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use League\OAuth2\Server\Exception\OAuthServerException;
 
-final class Controller implements LoggerAwareInterface
+final class Controller implements LoggerAwareInterface, ApplicationAwareInterface
 {
 
     const STEP_LOGIN = 1;
@@ -55,6 +59,7 @@ final class Controller implements LoggerAwareInterface
     private $user;
 
     use LoggerAwareTrait;
+    use ApplicationAwareTrait;
 
     public function __construct(
         AuthorizationServer $oauthServer,
@@ -237,6 +242,16 @@ final class Controller implements LoggerAwareInterface
 
                 // Log the user in to the current site
                 \Concrete\Core\User\User::loginByUserID($user->getUserID());
+
+                $cookieLifetime = $this->config->get('concrete.session.remember_me.lifetime');
+                /** @var CookieJar $cookieJar */
+                $cookieJar = $this->app->make(CookieJar::class);
+                $cookieJar->getResponseCookies()->addCookie(
+                    'ccm-lit',
+                    (string) time(),time() + $cookieLifetime,
+                    '/',
+                    $_ENV['LOG_IN_COOKIE_DOMAIN'] ?? '*.concretecms.com',
+                );
 
                 return new \RedirectResponse($this->request->getUri());
             } else {
