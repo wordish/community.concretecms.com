@@ -247,10 +247,14 @@ final class Controller implements LoggerAwareInterface, ApplicationAwareInterfac
                 /** @var CookieJar $cookieJar */
                 $cookieJar = $this->app->make(CookieJar::class);
                 $cookieJar->getResponseCookies()->addCookie(
-                    'ccm-lit',
+                    'ccm_lit',
                     (string) time(),time() + $cookieLifetime,
                     '/',
                     $_ENV['LOG_IN_COOKIE_DOMAIN'] ?? '*.concretecms.com',
+                    $this->config->get('concrete.session.cookie.cookie_secure'),
+                    true,
+                    false,
+                    false,
                 );
 
                 return new \RedirectResponse($this->request->getUri());
