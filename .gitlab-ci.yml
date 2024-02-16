@@ -48,27 +48,21 @@ test:unit:
   script:
     - XDEBUG_MODE=coverage composer test:unit -- --colors=never --coverage --coverage-cobertura=coverage.cobertura.xml --log-junit=junit.xml
 
-# Test with PHPCS
-test:phpcs:
-  allow_failure: true
+test:lint:
   stage: test
   rules:
-    - if: $CI_PIPELINE_SOURCE == 'external_pull_request_event' || $CI_PIPELINE_SOURCE == 'push'
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event' || $CI_PIPELINE_SOURCE == 'push'
   cache:
     paths:
       - vendor/
   artifacts:
     reports:
-      junit: junit.xml
-      codequality: phpcs-quality-report.json
+      codequality: gitlab.json
   before_script:
     - *ssh_key_setup
     - composer install --no-interaction --optimize-autoloader
   script:
-    - >
-      vendor/bin/phpcs --basepath=.
-      --report=code --report-junit=junit.xml --report-\\Micheh\\PhpCodeSniffer\\Report\\Gitlab=phpcs-quality-report.json 
-      phpcs.xml.dist tests public/application
+    - composer test:lint -- --format=gitlab > gitlab.json; composer test:lint # One for generating gitlab.json, another for plain text output
 
 build:tar:
   stage: build

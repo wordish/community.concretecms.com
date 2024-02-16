@@ -17,6 +17,7 @@
 /public/application/js/hosting.js.LICENSE.txt
 /coverage.cobertura.xml
 /junit.xml
+/gitlab.json
 
 # Ignore developer stuff
 /.idea
