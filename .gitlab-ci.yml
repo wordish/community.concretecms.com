@@ -77,7 +77,7 @@ build:tar:
     - composer install --no-dev --no-interaction --optimize-autoloader
   script:
     # Delete anything we don't want to include in the tar
-    - rm -rf tests resources
+    - rm -rf tests resources .git
     - tar -zcvf /builds/release.tar.gz .
     # Move the built tar to the correct location. This also verifies the file was created.
     - mv /builds/release.tar.gz $CI_PROJECT_DIR/release.tar.gz
