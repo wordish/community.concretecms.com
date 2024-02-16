@@ -35,7 +35,8 @@
   },
   "require-dev": {
     "mockery/mockery": "^1.2",
-    "pestphp/pest": "^1.23"
+    "pestphp/pest": "^1.23",
+    "laravel/pint": "^1.13"
   },
   "provide": {
     "hautelook/phpass": "*"
@@ -74,9 +75,12 @@
     }
   },
   "scripts": {
+    "lint": "pint src tests public/application",
+    "test:lint": "@lint --test",
     "test:unit": "pest",
     "test": [
-      "@test:unit"
+      "@test:unit",
+      "@test:lint"
     ]
   }
 }

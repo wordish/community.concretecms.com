@@ -6,7 +6,6 @@ namespace ConcreteComposer\Encryption;
 
 class PasswordHasher extends \Concrete\Core\Encryption\PasswordHasher
 {
-
     /**
      * Check whether our old upgraded password algorithm from way back when validates. If it does the password will be
      * rehashed.

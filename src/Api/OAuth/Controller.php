@@ -17,7 +17,6 @@ use Concrete\Core\Logging\Channels;
 use Concrete\Core\Logging\LoggerAwareInterface;
 use Concrete\Core\Logging\LoggerAwareTrait;
 use Concrete\Core\Support\Facade\Application;
-use Concrete\Core\Support\Facade\Cookie;
 use Concrete\Core\User\User as UserObject;
 use Concrete\Core\Validation\CSRF\Token;
 use Concrete\Core\View\View;
@@ -32,10 +31,12 @@ use League\OAuth2\Server\Exception\OAuthServerException;
 
 final class Controller implements LoggerAwareInterface, ApplicationAwareInterface
 {
+    use LoggerAwareTrait;
+    use ApplicationAwareTrait;
 
-    const STEP_LOGIN = 1;
-    const STEP_AUTHORIZE_CLIENT = 2;
-    const STEP_COMPLETE = 3;
+    public const STEP_LOGIN = 1;
+    public const STEP_AUTHORIZE_CLIENT = 2;
+    public const STEP_COMPLETE = 3;
 
     /** @var \League\OAuth2\Server\AuthorizationServer */
     private $oauthServer;
@@ -57,9 +58,6 @@ final class Controller implements LoggerAwareInterface, ApplicationAwareInterfac
 
     /** @var \Concrete\Core\User\User The logged in user */
     private $user;
-
-    use LoggerAwareTrait;
-    use ApplicationAwareTrait;
 
     public function __construct(
         AuthorizationServer $oauthServer,
@@ -248,7 +246,8 @@ final class Controller implements LoggerAwareInterface, ApplicationAwareInterfac
                 $cookieJar = $this->app->make(CookieJar::class);
                 $cookieJar->getResponseCookies()->addCookie(
                     'ccm_lit',
-                    (string) time(),time() + $cookieLifetime,
+                    (string) time(),
+                    time() + $cookieLifetime,
                     '/',
                     $_ENV['LOG_IN_COOKIE_DOMAIN'] ?? '*.concretecms.com',
                     $this->config->get('concrete.session.cookie.cookie_secure'),

@@ -11,8 +11,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ConnectControllerTest extends \PHPUnit\Framework\TestCase
 {
+    use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
-    const PASSWORD = 'testpassword';
+    public const PASSWORD = 'testpassword';
 
     protected static $old;
 
@@ -40,8 +41,6 @@ class ConnectControllerTest extends \PHPUnit\Framework\TestCase
      * @var ConnectController
      */
     private $controller;
-
-    use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
     public function setUp(): void
     {

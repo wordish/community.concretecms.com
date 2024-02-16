@@ -10,7 +10,6 @@ use Mockery as M;
 
 class PasswordHasherTest extends TestCase
 {
-
     public function testPasswordValidation()
     {
         $password = 'password';

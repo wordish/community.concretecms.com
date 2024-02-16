@@ -1,4 +1,5 @@
 <?php
+
 namespace Application\StartingPointPackage\ConcreteCmsCommunity;
 
 use Concrete\Core\Package\StartingPointPackage;

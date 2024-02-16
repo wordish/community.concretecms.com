@@ -1,10 +1,7 @@
 <?php
+
 namespace Application\StartingPointPackage\ConcreteCmsMarketing;
 
-use Concrete\Core\Application\Application;
-use Concrete\Core\Backup\ContentImporter;
-use Concrete\Core\Package\Routine\AttachModeInstallRoutine;
-use Concrete\Core\Package\StartingPointInstallRoutine;
 use Concrete\Core\Package\StartingPointPackage;
 
 class Controller extends StartingPointPackage
@@ -20,5 +17,5 @@ class Controller extends StartingPointPackage
     {
         return 'Installs the concretecms.com starting point.';
     }
-    
+
 }

@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 // Load in composer
-use Concrete\Core\Support\Facade\Application;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
