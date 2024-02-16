@@ -18,7 +18,6 @@ use PortlandLabs\Community\API\V1\Users;
 
 class ServiceProvider extends Provider
 {
-
     public function register()
     {
         $router = $this->app->make(Router::class);
@@ -39,7 +38,7 @@ class ServiceProvider extends Provider
                 $groupRouter->all('/profile/lookup_email', [Profile::class, 'lookupEmail']);
 
                 // Handle simple redirect to profile
-                $groupRouter->get('/discourse/profile/{user}', function(string $user): RedirectResponse {
+                $groupRouter->get('/discourse/profile/{user}', function (string $user): RedirectResponse {
                     /** @var UserInfo|null $userInfo */
                     $userInfo = $this->app->make(UserInfoRepository::class)->getByName($user);
 

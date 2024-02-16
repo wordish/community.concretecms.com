@@ -10,7 +10,6 @@ use PortlandLabs\Community\Discourse\Connect\ConnectController;
 
 class ServiceProvider extends Provider
 {
-
     public function register()
     {
         $router = $this->app->make(Router::class);

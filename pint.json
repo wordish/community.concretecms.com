@@ -4,5 +4,10 @@
     "files/cache",
     "config/doctrine",
     "single_pages"
+  ],
+  "notName": [
+    "view.php",
+    "edit.php",
+    "add.php"
   ]
 }

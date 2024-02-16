@@ -18,7 +18,6 @@ use Concrete\Attribute\Select\Controller as SelectAttributeController;
 use Concrete\Core\Attribute\Category\CategoryService;
 use Concrete\Core\Block\BlockController;
 use Concrete\Core\Database\Connection\Connection;
-use Concrete\Core\Entity\Attribute\Value\Value\SelectValue;
 use Concrete\Core\Entity\Express\Entity;
 use Concrete\Core\Entity\Express\Entry;
 use Concrete\Core\Entity\Package;
@@ -31,10 +30,10 @@ class Controller extends BlockController
 {
     protected $btTable = "btMembersSearch";
 
-    const SORT_BY_MOST_RECENT = "most_recent";
-    const SORT_BY_EARLIEST_JOINED = "earliest_joined";
-    const SORT_BY_COMMUNITY_LEADERS = "community_leaders";
-    const SORT_BY_ACHIEVEMENTS = "achievements";
+    public const SORT_BY_MOST_RECENT = "most_recent";
+    public const SORT_BY_EARLIEST_JOINED = "earliest_joined";
+    public const SORT_BY_COMMUNITY_LEADERS = "community_leaders";
+    public const SORT_BY_ACHIEVEMENTS = "achievements";
 
     public function getBlockTypeDescription()
     {
@@ -192,7 +191,8 @@ class Controller extends BlockController
 
         if (is_array($args["selectedAttributeKeys"])) {
             foreach ($args["selectedAttributeKeys"] as $akHandle) {
-                $db->executeQuery('INSERT INTO btMembersSearchEntries (bID, akHandle) values(?, ?)',
+                $db->executeQuery(
+                    'INSERT INTO btMembersSearchEntries (bID, akHandle) values(?, ?)',
                     [
                         $this->bID,
                         $akHandle

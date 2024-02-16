@@ -11,7 +11,4 @@ namespace PortlandLabs\Community\Exceptions;
 
 use Exception;
 
-class NotLoggedIn extends Exception
-{
-
-}
+class NotLoggedIn extends Exception {}

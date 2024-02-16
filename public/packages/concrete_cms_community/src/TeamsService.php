@@ -36,8 +36,7 @@ class TeamsService
         Application $app,
         Repository $config,
         GroupRepository $groupRepository
-    )
-    {
+    ) {
         $this->app = $app;
         $this->config = $config;
         $this->groupRepository = $groupRepository;
@@ -57,8 +56,7 @@ class TeamsService
         ?string $description,
         ?bool $petitionForPublicEntry = false,
         ?File $thumbnail = null
-    ): Group
-    {
+    ): Group {
         $user = new User();
 
         if ($user->isRegistered()) {
@@ -117,8 +115,7 @@ class TeamsService
      */
     public function enterTeam(
         Group $team
-    ): void
-    {
+    ): void {
         $user = new User();
 
         if ($user->isRegistered()) {
@@ -151,8 +148,7 @@ class TeamsService
     public function leaveTeam(
         Group $team,
         ?User $user = null
-    ): void
-    {
+    ): void {
         if (!isset($user)) {
             $user = new User();
         }
@@ -176,8 +172,7 @@ class TeamsService
      */
     public function getTeamById(
         int $teamId
-    ): Group
-    {
+    ): Group {
         $team = $this->groupRepository->getGroupByID($teamId);
 
         if ($team instanceof Group) {
@@ -208,8 +203,7 @@ class TeamsService
      */
     public function setTeamsGroupFolder(
         GroupFolder $groupFolder
-    )
-    {
+    ) {
         $this->config->save("concrete_cms_theme.teams.group_folder", $groupFolder->getTreeNodeID());
     }
 
@@ -226,8 +220,7 @@ class TeamsService
      */
     public function setTeamsGroupType(
         GroupType $groupType
-    )
-    {
+    ) {
         $this->config->save("concrete_cms_theme.teams.group_type", $groupType->getId());
     }
 
@@ -237,8 +230,7 @@ class TeamsService
      */
     public function searchTeams(
         string $keywords
-    ): iterable
-    {
+    ): iterable {
         $groupList = new GroupList();
         $groupList->filterByName($keywords);
         $groupList->filterByGroupType($this->getTeamsGroupType());

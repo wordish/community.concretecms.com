@@ -16,7 +16,6 @@ namespace Concrete\Package\ConcreteCmsCommunity\Block\Forums;
 
 use Concrete\Core\Block\BlockController;
 use Concrete\Core\Config\Repository\Repository;
-use Concrete\Core\Error\ErrorList\ErrorList;
 use Concrete\Core\Http\Response;
 use Concrete\Core\Page\Page;
 use Concrete\Core\Support\Facade\Application;
@@ -59,7 +58,7 @@ class Controller extends BlockController
             ->withPath(
                 sprintf(
                     "/u/by-external/%s.json",
-                    (string)$profile->getUserID()
+                    (string) $profile->getUserID()
                 )
             );
 
@@ -78,12 +77,12 @@ class Controller extends BlockController
                     foreach($discourseUserData["topics"] as $topic) {
                         $topics[] = [
                             "title" => $topic["title"],
-                            "url" => (string)$baseUrl
+                            "url" => (string) $baseUrl
                                 ->withPath(
                                     sprintf(
                                         "/t/about-the-site-feedback-category/%s/%s",
-                                        (string)$topic["id"],
-                                        (string)$topic["posts_count"]
+                                        (string) $topic["id"],
+                                        (string) $topic["posts_count"]
                                     )
                                 )
                         ];

@@ -1,4 +1,6 @@
-<?php /** @noinspection PhpInconsistentReturnPointsInspection */
+<?php
+
+/** @noinspection PhpInconsistentReturnPointsInspection */
 /** @noinspection PhpUnused */
 
 /**
@@ -23,7 +25,6 @@ use Concrete\Core\User\UserInfoRepository;
 use PortlandLabs\CommunityBadges\User\Point\Entry;
 use PortlandLabs\CommunityBadges\User\Point\EntryList as UserPointEntryList;
 use Concrete\Core\User\User;
-use PortlandLabs\Community\Page\Controller\AccountPageController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Concrete\Core\Localization\Service\Date;
 use Exception;
@@ -70,7 +71,7 @@ class Karma extends PageController
         $myTotalList = [];
 
         foreach ($this->getActionList() as $actionId => $actionName) {
-            $totalByAction = (int)$this->db->fetchColumn("SELECT SUM(upPoints) FROM UserPointHistory WHERE upaID = ? AND upuID = ?", [
+            $totalByAction = (int) $this->db->fetchColumn("SELECT SUM(upPoints) FROM UserPointHistory WHERE upaID = ? AND upuID = ?", [
                 $actionId,
                 $uID,
             ]);
@@ -124,10 +125,11 @@ class Karma extends PageController
             }
 
             /** @noinspection HtmlUnknownTarget */
-            $result["info"] = t("Awarded to %s on %s",
+            $result["info"] = t(
+                "Awarded to %s on %s",
                 sprintf(
                     "<a href=\"%s\">%s</a>",
-                    (string)Url::to("/members/profile", $entry->getUserPointEntryUserID()),
+                    (string) Url::to("/members/profile", $entry->getUserPointEntryUserID()),
                     $targetUser->getUserName()
                 ),
                 $date
@@ -182,12 +184,16 @@ class Karma extends PageController
     {
         $filterUser = 'user';
         $sortList = 'recent';
-        if ($this->request->query->has('filterUser') && in_array($this->request->query->get('filterUser'),
-                ['user', 'all'])) {
+        if (
+            $this->request->query->has('filterUser') &&
+            in_array($this->request->query->get('filterUser'), ['user', 'all'])
+        ) {
             $filterUser = $this->request->query->get('filterUser');
         }
-        if ($this->request->query->has('sortList') && in_array($this->request->query->get('sortList'),
-                ['points', 'recent'])) {
+        if (
+            $this->request->query->has('sortList') &&
+            in_array($this->request->query->get('sortList'), ['points', 'recent'])
+        ) {
             $sortList = $this->request->query->get('sortList');
         }
 

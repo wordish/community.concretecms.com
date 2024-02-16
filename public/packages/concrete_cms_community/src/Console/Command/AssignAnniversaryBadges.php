@@ -51,13 +51,13 @@ class AssignAnniversaryBadges extends Command
          * Build a mapping array with all badges for the years 1 to 16.
          */
 
-        $maxYears = (int)$config->get("concrete_cms_community.badges.anniversary.total_years", 16);
+        $maxYears = (int) $config->get("concrete_cms_community.badges.anniversary.total_years", 16);
 
         $anniversaryBadges = [];
 
         for ($yearsCounter = 1; $yearsCounter <= $maxYears; $yearsCounter++) {
             try {
-                $badgeHandle = "anniversary_" . (string)$yearsCounter;
+                $badgeHandle = "anniversary_" . (string) $yearsCounter;
 
                 $anniversaryBadge = $awardService->getBadgeByHandle($badgeHandle);
                 $anniversaryBadges[$yearsCounter] = $anniversaryBadge;
@@ -65,7 +65,7 @@ class AssignAnniversaryBadges extends Command
                 $io->warning(
                     sprintf(
                         "There is no badge defined for year %s. Please create a badge with the handle \"%s\".",
-                        (string)$yearsCounter,
+                        (string) $yearsCounter,
                         $badgeHandle
                     )
                 );

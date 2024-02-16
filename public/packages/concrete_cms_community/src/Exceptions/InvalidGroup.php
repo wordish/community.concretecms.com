@@ -11,7 +11,4 @@ namespace PortlandLabs\Community\Exceptions;
 
 use Exception;
 
-class InvalidGroup extends Exception
-{
-
-}
+class InvalidGroup extends Exception {}

@@ -13,7 +13,6 @@ use League\Fractal\Serializer\DataArraySerializer;
 
 class SimpleSerializer extends DataArraySerializer
 {
-
     public function collection($resourceKey, array $data)
     {
         if ($resourceKey) {

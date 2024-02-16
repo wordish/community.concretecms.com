@@ -1,4 +1,6 @@
-<?php /** @noinspection PhpInconsistentReturnPointsInspection */
+<?php
+
+/** @noinspection PhpInconsistentReturnPointsInspection */
 /** @noinspection PhpUnused */
 /** @noinspection DuplicatedCode */
 
@@ -103,18 +105,18 @@ class Teams extends AccountPageController
 
             if ($this->validation->test()) {
                 try {
-                    $team = $this->teamsService->getTeamById((int)$teamId);
+                    $team = $this->teamsService->getTeamById((int) $teamId);
                     $this->teamsService->enterTeam($team);
 
                     if ($team->isPetitionForPublicEntry()) {
-                        return $this->responseFactory->redirect((string)Url::to("/account/teams", "join_request_sent"), Response::HTTP_TEMPORARY_REDIRECT);
+                        return $this->responseFactory->redirect((string) Url::to("/account/teams", "join_request_sent"), Response::HTTP_TEMPORARY_REDIRECT);
                     } else {
-                        return $this->responseFactory->redirect((string)Url::to("/account/teams", "entered"), Response::HTTP_TEMPORARY_REDIRECT);
+                        return $this->responseFactory->redirect((string) Url::to("/account/teams", "entered"), Response::HTTP_TEMPORARY_REDIRECT);
                     }
                 } catch (InvalidGroupType $e) {
                     $this->error->add(t("The given team has an invalid group type."));
                 } catch (NotLoggedIn $e) {
-                    return $this->responseFactory->forbidden((string)Url::to(Page::getCurrentPage()));
+                    return $this->responseFactory->forbidden((string) Url::to(Page::getCurrentPage()));
                 } catch (CantSendJoinRequest $e) {
                     $this->error->add(t("There was an error while joining the team."));
                 }
@@ -133,10 +135,10 @@ class Teams extends AccountPageController
         $user = new User();
 
         try {
-            $team = $this->teamsService->getTeamById((int)$teamId);
+            $team = $this->teamsService->getTeamById((int) $teamId);
 
             if ((!$user->isRegistered() || !$user->inGroup($team)) && !$user->isSuperUser()) {
-                return $this->responseFactory->forbidden((string)Url::to(Page::getCurrentPage()));
+                return $this->responseFactory->forbidden((string) Url::to(Page::getCurrentPage()));
             }
 
             $this->set('selectedTeam', $team);
@@ -146,11 +148,11 @@ class Teams extends AccountPageController
                     $targetUser = User::getByUserID($userId);
 
                     if ($targetUser->isRegistered()) {
-                        if ((int)$targetUser->getUserID() == (int)$team->getAuthorID()) {
+                        if ((int) $targetUser->getUserID() == (int) $team->getAuthorID()) {
                             $this->error->add(t("You can't leave this team because you are the owner of this group."));
                         } else {
                             $this->teamsService->leaveTeam($team, $targetUser);
-                            return $this->responseFactory->redirect((string)Url::to("/account/teams", "leaved"), Response::HTTP_TEMPORARY_REDIRECT);
+                            return $this->responseFactory->redirect((string) Url::to("/account/teams", "leaved"), Response::HTTP_TEMPORARY_REDIRECT);
                         }
                     } else {
                         $this->error->add(t("The given user doesn't exists."));
@@ -160,13 +162,13 @@ class Teams extends AccountPageController
                 }
             } else {
                 $this->teamsService->leaveTeam($team);
-                return $this->responseFactory->redirect((string)Url::to("/account/teams", "leaved"), Response::HTTP_TEMPORARY_REDIRECT);
+                return $this->responseFactory->redirect((string) Url::to("/account/teams", "leaved"), Response::HTTP_TEMPORARY_REDIRECT);
             }
 
         } catch (InvalidGroupType $e) {
             $this->error->add(t("The given team has an invalid group type."));
         } catch (NotLoggedIn $e) {
-            return $this->responseFactory->forbidden((string)Url::to(Page::getCurrentPage()));
+            return $this->responseFactory->forbidden((string) Url::to(Page::getCurrentPage()));
         } catch (NotPartOfGroup $e) {
             $this->error->add(t("You are not part of this team."));
         }
@@ -180,10 +182,10 @@ class Teams extends AccountPageController
         $user = new User();
 
         try {
-            $team = $this->teamsService->getTeamById((int)$teamId);
+            $team = $this->teamsService->getTeamById((int) $teamId);
 
             if ((!$user->isRegistered() || !$user->inGroup($team)) && !$user->isSuperUser()) {
-                return $this->responseFactory->forbidden((string)Url::to(Page::getCurrentPage()));
+                return $this->responseFactory->forbidden((string) Url::to(Page::getCurrentPage()));
             }
 
             $this->set('selectedTeam', $team);
@@ -192,18 +194,18 @@ class Teams extends AccountPageController
                 foreach ($team->getJoinRequests() as $joinRequest) {
                     if ($joinRequest->getUser()->getUserID() == $userId) {
                         $joinRequest->accept();
-                        return $this->responseFactory->redirect((string)Url::to("/account/teams", "join_request_accepted"), Response::HTTP_TEMPORARY_REDIRECT);
+                        return $this->responseFactory->redirect((string) Url::to("/account/teams", "join_request_accepted"), Response::HTTP_TEMPORARY_REDIRECT);
                     }
                 }
 
                 $this->error->add(t("The given user has not sent a join request.."));
             } else {
-                return $this->responseFactory->forbidden((string)Url::to(Page::getCurrentPage()));
+                return $this->responseFactory->forbidden((string) Url::to(Page::getCurrentPage()));
             }
         } catch (InvalidGroupType $e) {
             $this->error->add(t("The given team has an invalid group type."));
         } catch (NotLoggedIn $e) {
-            return $this->responseFactory->forbidden((string)Url::to(Page::getCurrentPage()));
+            return $this->responseFactory->forbidden((string) Url::to(Page::getCurrentPage()));
         }
 
         $this->setDefaults();
@@ -215,10 +217,10 @@ class Teams extends AccountPageController
         $user = new User();
 
         try {
-            $team = $this->teamsService->getTeamById((int)$teamId);
+            $team = $this->teamsService->getTeamById((int) $teamId);
 
             if ((!$user->isRegistered() || !$user->inGroup($team)) && !$user->isSuperUser()) {
-                return $this->responseFactory->forbidden((string)Url::to(Page::getCurrentPage()));
+                return $this->responseFactory->forbidden((string) Url::to(Page::getCurrentPage()));
             }
 
             $this->set('selectedTeam', $team);
@@ -227,18 +229,18 @@ class Teams extends AccountPageController
                 foreach ($team->getJoinRequests() as $joinRequest) {
                     if ($joinRequest->getUser()->getUserID() == $userId) {
                         $joinRequest->decline();
-                        return $this->responseFactory->redirect((string)Url::to("/account/teams", "join_request_declined"), Response::HTTP_TEMPORARY_REDIRECT);
+                        return $this->responseFactory->redirect((string) Url::to("/account/teams", "join_request_declined"), Response::HTTP_TEMPORARY_REDIRECT);
                     }
                 }
 
                 $this->error->add(t("The given user has not sent a join request.."));
             } else {
-                return $this->responseFactory->forbidden((string)Url::to(Page::getCurrentPage()));
+                return $this->responseFactory->forbidden((string) Url::to(Page::getCurrentPage()));
             }
         } catch (InvalidGroupType $e) {
             $this->error->add(t("The given team has an invalid group type."));
         } catch (NotLoggedIn $e) {
-            return $this->responseFactory->forbidden((string)Url::to(Page::getCurrentPage()));
+            return $this->responseFactory->forbidden((string) Url::to(Page::getCurrentPage()));
         }
 
         $this->setDefaults();
@@ -250,10 +252,10 @@ class Teams extends AccountPageController
         $user = new User();
 
         try {
-            $team = $this->teamsService->getTeamById((int)$teamId);
+            $team = $this->teamsService->getTeamById((int) $teamId);
 
             if ((!$user->isRegistered() || !$user->inGroup($team)) && !$user->isSuperUser()) {
-                return $this->responseFactory->forbidden((string)Url::to(Page::getCurrentPage()));
+                return $this->responseFactory->forbidden((string) Url::to(Page::getCurrentPage()));
             }
 
             $this->set('selectedTeam', $team);
@@ -273,7 +275,7 @@ class Teams extends AccountPageController
 
                     // @todo: set image from uploaded file
 
-                    return $this->responseFactory->redirect((string)Url::to("/account/teams", "updated"), Response::HTTP_TEMPORARY_REDIRECT);
+                    return $this->responseFactory->redirect((string) Url::to("/account/teams", "updated"), Response::HTTP_TEMPORARY_REDIRECT);
                 } else {
                     foreach ($this->validation->getError()->getList() as $error) {
                         $this->error->add($error);
@@ -284,7 +286,7 @@ class Teams extends AccountPageController
         } catch (InvalidGroupType $e) {
             $this->error->add(t("The given team has an invalid group type."));
         } catch (NotLoggedIn $e) {
-            return $this->responseFactory->forbidden((string)Url::to(Page::getCurrentPage()));
+            return $this->responseFactory->forbidden((string) Url::to(Page::getCurrentPage()));
         }
 
         $this->setDefaults();
@@ -296,17 +298,17 @@ class Teams extends AccountPageController
         $user = new User();
 
         try {
-            $team = $this->teamsService->getTeamById((int)$teamId);
+            $team = $this->teamsService->getTeamById((int) $teamId);
 
             if ((!$user->isRegistered() || !$user->inGroup($team)) && !$user->isSuperUser()) {
-                return $this->responseFactory->forbidden((string)Url::to(Page::getCurrentPage()));
+                return $this->responseFactory->forbidden((string) Url::to(Page::getCurrentPage()));
             }
 
             $this->set('selectedTeam', $team);
 
-            if ((int)$user->getUserID() == (int)$team->getAuthorID()) {
+            if ((int) $user->getUserID() == (int) $team->getAuthorID()) {
                 $this->app->executeCommand(new DeleteGroupCommand($team->getGroupID()));
-                return $this->responseFactory->redirect((string)Url::to("/account/teams", "deleted"), Response::HTTP_TEMPORARY_REDIRECT);
+                return $this->responseFactory->redirect((string) Url::to("/account/teams", "deleted"), Response::HTTP_TEMPORARY_REDIRECT);
             } else {
                 $this->error->add(t("You are not the owner of this team."));
             }
@@ -314,7 +316,7 @@ class Teams extends AccountPageController
         } catch (InvalidGroupType $e) {
             $this->error->add(t("The given team has an invalid group type."));
         } catch (NotLoggedIn $e) {
-            return $this->responseFactory->forbidden((string)Url::to(Page::getCurrentPage()));
+            return $this->responseFactory->forbidden((string) Url::to(Page::getCurrentPage()));
         }
 
         $this->setDefaults();
@@ -338,11 +340,11 @@ class Teams extends AccountPageController
 
                     // @todo: set image from uploaded file
 
-                    return $this->responseFactory->redirect((string)Url::to("/account/teams", "created"), Response::HTTP_TEMPORARY_REDIRECT);
+                    return $this->responseFactory->redirect((string) Url::to("/account/teams", "created"), Response::HTTP_TEMPORARY_REDIRECT);
                 } catch (InvalidGroup $e) {
                     $this->error->add(t("There was an error while creating the group."));
                 } catch (NotLoggedIn $e) {
-                    return $this->responseFactory->forbidden((string)Url::to(Page::getCurrentPage()));
+                    return $this->responseFactory->forbidden((string) Url::to(Page::getCurrentPage()));
                 }
             } else {
                 foreach ($this->validation->getError()->getList() as $error) {
@@ -367,10 +369,10 @@ class Teams extends AccountPageController
 
         if (isset($teamId)) {
             try {
-                $team = $this->teamsService->getTeamById((int)$teamId);
+                $team = $this->teamsService->getTeamById((int) $teamId);
 
                 if ((!$user->isRegistered() || !$user->inGroup($team)) && !$user->isSuperUser()) {
-                    return $this->responseFactory->forbidden((string)Url::to(Page::getCurrentPage()));
+                    return $this->responseFactory->forbidden((string) Url::to(Page::getCurrentPage()));
                 }
 
                 $this->set('selectedTeam', $team);
@@ -378,7 +380,7 @@ class Teams extends AccountPageController
             } catch (InvalidGroupType $e) {
                 $this->error->add(t("The given team has an invalid group type."));
             } catch (NotLoggedIn $e) {
-                return $this->responseFactory->forbidden((string)Url::to(Page::getCurrentPage()));
+                return $this->responseFactory->forbidden((string) Url::to(Page::getCurrentPage()));
             }
 
             $this->render("/account/teams/edit");

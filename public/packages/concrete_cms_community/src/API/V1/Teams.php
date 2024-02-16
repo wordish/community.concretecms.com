@@ -23,8 +23,7 @@ class Teams
     public function __construct(
         Request $request,
         TeamsService $teamsService
-    )
-    {
+    ) {
         $this->request = $request;
         $this->teamsService = $teamsService;
     }
@@ -35,7 +34,7 @@ class Teams
         $errorList = new ErrorList();
 
         if ($this->request->request->has("keywords")) {
-            $keywords = (string)$this->request->request->get("keywords");
+            $keywords = (string) $this->request->request->get("keywords");
             $response->setAdditionalDataAttribute("teams", $this->teamsService->searchTeams($keywords));
         } else {
             $errorList->add(t("You need to enter a search term."));

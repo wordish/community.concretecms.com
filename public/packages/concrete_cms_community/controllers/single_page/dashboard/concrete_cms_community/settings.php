@@ -66,7 +66,7 @@ class Settings extends DashboardPageController
         $this->set('discourseSignature', $config->get("concrete_cms_community.discourse.signature", ''));
         $this->set('discourseAchievementsMapping', $config->get("concrete_cms_community.discourse.achievements_mapping", []));
         $this->set('discourseCommunityPointsMapping', $config->get("concrete_cms_community.discourse.community_points_mapping", []));
-        $this->set('availableDiscourseEventTypes',$availableDiscourseEventTypes);
+        $this->set('availableDiscourseEventTypes', $availableDiscourseEventTypes);
     }
 
     public function view()
@@ -80,11 +80,11 @@ class Settings extends DashboardPageController
 
         if ($this->request->getMethod() === "POST") {
             if ($this->token->validate("update_settings")) {
-                $config->save("concrete_cms_community.submit_karma_request_page", (int)$this->request->request->get("submitKarmaRequestPage"));
+                $config->save("concrete_cms_community.submit_karma_request_page", (int) $this->request->request->get("submitKarmaRequestPage"));
 
-                $config->save("concrete_cms_community.discourse.endpoint", (string)$this->request->request->get("discourseEndpoint"));
-                $config->save("concrete_cms_community.discourse.api_key", (string)$this->request->request->get("discourseApiKey"));
-                $config->save("concrete_cms_community.discourse.signature", (string)$this->request->request->get("discourseSignature"));
+                $config->save("concrete_cms_community.discourse.endpoint", (string) $this->request->request->get("discourseEndpoint"));
+                $config->save("concrete_cms_community.discourse.api_key", (string) $this->request->request->get("discourseApiKey"));
+                $config->save("concrete_cms_community.discourse.signature", (string) $this->request->request->get("discourseSignature"));
                 $config->save("concrete_cms_community.discourse.achievements_mapping", $this->request->request->get("discourseAchievementsMapping", []));
                 $config->save("concrete_cms_community.discourse.community_points_mapping", $this->request->request->get("discourseCommunityPointsMapping", []));
 

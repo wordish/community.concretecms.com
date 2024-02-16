@@ -14,7 +14,6 @@ use Concrete\Core\User\UserInfoRepository;
  */
 class Users extends CoreApiUsers
 {
-
     public function read($uID)
     {
         $uID = (int) $uID;

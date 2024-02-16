@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace PortlandLabs\Community\Discourse\Connect\Exception;
@@ -7,7 +8,6 @@ use RuntimeException;
 
 abstract class ConnectException extends RuntimeException
 {
-
     public static function notLoggedIn(): NotLoggedInException
     {
         return new NotLoggedInException();

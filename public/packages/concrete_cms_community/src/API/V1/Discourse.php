@@ -1,4 +1,6 @@
-<?php /** @noinspection PhpMissingFieldTypeInspection */
+<?php
+
+/** @noinspection PhpMissingFieldTypeInspection */
 /** @noinspection PhpUnused */
 
 /**
@@ -57,8 +59,7 @@ class Discourse
         Repository $config,
         UserInfoRepository $userInfoRepository,
         PackageService $packageService
-    )
-    {
+    ) {
         $this->request = $request;
         $this->loggerFactory = $loggerFactory;
         $this->client = $client;
@@ -85,7 +86,7 @@ class Discourse
             ->withPath(
                 sprintf(
                     "/u/by-external/%s.json",
-                    (string)$currentUser->getUserID()
+                    (string) $currentUser->getUserID()
                 )
             );
 
@@ -114,7 +115,7 @@ class Discourse
         }
 
         if (!$errorList->has()) {
-            $redirectUrl = (string)$baseUrl
+            $redirectUrl = (string) $baseUrl
                 ->withPath(
                     sprintf(
                         "/u/%s/preferences/account",
@@ -183,7 +184,7 @@ class Discourse
 
                                                             $userInfo = $this->userInfoRepository->getByID($data[$eventType]["external_id"]);
 
-                                                        } else if (isset($data[$eventType]["user_id"])) {
+                                                        } elseif (isset($data[$eventType]["user_id"])) {
                                                             $userId = $data[$eventType]["user_id"];
 
                                                             $this->logger->info(t("Event %s raised for discourse user with ID %s", $eventName, $userId));
@@ -228,7 +229,7 @@ class Discourse
 
                                                                             $userInfo = $this->userInfoRepository->getByID($json["single_sign_on_record"]["external_id"]);
 
-                                                                        } else if (isset($json["email"]) && filter_var($json["email"], FILTER_VALIDATE_EMAIL)) {
+                                                                        } elseif (isset($json["email"]) && filter_var($json["email"], FILTER_VALIDATE_EMAIL)) {
                                                                             $email = $json["email"];
 
                                                                             $userInfo = $this->userInfoRepository->getByEmail($email);
@@ -285,7 +286,7 @@ class Discourse
                                                             }
 
                                                             if (isset($communityPointsMapping[$eventName])) {
-                                                                $communityPoints = (int)$communityPointsMapping[$eventName];
+                                                                $communityPoints = (int) $communityPointsMapping[$eventName];
 
                                                                 if ($communityPoints > 0) {
                                                                     $userPointAction = UserPointAction::getByHandle("discourse_action");

@@ -37,8 +37,7 @@ class ShowcaseItems
         Request $request,
         FileImporter $importer,
         ObjectManager $objectManager
-    )
-    {
+    ) {
         $this->request = $request;
         $this->importer = $importer;
         $this->objectManager = $objectManager;
@@ -92,8 +91,7 @@ class ShowcaseItems
      */
     private function checkFile(
         $file
-    )
-    {
+    ) {
         $maxFileSize = 2 * 1024 * 1024;
 
         if ($file instanceof UploadedFile) {
@@ -218,7 +216,7 @@ class ShowcaseItems
 
         if ($user->isRegistered()) {
             if ($formValidator->test()) {
-                $showcaseItemId = (string)$this->request->query->get("showcaseItemId");
+                $showcaseItemId = (string) $this->request->query->get("showcaseItemId");
 
                 $entry = $this->objectManager->getEntry($showcaseItemId);
 
@@ -227,23 +225,23 @@ class ShowcaseItems
                         if ($user->getUserID() == $entry->getAttribute("author")) {
                             /** @noinspection PhpUndefinedMethodInspection */
                             $response->setAdditionalDataAttribute("showcaseItem", [
-                                "siteUrl" => (string)$entry->getAttribute("site_url"),
-                                "title" => (string)$entry->getAttribute("title"),
-                                "shortDescription" => (string)$entry->getAttribute("short_description"),
+                                "siteUrl" => (string) $entry->getAttribute("site_url"),
+                                "title" => (string) $entry->getAttribute("title"),
+                                "shortDescription" => (string) $entry->getAttribute("short_description"),
                                 "requiredImage" => $entry->getAttribute("required_image") instanceof File ? [
-                                    "fID" => (int)$entry->getAttribute("required_image")->getFileID(),
+                                    "fID" => (int) $entry->getAttribute("required_image")->getFileID(),
                                     "fName" => $entry->getAttribute("required_image")->getFileName()
                                 ] : null,
                                 "additionalImage1" => $entry->getAttribute("additional_image_1") instanceof File ? [
-                                    "fID" => (int)$entry->getAttribute("additional_image_1")->getFileID(),
+                                    "fID" => (int) $entry->getAttribute("additional_image_1")->getFileID(),
                                     "fName" => $entry->getAttribute("additional_image_1")->getFileName()
                                 ] : null,
                                 "additionalImage2" => $entry->getAttribute("additional_image_2") instanceof File ? [
-                                    "fID" => (int)$entry->getAttribute("additional_image_2")->getFileID(),
+                                    "fID" => (int) $entry->getAttribute("additional_image_2")->getFileID(),
                                     "fName" => $entry->getAttribute("additional_image_2")->getFileName()
                                 ] : null,
                                 "additionalImage3" => $entry->getAttribute("additional_image_3") instanceof File ? [
-                                    "fID" => (int)$entry->getAttribute("additional_image_3")->getFileID(),
+                                    "fID" => (int) $entry->getAttribute("additional_image_3")->getFileID(),
                                     "fName" => $entry->getAttribute("additional_image_3")->getFileName()
                                 ] : null
                             ]);
@@ -328,7 +326,7 @@ class ShowcaseItems
                     }
 
                     if (!$errorList->has()) {
-                        $showcaseItemId = (string)$this->request->request->get("showcaseItemId");
+                        $showcaseItemId = (string) $this->request->request->get("showcaseItemId");
 
                         $entry = $this->objectManager->getEntry($showcaseItemId);
 
@@ -347,19 +345,19 @@ class ShowcaseItems
 
                                         if ($additionalImage1 instanceof UploadedFile) {
                                             $entry->setAttribute("additional_image_1", $this->importer->importUploadedFile($additionalImage1)->getFile());
-                                        } else if (is_array($fileIds) && $fileIds["additionalImage1"] == "") {
+                                        } elseif (is_array($fileIds) && $fileIds["additionalImage1"] == "") {
                                             $entry->setAttribute("additional_image_1", null);
                                         }
 
                                         if ($additionalImage2 instanceof UploadedFile) {
                                             $entry->setAttribute("additional_image_2", $this->importer->importUploadedFile($additionalImage2)->getFile());
-                                        } else if (is_array($fileIds) && $fileIds["additionalImage2"] == "") {
+                                        } elseif (is_array($fileIds) && $fileIds["additionalImage2"] == "") {
                                             $entry->setAttribute("additional_image_2", null);
                                         }
 
                                         if ($additionalImage3 instanceof UploadedFile) {
                                             $entry->setAttribute("additional_image_3", $this->importer->importUploadedFile($additionalImage3)->getFile());
-                                        } else if (is_array($fileIds) && $fileIds["additionalImage3"] == "") {
+                                        } elseif (is_array($fileIds) && $fileIds["additionalImage3"] == "") {
                                             $entry->setAttribute("additional_image_3", null);
                                         }
 
@@ -409,7 +407,7 @@ class ShowcaseItems
 
         if ($user->isRegistered()) {
             if ($formValidator->test()) {
-                $showcaseItemId = (string)$this->request->query->get("showcaseItemId");
+                $showcaseItemId = (string) $this->request->query->get("showcaseItemId");
 
                 $entry = $this->objectManager->getEntry($showcaseItemId);
 

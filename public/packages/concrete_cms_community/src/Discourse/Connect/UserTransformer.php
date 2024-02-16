@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace PortlandLabs\Community\Discourse\Connect;
@@ -8,7 +9,6 @@ use League\Fractal\TransformerAbstract;
 
 class UserTransformer extends TransformerAbstract
 {
-
     /**
      * Transform a given user into a DiscourseConnect friendly list of attributes.
      *
@@ -31,7 +31,7 @@ class UserTransformer extends TransformerAbstract
                     $userInfo->getAttribute('last_name'),
                 ]
             )->filter()->implode(' '),
-            'avatar_url' => (string)$avatar->getPath(),
+            'avatar_url' => (string) $avatar->getPath(),
             'avatar_force_update' => 'true',
             'suppress_welcome_message' => 'true',
 

@@ -12,7 +12,6 @@ namespace PortlandLabs\Community\Page\Controller;
 use Concrete\Core\Error\ErrorList\ErrorList;
 use Concrete\Core\Http\ResponseFactory;
 use Concrete\Core\Page\Controller\AccountPageController as CoreAccountPageController;
-use Concrete\Core\Page\Theme\Theme;
 
 class AccountPageController extends CoreAccountPageController
 {

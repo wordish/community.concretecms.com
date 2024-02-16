@@ -1,4 +1,6 @@
-<?php /** @noinspection PhpMissingFieldTypeInspection */
+<?php
+
+/** @noinspection PhpMissingFieldTypeInspection */
 
 /**
  * @project:   ConcreteCMS Community
@@ -44,8 +46,7 @@ class Achievements
         File $fileService,
         Repository $config,
         PackageService $packageService
-    )
-    {
+    ) {
         $this->request = $request;
         $this->userInfoRepository = $userInfoRepository;
         $this->fileImporter = $fileImporter;
@@ -92,7 +93,7 @@ class Achievements
                     try {
                         if ($badge instanceof Achievement) {
                             $awardService->giveAchievement($badge, $userObject);
-                        } else if ($badge instanceof Award) {
+                        } elseif ($badge instanceof Award) {
                             $awardService->giveAward($badge, $userObject);
                         }
 

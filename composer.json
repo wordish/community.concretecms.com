@@ -75,7 +75,7 @@
     }
   },
   "scripts": {
-    "lint": "pint src tests public/application",
+    "lint": "pint src tests public/application public/packages/concrete_cms_community",
     "test:lint": "@lint --test",
     "test:unit": "pest",
     "test": [

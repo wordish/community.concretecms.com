@@ -20,7 +20,6 @@ use Concrete\Core\User\UserInfoRepository;
 
 class Profile
 {
-
     /**
      * @return bool|Response|\Concrete\Core\Routing\RedirectResponse|mixed|\Symfony\Component\HttpFoundation\Response
      */
@@ -39,7 +38,7 @@ class Profile
         $userInfo = $userInfoRepository->getByEmail($email);
 
         if ($userInfo instanceof UserInfo) {
-            return $responseFactory->redirect((string)Url::to("/members/profile/", $userInfo->getUserID()), Response::HTTP_TEMPORARY_REDIRECT);
+            return $responseFactory->redirect((string) Url::to("/members/profile/", $userInfo->getUserID()), Response::HTTP_TEMPORARY_REDIRECT);
         } else {
             return $responseFactory->notFound(Page::getCurrentPage());
         }

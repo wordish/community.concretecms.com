@@ -41,8 +41,8 @@ class ServiceProvider extends Provider
 
     public function __construct(
         Application $app,
-        ThemeRouteCollection $themeRouteCollection)
-    {
+        ThemeRouteCollection $themeRouteCollection
+    ) {
         parent::__construct($app);
         $this->themeRouteCollection = $themeRouteCollection;
     }
@@ -88,10 +88,10 @@ class ServiceProvider extends Provider
                     500 => "post_500",
                     1000 => "post_1000",
                 ]);
-            } else if ($event->getEventName() === "post_created") {
+            } elseif ($event->getEventName() === "post_created") {
                 $attributeKeyName = "forums_total_replies";
 
-                if((int)$event->getPayload()["post"]["topic_posts_count"] === 1) {
+                if((int) $event->getPayload()["post"]["topic_posts_count"] === 1) {
 
                     /*
                      * Ignore this event.
@@ -112,7 +112,7 @@ class ServiceProvider extends Provider
                 return; // ignore all other events
             }
 
-            $userTotalPosts = (int)$event->getUser()->getUserInfoObject()->getAttribute($attributeKeyName);
+            $userTotalPosts = (int) $event->getUser()->getUserInfoObject()->getAttribute($attributeKeyName);
 
             $userTotalPosts++;
 
@@ -154,7 +154,7 @@ class ServiceProvider extends Provider
             $userInfo = $pointsEntry->getUserPointEntryUserObject();
             $user = $userInfo->getUserObject();
 
-            $userTotalCommunityPoints = (int)$db->fetchColumn("SELECT SUM(upPoints) FROM UserPointHistory WHERE upuID = ?", [
+            $userTotalCommunityPoints = (int) $db->fetchColumn("SELECT SUM(upPoints) FROM UserPointHistory WHERE upuID = ?", [
                 $pointsEntry->getUserPointEntryUserID()
             ]);
 

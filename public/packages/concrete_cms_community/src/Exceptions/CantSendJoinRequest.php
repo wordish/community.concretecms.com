@@ -11,7 +11,4 @@ namespace PortlandLabs\Community\Exceptions;
 
 use Exception;
 
-class CantSendJoinRequest extends Exception
-{
-
-}
+class CantSendJoinRequest extends Exception {}
