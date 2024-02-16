@@ -28,14 +28,14 @@ include:
     - git config --global user.name "Gitlab CI"
 
 # Test with PHPUnit
-test:phpunit:
-  allow_failure: true
+test:unit:
   stage: test
   rules:
     - if: $CI_PIPELINE_SOURCE == 'external_pull_request_event' || $CI_PIPELINE_SOURCE == 'push'
   cache:
     paths:
       - vendor/
+  coverage: '/^\s*Cov:\s*\d+\.\d+?%$/'
   artifacts:
     reports:
       junit: junit.xml
@@ -46,7 +46,7 @@ test:phpunit:
     - *ssh_key_setup
     - composer install --dev --no-interaction --optimize-autoloader
   script:
-    - XDEBUG_MODE=coverage vendor/bin/phpunit --configuration phpunit.xml.dist --log-junit=junit.xml --coverage-text --colors=never --coverage-cobertura=coverage.cobertura.xml
+    - XDEBUG_MODE=coverage composer test:unit -- --colors=never --coverage --coverage-cobertura=coverage.cobertura.xml --log-junit=junit.xml
 
 # Test with PHPCS
 test:phpcs:

@@ -34,8 +34,8 @@
     "laminas/laminas-zendframework-bridge": "^1.6"
   },
   "require-dev": {
-    "phpunit/phpunit": "^8.0",
-    "mockery/mockery": "^1.2"
+    "mockery/mockery": "^1.2",
+    "pestphp/pest": "^1.23"
   },
   "provide": {
     "hautelook/phpass": "*"
@@ -49,7 +49,8 @@
       "composer/package-versions-deprecated": true,
       "kylekatarnls/update-helper": true,
       "mlocati/composer-patcher": true,
-      "composer/installers": true
+      "composer/installers": true,
+      "pestphp/pest-plugin": true
     }
   },
   "extra": {
@@ -73,6 +74,9 @@
     }
   },
   "scripts": {
-    "test": "phpunit"
+    "test:unit": "pest",
+    "test": [
+      "@test:unit"
+    ]
   }
 }
