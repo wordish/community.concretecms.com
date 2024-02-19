@@ -1,10 +1,10 @@
 image: registry.gitlab.com/portlandlabs/containers/php/8.2:latest
 
 stages:
+  - qa
   - test
   - build
   - deploy
-  - qa
 
 cache:
   paths:
@@ -123,7 +123,7 @@ deploy:production:
   before_script:
     - *ssh_key_setup
     - composer install --no-interaction --optimize-autoloader
-    - vendor/bin/bdi detect drivers # Load drivers
+    - ./vendor/bin/bdi detect drivers # Load drivers
   script:
     - composer test:e2e --log-junit=junit.xml
 
