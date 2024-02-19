@@ -131,14 +131,14 @@ deploy:production:
     - composer test:e2e --log-junit=junit.xml
 
 e2e:stage:
-  <<: *deploy
+  <<: *e2e
   environment:
     name: Stage deploy
   rules:
     - if: $CI_PIPELINE_SOURCE == 'push' && $CI_COMMIT_BRANCH == 'develop'
 
 e2e:production:
-  <<: *deploy
+  <<: *e2e
   environment:
     name: Production deploy
   rules:

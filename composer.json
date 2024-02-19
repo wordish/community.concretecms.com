@@ -38,7 +38,6 @@
     "pestphp/pest": "^1.23",
     "laravel/pint": "^1.13",
     "symfony/panther": "^2.1",
-    "pestphp/pest-plugin-drift": "^0.2.0",
     "dbrekelmans/bdi": "^1.1",
     "pestphp/pest-plugin-parallel": "^1.2"
   },

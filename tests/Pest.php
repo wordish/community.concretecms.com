@@ -12,8 +12,6 @@
 */
 
 // Set up E2E tests with environment
-use Symfony\Component\Panther\Client;
-use Symfony\Component\Process\Process;
 
 uses(\ConcreteComposer\E2e\TestCase::class)
     ->group('e2e')

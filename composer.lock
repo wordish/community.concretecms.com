@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ef67f42f254bd3a801511a10355147a4",
+    "content-hash": "dff21e9a316b96a9be17ba32baa3019b",
     "packages": [
         {
             "name": "anahkiasen/html-object",
@@ -14021,74 +14021,6 @@
                 }
             ],
             "time": "2022-09-18T13:18:17+00:00"
-        },
-        {
-            "name": "pestphp/pest-plugin-drift",
-            "version": "v0.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/pestphp/pest-plugin-drift.git",
-                "reference": "dcb9b02f5e6f10e7e099d351039216d28b28f8f3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/pestphp/pest-plugin-drift/zipball/dcb9b02f5e6f10e7e099d351039216d28b28f8f3",
-                "reference": "dcb9b02f5e6f10e7e099d351039216d28b28f8f3",
-                "shasum": ""
-            },
-            "require": {
-                "nikic/php-parser": "^4.13",
-                "php": "^8.0",
-                "symfony/console": "^5.3.3",
-                "symfony/finder": "^5.3"
-            },
-            "require-dev": {
-                "bamarni/composer-bin-plugin": "^1.7",
-                "composer/composer": "dev-main",
-                "friendsofphp/php-cs-fixer": "^3.1",
-                "pestphp/pest": "^1.20",
-                "vimeo/psalm": "^4.10"
-            },
-            "bin": [
-                "bin/pest-converter"
-            ],
-            "type": "library",
-            "extra": {
-                "bamarni-bin": {
-                    "bin-links": false
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "PestConverter\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "mandisma",
-                    "email": "mandis68@gmail.com"
-                }
-            ],
-            "description": "PHPUnit to Pest Converter",
-            "support": {
-                "issues": "https://github.com/pestphp/pest-plugin-drift/issues",
-                "source": "https://github.com/pestphp/pest-plugin-drift/tree/v0.2.0"
-            },
-            "funding": [
-                {
-                    "url": "https://www.paypal.com/paypalme/enunomaduro",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/nunomaduro",
-                    "type": "github"
-                }
-            ],
-            "time": "2022-07-14T12:59:51+00:00"
         },
         {
             "name": "pestphp/pest-plugin-parallel",

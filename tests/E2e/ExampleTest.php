@@ -1,6 +1,5 @@
 <?php
 
-use Facebook\WebDriver\WebDriverBy;
 
 it('shows stage banner', function () {
     if (!str_contains($_ENV['E2E_ENDPOINT'], '.stage.')) {
