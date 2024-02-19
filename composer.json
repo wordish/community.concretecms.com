@@ -36,7 +36,11 @@
   "require-dev": {
     "mockery/mockery": "^1.2",
     "pestphp/pest": "^1.23",
-    "laravel/pint": "^1.13"
+    "laravel/pint": "^1.13",
+    "symfony/panther": "^2.1",
+    "pestphp/pest-plugin-drift": "^0.2.0",
+    "dbrekelmans/bdi": "^1.1",
+    "pestphp/pest-plugin-parallel": "^1.2"
   },
   "provide": {
     "hautelook/phpass": "*"
@@ -77,7 +81,8 @@
   "scripts": {
     "lint": "pint src tests public/application public/packages/concrete_cms_community",
     "test:lint": "@lint --test",
-    "test:unit": "pest",
+    "test:unit": "pest tests/Unit",
+    "test:e2e": "pest --group e2e --parallel",
     "test": [
       "@test:unit",
       "@test:lint"

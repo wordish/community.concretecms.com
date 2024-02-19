@@ -11,7 +11,28 @@
 |
 */
 
-// uses(Tests\TestCase::class)->in('Feature');
+// Set up E2E tests with environment
+use Symfony\Component\Panther\Client;
+use Symfony\Component\Process\Process;
+
+uses(\ConcreteComposer\E2e\TestCase::class)
+    ->group('e2e')
+    ->beforeAll(function () {
+        // Load .env
+        $env = new \Dotenv\Dotenv(__DIR__ . '/../');
+        try {
+            $env->overload();
+        } catch (\Exception $e) {
+            // Ignore any errors
+        }
+
+        $requiredEnv = ['E2E_ENDPOINT'];
+        foreach ($requiredEnv as $item) {
+            assert(isset($_ENV[$item]), '$_ENV["' . $item . '"] is required.');
+        }
+    })
+    ->in('E2e');
+uses(\ConcreteComposer\TestCase::class)->group('unit')->in('Unit');
 
 /*
 |--------------------------------------------------------------------------
@@ -24,8 +45,8 @@
 |
 */
 
-expect()->extend('toBeOne', function () {
-    return $this->toBe(1);
+expect()->extend('toBeTen', function () {
+    return $this->toBe(10);
 });
 
 /*
@@ -38,8 +59,3 @@ expect()->extend('toBeOne', function () {
 | global functions to help you to reduce the number of lines of code in your test files.
 |
 */
-
-function something()
-{
-    // ..
-}

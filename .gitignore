@@ -27,5 +27,7 @@
 /build
 /.phpunit.*
 .DS_Store
+/tests/proof
+/drivers
 
 /public/packages/skyline_hub/build/node_modules
