@@ -1,10 +1,10 @@
 image: registry.gitlab.com/portlandlabs/containers/php/8.2:latest
 
 stages:
-  - qa
   - test
   - build
   - deploy
+  - qa
 
 cache:
   paths:
