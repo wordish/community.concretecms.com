@@ -4,6 +4,7 @@ stages:
   - test
   - build
   - deploy
+  - qa
 
 cache:
   paths:
@@ -112,5 +113,33 @@ deploy:production:
   environment:
     name: Production deploy
   when: manual
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'push' && $CI_COMMIT_BRANCH == 'master'
+
+.job_template: &e2e
+  stage: qa
+  cache:
+    paths:
+      - vendor/
+  artifacts:
+    reports:
+      junit: junit.xml
+  before_script:
+    - *ssh_key_setup
+    - composer install --no-interaction --optimize-autoloader
+  script:
+    - composer test:e2e --log-junit=junit.xml
+
+e2e:stage:
+  <<: *deploy
+  environment:
+    name: Stage deploy
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'push' && $CI_COMMIT_BRANCH == 'develop'
+
+e2e:production:
+  <<: *deploy
+  environment:
+    name: Production deploy
   rules:
     - if: $CI_PIPELINE_SOURCE == 'push' && $CI_COMMIT_BRANCH == 'master'
