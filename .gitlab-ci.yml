@@ -71,50 +71,46 @@ build:tar:
     paths:
       - release.tar.gz
   rules:
-    - if: $CI_COMMIT_BRANCH =~ /(develop|master)/
+    - if: $CI_COMMIT_BRANCH =~ /(develop|main)/
   before_script:
     - *ssh_key_setup
     # Install production dependencies
+    - composer self-update --2
     - composer install --no-dev --no-interaction --optimize-autoloader
   script:
     # Delete anything we don't want to include in the tar
-    - rm -rf tests resources .git
+    - rm -rf tests resources .git node_modules
     - tar -zcvf /builds/release.tar.gz .
     # Move the built tar to the correct location. This also verifies the file was created.
     - mv /builds/release.tar.gz $CI_PROJECT_DIR/release.tar.gz
 
-.job_template: &deploy
-  stage: deploy
-  before_script:
-    - apt-get update && apt-get install gettext-base
-    # Write GitLab Variables into the .codedeployvars file
-    - tar -xzf release.tar.gz ./.codedeployvars && mv .codedeployvars .codedeployvars.template
-    - envsubst < .codedeployvars.template > .codedeployvars
-    # Update appspec with environment variables
-    - tar -xzf release.tar.gz ./appspec.yml && mv appspec.yml appspec.yml.template
-    - envsubst < appspec.yml.template > appspec.yml
-    # Pack the files back into the tar
-    - gunzip release.tar.gz
-    - tar -rf release.tar ./.codedeployvars
-    - tar -rf release.tar appspec.yml
-    - gzip release.tar
-  script:
-    - deploy release.tar.gz
-
-deploy:stage:
-  <<: *deploy
+.job_template: &stage
   environment:
     name: Stage deploy
   rules:
     - if: $CI_PIPELINE_SOURCE == 'push' && $CI_COMMIT_BRANCH == 'develop'
 
-deploy:production:
-  <<: *deploy
+.job_template: &prod
   environment:
     name: Production deploy
-  when: manual
   rules:
-    - if: $CI_PIPELINE_SOURCE == 'push' && $CI_COMMIT_BRANCH == 'master'
+    - if: $CI_PIPELINE_SOURCE == 'push' && $CI_COMMIT_BRANCH == 'main'
+
+.job_template: &deploy
+  stage: deploy
+  before_script:
+    - prepare `pwd`/release.tar.gz .codedeployvars appspec.yml
+  script:
+    - deploy release.tar.gz
+
+deploy:stage:
+  <<: *deploy
+  <<: *stage
+
+deploy:production:
+  <<: *deploy
+  <<: *prod
+  when: manual
 
 .job_template: &e2e
   stage: qa
@@ -127,19 +123,14 @@ deploy:production:
   before_script:
     - *ssh_key_setup
     - composer install --no-interaction --optimize-autoloader
+    - vendor/bin/bdi detect drivers # Load drivers
   script:
     - composer test:e2e --log-junit=junit.xml
 
 e2e:stage:
   <<: *e2e
-  environment:
-    name: Stage deploy
-  rules:
-    - if: $CI_PIPELINE_SOURCE == 'push' && $CI_COMMIT_BRANCH == 'develop'
+  <<: *stage
 
 e2e:production:
   <<: *e2e
-  environment:
-    name: Production deploy
-  rules:
-    - if: $CI_PIPELINE_SOURCE == 'push' && $CI_COMMIT_BRANCH == 'master'
+  <<: *prod
