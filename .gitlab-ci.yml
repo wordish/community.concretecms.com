@@ -84,19 +84,19 @@ build:tar:
     # Move the built tar to the correct location. This also verifies the file was created.
     - mv /builds/release.tar.gz $CI_PROJECT_DIR/release.tar.gz
 
-.job_template: &stage
+.stage_template: &stage
   environment:
     name: Stage deploy
   rules:
     - if: $CI_PIPELINE_SOURCE == 'push' && $CI_COMMIT_BRANCH == 'develop'
 
-.job_template: &prod
+.prod_template: &prod
   environment:
     name: Production deploy
   rules:
     - if: $CI_PIPELINE_SOURCE == 'push' && $CI_COMMIT_BRANCH == 'main'
 
-.job_template: &deploy
+.deploy_template: &deploy
   stage: deploy
   before_script:
     - prepare `pwd`/release.tar.gz .codedeployvars appspec.yml
@@ -112,7 +112,7 @@ deploy:production:
   <<: *prod
   when: manual
 
-.job_template: &e2e
+.e2e_template: &e2e
   stage: qa
   cache:
     paths:
@@ -125,6 +125,7 @@ deploy:production:
     - composer install --no-interaction --optimize-autoloader
     - ./vendor/bin/bdi detect drivers # Load drivers
   script:
+    - export PANTHER_NO_SANDBOX=1
     - composer test:e2e --log-junit=junit.xml
 
 e2e:stage:
