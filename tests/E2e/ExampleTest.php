@@ -2,9 +2,7 @@
 
 
 it('shows stage banner', function () {
-    if (!str_contains($_ENV['E2E_ENDPOINT'], '.stage.')) {
-        $this->markTestSkipped('E2E endpoint doesn\'t look like a stage.');
-    }
+    expect(usingStage())->toBeTrue();
 
     $client = $this->createPantherClient()->get($_ENV['E2E_ENDPOINT']);
     $crawler = $client->waitForVisibility('.alert.alert-danger');
@@ -17,13 +15,14 @@ it('shows stage banner', function () {
 it('shows working cookie banner', function () {
     $client = $this->createPantherClient()->get($_ENV['E2E_ENDPOINT']);
 
+    $crawler = $client->waitFor('div.disclosure > div > p');
     // Wait for cookie banner to show. Need an extra 2 seconds to accommodate transition
-    $crawler = $client->waitForVisibility('div.disclosure');
-    usleep(500);
+    usleep(2*1000*1000);
     $this->elementScreenshot($crawler->filter('div.disclosure')->getElement(0), 'banner');
 
     // Verify the banner shows as expected with our privacy policy
     $spiel = $crawler->filter('div.disclosure p');
+    $this->elementScreenshot($spiel->getElement(0), 'spiel');
     $button = $crawler->filter('button.ack');
     expect($spiel->getText())
         ->toContain('This website stores cookies on your computer')

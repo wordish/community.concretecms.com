@@ -57,3 +57,54 @@ expect()->extend('toBeTen', function () {
 | global functions to help you to reduce the number of lines of code in your test files.
 |
 */
+function getUnusedTcpPort ()
+{
+    $address = '127.0.0.1';
+    // Create a new socket
+    $sock = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+    // Bind the source address
+    socket_bind($sock, $address);
+    socket_getsockname($sock, $address, $port);
+    socket_close($sock);
+    return $port;
+}
+
+function usingStage ()
+{
+    if (!$_ENV['E2E_DEBUG']) {
+        return true;
+    }
+    if (!str_contains($_ENV['E2E_ENDPOINT'], '.stage.')) {
+        $this->markTestSkipped('E2E endpoint doesn\'t look like a stage.');
+    }
+    return true;
+}
+
+function chromeConfig ()
+{
+    return [
+        [], //'port' => getUnusedTcpPort()],
+        [],
+        [
+            'chromedriver_arguments' => [
+                '--disable-background-networking',
+                '--disable-default-apps',
+                '--disable-dev-shm-usage',
+                '--disable-extensions',
+                '--disable-gpu',
+                '--disable-prompt-on-repost',
+                '--disable-sync',
+                '--disable-translate',
+                '--incognito',
+                '--log-level=DEBUG',
+                '--log-path=/tmp/chrome.log',
+                '--mute-audio',
+                '--no-first-run',
+                '--no-sandbox',
+                '--remote-debugging-port=9222',
+                '--window-size=1920,1080'
+            ],
+
+        ]
+    ];
+}
